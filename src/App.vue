@@ -30,4 +30,7 @@
 	.router-fade-enter, .router-fade-leave-active {
 	  	opacity: 0;
 	}
+	body {
+		font-size: .14rem;
+	}
 </style>
