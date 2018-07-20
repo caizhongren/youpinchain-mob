@@ -88,6 +88,10 @@ html,body{
     display: block;
 }
 
+.position-re {
+    position: relative;
+}
+
 .ellipsis{
     overflow: hidden;
     text-overflow: ellipsis;
@@ -109,3 +113,17 @@ html,body{
 .animation_opactiy{
     animation: backOpacity 2s ease-in-out infinite;
 }
+
+
+.red-points {
+    position: absolute;
+    font-size: .3rem;
+    width: .6rem;
+    height: .6rem;
+    line-height: .6rem;
+    background: red;
+    border-radius: 50%;
+    color: #fff;
+    right: -.5rem;
+    top: -.1rem;
+  }
