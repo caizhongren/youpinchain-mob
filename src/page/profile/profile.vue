@@ -1,59 +1,49 @@
 <template>
     <div class="profile_page">
-        <head-top go-back='true' :head-title="profiletitle"></head-top>
         <section>
+            <div class="profile-top-red"></div>
             <section class="profile-number">
                 <router-link :to="userInfo&&userInfo.user_id? '/profile/info' : '/login'" class="profile-link">
                     <img :src="imgBaseUrl + userInfo.avatar" class="privateImage" v-if="userInfo&&userInfo.user_id">
-                    <span class="privateImage" v-else>
+                    <div class="privateImage" v-else>
                         <svg class="privateImage-svg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
                         </svg>
-                    </span>
-                    <div class="user-info">
-                        <p>{{username}}</p>
-                        <p>
-                            <span class="user-icon">
-                                <svg class="icon-mobile" fill="#fff">
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#mobile"></use>
-                                </svg>
-                            </span>
-                            <span class="icon-mobile-number">{{mobile}}</span>
-                        </p>
                     </div>
-                    <span class="arrow">
-                        <svg class="arrow-svg" fill="#fff">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-                        </svg>
-                    </span>
+                    <p class="user-name">Petite mignonne😉</p>
                 </router-link>
             </section>
             <section class="info-data">
+                <div class="my-order">
+                    <span>我的订单</span>
+                    <span class="to-all-order">
+                        全部订单
+                        <svg fill="#bbb">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                        </svg>
+                    </span>
+                </div>
                 <ul class="clear">
                     <router-link to="/balance" tag="li" class="info-data-link">
-                        <span class="info-data-top"><b>{{parseInt(balance).toFixed(2)}}</b>元</span>
-                        <span class="info-data-bottom">我的余额</span>
+                        <span class="info-data-top"></span>
+                        <span class="info-data-bottom">待支付</span>
                     </router-link>
                     <router-link to="/benefit" tag="li" class="info-data-link">
-                        <span class="info-data-top"><b>{{count}}</b>个</span>
-                        <span class="info-data-bottom">我的优惠</span>
+                       <span class="info-data-top"><b data-v-4675cad9="" class="red-points">1</b></span>
+                       <span class="info-data-bottom">待发货</span>
                     </router-link>
                     <router-link to="/points" tag="li" class="info-data-link">
-                        <span class="info-data-top"><b>{{pointNumber}}</b>分</span>
-                        <span class="info-data-bottom">我的积分</span>
+                        <span class="info-data-top"></span>
+                        <span class="info-data-bottom">已发货</span>
                     </router-link>
                 </ul>
             </section>
             <section class="profile-1reTe">
-                <!-- 我的订单 -->
+                <!-- 我的优惠券 -->
                 <router-link to='/order' class="myorder">
-                    <aside>
-                        <svg fill="#4aa5f0">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
-                        </svg>
-                    </aside>
+                    <aside></aside>
                     <div class="myorder-div">
-                        <span>我的订单</span>
+                        <span>我的优惠券</span>
                         <span class="myorder-divsvg">
                             <svg fill="#bbb">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
@@ -61,15 +51,11 @@
                         </span>
                     </div>
                 </router-link>
-                <!-- 积分商城 -->
+                <!-- 地址管理 -->
                 <a href='https://home.m.duiba.com.cn/#/chome/index' class="myorder">
-                    <aside>
-                        <svg fill="#fc7b53">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#point"></use>
-                        </svg>
-                    </aside>
+                    <aside></aside>
                     <div class="myorder-div">
-                        <span>积分商城</span>
+                        <span>地址管理</span>
                         <span class="myorder-divsvg">
                             <svg fill="#bbb">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
@@ -77,15 +63,23 @@
                         </span>
                     </div>
                 </a>
-                <!-- 饿了么会员卡 -->
+                <!-- 联系客服 -->
                 <router-link to='/vipcard' class="myorder">
-                    <aside>
-                        <svg fill="#ffc636">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#vip"></use>
-                        </svg>
-                    </aside>
+                    <aside></aside>
                     <div class="myorder-div">
-                        <span>饿了么会员卡</span>
+                        <span>联系客服</span>
+                        <span class="myorder-divsvg">
+                            <svg fill="#bbb">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                            </svg>
+                        </span>
+                    </div>
+                </router-link>
+                <!-- 关于我们 -->
+                <router-link to='/vipcard' class="myorder">
+                    <aside></aside>
+                    <div class="myorder-div">
+                        <span>关于我们</span>
                         <span class="myorder-divsvg">
                             <svg fill="#bbb">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
@@ -94,40 +88,7 @@
                     </div>
                 </router-link>
             </section>
-            <section class="profile-1reTe">
-                <!-- 服务中心 -->
-                <router-link to='/service' class="myorder">
-                    <aside>
-                        <svg fill="#4aa5f0">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#service"></use>
-                        </svg>
-                    </aside>
-                    <div class="myorder-div">
-                        <span>服务中心</span>
-                        <span class="myorder-divsvg">
-                            <svg fill="#bbb">
-                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-                            </svg>
-                        </span>
-                    </div>
-                </router-link>
-                <!-- 下载饿了么APP -->
-                <router-link to='/download' class="myorder">
-                    <aside>
-                        <svg fill="#3cabff">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#download"></use>
-                        </svg>
-                    </aside>
-                    <div class="myorder-div" style="border-bottom:0;">
-                        <span>下载饿了么APP</span>
-                        <span class="myorder-divsvg">
-                            <svg fill="#bbb">
-                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-                            </svg>
-                        </span>
-                    </div>
-                </router-link>
-            </section>
+            
         </section>
         <foot-guide></foot-guide>
         <transition name="router-slid" mode="out-in">
@@ -218,157 +179,157 @@ export default {
             font-family: Helvetica Neue,Tahoma,Arial;
         }
     }
-   .profile-number{
-        padding-top:1.95rem;
+    .profile-top-red{
+        height: .83rem;
+        width: 100%;
+        background-image: linear-gradient(to bottom, #fc5b46, #fa424f);
+    }
+    .profile-number{
+        height: 1.2rem;
+        width: 3.5rem;
+        margin: 0 auto;
+        margin-top: -.5rem;
+        margin-bottom: .15rem;
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 10px;
         .profile-link{
+            padding: .05rem 0;
+            text-alig: center;
             display:block;
-            display:flex;
             box-align: center;
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
-            background:$blue;
-            padding: .666667rem .6rem;
             .privateImage{
-                display:inline-block;
-                @include wh(2.5rem,2.5rem);
+                @include wh(.75rem,.75rem);
                 border-radius:50%;
                 vertical-align:middle;
+                margin: 0 auto;
                 .privateImage-svg{
-                    background:$fc;
                     border-radius:50%;
-                    @include wh(2.5rem,2.5rem);
+                    @include wh(.75rem,.75rem);
+                    display: block;
                 }
             }
-            .user-info{
-                margin-left:.48rem;
-                -webkit-box-flex: 1;
-                -ms-flex-positive: 1;
-                flex-grow: 1;
-                p{
-                    font-weight:700;
-                    @include sc(.8rem,$fc);
-                    .user-icon{
-                        @include wh(0.5rem,0.75rem);
-                        display:inline-block;
-                        vertical-align:middle;
-                        line-height:0.75rem;
-                        .icon-mobile{
-                            @include wh(100%,100%);
-                        }
-                    }
-                    .icon-mobile-number{
-                        display:inline-block;
-                        @include sc(.57333rem,$fc);
-
-                    }
-                }
-
-            }
-            .arrow{
-                @include wh(.46667rem,.98rem);
-                display:inline-block;
-                svg{
-                   @include wh(100%,100%);
-                }
+            .user-name{
+                font-size: .15rem;
+                font-weight: bold;
+                color: #333333;
+                text-align: center;
             }
         }
    }
    .info-data{
-        width:100%;
+        width: 3.5rem;
+        margin: 0 auto;
+        border-radius: 10px;
         background:$fc;
         box-sizing: border-box;
+        .my-order{
+            height: .44rem;
+            border-bottom: 1px solid #f1f1f1;
+            span{
+                line-height: .44rem;
+                color: #333333;
+                font-size: .15rem;
+                padding-left: .12rem;
+                float: left;
+            }
+            .to-all-order{
+                color: #999999;
+                font-size: .13rem;
+                float: right;
+                svg{
+                    width: .1rem;
+                    height: .1rem;
+                    margin: 0 .12rem 0 .1rem;
+                }
+            }
+        }
         ul{
             .info-data-link{
                 float:left;
                 width:33.33%;
                 display:inline-block;
-                border-right:1px solid #f1f1f1;
                 span{
                     display:block;
                     width:100%;
                     text-align:center;
                 }
                 .info-data-top{
-                    @include sc(.55rem,#333);
-                    padding: .853333rem 0 .453333rem;
-                    b{
-                        display:inline-block;
-                        @include sc(1.2rem,#f90);
-                        font-weight:700;
-                        line-height:1rem;
-                        font-family: Helvetica Neue,Tahoma;
-                    }
+                    margin: .17rem auto .09rem;
+                    position: relative;
+                    @include wh(.29rem,.275rem);
+                    @include bis('../../images/youpinchain/mine-icon-dzf.png')
                 }
                 .info-data-bottom{
-                    @include sc(.57333rem,#666);
+                    @include sc(.114rem,#666);
                     font-weight:400;
-                    padding-bottom:.453333rem;
+                    padding-bottom:.09rem;
 
                 }
             }
-            .info-data-link:nth-of-type(2){
-                .info-data-top{
-                    b{
-                        color:#ff5f3e;
-                    }
-                }
-
+            .info-data-link:nth-of-type(2) .info-data-top{
+                @include bis('../../images/youpinchain/mine-icon-dfh.png')
             }
-            .info-data-link:nth-of-type(3){
-                border:0;
-                .info-data-top{
-                    b{
-                        color:#6ac20b;
-                    }
-                }
+            .info-data-link:nth-of-type(3) .info-data-top{
+                @include bis('../../images/youpinchain/mine-icon-yfh.png')
             }
         }
    }
    .profile-1reTe{
-        margin-top:.4rem;
+        margin-top:.15rem;
         background:$fc;
+        border-radius: 10px;
         .myorder{
-            padding-left:1.6rem;
+            padding-left:.32rem;
             display:flex;
             align-items: center;
+            @include wh(100%,.55rem);
+            border-bottom:1px solid #f1f1f1;
             aside{
-                @include wh(.7rem,.7rem);
-                margin-left:-.866667rem;
-                margin-right:.266667rem;
+                @include wh(.28rem,.26rem);
+                margin-left:-.172rem;
+                margin-right: .18rem;
                 display:flex;
                 align-items: center;
-                svg{
-                    @include wh(100%,100%);
-                }
+                @include bis('../../images/youpinchain/mine-wdyhq.png')
             }
             .myorder-div{
                 width:100%;
-                border-bottom:1px solid #f1f1f1;
-                padding:.433333rem .266667rem .433333rem 0;
-                @include sc(.7rem,#333);
+                padding:.086rem .053rem .086rem 0;
+                @include sc(.028rem,#333);
                 display:flex;
                 justify-content:space-between;
                 span{
                     display:block;
+                    font-size: .15rem;
                 }
                 .myorder-divsvg{
-                    @include wh(.46667rem,.466667rem);
+                    @include wh(.1rem,.175rem);
+                    width: 0.1rem;
+                    margin-right: .12rem;
                     svg{
-                        @include wh(100%,100%);
+                        @include wh(180%,180%);
                     }
                 }
             }
         }
-        .myorder:nth-of-type(3) .myorder-div{
-            border:0;
+        .myorder:nth-of-type(2) aside{
+            @include bis('../../images/youpinchain/mine-dzgl.png')
+        }
+        .myorder:nth-of-type(3) aside{
+            @include bis('../../images/youpinchain/mine-lxkf.png')
+        }
+        .myorder:nth-of-type(4) aside{
+            @include bis('../../images/youpinchain/mine-gywm.png')
         }
     }
     .router-slid-enter-active, .router-slid-leave-active {
         transition: all .4s;
     }
     .router-slid-enter, .router-slid-leave-active {
-        transform: translate3d(2rem, 0, 0);
+        transform: translate3d(.4rem, 0, 0);
         opacity: 0;
     }
 </style>

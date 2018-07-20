@@ -61,24 +61,24 @@
         z-index: 100;
         left: 0;
         top: 0;
-        @include wh(100%, 1.95rem);
+        @include wh(100%, .39rem);
     }
     .head_goback{
         left: 0.4rem;
-        @include wh(0.6rem, 1rem);
-        line-height: 2.2rem;
-        margin-left: .4rem;
+        @include wh(0.12rem, .2rem);
+        line-height: .44rem;
+        margin-left: .08rem;
     }
     .head_login{
-        right: 0.55rem;
-        @include sc(0.65rem, #fff);
+        right: 0.11rem;
+        @include sc(0.13rem, #fff);
         @include ct;
         .login_span{
             color: #fff;
         }
         .user_avatar{
             fill: #fff;
-            @include wh(.8rem, .8rem);
+            @include wh(.16rem, .16rem);
         }
     }
     .title_head{
@@ -87,7 +87,7 @@
         color: #fff;
         text-align: center;
         .title_text{
-            @include sc(0.8rem, #fff);
+            @include sc(0.16rem, #fff);
             text-align: center;
             font-weight: bold;
         }
