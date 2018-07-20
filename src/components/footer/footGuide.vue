@@ -54,8 +54,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    @include wh(100%, 1.95rem);
+    @include wh(100%, .49rem);
     display: flex;
+    border-top: 2px solid #efeff4;
   }
   .guide_item{
     flex: 1;
@@ -64,13 +65,13 @@
     flex-direction: column;
     align-items: center;
     span{
-      @include sc(.42rem, #e4372e);
+      @include sc(.1rem, #e4372e);
     }
   }
   .icon1_style, .icon2_style, .icon3_style, .icon1_style2, .icon2_style2, .icon3_style2 {
     a {
-      margin-top: .3rem;
-      @include wh(.85rem, 1rem);
+      margin-top: .06rem;
+      @include wh(.22rem, .22rem);
       display: inline-block;
       @include bis('../../images/youpinchain/tab-home-highlight.png')
     }

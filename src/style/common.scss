@@ -1,3 +1,4 @@
+@import '/mixin';
 body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4,h5, h6, i, b, textarea, button, input, select, figure, figcaption, {
     padding: 0;
     margin: 0;
@@ -116,14 +117,12 @@ html,body{
 
 
 .red-points {
-    position: absolute;
-    font-size: .3rem;
-    width: .6rem;
-    height: .6rem;
-    line-height: .6rem;
-    background: red;
-    border-radius: 50%;
-    color: #fff;
-    right: -.5rem;
-    top: -.1rem;
-  }
+  position: absolute;
+  @include wh(.18rem, .18rem);
+  @include sc(.13rem, $fc);
+  line-height: .18rem;
+  background: $red;
+  border-radius: 50%;
+  right: -.15rem;
+  top: -.05rem;
+}
