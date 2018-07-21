@@ -14,7 +14,7 @@
                 </router-link>
             </section>
             <section class="info-data">
-                <div class="my-order">
+                <router-link to='/order' class="my-order" tag="div">
                     <span>我的订单</span>
                     <span class="to-all-order">
                         全部订单
@@ -22,7 +22,7 @@
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
                         </svg>
                     </span>
-                </div>
+                </router-link>
                 <ul class="clear">
                     <router-link to="/balance" tag="li" class="info-data-link">
                         <span class="info-data-top"></span>
@@ -40,7 +40,7 @@
             </section>
             <section class="profile-1reTe">
                 <!-- 我的优惠券 -->
-                <router-link to='/order' class="myorder">
+                <router-link to='/benefit' class="myorder">
                     <aside></aside>
                     <div class="myorder-div">
                         <span>我的优惠券</span>
@@ -52,7 +52,7 @@
                     </div>
                 </router-link>
                 <!-- 地址管理 -->
-                <a href='https://home.m.duiba.com.cn/#/chome/index' class="myorder">
+                <router-link to='/profile/info/address' class="myorder">
                     <aside></aside>
                     <div class="myorder-div">
                         <span>地址管理</span>
@@ -62,7 +62,7 @@
                             </svg>
                         </span>
                     </div>
-                </a>
+                </router-link>
                 <!-- 联系客服 -->
                 <router-link to='/vipcard' class="myorder">
                     <aside></aside>
@@ -311,6 +311,7 @@ export default {
                     margin-right: .12rem;
                     svg{
                         @include wh(180%,180%);
+                        margin-top: -.05rem;
                     }
                 }
             }
