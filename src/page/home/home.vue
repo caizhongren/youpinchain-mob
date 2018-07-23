@@ -7,23 +7,22 @@
     <section id="hot_goods">
       <h4 class="goods_title">热卖商品</h4>
       <ul class="goodslistul clear">
-        <!-- <router-link  tag="li" v-for="item in hotgoodslist" :to="'/goods/' + item.id" :key="item.id"> -->
         <li v-for="item in hotgoodslist" :key="item.id">
-          <img :src="item.imgUrl" alt="" class="left" :class="{'noImage': !item.imgUrl}">
-          <div class="left goods_info">
-            <p class="name">{{item.name}}</p>
-            <p class="desr">{{item.description}}</p>
-            <p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>
-            <p class="price"><span>¥</span>{{item.price}} <s>¥{{item.marketPrice}}</s></p>
-            <div class="shopping_cart"  @touchstart="addToCart($event)"></div>
-          </div>
-        </li>  
-        <!-- </router-link>   -->
+          <router-link  tag="div" :to="'/goods/' + item.id">
+            <img :src="item.imgUrl" alt="" class="left" :class="{'noImage': !item.imgUrl}">
+            <div class="left goods_info">
+              <p class="name">{{item.name}}</p>
+              <p class="desr">{{item.description}}</p>
+              <p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>
+              <p class="price"><span>¥</span>{{item.price}} <s>¥{{item.marketPrice}}</s></p>
+            </div>
+          </router-link>  
+          <div class="shopping_cart"  @touchstart="addToCart($event)"></div>
+        </li>
       </ul>
-      <transition appear @after-appear = 'afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot">
-        <span class="move_dot" v-if="item">
-        </span>
-      </transition>
+      <!-- <transition appear @after-appear = 'afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot">
+        <span class="move_dot" v-if="item"></span>
+      </transition> -->
     </section>
     <foot-guide></foot-guide>
   </div>
@@ -31,12 +30,12 @@
 
 <script>
 import footGuide from '../../components/footer/footGuide'
-// import {hotcity} from '../../service/getData'
+// import {goodsList} from '../../service/getData'
 
 export default {
   data(){
     return{
-      hotcity: [],
+      goodsList: [],
       product_nav: ['生长环境', '饲养情况', '健康指标'],
       activeTab: 0,
       hotgoodslist: [
@@ -67,9 +66,9 @@ export default {
     }
   },
 	mounted(){
-    //获取热门城市
-    // hotcity(1, 10).then(res => {
-    //     this.hotcity = res;
+    //获取商品列表
+    // goodsList(1, 10).then(res => {
+    //     this.goodsList = res;
     // })
   },
   components:{
@@ -84,48 +83,23 @@ export default {
     addToCart (event) { // 加入购物车，计算按钮位置。
       let elLeft = event.target.getBoundingClientRect().left;
       let elBottom = event.target.getBoundingClientRect().bottom;
-      console.log(elLeft)
-      console.log(elBottom)
       this.showMoveDot.push(true);
       this.showMoveDotFun(this.showMoveDot, elLeft, elBottom);
     },
-    listenInCart () { // 监听圆点是否进入购物车
-      if (!this.receiveInCart) {
-        this.receiveInCart = true;
-        this.$refs.cartContainer.addEventListener('animationend', () => {
-          this.receiveInCart = false;
-        })
-        this.$refs.cartContainer.addEventListener('webkitAnimationEnd', () => {
-          this.receiveInCart = false;
-        })
-      }
-    },
     showMoveDotFun (showMoveDot, elLeft, elBottom) { // 显示下落圆球
-        this.showMoveDot = [...this.showMoveDot, ...showMoveDot];
-        this.elLeft = elLeft;
-        this.elBottom = elBottom;
+      this.showMoveDot = [...this.showMoveDot, ...showMoveDot];
+      this.elLeft = elLeft;
+      this.elBottom = elBottom;
     },
     beforeEnter(el){
-      console.log(el)
-      el.style.left = this.elLeft - 10 + 'px';
-      el.style.top = this.elBottom - 20 + 'px';
-      // el.style.transform = `translate3d(0,${37 + this.elBottom - this.windowHeight}px,0)`;
-      // el.style.transform = `translate3d(${this.elLeft - 30}px,0,0)`;
-      // el.style.opacity = 0;
+      el.style.transform = `translate3d(${this.elLeft - 30}px,${37 + this.elBottom - this.windowHeight}px,0px)`;
+      el.style.opacity = 0;
     },
     afterEnter(el){
-      // // el.style.transform = `translate3d(0,0,0)`;
-      // el.style.transform = `translate3d(0,0,0)`;
-      // el.style.transition = 'transform .55s cubic-bezier(0.3, -0.25, 0.7, -0.15)';
-      // // // el.style.transition = 'transform .55s linear';
-      // this.showMoveDot = this.showMoveDot.map(item => false);
-      // el.style.opacity = 1;
-      // el.addEventListener('transitionend', () => {
-      //   this.listenInCart();
-      // })
-      // el.addEventListener('webkitAnimationEnd', () => {
-      //   this.listenInCart();
-      // })
+      el.style.transform = `translate3d(0,0,0px)`;
+      el.style.transition = 'transform .55s cubic-bezier(0.3, -0.25, 0.7, -0.15)';
+      this.showMoveDot = this.showMoveDot.map(item => false);
+      el.style.opacity = 1;
     },
   },
 }
@@ -135,8 +109,8 @@ export default {
   @import '../../style/mixin';
   .move_dot {
     position: fixed;
-    top: 0px;
-    left: 30px;
+    bottom: 1.3rem;
+    left: 52.7%;
     background: $red;
     display: block;
     border-radius: 50%;
@@ -229,13 +203,13 @@ export default {
             font-weight: normal; 
           }
         }
-        .shopping_cart {
-          position: absolute;
-          right: 0;
-          bottom: .25rem;
-          @include wh(.315rem, .315rem);
-          @include bis('../../images/youpinchain/shopping_cart.png');
-        }
+      }
+      .shopping_cart {
+        position: absolute;
+        right: 0;
+        bottom: .25rem;
+        @include wh(.315rem, .315rem);
+        @include bis('../../images/youpinchain/shopping_cart.png');
       }
     }
   }

@@ -1,7 +1,7 @@
 import App from '../App'
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
-const city = r => require.ensure([], () => r(require('../page/city/city')), 'city')
-const msite = r => require.ensure([], () => r(require('../page/msite/msite')), 'msite')
+const goods = r => require.ensure([], () => r(require('../page/goods/goods')), 'goods')
+const cart = r => require.ensure([], () => r(require('../page/cart/cart')), 'cart')
 const search = r => require.ensure([], () => r(require('../page/search/search')), 'search')
 const shop = r => require.ensure([], () => r(require('../page/shop/shop')), 'shop')
 const login = r => require.ensure([], () => r(require('../page/login/login')), 'login')
@@ -56,21 +56,20 @@ export default [{
             path: '',
             redirect: '/home'
         },
-        //首页城市列表页
+        //首页
         {
             path: '/home',
             component: home
         },
-        //当前选择城市页
+        //商品详情
         {
-            path: '/city/:cityid',
-            component: city
+            path: '/goods/:goodsid',
+            component: goods
         },
-        //所有商铺列表页
+        //购物车
         {
-            path: '/msite',
-            component: msite,
-            meta: { keepAlive: true },
+            path: '/cart',
+            component: cart
         },
         //特色商铺列表页
         {

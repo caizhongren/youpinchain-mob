@@ -4,8 +4,8 @@
         	<a></a>
           <span>首页</span>
         </section>
-        <section @click = "gotoAddress({path: '/search/geohash'})" class="guide_item" :class="[$route.path.indexOf('search') !== -1 ? 'icon2_style' : 'icon2_style2']">
-        	<a class="position-re"><b class="red-points">1</b></a>
+        <section @click = "gotoAddress({path: '/cart'})" class="guide_item" :class="[$route.path.indexOf('cart') !== -1 ? 'icon2_style' : 'icon2_style2']">
+        	<a class="position-re"><b class="red-points">{{cart_num}}</b></a>
           <span>购物车</span>
         </section>
         <section @click = "gotoAddress('/profile')" class="guide_item" :class="[$route.path.indexOf('profile') !== -1 ? 'icon3_style' : 'icon3_style2']">
@@ -16,32 +16,26 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
-    export default {
-    	data(){
-            return{
-                
-            }
-        },
-        created(){
-           
-        },
-        mounted(){
-            
-        },
-        computed: {
-            ...mapState([
-                'geohash'
-            ]),
-        },
-        methods: {
-        	gotoAddress(path){
-        		this.$router.push(path)
-        	}
-        },
-
-    }
-
+  export default {
+    data(){
+      return{
+        cart_num: 8
+      }
+    },
+    created(){
+        
+    },
+    mounted(){
+        
+    },
+    computed: {
+    },
+    methods: {
+      gotoAddress(path){
+        this.$router.push(path)
+      },
+    },
+  }
 </script>
 
 <style lang="scss" scoped>
