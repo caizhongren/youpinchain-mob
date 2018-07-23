@@ -69,7 +69,7 @@
 				<p>合计 <span class="red">¥{{totalPrice}}</span></p>
 				<p>运费 ¥{{fare}}</p>
 			</li>
-			<li @click="toSettlement()">去结算</li>
+			<router-link tag="li" :to="'/confirmOrder'">去结算</router-link>
 		</ul>
 		<foot-guide></foot-guide>
 	</div>    

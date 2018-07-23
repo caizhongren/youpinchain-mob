@@ -33,7 +33,8 @@
           marketPrice: 33.99,
           Desc: '<div>商品介绍内容</div>'
         },
-        cart_num: 8
+        cart_num: 8,
+        number: [1, 2, 3, 4, 5],
       }
     },
     mounted(){
