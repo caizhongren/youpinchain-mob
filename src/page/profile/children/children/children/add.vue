@@ -29,7 +29,8 @@
         		<section class="addbutton">
         			<button :class="{butopacity:butpart}" @click.prevent="submitThing">保存</button>
         		</section>
-                <div id="container"></div>
+                <div class="delete-address"></div>
+                <div id="city_container">aaaa</div>
         	</form>
         </section>
         <transition name="router-slid" mode="out-in">
@@ -40,12 +41,13 @@
 </template>
 
 <script>
+import AjaxPicker from 'ajax-picker'
     import headTop from 'src/components/header/head'
     import {getImgPath} from 'src/components/common/mixin'
     import {mapState, mapMutations} from 'vuex'
     import {postAddAddress} from 'src/service/getData'
     import alertTip from 'src/components/common/alertTip'
-    import AjaxPicker from 'ajax-picker'
+    
 
     export default {
       data(){
@@ -71,7 +73,7 @@
                  * Created by appian on 2016/11/7.
                  */
                 /* eslint-disable */
-                province: [
+                addressList:[[
                     {
                         "name": "北京",
                         "id": 0
@@ -216,7 +218,7 @@
                         "name": "其他"
                     }
                 ],
-                city: [
+                [
                         {
                             "name": "广州",
                             "id": 0
@@ -302,7 +304,7 @@
                             "id": 0
                         }
                     ],
-                district: [
+                [
                   {
                     "name": "越秀区"
                     ,id: 0},
@@ -342,31 +344,30 @@
                   {
                     "name": "其他"
                     ,id: 0}
-                ]
+                ]]
             }
         },
-        created(){
-            console.log(AjaxPicker)
+        mounted () {
+            var addressList = this.addressList
             var picker = new AjaxPicker({
                 title: '配送至',
                 tipText: ['省份', '城市', '区/县'],
                 input: 'address-input',
-                container: 'container',
+                container: 'city_container',
                 renderArr: [
                   function () {
-                    picker.render(this.province)
+                    picker.render(addressList[0])
                   } ,
                   function () {
-                    console.log('用户在列表1选择了 ' + picker.result1)
-                    picker.render(this.city)
+                    console.log(picker.result1.value + '/' + picker.result1.id + '/' +  picker.result1.index)
+                    picker.render(addressList[1])
                   },
                   function () {
-                    console.log('用户在列表2选择了 ' + picker.result2)
-                    picker.render(this.district)
+                    picker.render(addressList[2])
                   }
                 ],
                 success: function (arr) {
-                  console.log(arr)
+                  // console.log(arr)
                   var address = ''
                   for (var i = 0; i < arr.length; i++) {
                     address +=  ' ' + arr[i].value
@@ -374,6 +375,8 @@
                   document.getElementById('address-input').value = address.substring(1)
                 }
             })
+        },
+        created(){
         },
         mixins: [getImgPath],
         components: {
@@ -529,7 +532,7 @@
         }
     }
     .addbutton{
-    	margin:.31rem auto;
+    	margin:.31rem auto .73rem auto;
     	width:3.5rem;
     	button{
     		width:100%;
@@ -543,5 +546,10 @@
     		transition: all .4s;
     		opacity:1;
     	}
+    }
+    .delete-address{
+        @include wh(.43rem,.43rem);
+        @include bis('../../../../../images/youpinchain/add-delete.png');
+        margin: 0 auto;
     }
 </style>

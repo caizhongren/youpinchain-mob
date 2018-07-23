@@ -8,6 +8,11 @@ const login = r => require.ensure([], () => r(require('../page/login/login')), '
 const profile = r => require.ensure([], () => r(require('../page/profile/profile')), 'profile')
 const forget = r => require.ensure([], () => r(require('../page/forget/forget')), 'forget')
 const order = r => require.ensure([], () => r(require('../page/order/order')), 'order')
+const allOrder = r => require.ensure([], () => r(require('../page/order/children/all')), 'order')
+const unpaid = r => require.ensure([], () => r(require('../page/order/children/unpaid')), 'order')
+const undelivery = r => require.ensure([], () => r(require('../page/order/children/undelivery')), 'order')
+const delivered = r => require.ensure([], () => r(require('../page/order/children/delivered')), 'order')
+const completed = r => require.ensure([], () => r(require('../page/order/children/completed')), 'order')
 const orderDetail = r => require.ensure([], () => r(require('../page/order/children/orderDetail')), 'orderDetail')
 const vipcard = r => require.ensure([], () => r(require('../page/vipcard/vipcard')), 'vipcard')
 const invoiceRecord = r => require.ensure([], () => r(require('../page/vipcard/children/invoiceRecord')), 'invoiceRecord')
@@ -172,8 +177,28 @@ export default [{
             component: order,
             children: [{
                 path: 'orderDetail', //订单详情页
-                component: orderDetail,
-            }, ]
+                component: orderDetail
+            }, {
+                path: '',
+                component: allOrder, //全部订单
+                name: 'all'
+            },{
+                path: 'unpaid',
+                component: unpaid, //待支付订单
+                name: 'unpaid'
+            },{
+                path: 'undelivery',
+                component: undelivery, //未发货
+                name: 'undelivery'
+            },{
+                path: 'delivered',
+                component: delivered, // 已发货
+                name: 'delivered'
+            },{
+                path: 'completed',
+                component: completed, //已完成
+                name: 'completed'
+            }]
         },
         //vip卡页
         {

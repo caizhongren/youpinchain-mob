@@ -1,7 +1,7 @@
  <template>
     <div class="page">
-        <span class="rem_time" style="color: orange;border-width: 1px;border-style: solid;border-color: orange;" @click="gotoPay">
-	       {{remaining}}
+        <span class="rem_time" @click="gotoPay">
+           {{remaining}}
         </span>
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>  
     </div>
@@ -58,7 +58,7 @@
                 if (second < 10) {
                     second = '0' + second;
                 }
-                return '去支付(还剩' + minute + '分' + second + '秒)';
+                return '支付' + minute + ':' + second;
             },
             //订单返回时间秒分分别处理
             numTime: function (){
@@ -77,10 +77,14 @@
     @import 'src/style/mixin';
 	.page{
         display: inline-block;
+        height: .32rem;
+        border-radius: .16rem;
+        background: #e4372e;
+        padding: 0 .1rem;
         .rem_time{
-            @include sc(.55rem, #orange);
-            padding: .1rem .2rem;
-            border-radius: .15rem;
+            border-radius: .03rem;
+            @include sc(.15rem,#fff);
+            line-height: .32rem;
         }
     }
 </style>

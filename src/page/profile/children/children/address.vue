@@ -6,6 +6,7 @@
         <section class="address">
         	<ul class="addresslist">
         		<li>
+                    <span class="default-address"></span>
         			<div class="address-detail">
         				<p>北京市海淀区中国科学院国家空间科学中心九章大厦B座</p>
         				<p><span>张三</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>15210288888</span></p>
@@ -14,6 +15,16 @@
         				<span @click="deleteSite(index, item)"></span>
         			</div>
         		</li>
+                <li>
+                    <span class="default-address" v-if="false"></span>
+                    <div class="address-detail">
+                        <p>北京市海淀区中国科学院国家空间科学中心九章大厦B座</p>
+                        <p><span>张三</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>15210288888</span></p>
+                    </div>
+                    <div class="deletesite">
+                        <span @click="deleteSite(index, item)"></span>
+                    </div>
+                </li>
         	</ul>
 			<router-link to='/profile/info/address/add'>
 				<div class="addsite">
@@ -130,6 +141,14 @@
                 border-radius: 10px;
                 background-color: #ffffff;
                 box-shadow: 0px 1px 13.9px 0.6px rgba(110, 194, 46, 0.24);
+                position: relative;
+                .default-address{
+                    @include wh(.43rem,.42rem);
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    @include bis('../../../../images/youpinchain/add-slected.png');
+                }
                 .address-detail{
                     position: relative;
                     width: 2.3rem;
