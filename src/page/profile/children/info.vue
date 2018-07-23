@@ -218,31 +218,31 @@
         bottom: 0;
         background-color: #f2f2f2;
         z-index: 202;
-        padding-top: 1.95rem;
+        padding-top: .39rem;
         p, span{
             font-family: Helvetica Neue,Tahoma,Arial;
         }
     }
     .profile-info{
-        @include wh(100%,3.1rem);
+        @include wh(100%,.62rem);
         .profileinfopanel-upload{
             display: block;
             position: absolute;
             opacity: 0;
-            top: 2.35rem;
+            top: .47rem;
             left: 0;
-            @include wh(100%,3.1rem);
+            @include wh(100%,.62rem);
         }
         .headportrait{
-            margin-top:.4rem;
-            padding:.5rem .4rem;
+            margin-top:.08rem;
+            padding:.1rem .08rem;
             @include fj(space-between);
             align-items:center;
             border-top:1px solid #ddd;
             background:#fff;
 
             h2{
-                @include sc(.6rem,#333);
+                @include sc(.12rem,#333);
                 font-weight:500;
                 display:flex;
                 align-items:center;
@@ -256,27 +256,27 @@
                     }
                 }
                 .headportrait-div-top{
-                    @include wh(2rem,2rem);
+                    @include wh(.4rem,.4rem);
                     @include borderRadius(50%);
                     vertical-align:middle;
                 }
                 .headportrait-div-bottom{
-                    @include wh(.66667rem,1.4rem);
+                    @include wh(.132rem,.28rem);
                     position:relative;
-                    top:0.44rem;
+                    top:0.088rem;
                 }
             }
         }
         .headportraitwo{
             margin-top:0;
-            padding:.3rem .4rem;
+            padding:.06rem .08rem;
             .headportrait-div{
                 @include fj(left)
                 p{
                     text-align:left;
-                    line-height:1.39rem;
-                    @include sc(.7rem,#999);
-                    margin-right:.2rem;
+                    line-height:.278rem;
+                    @include sc(.14rem,#999);
+                    margin-right:.04rem;
                     font-weight:100;
                     font-family:Arial;
                 }
@@ -289,17 +289,17 @@
             border-bottom:1px solid #ddd;
         }
         .bind-phone{
-            padding:.4rem .4rem;
-            @include sc(.5rem,#666);
+            padding:.08rem .08rem;
+            @include sc(.1rem,#666);
         }
         .exitlogin{
             width:96%;
-            margin:1.3rem auto 0;
-            line-height:1.5rem;
+            margin:.26rem auto 0;
+            line-height:.3rem;
             @include borderRadius(5px);
             text-align:center;
             background:#d8584a;
-            @include sc(.6rem,#fff);
+            @include sc(.12rem,#fff);
 
         }
         .exitlogin:active{
@@ -363,15 +363,15 @@
 
                 button{
                     display:inline-block;
-                    padding:.4rem 1rem;
+                    padding:.08rem .2rem;
                     @include borderRadius(5px);
-                    @include sc(.6rem,$fc);
+                    @include sc(.12rem,$fc);
                     letter-spacing:1px;
                     margin-top:26px;
                 }
                 .waiting{
                     background:#C1C1C1;
-                    margin-right:.4rem;
+                    margin-right:.08rem;
                 }
                 .quitlogin{
                     background:rgb(221, 107, 85);

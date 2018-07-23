@@ -5,30 +5,31 @@
         	<form action="" v-on:submit.prevent>
         		<section class="ui-padding-block">
         			<div class="input-new">
+                        <span>姓名</span>
         				<input type="text" placeholder="请填写你的姓名" :class="{verifies:verify}" v-model="message" @input="inputThing">
-        				<p v-if="verify">请填写您的姓名</p>
         			</div>
-        			<router-link to='/profile/info/address/add/addDetail' class="add-detail">
+        			<div class="add-detail">
 	        			<div class="input-new">
-	        				<input type="text" placeholder="小区/写字楼/学校等" readonly="readonly" v-model="addAddress" />
+                            <span>联系电话</span>
+	        				<input type="text" placeholder="请填写收货人手机号" v-model="addAddress" />
 	        			</div>
-        			</router-link>
+        			</div>
         			 <div class="input-new">
-        				<input type="text" placeholder="请填写详细送餐地址" :class="{verifies:verifythree}" @input="inputThingthree" v-model="mesthree"/>
-        				<p v-if="verifythree">{{sendaddress}}</p>
+                        <span>所在地区</span>
+        				<input type="text" id="address-input" readonly="readonly" style="width:2.5rem;" placeholder="请选择" :class="{verifies:verifythree}" @input="inputThingthree" v-model="mesthree"/>
+                        <svg fill="#bbb" style="width: 0.18rem;margin-left: .1rem;">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                        </svg>
         			</div>
         			<div class="input-new">
-        				<input type="text" placeholder="请填写能够联系到您的手机号" :class="{verifies:verifyfour}" v-model="telenum" @input="inputThingfour" />
-        				<p v-if="verifyfour">{{telephone}}</p>
-        			</div>
-        			<div class="input-new">
-        				<input type="text" placeholder="备用联系电话（选填）" v-model="standbytelenum" @input="inputThingfive" />
-        				<p v-if="verifyfive">{{standbytele}}</p>
+                        <span>地址</span>
+                        <textarea placeholder="请填写详细地址" id="adinfo" value="" rows="2"></textarea>
         			</div>
         		</section>
         		<section class="addbutton">
-        			<button :class="{butopacity:butpart}" @click.prevent="submitThing">新增地址</button>
+        			<button :class="{butopacity:butpart}" @click.prevent="submitThing">保存</button>
         		</section>
+                <div id="container"></div>
         	</form>
         </section>
         <transition name="router-slid" mode="out-in">
@@ -44,7 +45,7 @@
     import {mapState, mapMutations} from 'vuex'
     import {postAddAddress} from 'src/service/getData'
     import alertTip from 'src/components/common/alertTip'
-
+    import AjaxPicker from 'ajax-picker'
 
     export default {
       data(){
@@ -63,13 +64,316 @@
     			standbytele:'', //备用手机号提示 
     			standbytelenum:'', //备用手机号
     			addSearch:false, //添加搜索地址
-    			newAddress:{},			//增加数组的元素
+    			// newAddress:{},			//增加数组的元素
                 showAlert: false, //弹出框
                 alertText: null, //弹出信息
+                /**
+                 * Created by appian on 2016/11/7.
+                 */
+                /* eslint-disable */
+                province: [
+                    {
+                        "name": "北京",
+                        "id": 0
+                    },
+                    {
+                        "name": "广东",
+                        "id": 0
+                    },
+                    {
+                        "name": "上海",
+                        "id": 0
+                    },
+                    {
+                        "name": "天津",
+                        "id": 0
+                    },
+                    {
+                        "name": "重庆",
+                        "id": 0
+                    },
+                    {
+                        "name": "辽宁",
+                        "id": 1
+                    },
+                    {
+                        "name": "江苏",
+                        "id": 1
+                    },
+                    {
+                        "name": "湖北",
+                        "id": 1
+                    },
+                    {
+                        "name": "四川",
+                        "id": 1
+                    },
+                    {
+                        "name": "陕西",
+                        "id": 1
+                    },
+                    {
+                        "name": "河北",
+                        "id": 1
+                    },
+                    {
+                        "name": "山西",
+                        "id": 1
+                    },
+                    {
+                        "name": "河南",
+                        "id": 1
+                    },
+                    {
+                        "name": "吉林",
+                        "id": 1
+                    },
+                    {
+                        "name": "黑龙江",
+                        "id": 1
+                    },
+                    {
+                        "name": "内蒙古",
+                        "id": 1
+                    },
+                    {
+                        "name": "山东",
+                        "id": 1
+                    },
+                    {
+                        "name": "安徽",
+                        "id": 1
+                    },
+                    {
+                        "name": "浙江",
+                        "id": 1
+                    },
+                    {
+                        "name": "福建",
+                        "id": 1
+                    },
+                    {
+                        "name": "湖南",
+                        "id": 1
+                    },
+                    {
+                        "name": "广西",
+                        "id": 1
+                    },
+                    {
+                        "name": "江西",
+                        "id": 1
+                    },
+                    {
+                        "name": "贵州",
+                        "id": 1
+                    },
+                    {
+                        "name": "云南",
+                        "id": 1
+                    },
+                    {
+                        "name": "西藏",
+                        "id": 1
+                    },
+                    {
+                        "name": "海南",
+                        "id": 1
+                    },
+                    {
+                        "name": "甘肃",
+                        "id": 1
+                    },
+                    {
+                        "name": "宁夏",
+                        "id": 1
+                    },
+                    {
+                        "name": "青海",
+                        "id": 1
+                    },
+                    {
+                        "name": "新疆",
+                        "id": 1
+                    },
+                    {
+                        "name": "香港",
+                        "id": 0
+                    },
+                    {
+                        "name": "澳门",
+                        "id": 0
+                    },
+                    {
+                        "name": "台湾",
+                        "id": 0
+                    },
+                    {
+                        "name": "海外",
+                        "id": 0
+                    },
+                    {
+                        "name": "其他"
+                    }
+                ],
+                city: [
+                        {
+                            "name": "广州",
+                            "id": 0
+                        },
+                        {
+                            "name": "深圳",
+                            "id": 0
+                        },
+                        {
+                            "name": "珠海",
+                            "id": 0
+                        },
+                        {
+                            "name": "汕头",
+                            "id": 0
+                        },
+                        {
+                            "name": "韶关",
+                            "id": 0
+                        },
+                        {
+                            "name": "佛山",
+                            "id": 0
+                        },
+                        {
+                            "name": "江门",
+                            "id": 0
+                        },
+                        {
+                            "name": "湛江",
+                            "id": 0
+                        },
+                        {
+                            "name": "茂名",
+                            "id": 0
+                        },
+                        {
+                            "name": "肇庆",
+                            "id": 0
+                        },
+                        {
+                            "name": "惠州",
+                            "id": 0
+                        },
+                        {
+                            "name": "梅州",
+                            "id": 0
+                        },
+                        {
+                            "name": "汕尾",
+                            "id": 0
+                        },
+                        {
+                            "name": "河源",
+                            "id": 0
+                        },
+                        {
+                            "name": "阳江",
+                            "id": 0
+                        },
+                        {
+                            "name": "清远",
+                            "id": 0
+                        },
+                        {
+                            "name": "东莞",
+                            "id": 0
+                        },
+                        {
+                            "name": "中山",
+                            "id": 0
+                        },
+                        {
+                            "name": "潮州",
+                            "id": 0
+                        },
+                        {
+                            "name": "揭阳",
+                            "id": 0
+                        },
+                        {
+                            "name": "云浮",
+                            "id": 0
+                        }
+                    ],
+                district: [
+                  {
+                    "name": "越秀区"
+                    ,id: 0},
+                  {
+                    "name": "荔湾区"
+                    ,id: 0},
+                  {
+                    "name": "海珠区"
+                    ,id: 0},
+                  {
+                    "name": "天河区"
+                    ,id: 0},
+                  {
+                    "name": "白云区"
+                    ,id: 0},
+                  {
+                    "name": "黄埔区"
+                    ,id: 0},
+                  {
+                    "name": "番禺区"
+                    ,id: 0},
+                  {
+                    "name": "花都区"
+                    ,id: 0},
+                  {
+                    "name": "南沙区"
+                    ,id: 0},
+                  {
+                    "name": "萝岗区"
+                    ,id: 0},
+                  {
+                    "name": "增城市"
+                    ,id: 0},
+                  {
+                    "name": "从化市"
+                    ,id: 0},
+                  {
+                    "name": "其他"
+                    ,id: 0}
+                ]
             }
         },
         created(){
-
+            console.log(AjaxPicker)
+            var picker = new AjaxPicker({
+                title: '配送至',
+                tipText: ['省份', '城市', '区/县'],
+                input: 'address-input',
+                container: 'container',
+                renderArr: [
+                  function () {
+                    picker.render(this.province)
+                  } ,
+                  function () {
+                    console.log('用户在列表1选择了 ' + picker.result1)
+                    picker.render(this.city)
+                  },
+                  function () {
+                    console.log('用户在列表2选择了 ' + picker.result2)
+                    picker.render(this.district)
+                  }
+                ],
+                success: function (arr) {
+                  console.log(arr)
+                  var address = ''
+                  for (var i = 0; i < arr.length; i++) {
+                    address +=  ' ' + arr[i].value
+                  }
+                  document.getElementById('address-input').value = address.substring(1)
+                }
+            })
         },
         mixins: [getImgPath],
         components: {
@@ -176,53 +480,64 @@
         bottom: 0;
         background-color: #f2f2f2;
         z-index: 202;
-        padding-top: 1.95rem;
+        padding-top: .39rem;
         p, span{
             font-family: Helvetica Neue,Tahoma,Arial;
         }
     }
     .adddetail{
-    	margin-top:.4rem;
+    	margin-top:.11rem;
+        @include borderRadius(10px);
+        background: #fff;
+        height: 98%;
     }
     .ui-padding-block{
-    	background:#fff;
-    	padding-top:.4rem;
     	.add-detail{display:block;}
     	.input-new{
-    		padding-bottom:.4rem;
+    		@include wh(100%,.45rem);
+            padding: 0 0 0 .12rem;
+            display: flex;
+            @include sc(.15rem,#666666);
+            border-bottom: 1px solid #efeff4;
+            span{
+                width: .6rem;
+                line-height: .45rem;
+                margin-right: .14rem;
+            }
     		input{
-    			display:block;
-    			width:15rem;
-    			font-size:.6rem;
-    			margin:0 auto;
-    			padding:.3rem;
-    			background:#f2f2f2;
-    			border:1px solid #ddd;
-    			@include borderRadius(3px);
+    			display:flex;
+    			width:2.7rem;
+                line-height: .45rem;
+                font-size: .15rem;
     		}
     		.verifies{
 				border-color:#ea3106;
     		}
     		p{
-				@include sc(.4rem,#ea3106);
-				padding-left:.5rem;
-				margin-top:.2rem;
+				@include sc(.08rem,#ea3106);
+				padding-left:.1rem;
+				margin-top:.04rem;
     		}
     	}
-    	
+    	.input-new:nth-of-type(4){
+            height:.9rem;
+            textarea{
+                padding: .15rem 0 0 0;
+                width: 2.7rem;
+                font-size: .15rem;
+            }
+        }
     }
     .addbutton{
-    	margin:.6rem auto;
-    	width:15rem;
-    	background:#4cd964;
-    	@include borderRadius(3px);
+    	margin:.31rem auto;
+    	width:3.5rem;
     	button{
     		width:100%;
-    		@include sc(.6rem,#fff);
-    		line-height:1.6rem;
-    		background:none;
+    		@include sc(.15rem,#fff);
+    		line-height:.45rem;
+    		background:#e4372e;
     		font-weight:700;
-    		opacity:.6;
+            @include borderRadius(.23rem);
     	}
     	.butopacity{
     		transition: all .4s;

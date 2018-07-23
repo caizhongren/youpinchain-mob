@@ -5,24 +5,19 @@
         </head-top>
         <section class="address">
         	<ul class="addresslist">
-        		<li v-for="(item,index) in removeAddress">
-        			<div>
-        				<p>{{item.address}}</p>
-        				<p><span>{{item.phone}}</span><span v-if="item.phonepk">、{{item.phonepk}}</span></p>
+        		<li>
+        			<div class="address-detail">
+        				<p>北京市海淀区中国科学院国家空间科学中心九章大厦B座</p>
+        				<p><span>张三</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>15210288888</span></p>
         			</div>
-        			<div class="deletesite" v-if="deletesite">
-        				<span @click="deleteSite(index, item)">x</span>
+        			<div class="deletesite">
+        				<span @click="deleteSite(index, item)"></span>
         			</div>
         		</li>
         	</ul>
 			<router-link to='/profile/info/address/add'>
 				<div class="addsite">
-						<span>新增地址</span>
-						<span class="addsvg">
-							<svg fill="#d8d8d8">
-							    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-							</svg>
-						</span>
+					+ 添加新地址
 				</div>
 			</router-link>
         </section>
@@ -112,72 +107,79 @@
         bottom: 0;
         background-color: #f2f2f2;
         z-index: 202;
-        padding-top: 1.95rem;
+        padding-top: .39rem;
+        @include wh(100%,100);
         p, span{
             font-family: Helvetica Neue,Tahoma,Arial;
         }
     }
     .edit{
-    	right: 0.4rem;
-        @include sc(0.7rem, #fff);
+    	right: 0.08rem;
+        @include sc(0.14rem, #fff);
         @include ct;
     }
     .address{
     	width:100%;
-    	margin-top:.4rem;
-    	border-top:1px solid #d9d9d9;
-    	border-bottom:1px solid #d9d9d9;
+    	margin-top:.08rem;
+        margin-bottom: .7rem;
     	.addresslist{
-    		background:#fff;
     		li{
-    			border-bottom:1px solid #d9d9d9;
-    			padding:.4rem;
+                margin: .16rem .12rem;
+                padding: .21rem .17rem .25rem .57rem;
     			@include fj(space-between);
-    			p{
-    				line-height:.9rem;
-    				@include sc(.6rem,#333);
-    				span{
-    					display:inline-block;
-    					@include sc(.6rem,#333);
-    				}
-    			}
+                border-radius: 10px;
+                background-color: #ffffff;
+                box-shadow: 0px 1px 13.9px 0.6px rgba(110, 194, 46, 0.24);
+                .address-detail{
+                    position: relative;
+                    width: 2.3rem;
+                    p{
+                        line-height: 1.6;
+                        @include sc(.15rem,#666666);
+                        span{
+                            display:inline-block;
+                            @include sc(.15rem,#666666);
+                        }
+                    }
+                    p:nth-of-type(1){
+                        margin-bottom: .24rem;
+                    }
+                }
+    			.address-detail:before{
+                    content: '';
+                    position: absolute;
+                    left: -.28rem;
+                    top: 0rem;
+                    @include bis('../../../../images/youpinchain/gwc-icon-add.png');
+                    @include wh(.16rem,.22rem);
+                }
     			.deletesite{
     				display:flex;
     				align-items:center;
     				span{
     					display:block;
-    					@include sc(.8rem,#999)
+    					@include wh(.23rem,.23rem);
+                        @include bis('../../../../images/youpinchain/icon-edit-nor.png')
     				}
     			}
     		}
-    		li:nth-of-type(1){
-    			background:#FFF8C3;
-    		}
     	}
     	.addsite{
-    		margin-top:.4rem;
-    		background:#fff;
-    		padding:.2rem .4rem;
-    		border-top:1px solid #d9d9d9;
-    		@include fj(space-between);
-    		span{
-    			display:block;
-    			@include sc(.7rem,#333);
-    			line-height:1.4rem;
-    		}
-    		.addsvg{
-    			@include wh(.66667rem,1.4rem);
-    			svg{
-    				@include wh(100%,100%);
-    			}
-    		}
+    		background:#e4372e;
+    		@include wh(100%,.5rem);
+            line-height: .5rem;
+            position: fixed;
+            bottom: 0;
+            text-align: center;
+			@include sc(.15rem,#fff);
+            font-weight: bold;
     	}
     }
 .router-slid-enter-active, .router-slid-leave-active {
     transition: all .4s;
 }
 .router-slid-enter, .router-slid-leave-active {
-    transform: translate3d(2rem, 0, 0);
+    transform: translate3d(.4rem, 0, 0);
     opacity: 0;
 }
 </style>
