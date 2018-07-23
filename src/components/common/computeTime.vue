@@ -81,6 +81,7 @@
         border-radius: .16rem;
         background: #e4372e;
         padding: 0 .1rem;
+        margin-left: .1rem;
         .rem_time{
             border-radius: .03rem;
             @include sc(.15rem,#fff);

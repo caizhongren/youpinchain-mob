@@ -26,6 +26,7 @@
                     </div>
                 </li>
         	</ul>
+            <!-- <div class="no_address">您还没有添加过地址哦～</div> -->
 			<router-link to='/profile/info/address/add'>
 				<div class="addsite">
 					+ 添加新地址
@@ -183,6 +184,15 @@
     			}
     		}
     	}
+        .no_address{
+            @include sc(.15rem,#666666);
+            text-align: center;
+            line-height: 6rem;
+            background: #fff;
+            position: fixed;
+            bottom: .5rem;
+            width: 100%;
+        }
     	.addsite{
     		background:#e4372e;
     		@include wh(100%,.5rem);

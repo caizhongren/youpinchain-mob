@@ -124,6 +124,7 @@
                 }
             },
             updateOrder (data) {
+                console.log(data)
                 this.activeTab = data.activeTab
             }
         },

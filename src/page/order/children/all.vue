@@ -1,41 +1,43 @@
 <template>
-	<div>
+	<div class="unpaid">
 		<ul class="order_list_ul" v-load-more="loaderMore">
             <li class="order_list_li">
-                <img class="restaurant_image">
-                <section class="order_item_right">
+                <section class="order_item_top">
                     <section>
-                        <header class="order_item_right_header">
-                            <section class="order_header">
-                                <h4 >
-                                    <span class="ellipsis">{item.restaurant_name}} </span>
-                                    <svg fill="#333" class="arrow_right">
-                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-                                    </svg>
-                                </h4>
-                                <p class="order_time">{item.formatted</p>
-                            </section>
+                        <header class="order_item_top_header">
+                            <p class="order_time">2018.6.20 12:34</p>
                             <p class="order_status">
-                                {item.status_bar.title}}
+                                待支付
                             </p>
                         </header>
-                        <section class="order_basket">
-                            <p class="order_name ellipsis">item.basket.group[0].</p>
-                            <p class="order_amount">¥{ite}}</p>
-                        </section>
+                        <router-link to="/order/orderDetail" tag="div">
+	                        <section class="goods_img">
+	                        	<div class="goods_box">
+	                        		<img class="restaurant_image">
+			                        <img class="restaurant_image">
+			                        <img class="restaurant_image">
+	                        	</div>
+		                        <p>共3件</p>
+		                        <svg fill="#999" class="arrow_right" style="height:.64rem;width:.14rem;">
+	                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+	                            </svg>
+	                        </section>
+                        </router-link>
                     </section>
-
-                    <div class="order_again">
-                    	<div class="order_button"><span></span></div>
+                    <div class="order_item_bottom">
+                    	<span class="order_text">实际支付<b style="color:#e4372e;">￥<strong style="font-size:.2rem;font-weight:bold;">88.88</strong></b></span>
+                    	<div class="order_button_grey">联系客服</div>
+                    	<!-- <div class="order_button_red">再次购买</div> -->
                         <compute-time></compute-time>
-                        <!-- <router-link :to="{path: '/shop', query: {geohash, id: item.restaurant_id}}" tag="span" class="buy_again" v-else>再来一单</router-link> -->
                     </div>
                 </section>
             </li>
         </ul>
+        <transition name="loading">
+            <loading v-show="showLoading"></loading>
+        </transition>
 	</div>
 </template>
-
 
 <script>
     import {mapState, mapMutations} from 'vuex'
@@ -62,7 +64,9 @@
         props:['sendData'],
         mounted(){
             this.initData();
-            this.$emit(['findOrder',{activeTab:2}])
+        },
+        created () {
+            this.$emit(['findOrder',{'activeTab':2}])
         },
         mixins: [loadMore],
         components: {
@@ -137,62 +141,68 @@
             background-color: #fff;
             display: flex;
             margin-bottom: 0.1rem;
-            padding: .12rem .12rem 0;
+            padding: 0 .04rem 0 .1rem;
+            border-radius: .06rem;
             .restaurant_image{
-                @include wh(.4rem, .4rem);
-                margin-right: 0.08rem;
+                @include wh(.64rem, .64rem);
+                margin-right: 0.1rem;
+                border-radius: .06rem;
+                background: #000;
             }
-            .order_item_right{
+            .order_item_top{
                 flex: 5;
-                .order_item_right_header{
+                .order_item_top_header{
                     border-bottom: 0.005rem solid #f5f5f5;
                     padding-bottom: .06rem;
                     @include fj;
-                    .order_header{
-                        h4{
-                            display: flex;
-                            align-items: center;
-                            justify-content: flex-start;
-                            @include sc(.15rem, #333);
-                            line-height: .2rem;
-                            width: 1.8rem;
-
-                            .arrow_right{
-                                @include wh(.08rem, .08rem);
-                                fill: #ccc;
-                                margin-right: .04rem;
-                            }
-                        }
-                        .order_time{
-                            @include sc(.11rem, #999);
-                            line-height: .16rem;
-                        }
-                    }
-                    .order_status{
-                        @include sc(.12rem, #333);
-                    }
-                }
-                .order_basket{
-                    @include fj;
+                    height: .4rem;
                     line-height: .4rem;
-                    border-bottom: 0.005rem solid #f5f5f5;
-                    .order_name{
-                        @include sc(.12rem, #666);
-                        width: 2rem;
-                    }
-                    .order_amount{
-                        @include sc(.12rem, #f60);
-                        font-weight: bold;
+                    @include sc(.15rem,#666666);
+                    .order_status{
+                        margin-right:.1rem;
                     }
                 }
-                .order_again{
-                    text-align: right;
+                .goods_img{
+                	display: flex;
+                	padding: .1rem 0;
+                	border-bottom: 0.005rem solid #f5f5f5;
+                	.goods_box{
+                		width: 3rem;
+                	}
+                	p{
+                		line-height: .64rem;
+                		@include sc(.15rem,#666666);
+                	}
+                }
+                .order_item_bottom{
                     line-height: .32rem;
-                    .buy_again{
-                        @include sc(.11rem, #3190e8);
-                        border: 0.005rem solid #3190e8;
-                        padding: .02rem .04rem;
-                        border-radius: .03rem;
+                    padding: .115rem 0;
+                    display: flex;
+                    float: right;
+                    .order_button_grey{
+                    	display: inline-block;
+					    height: .32rem;
+					    border-radius: .16rem;
+					    background: #fff;
+					    border: 1px solid #999999;
+					    padding: 0 .1rem;
+					    font-size: .15rem;
+					    color: #666666;
+					    margin: 0 0rem 0 .2rem;
+                    }
+                    .order_button_red{
+                    	display: inline-block;
+					    height: .32rem;
+					    border-radius: .16rem;
+					    background: #e4372e;
+					    padding: 0 .1rem;
+					    font-size: .15rem;
+					    color: #fff;
+					    margin: 0 0rem 0 .2rem;
+                    }
+                    .order_text{
+						text-align: right;
+						@include sc(.15rem,#666666);
                     }
                 }
             }
