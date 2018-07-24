@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <img src="../../images/youpinchain/1.png" alt="" width="100%" class="show">
+    <router-link :to="'/product-introduction'">
+      <img src="../../images/youpinchain/1.png" alt="" width="100%" class="show">
+    </router-link>
     <ul class="product_nav">
       <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" @click="toggleTab(index)">{{tab}}</li>
     </ul>
@@ -20,9 +22,9 @@
           <div class="shopping_cart"  @touchstart="addToCart($event)"></div>
         </li>
       </ul>
-      <!-- <transition appear @after-appear = 'afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot">
+      <transition appear @after-appear = 'afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot" :key="index">
         <span class="move_dot" v-if="item"></span>
-      </transition> -->
+      </transition>
     </section>
     <foot-guide></foot-guide>
   </div>
@@ -59,10 +61,8 @@ export default {
         }
       ],
       showMoveDot: [], //控制下落的小圆点显示隐藏
-      windowHeight: null, //屏幕的高度
       elLeft: 0, //当前点击加按钮在网页中的绝对top值
       elBottom: 0, //当前点击加按钮在网页中的绝对left值
-      receiveInCart: false, //购物车组件下落的圆点是否到达目标位置
     }
   },
 	mounted(){
@@ -79,6 +79,13 @@ export default {
   methods:{
     toggleTab (index) {
       this.activeTab = index
+      if (index === 0) {
+        this.$router.push({name: 'growingEnvironment'})
+      } else if (index === 1) {
+        this.$router.push({name: 'feedingSituation'})
+      } else {
+        this.$router.push({name: 'healthIndicators'})
+      }
     },
     addToCart (event) { // 加入购物车，计算按钮位置。
       let elLeft = event.target.getBoundingClientRect().left;
@@ -92,7 +99,7 @@ export default {
       this.elBottom = elBottom;
     },
     beforeEnter(el){
-      el.style.transform = `translate3d(${this.elLeft - 30}px,${37 + this.elBottom - this.windowHeight}px,0px)`;
+      el.style.transform = `translate3d(${this.elLeft - 30}px,${this.elBottom - window.innerHeight - 150}px,0px)`;
       el.style.opacity = 0;
     },
     afterEnter(el){
@@ -109,8 +116,8 @@ export default {
   @import '../../style/mixin';
   .move_dot {
     position: fixed;
-    bottom: 1.3rem;
-    left: 52.7%;
+    bottom: .35rem;
+    left: 45.7%;
     background: $red;
     display: block;
     border-radius: 50%;
