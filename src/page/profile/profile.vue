@@ -262,7 +262,7 @@ export default {
                     margin: .17rem auto .09rem;
                     position: relative;
                     @include wh(.29rem,.275rem);
-                    @include bis('../../images/youpinchain/mine-icon-dzf.png')
+                    @include bis('../../images/mine-icon-dzf.png')
                 }
                 .info-data-bottom{
                     @include sc(.114rem,#666);
@@ -272,10 +272,10 @@ export default {
                 }
             }
             .info-data-link:nth-of-type(2) .info-data-top{
-                @include bis('../../images/youpinchain/mine-icon-dfh.png')
+                @include bis('../../images/mine-icon-dfh.png')
             }
             .info-data-link:nth-of-type(3) .info-data-top{
-                @include bis('../../images/youpinchain/mine-icon-yfh.png')
+                @include bis('../../images/mine-icon-yfh.png')
             }
         }
    }
@@ -295,7 +295,7 @@ export default {
                 margin-right: .18rem;
                 display:flex;
                 align-items: center;
-                @include bis('../../images/youpinchain/mine-wdyhq.png')
+                @include bis('../../images/mine-wdyhq.png')
             }
             .myorder-div{
                 width:100%;
@@ -319,13 +319,13 @@ export default {
             }
         }
         .myorder:nth-of-type(2) aside{
-            @include bis('../../images/youpinchain/mine-dzgl.png')
+            @include bis('../../images/mine-dzgl.png')
         }
         .myorder:nth-of-type(3) aside{
-            @include bis('../../images/youpinchain/mine-lxkf.png')
+            @include bis('../../images/mine-lxkf.png')
         }
         .myorder:nth-of-type(4) aside{
-            @include bis('../../images/youpinchain/mine-gywm.png')
+            @include bis('../../images/mine-gywm.png')
         }
     }
     .router-slid-enter-active, .router-slid-leave-active {

@@ -67,23 +67,23 @@
       margin-top: .06rem;
       @include wh(.22rem, .22rem);
       display: inline-block;
-      @include bis('../../images/youpinchain/tab-home-highlight.png')
+      @include bis('../../images/tab-home-highlight.png')
     }
   }
   .icon2_style a {
-    @include bis('../../images/youpinchain/tab-buy-highlight.png')
+    @include bis('../../images/tab-buy-highlight.png')
   }
   .icon3_style a {
-    @include bis('../../images/youpinchain/tab-mine-highlight.png')
+    @include bis('../../images/tab-mine-highlight.png')
   }
   .icon1_style2 a {
-    @include bis('../../images/youpinchain/tab-home-normol.png')
+    @include bis('../../images/tab-home-normol.png')
   }
   .icon2_style2 a {
-    @include bis('../../images/youpinchain/tab-buy-normal.png')
+    @include bis('../../images/tab-buy-normal.png')
   }
   .icon3_style2 a {
-    @include bis('../../images/youpinchain/tab-mine-normal.png')
+    @include bis('../../images/tab-mine-normal.png')
   }
   .icon1_style2, .icon2_style2, .icon3_style2 {
     span {

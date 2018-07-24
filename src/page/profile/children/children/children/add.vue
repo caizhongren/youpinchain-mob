@@ -458,7 +458,7 @@ import AjaxPicker from 'ajax-picker'
     }
     .delete-address{
         @include wh(.43rem,.43rem);
-        @include bis('../../../../../images/youpinchain/add-delete.png');
+        @include bis('../../../../../images/add-delete.png');
         margin: 0 auto;
     }
 </style>

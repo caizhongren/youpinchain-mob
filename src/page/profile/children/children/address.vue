@@ -116,7 +116,7 @@
                     position: absolute;
                     left: 0;
                     top: 0;
-                    @include bis('../../../../images/youpinchain/add-slected.png');
+                    @include bis('../../../../images/add-slected.png');
                 }
                 .address-detail{
                     position: relative;
@@ -138,7 +138,7 @@
                     position: absolute;
                     left: -.28rem;
                     top: 0rem;
-                    @include bis('../../../../images/youpinchain/gwc-icon-add.png');
+                    @include bis('../../../../images/gwc-icon-add.png');
                     @include wh(.16rem,.22rem);
                 }
     			.deletesite{
@@ -147,7 +147,7 @@
     				span{
     					display:block;
     					@include wh(.23rem,.23rem);
-                        @include bis('../../../../images/youpinchain/icon-edit-nor.png')
+                        @include bis('../../../../images/icon-edit-nor.png')
     				}
     			}
     		}

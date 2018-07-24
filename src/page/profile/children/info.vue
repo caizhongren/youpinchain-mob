@@ -49,7 +49,7 @@
             </section>
             <section class="info-router" @click="changePhone">
                 <section class="headportrait headportraitwo headportraithree">
-                        <h2><img src="../../../images/bindphone.png" style="display:inline-block;margin-right:.4rem;" alt="">手机</h2>
+                        <h2><img src="../../../images/icon-edit-nor.png" style="display:inline-block;margin-right:.4rem;" alt="">手机</h2>
                         <div class="headportrait-div">
                             <p>{{infotel}}</p>
                             <span class="headportrait-div-bottom">

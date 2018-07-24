@@ -3,13 +3,13 @@
     <div class="top_main">
       <carousel :loop="true" :autoplay="true" :minSwipeDistance="10" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="10" :paginationSize="10" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color">
         <slide>
-          <img src="../../images/youpinchain/1.png" alt="" width="100%" class="show">
+          <img src="../../images/1.png" alt="" width="100%" class="show">
         </slide>
         <slide>
-          <img src="../../images/youpinchain/1.png" alt="" width="100%" class="show">
+          <img src="../../images/1.png" alt="" width="100%" class="show">
         </slide>
         <slide>
-          <img src="../../images/youpinchain/1.png" alt="" width="100%" class="show">
+          <img src="../../images/1.png" alt="" width="100%" class="show">
         </slide>
       </carousel>
       <div class="title">
@@ -134,7 +134,7 @@
           position: relative;
           margin: 0.13rem auto;
           @include wh(.245rem, .225rem);
-          @include bis('../../images/youpinchain/tab-buy-normal.png');
+          @include bis('../../images/tab-buy-normal.png');
         }
       }
       .cart_btn {

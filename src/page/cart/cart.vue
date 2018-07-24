@@ -43,7 +43,7 @@
 				</div>
 			</div>
 			<div class="no_list" v-else>
-				<img src="../../images/youpinchain/buy-icon-n-normol.png" alt="您还没有添加任何商品哦～" width="15%">
+				<img src="../../images/buy-icon-n-normol.png" alt="您还没有添加任何商品哦～" width="15%">
 				<p>您还没有添加任何商品哦～</p>
 			</div>
 		</nav>
@@ -236,7 +236,7 @@ export default {
 			padding-bottom: .15rem;
 			.topBG {
 				@include wh(100%, .83rem);
-				@include bis('../../images/youpinchain/gwc-bg.png');
+				@include bis('../../images/gwc-bg.png');
 			}
 			.shop_info {
 				margin: -.48rem auto 0;
@@ -258,7 +258,7 @@ export default {
 						@include wh (.19rem, .19rem);
 					}
 					.choose {
-						@include bis('../../images/youpinchain/selected.png');
+						@include bis('../../images/selected.png');
 						display: inline-block;
 						@include wh (.19rem, .19rem);
 					}
@@ -398,7 +398,7 @@ export default {
 			vertical-align: text-bottom;
 		}
 		.selectAll {
-			@include bis('../../images/youpinchain/selected.png');
+			@include bis('../../images/selected.png');
 			display: inline-block;
 			@include wh (.19rem, .19rem);
 			vertical-align: text-bottom;

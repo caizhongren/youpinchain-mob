@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <router-link :to="'/product-introduction'">
-      <img src="../../images/youpinchain/1.png" alt="" width="100%" class="show">
+      <img src="../../images/1.png" alt="" width="100%" class="show">
     </router-link>
     <ul class="product_nav">
       <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" @click="toggleTab(index)">{{tab}}</li>
@@ -155,7 +155,7 @@ export default {
       text-shadow: 0px 1px 5px rgba(118, 176, 252, 0.67);
       @include wh(42%, .41rem);
       @include sc(.15rem, $fc);
-      @include bis('../../images/youpinchain/home-bg-rmsp-normol.png');
+      @include bis('../../images/home-bg-rmsp-normol.png');
     }
     .goodslistul {
       padding: .25rem .15rem;
@@ -216,7 +216,7 @@ export default {
         right: 0;
         bottom: .25rem;
         @include wh(.315rem, .315rem);
-        @include bis('../../images/youpinchain/shopping_cart.png');
+        @include bis('../../images/shopping_cart.png');
       }
     }
   }
