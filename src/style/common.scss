@@ -130,3 +130,14 @@ html,body{
   top: -.05rem;
   text-align: center;
 }
+
+
+.VueCarousel-pagination {
+  position: absolute;
+  bottom: 0;
+}
+
+body.modal-open{
+  position:fixed;
+  width:100%;
+}
