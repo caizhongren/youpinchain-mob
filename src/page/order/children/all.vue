@@ -1,6 +1,6 @@
 <template>
 	<div class="unpaid">
-		<ul class="order_list_ul" v-load-more="loaderMore">
+		<ul class="order_list_ul">
             <li class="order_list_li">
                 <section class="order_item_top">
                     <section>
@@ -27,7 +27,6 @@
                     <div class="order_item_bottom">
                     	<span class="order_text">实际支付<b style="color:#e4372e;">￥<strong style="font-size:.2rem;font-weight:bold;">88.88</strong></b></span>
                     	<div class="order_button_grey">联系客服</div>
-                    	<!-- <div class="order_button_red">再次购买</div> -->
                         <compute-time></compute-time>
                     </div>
                 </section>
@@ -63,71 +62,20 @@
         },
         props:['sendData'],
         mounted(){
-            this.initData();
         },
         created () {
-            this.$emit(['findOrder',{'activeTab':2}])
+            this.showLoading = false
         },
         mixins: [loadMore],
         components: {
-            headTop,
-            footGuide,
             loading,
             computeTime,
         },
         computed: {
-            ...mapState([
-                'userInfo', 'geohash'
-            ]),
         },
         methods: {
-             ...mapMutations([
-               'SAVE_ORDER'
-            ]),
-            //初始化获取信息
-            async initData(){
-                if (this.userInfo && this.userInfo.user_id) {
-                    let res = await getOrderList(this.userInfo.user_id, this.offset);
-                    this.orderList = [...res];
-                    this.hideLoading();
-                }else{
-                    this.hideLoading();
-                }
-            },
-            //加载更多
-            async loaderMore(){
-                if (this.preventRepeat) {
-                    return
-                }
-                this.preventRepeat = true;
-                this.showLoading = true;
-                this.offset += 10;
-                //获取信息
-                let res = await getOrderList(this.userInfo.user_id, this.offset);
-                this.orderList = [...this.orderList, ...res];
-                this.hideLoading();
-                if (res.length < 10) {
-                    return
-                }
-                this.preventRepeat = false;
-            },
-            //显示详情页
-            showDetail(item){
-                this.SAVE_ORDER(item);
-                this.preventRepeat = false;
-                this.$router.push('/order/orderDetail');
-            },
-            //生产环境与发布环境隐藏loading方式不同
-            hideLoading(){
-                this.showLoading = false;
-            },
         },
         watch: {
-            userInfo: function (value) {
-                if (value && value.user_id && !this.orderList) {
-                    this.initData();
-                }
-            }
         }
     }
 </script>

@@ -149,6 +149,7 @@ export default [{
                     children:[{
                         path:'add',
                         component:add,
+                        name: 'editAddress',
                         children:[{
                             path:'addDetail',
                             component:addDetail

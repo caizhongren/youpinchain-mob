@@ -218,7 +218,6 @@
         bottom: 0;
         background-color: #f2f2f2;
         z-index: 202;
-        padding-top: .39rem;
         p, span{
             font-family: Helvetica Neue,Tahoma,Arial;
         }

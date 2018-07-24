@@ -1,6 +1,5 @@
  <template>
     <div class="order_page">
-        <!-- <head-top head-title="订单列表" go-back='true'></head-top> -->
         <ul class="nav_tab">
             <li v-for="(item,index) in tabList" :class="{active: activeTab == index }" @click="findOrder(index)">{{item.tab}}</li>
         </ul> 
@@ -31,7 +30,7 @@
                 orderList: null, //订单列表
                 offset: 0, 
                 preventRepeat: false,  //防止重复获取
-                showLoading: true, //显示加载动画
+                showLoading: false, //显示加载动画
                 imgBaseUrl,
                 activeTab: 0,
                 tabList: [
@@ -55,85 +54,37 @@
                     tab: '已完成',
                     name: 'completed'
                   }
-                ]
+                ],
+                routerPath: ''
+            }
+        },
+        created () {
+            this.routerPath = window.location.href.toString().split('order/')[1]
+            for(var i = 0; i <= this.tabList.length - 1; i++){
+                if(this.tabList[i].name === this.routerPath){
+                    this.activeTab = i;
+                }
             }
         },
         mounted(){
-            this.initData();
         },
         mixins: [loadMore],
         components: {
-            headTop,
-            footGuide,
             loading,
             computeTime,
         },
         computed: {
-            ...mapState([
-                'userInfo', 'geohash'
-            ]),
         },
         methods: {
-             ...mapMutations([
-               'SAVE_ORDER'
-            ]),
-            //初始化获取信息
-            async initData(){
-                if (this.userInfo && this.userInfo.user_id) {
-                    let res = await getOrderList(this.userInfo.user_id, this.offset);
-                    this.orderList = [...res];
-                    this.hideLoading();
-                }else{
-                    this.hideLoading();
-                }
-            },
-            //加载更多
-            async loaderMore(){
-                if (this.preventRepeat) {
-                    return
-                }
-                this.preventRepeat = true;
-                this.showLoading = true;
-                this.offset += 10;
-                //获取信息
-                let res = await getOrderList(this.userInfo.user_id, this.offset);
-                this.orderList = [...this.orderList, ...res];
-                this.hideLoading();
-                if (res.length < 10) {
-                    return
-                }
-                this.preventRepeat = false;
-            },
-            //显示详情页
-            showDetail(item){
-                this.SAVE_ORDER(item);
-                this.preventRepeat = false;
-                this.$router.push('/order/orderDetail');
-            },
-            //生产环境与发布环境隐藏loading方式不同
-            hideLoading(){
-                this.showLoading = false;
-            },
             findOrder (index) {
-                console.log(index)
                 if (this.activeTab !== index) {
                   this.activeTab = index
-                  // console.log(this.tabList[index].name)
                   this.$router.replace({name: this.tabList[index].name})
                   window.scrollTo(0, 0)
                 }
-            },
-            updateOrder (data) {
-                console.log(data)
-                this.activeTab = data.activeTab
             }
         },
         watch: {
-            userInfo: function (value) {
-                if (value && value.user_id && !this.orderList) {
-                    this.initData();
-                }
-            }
         }
     }
 </script>

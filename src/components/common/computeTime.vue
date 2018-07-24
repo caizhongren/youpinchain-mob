@@ -1,6 +1,6 @@
  <template>
     <div class="page">
-        <span class="rem_time" @click="gotoPay">
+        <span class="rem_time">
            {{remaining}}
         </span>
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>  
@@ -19,33 +19,13 @@
             }
         },
         mounted(){
-            this.countNum -= this.numTime;
-            this.remainingTime();
         },
         props: ['time'],
         components: {
             alertTip,
         },
         methods: {
-            closeTip(){
-                this.$emit('closeTip')
-            },
-            //计算时间
-            remainingTime(){
-                clearInterval(this.timer);
-                this.timer = setInterval(() => {
-                    this.countNum --;
-                    if (this.countNum == 0) {
-                        clearInterval(this.timer);
-                        this.showAlert = true;
-                        this.alertText = '支付超时';
-                    }
-                }, 1000);
-            },
-            gotoPay(){
-                this.showAlert = true;
-                this.alertText = '暂不开放支付接口';
-            }
+            
         },
         computed: {
             //转换时间成分秒
@@ -69,7 +49,6 @@
                 }
             }
         },
-
     }
 </script>
 

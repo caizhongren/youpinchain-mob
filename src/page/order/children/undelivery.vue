@@ -1,6 +1,6 @@
 <template>
-	<div class="unpaid">
-		<ul class="order_list_ul" v-load-more="loaderMore">
+    <div class="unpaid">
+        <ul class="order_list_ul">
             <li class="order_list_li">
                 <section class="order_item_top">
                     <section>
@@ -11,23 +11,22 @@
                             </p>
                         </header>
                         <router-link to="/order/orderDetail" tag="div">
-	                        <section class="goods_img">
-	                        	<div class="goods_box">
-	                        		<img class="restaurant_image">
-			                        <img class="restaurant_image">
-			                        <img class="restaurant_image">
-	                        	</div>
-		                        <p>共3件</p>
-		                        <svg fill="#999" class="arrow_right" style="height:.64rem;width:.14rem;">
-	                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-	                            </svg>
-	                        </section>
+                            <section class="goods_img">
+                                <div class="goods_box">
+                                    <img class="restaurant_image">
+                                    <img class="restaurant_image">
+                                    <img class="restaurant_image">
+                                </div>
+                                <p>共3件</p>
+                                <svg fill="#999" class="arrow_right" style="height:.64rem;width:.14rem;">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                                </svg>
+                            </section>
                         </router-link>
                     </section>
                     <div class="order_item_bottom">
-                    	<span class="order_text">实际支付<b style="color:#e4372e;">￥<strong style="font-size:.2rem;font-weight:bold;">88.88</strong></b></span>
-                    	<div class="order_button_grey">联系客服</div>
-                    	<!-- <div class="order_button_red">再次购买</div> -->
+                        <span class="order_text">实际支付<b style="color:#e4372e;">￥<strong style="font-size:.2rem;font-weight:bold;">88.88</strong></b></span>
+                        <div class="order_button_grey">联系客服</div>
                         <compute-time></compute-time>
                     </div>
                 </section>
@@ -36,7 +35,7 @@
         <transition name="loading">
             <loading v-show="showLoading"></loading>
         </transition>
-	</div>
+    </div>
 </template>
 
 <script>
@@ -63,69 +62,20 @@
         },
         props:['sendData'],
         mounted(){
-            this.initData();
-            this.$emit(['findOrder',{'activeTab':2}])
+        },
+        created () {
+            this.showLoading = false
         },
         mixins: [loadMore],
         components: {
-            headTop,
-            footGuide,
             loading,
             computeTime,
         },
         computed: {
-            ...mapState([
-                'userInfo', 'geohash'
-            ]),
         },
         methods: {
-             ...mapMutations([
-               'SAVE_ORDER'
-            ]),
-            //初始化获取信息
-            async initData(){
-                if (this.userInfo && this.userInfo.user_id) {
-                    let res = await getOrderList(this.userInfo.user_id, this.offset);
-                    this.orderList = [...res];
-                    this.hideLoading();
-                }else{
-                    this.hideLoading();
-                }
-            },
-            //加载更多
-            async loaderMore(){
-                if (this.preventRepeat) {
-                    return
-                }
-                this.preventRepeat = true;
-                this.showLoading = true;
-                this.offset += 10;
-                //获取信息
-                let res = await getOrderList(this.userInfo.user_id, this.offset);
-                this.orderList = [...this.orderList, ...res];
-                this.hideLoading();
-                if (res.length < 10) {
-                    return
-                }
-                this.preventRepeat = false;
-            },
-            //显示详情页
-            showDetail(item){
-                this.SAVE_ORDER(item);
-                this.preventRepeat = false;
-                this.$router.push('/order/orderDetail');
-            },
-            //生产环境与发布环境隐藏loading方式不同
-            hideLoading(){
-                this.showLoading = false;
-            },
         },
         watch: {
-            userInfo: function (value) {
-                if (value && value.user_id && !this.orderList) {
-                    this.initData();
-                }
-            }
         }
     }
 </script>
@@ -161,16 +111,16 @@
                     }
                 }
                 .goods_img{
-                	display: flex;
-                	padding: .1rem 0;
-                	border-bottom: 0.005rem solid #f5f5f5;
-                	.goods_box{
-                		width: 3rem;
-                	}
-                	p{
-                		line-height: .64rem;
-                		@include sc(.15rem,#666666);
-                	}
+                    display: flex;
+                    padding: .1rem 0;
+                    border-bottom: 0.005rem solid #f5f5f5;
+                    .goods_box{
+                        width: 3rem;
+                    }
+                    p{
+                        line-height: .64rem;
+                        @include sc(.15rem,#666666);
+                    }
                 }
                 .order_item_bottom{
                     line-height: .32rem;
@@ -178,29 +128,29 @@
                     display: flex;
                     float: right;
                     .order_button_grey{
-                    	display: inline-block;
-					    height: .32rem;
-					    border-radius: .16rem;
-					    background: #fff;
-					    border: 1px solid #999999;
-					    padding: 0 .1rem;
-					    font-size: .15rem;
-					    color: #666666;
-					    margin: 0 0rem 0 .2rem;
+                        display: inline-block;
+                        height: .32rem;
+                        border-radius: .16rem;
+                        background: #fff;
+                        border: 1px solid #999999;
+                        padding: 0 .1rem;
+                        font-size: .15rem;
+                        color: #666666;
+                        margin: 0 0rem 0 .2rem;
                     }
                     .order_button_red{
-                    	display: inline-block;
-					    height: .32rem;
-					    border-radius: .16rem;
-					    background: #e4372e;
-					    padding: 0 .1rem;
-					    font-size: .15rem;
-					    color: #fff;
-					    margin: 0 0rem 0 .2rem;
+                        display: inline-block;
+                        height: .32rem;
+                        border-radius: .16rem;
+                        background: #e4372e;
+                        padding: 0 .1rem;
+                        font-size: .15rem;
+                        color: #fff;
+                        margin: 0 0rem 0 .2rem;
                     }
                     .order_text{
-						text-align: right;
-						@include sc(.15rem,#666666);
+                        text-align: right;
+                        @include sc(.15rem,#666666);
                     }
                 }
             }

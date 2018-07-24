@@ -1,32 +1,19 @@
  <template>
   	<div class="rating_page">
-        <head-top head-title="编辑地址" go-back='true'>
-        	<span slot="edit" class="edit" @click="editThing">{{editText}}</span>
-        </head-top>
         <section class="address">
         	<ul class="addresslist">
-        		<li>
-                    <span class="default-address"></span>
+        		<li v-for='(item,index) in adressList' @click="selectDefault(index)">
+                    <span class="default-address" v-show="selectedAddress === index"></span>
         			<div class="address-detail">
-        				<p>北京市海淀区中国科学院国家空间科学中心九章大厦B座</p>
-        				<p><span>张三</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>15210288888</span></p>
+        				<p>{{item.position}}</p>
+        				<p><span>{{item.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{item.phone}}</span></p>
         			</div>
         			<div class="deletesite">
-        				<span @click="deleteSite(index, item)"></span>
+        				<span @click="edit(index, item.number)"></span>
         			</div>
         		</li>
-                <li>
-                    <span class="default-address" v-if="false"></span>
-                    <div class="address-detail">
-                        <p>北京市海淀区中国科学院国家空间科学中心九章大厦B座</p>
-                        <p><span>张三</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>15210288888</span></p>
-                    </div>
-                    <div class="deletesite">
-                        <span @click="deleteSite(index, item)"></span>
-                    </div>
-                </li>
         	</ul>
-            <!-- <div class="no_address">您还没有添加过地址哦～</div> -->
+            <div class="no_address" v-show="adressList.length === 0">您还没有添加过地址哦～</div>
 			<router-link to='/profile/info/address/add'>
 				<div class="addsite">
 					+ 添加新地址
@@ -48,62 +35,44 @@
     export default {
       data(){
             return{
-    			deletesite:false, //是否编辑状态
-    			editText:'编辑',
-    			adressList:[], //地址列表
+                selectedAddress: 0,
+    			adressList:[{
+                    position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
+                    name: '张三',
+                    phone: '15210288888',
+                    number: 0
+                },{
+                    position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
+                    name: '张三',
+                    phone: '15210288888',
+                    number: 1
+                },{
+                    position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
+                    name: '张三',
+                    phone: '15210288888',
+                    number: 2
+                }] //地址列表
             }
         },
         mounted(){
-            this.initData();
         },
         mixins: [getImgPath],
         mounted(){
-        	
         },
         components: {
-            headTop,
         },
         computed:{
-             ...mapState([
-                'userInfo','removeAddress'
-            ]),
-             
         },
         props:[],
         methods: {
-        	...mapActions([
-                'saveAddress'
-            ]),
-            //初始化信息
-            initData(){
-                if (this.userInfo && this.userInfo.user_id) {
-                   this.saveAddress();
-                }
+            edit (index,number) {
+                this.$router.push({name: 'editAddress', query:{index: index, number: number}})
             },
-            //编辑
-            editThing(){
-            	if(this.editText == '编辑'){
-            		this.editText='完成';
-            		this.deletesite=true;
-            	}else{
-            		this.editText='编辑';
-            		this.deletesite=false;
-            	}
-            },
-            //删除地址
-            async deleteSite(index, item){
-                if (this.userInfo && this.userInfo.user_id) {
-                    await deleteAddress(this.userInfo.user_id, item.id);
-            	    this.removeAddress.splice(index, 1);
-                }
+            selectDefault (number) {
+                this.selectedAddress = number;
             }
         },
         watch: {
-            userInfo: function (value) {
-                if (value && value.user_id) {
-                    this.initData();
-                }
-            }
         }
     }
 </script>
@@ -119,7 +88,6 @@
         bottom: 0;
         background-color: #f2f2f2;
         z-index: 202;
-        padding-top: .39rem;
         @include wh(100%,100);
         p, span{
             font-family: Helvetica Neue,Tahoma,Arial;

@@ -24,15 +24,15 @@
                     </span>
                 </router-link>
                 <ul class="clear">
-                    <router-link to="/balance" tag="li" class="info-data-link">
+                    <router-link to="/order/unpaid" tag="li" class="info-data-link">
                         <span class="info-data-top"></span>
                         <span class="info-data-bottom">待支付</span>
                     </router-link>
-                    <router-link to="/benefit" tag="li" class="info-data-link">
+                    <router-link to="/order/undelivery" tag="li" class="info-data-link">
                        <span class="info-data-top"><b data-v-4675cad9="" class="red-points">1</b></span>
                        <span class="info-data-bottom">待发货</span>
                     </router-link>
-                    <router-link to="/points" tag="li" class="info-data-link">
+                    <router-link to="/order/delivered" tag="li" class="info-data-link">
                         <span class="info-data-top"></span>
                         <span class="info-data-bottom">已发货</span>
                     </router-link>
