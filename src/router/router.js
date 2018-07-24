@@ -1,5 +1,9 @@
 import App from '../App'
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
+const growingEnvironment = r => require.ensure([], () => r(require('../page/home/growingEnvironment')), 'growingEnvironment')
+const feedingSituation = r => require.ensure([], () => r(require('../page/home/feedingSituation')), 'feedingSituation')
+const healthIndicators = r => require.ensure([], () => r(require('../page/home/healthIndicators')), 'healthIndicators')
+const productIntroduction = r => require.ensure([], () => r(require('../page/home/productIntroduction')), 'productIntroduction')
 const goods = r => require.ensure([], () => r(require('../page/goods/goods')), 'goods')
 const cart = r => require.ensure([], () => r(require('../page/cart/cart')), 'cart')
 const search = r => require.ensure([], () => r(require('../page/search/search')), 'search')
@@ -65,6 +69,30 @@ export default [{
         {
             path: '/home',
             component: home
+        },
+        //生产环境
+        {
+            path: '/growing-environment',
+            component: growingEnvironment,
+            name: 'growingEnvironment'
+        },
+        //饲养情况
+        {
+            path: '/feeding-situation',
+            component: feedingSituation,
+            name: 'feedingSituation'
+        },
+        //健康指标
+        {
+            path: '/health-indicators',
+            component: healthIndicators,
+            name: 'healthIndicators'
+        },
+        //商品介绍
+        {
+            path: '/product-introduction',
+            component: productIntroduction,
+            name: 'productIntroduction'
         },
         //商品详情
         {

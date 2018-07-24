@@ -12,6 +12,10 @@ body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, l
     font-size: .15rem;
     -webkit-tap-highlight-color:transparent;
     -webkit-font-smoothing: antialiased;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
     &:hover{
         outline: none;
     }
@@ -129,4 +133,15 @@ html,body{
   right: -.15rem;
   top: -.05rem;
   text-align: center;
+}
+
+
+.VueCarousel-pagination {
+  position: absolute;
+  bottom: 0;
+}
+
+body.modal-open{
+  position:fixed;
+  width:100%;
 }

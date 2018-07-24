@@ -1,7 +1,17 @@
 <template>
   <div class="goods">
     <div class="top_main">
-      <img src="../../images/youpinchain/1.png" alt="" width="100%" class="show">
+      <carousel :loop="true" :autoplay="true" :minSwipeDistance="10" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="10" :paginationSize="10" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color">
+        <slide>
+          <img src="../../images/youpinchain/1.png" alt="" width="100%" class="show">
+        </slide>
+        <slide>
+          <img src="../../images/youpinchain/1.png" alt="" width="100%" class="show">
+        </slide>
+        <slide>
+          <img src="../../images/youpinchain/1.png" alt="" width="100%" class="show">
+        </slide>
+      </carousel>
       <div class="title">
         <p class="price"><span>¥</span>{{goods.price}} <s>¥{{goods.marketPrice}}</s></p>
         <p class="name">{{goods.name}}</p>
@@ -22,6 +32,7 @@
 </template>
 
 <script>
+  import { Carousel, Slide } from 'vue-carousel';
   export default {
     data(){
       return{
@@ -31,10 +42,14 @@
           description: '和黄瓜丝凉拌好吃极了～',
           price: 23.99,
           marketPrice: 33.99,
-          Desc: '<div>商品介绍内容</div>'
+          Desc: '<div>商品介绍内容 <br>商品介绍内容 </br>商品介绍内容</div>'
         },
         cart_num: 8,
         number: [1, 2, 3, 4, 5],
+        pagination: {
+          activeColor: '#e4372e',
+          color: '#ddd'
+        }
       }
     },
     mounted(){
@@ -42,6 +57,8 @@
       this.initData();
     },
     components:{
+      Carousel,
+      Slide
     },
     computed:{
     },
@@ -50,6 +67,12 @@
       },
       addCartList (goods) {
         this.cart_num += 1;
+      },
+      onSlideChangeStart (currentPage) {
+        console.log('onSlideChangeStart', currentPage);
+      },
+      onSlideChangeEnd (currentPage) {
+        console.log('onSlideChangeEnd', currentPage);
       }
     }
   }
@@ -58,6 +81,7 @@
 <style lang="scss" scoped>
   @import 'src/style/mixin';
   .goods {
+    padding-bottom: .5rem;
     .title {
       background-color: $fc;
       padding: 0.02rem .15rem .1rem;
