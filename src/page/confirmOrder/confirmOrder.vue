@@ -1,569 +1,536 @@
 <template>
-    <div class="confirmOrderContainer">
-        <section v-if="!showLoading">
-            <head-top head-title="确认订单" goBack="true" signin-up='confirmOrder'></head-top>
-            <router-link :to='{path: "/confirmOrder/chooseAddress", query: {id: checkoutData.cart.id, sig: checkoutData.sig}}' class="address_container">
-                <div class="address_empty_left">
-                    <svg class="location_icon">
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#location"></use>
-                    </svg>
-                    <div class="add_address" v-if="!choosedAddress">请添加一个收获地址</div>
-                    <div v-else class="address_detail_container">
-                        <header>
-                            <span>{{choosedAddress.name}}</span>
-                            <span>{{choosedAddress.sex == 1? '先生':'女士'}}</span>
-                            <span>{{choosedAddress.phone}}</span>
-                        </header>
-                        <div class="address_detail">
-                            <span v-if="choosedAddress.tag" :style="{backgroundColor: iconColor(choosedAddress.tag)}">{{choosedAddress.tag}}</span>
-                            <p>{{choosedAddress.address_detail}}</p>
-                        </div>
-                    </div>
-                </div>
-                <svg class="address_empty_right">
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-                </svg>
-            </router-link>
-            <section class="delivery_model container_style">
-                <p class="deliver_text">送达时间</p>
-                <section class="deliver_time">
-                    <p>尽快送达 | 预计 {{checkoutData.delivery_reach_time}}</p>
-                    <p v-if="checkoutData.cart.is_deliver_by_fengniao">蜂鸟专送</p>
-                </section>
-            </section>
-            <section class="pay_way container_style">
-                <header class="header_style">
-                    <span>支付方式</span>
-                    <div class="more_type" @click="showPayWayFun">
-                        <span>在线支付</span>
-                        <svg class="address_empty_right">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-                        </svg>
-                    </div>
-                </header>
-                <section class="hongbo">
-                    <span>红包</span>
-                    <span>暂时只在饿了么 APP 中支持</span>
-                </section>
-            </section>
-            <section class="food_list">
-                <header v-if="checkoutData.cart.restaurant_info">
-                    <img :src="imgBaseUrl + checkoutData.cart.restaurant_info.image_path">
-                    <span>{{checkoutData.cart.restaurant_info.name}}</span>
-                </header>
-                <ul class="food_list_ul" v-if="checkoutData.cart.groups">
-                    <li v-for="item in checkoutData.cart.groups[0]" :key="item.id" class="food_item_style">
-                        <p class="food_name ellipsis">{{item.name}}</p>
-                        <div class="num_price">
-                            <span>x {{item.quantity}}</span>
-                            <span>¥{{item.price}}</span>
-                        </div>
-                    </li>
-                </ul>
-                <div class="food_item_style" v-if="checkoutData.cart.extra">
-                    <p class="food_name ellipsis">{{checkoutData.cart.extra[0].name}}</p>
-                    <div class="num_price">
-                        <span></span>
-                        <span>¥ {{checkoutData.cart.extra[0].price}}</span>
-                    </div>
-                </div>
-                <div class="food_item_style">
-                    <p class="food_name ellipsis">配送费</p>
-                    <div class="num_price">
-                        <span></span>
-                        <span>¥ {{checkoutData.cart.deliver_amount || 0}}</span>
-                    </div>
-                </div>
-                <div class="food_item_style total_price">
-                    <p class="food_name ellipsis">订单 ¥{{checkoutData.cart.total}}</p>
-                    <div class="num_price">
-                        <span>待支付 ¥{{checkoutData.cart.total}}</span>
-                    </div>
-                </div>
-            </section>
-            <section class="pay_way container_style">
-                <router-link :to='{path: "/confirmOrder/remark", query: {id: checkoutData.cart.id, sig: checkoutData.sig}}' class="header_style">
-                    <span>订单备注</span>
-                    <div class="more_type">
-                        <span class="ellipsis">{{remarkText||inputText? remarklist: '口味、偏好等'}}</span>
-                        <svg class="address_empty_right">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-                        </svg>
-                    </div>
-                </router-link>
-                <router-link :to="checkoutData.invoice.is_available? '/confirmOrder/invoice': ''" class="hongbo" :class="{support_is_available: checkoutData.invoice.is_available}">
-                    <span>发票抬头</span>
-                    <span>
-                        {{checkoutData.invoice.status_text}}
-                        <svg class="address_empty_right">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-                        </svg>
-                    </span>
-                </router-link>
-            </section>
-            <section class="confrim_order">
-                <p>待支付 ¥{{checkoutData.cart.total}}</p>
-                <p @click="confrimOrder">确认下单</p>
-            </section>
-            <transition name="fade">
-                <div class="cover" v-if="showPayWay" @click="showPayWayFun"></div>
-            </transition>
-            <transition name="slid_up">
-                <div class="choose_type_Container" v-if="showPayWay">
-                    <header>支付方式</header>
-                    <ul>
-                        <li v-for="item in checkoutData.payments" :key="item.id" :class="{choose: payWayId == item.id}">
-                            <span>{{item.name}}<span v-if="!item.is_online_payment">{{item.description}}</span></span>
-                            <svg class="address_empty_right" @click="choosePayWay(item.is_online_payment, item.id)">
-                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
-                            </svg>
-                        </li>
-                    </ul>
-                </div>
-            </transition>
-        </section>
-        <loading v-if="showLoading"></loading>
-        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
-        <transition name="router-slid" mode="out-in">
-            <router-view></router-view>
-        </transition>
-    </div>
+  <div class="confirmOrderContainer">
+    <nav class="shop_list_container">
+			<div class="swiper-container" v-if="shopList.length">
+				<div class="topBG" v-if="!no_address"></div>
+        <div class="address">
+          <div class="no_address" v-if="no_address">
+						<section class="adddetail">
+							<form action="" v-on:submit.prevent>
+								<section class="ui-padding-block">
+									<div class="input-new">
+										<span>姓名</span>
+										<input type="text" placeholder="请填写你的姓名" :class="{verifies:verify}" v-model="message" @input="inputThing">
+									</div>
+									<div class="add-detail">
+										<div class="input-new">
+											<span>联系电话</span>
+											<input type="text" placeholder="请填写收货人手机号" v-model="addAddress" />
+										</div>
+									</div>
+									<div class="input-new">
+										<span>所在地区</span>
+										<input type="text" id="address-input" readonly="readonly" style="width:2.5rem;" placeholder="请选择" :class="{verifies:verifythree}" @input="inputThingthree" v-model="mesthree"/>
+										<svg fill="#bbb" style="width: 0.18rem;margin-left: .1rem;">
+												<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+										</svg>
+									</div>
+									<div class="input-new">
+										<span>地址</span>
+										<textarea placeholder="请填写详细地址" id="adinfo" value="" rows="2"></textarea>
+									</div>
+								</section>
+								<div id="container"></div>
+							</form>
+						</section>
+						<section class="addbutton">
+							<button :class="{butopacity:butpart}" @click.prevent="submitThing">保存</button>
+						</section>
+          </div>
+          <router-link :to="'/profile/info/address'" class="address_info" v-else>
+            <div class="address-detail">
+              <p>{{address_info}}</p>
+              <p><span>{{user_name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{user_mobile}}</span></p>
+            </div>
+            <div class="deletesite">
+              <span></span>
+            </div>
+          </router-link>
+        </div>
+				<div class="shop_info">
+					<ul class="goods">
+						<li v-for="item in shopList" :key="item.id">
+							<img src="" alt="" class="img">
+							<div class="goods_info">
+								<p class="name">{{item.name}}</p>
+								<p class="price"><span>¥</span>{{item.price}}</p>
+							</div>
+							<div class="cart_btns">
+								<span class="num">x{{item.num}}</span>
+							</div>
+						</li>
+            <div class="load_more">共{{shopList.length}}件 <img src="../../images/youpinchain/path-2.png" width="4%"> </div>
+					</ul>
+					<ul class="payment_info">
+						<li>
+							<p>商品总价</p>
+							<p>¥{{goodsPrice}}</p>
+						</li>
+						<li>
+							<p>优惠价格</p>
+							<p class="coupon">- ¥0.00</p>
+						</li>
+						<li>
+							<p>运费</p>
+							<p>¥{{fare}}</p>
+						</li>
+						<li>
+							<p>包装费</p>
+							<p>¥{{packingFee}}</p>
+						</li>
+						<li>
+							<p>包装费减免</p>
+							<p>¥{{packingFeeReduction}}</p>
+						</li>
+					</ul>
+					<div class="right totalPrice">
+						实际支付 <p><span>¥</span>{{totalPrice}}</p>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<ul class="settlement">
+			<li>去付款</li>
+			<li>付款 <span class="red">¥{{totalPrice}}</span></li>
+		</ul>
+  </div>
 </template>
 
 <script>
-    import {mapState, mapMutations} from 'vuex'
-    import headTop from 'src/components/header/head'
-    import alertTip from 'src/components/common/alertTip'
-    import loading from 'src/components/common/loading'
-    import {checkout, getAddress, placeOrders, getAddressList} from 'src/service/getData'
-    import {imgBaseUrl} from 'src/config/env'
-
-    export default {
-        data(){
-            return {
-                geohash: '', //geohash位置信息
-                shopId: null, //商店id值
-                showLoading: true, //显示加载动画
-                checkoutData: null,//数据返回值
-                shopCart: null,//购物车数据
-                imgBaseUrl, //图片域名
-                showPayWay: false,//显示付款方式
-                payWayId: 1, //付款方式
-                showAlert: false, //弹出框
-                alertText: null, //弹出框内容
-            }
-        },
-        created(){
-            //获取上个页面传递过来的geohash值
-            this.geohash = this.$route.query.geohash;
-            //获取上个页面传递过来的shopid值
-            this.shopId = this.$route.query.shopId;
-            this.INIT_BUYCART();
-            this.SAVE_SHOPID(this.shopId);
-            //获取当前商铺购物车信息
-            this.shopCart = this.cartList[this.shopId];
-        },
-        mounted(){
-            if (this.geohash) {
-                this.initData();
-                this.SAVE_GEOHASH(this.geohash);
-            }
-            if (!(this.userInfo && this.userInfo.user_id)) {
-                // this.showAlert = true;
-                // this.alertText = '您还没有登录';
-            }
-        },
-        components: {
-            headTop,
-            alertTip,
-            loading,
-        },
-        computed: {
-            ...mapState([
-                'cartList', 'remarkText', 'inputText', 'invoice', 'choosedAddress', 'userInfo'
-            ]),
-            //备注页返回的信息进行处理
-            remarklist: function (){
-                let str = new String;
-                if (this.remarkText) {
-                    Object.values(this.remarkText).forEach(item => {
-                        str += item[1] + '，';
-                    })
-                }
-                //是否有自定义备注，分开处理
-                if (this.inputText) {
-                    return str + this.inputText;
-                }else{
-                    return str.substr(0, str.lastIndexOf('，')) ;
-                }
-            },
-        },
-        methods: {
-            ...mapMutations([
-                'INIT_BUYCART', 'SAVE_GEOHASH', 'CHOOSE_ADDRESS', 'NEED_VALIDATION', 'SAVE_CART_ID_SIG', 'SAVE_ORDER_PARAM', 'ORDER_SUCCESS', 'SAVE_SHOPID'
-            ]),
-            //初始化数据
-            async initData(){
-                let newArr = new Array;
-                Object.values(this.shopCart).forEach(categoryItem => {
-                    Object.values(categoryItem).forEach(itemValue=> {
-                        Object.values(itemValue).forEach(item => {
-                            newArr.push({
-                                attrs: [],
-                                extra: {},
-                                id: item.id,
-                                name: item.name,
-                                packing_fee: item.packing_fee,
-                                price: item.price,
-                                quantity: item.num,
-                                sku_id: item.sku_id,
-                                specs: [item.specs],
-                                stock: item.stock,
-                            })
-                        })
-                    })
-                })
-                //检验订单是否满足条件
-                this.checkoutData = await checkout(this.geohash, [newArr], this.shopId);
-                this.SAVE_CART_ID_SIG({cart_id: this.checkoutData.cart.id, sig:  this.checkoutData.sig})
-                this.initAddress();
-                this.showLoading = false;
-            },
-            //获取地址信息，第一个地址为默认选择地址
-            async initAddress(){
-                if (this.userInfo && this.userInfo.user_id) {
-                    const addressRes = await getAddressList(this.userInfo.user_id);
-                    if (addressRes instanceof Array && addressRes.length) {
-                        this.CHOOSE_ADDRESS({address: addressRes[0], index: 0});
-                    }
-                }
-            },
-            //显示付款方式
-            showPayWayFun(){
-                this.showPayWay = !this.showPayWay;
-            },
-            //选择付款方式
-            choosePayWay(is_online_payment, id){
-                if (is_online_payment) {
-                    this.showPayWay = !this.showPayWay;
-                    this.payWayId = id;
-                }
-            },
-            //地址备注颜色
-            iconColor(name){
-                switch(name){
-                    case '公司': return '#4cd964';
-                    case '学校': return '#3190e8';
-                }
-            },
-            //确认订单
-            async confrimOrder(){
-                //用户未登录时弹出提示框
-                if (!(this.userInfo && this.userInfo.user_id)) {
-                    this.showAlert = true;
-                    this.alertText = '请登录';
-                    return
-                    //未选择地址则提示
-                }else if(!this.choosedAddress){
-                    this.showAlert = true;
-                    this.alertText = '请添加一个收获地址';
-                    return
-                }
-                //保存订单
-                this.SAVE_ORDER_PARAM({
-                    user_id: this.userInfo.user_id,
-                    cart_id: this.checkoutData.cart.id,
-                    address_id: this.choosedAddress.id,
-                    description: this.remarklist,
-                    entities: this.checkoutData.cart.groups,
-                    geohash: this.geohash,
-                    sig: this.checkoutData.sig,
-                });
-                //发送订单信息
-                let orderRes = await placeOrders(this.userInfo.user_id, this.checkoutData.cart.id, this.choosedAddress.id, this.remarklist, this.checkoutData.cart.groups, this.geohash, this.checkoutData.sig);
-                //第一次下单的手机号需要进行验证，否则直接下单成功
-                if (orderRes.need_validation) {
-                    this.NEED_VALIDATION(orderRes);
-                    this.$router.push('/confirmOrder/userValidation');
-                }else{
-                    this.ORDER_SUCCESS(orderRes);
-                    this.$router.push('/confirmOrder/payment');
-                }
-            },
-        },
-        watch: {
-            userInfo: function (value) {
-                if (value && value.user_id) {
-                    this.initAddress();
-                }
-            },
-        }
+	import AjaxPicker from 'ajax-picker'
+  export default {
+    data () {
+      return {
+        shopCart: null, // 购物车数据
+        totalPrice: 188,
+        goodsPrice: 88,
+        packingFee: 8.8,
+        packingFeeReduction: 8.8,
+        fare: 8.8,
+        shopList: [
+          {	
+            id: 0,
+            name: '猪耳朵500g*1份',
+            price: 23.99,
+            num: 1,
+            choose: false
+          },
+          {	
+            id: 1,
+            name: '猪耳朵500g*2份',
+            price: 23.99,
+            num: 2,
+            choose: true
+          }
+        ],
+				no_address: true,
+				address_info: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
+				user_name: '张三',
+				user_mobile: '15210288888',
+				message: '', // 信息
+				verify: false, // 姓名
+    		mesthree: '', // 送餐地址
+    		verifythree: false,	// 地址
+				butpart: false,	//  新增地址按钮的透明度
+				addAddress: ''
+      }
+    },
+    created () {
+    },
+    mounted () {
+			if (this.no_address) {
+				var picker = new AjaxPicker({
+					title: '配送至',
+					tipText: ['省份', '城市', '区/县'],
+					input: 'address-input',
+					container: 'container',
+					renderArr: [
+						function () {
+							picker.render(this.province)
+						} ,
+						function () {
+							console.log('用户在列表1选择了 ' + picker.result1)
+							picker.render(this.city)
+						},
+						function () {
+							console.log('用户在列表2选择了 ' + picker.result2)
+							picker.render(this.district)
+						}
+					],
+					success: function (arr) {
+						console.log(arr)
+						var address = ''
+						for (var i = 0; i < arr.length; i++) {
+							address +=  ' ' + arr[i].value
+						}
+						document.getElementById('address-input').value = address.substring(1)
+					}
+				})
+			}
+    },
+    components: {
+    },
+    computed: {
+    },
+    methods: {
+      //确认订单
+      async confrimOrder(){
+          //用户未登录时弹出提示框
+          if (!(this.userInfo && this.userInfo.user_id)) {
+              this.showAlert = true;
+              this.alertText = '请登录';
+              return
+              //未选择地址则提示
+          }else if(!this.choosedAddress){
+              this.showAlert = true;
+              this.alertText = '请添加一个收获地址';
+              return
+          }
+          //保存订单
+          this.SAVE_ORDER_PARAM({
+              user_id: this.userInfo.user_id,
+              cart_id: this.checkoutData.cart.id,
+              address_id: this.choosedAddress.id,
+              description: this.remarklist,
+              entities: this.checkoutData.cart.groups,
+              geohash: this.geohash,
+              sig: this.checkoutData.sig,
+          });
+          //发送订单信息
+          let orderRes = await placeOrders(this.userInfo.user_id, this.checkoutData.cart.id, this.choosedAddress.id, this.remarklist, this.checkoutData.cart.groups, this.geohash, this.checkoutData.sig);
+          //第一次下单的手机号需要进行验证，否则直接下单成功
+          if (orderRes.need_validation) {
+              this.NEED_VALIDATION(orderRes);
+              this.$router.push('/confirmOrder/userValidation');
+          }else{
+              this.ORDER_SUCCESS(orderRes);
+              this.$router.push('/confirmOrder/payment');
+          }
+			},
+			inputThing(){
+				(!this.message) ? this.verify=true : this.verify=false;
+				this.bindThing()
+			},
+			//输入地址
+			inputThingthree(){
+				this.verifythree=true;
+				if(this.mesthree.length == 0){
+					this.sendaddress='请详细填写送餐地址';
+					
+				}else if(this.mesthree.length > 0 && this.mesthree.length <= 2){
+					this.sendaddress='送餐地址太短了，不能辨识';
+				}else{
+					this.sendaddress='';
+					this.verifythree=false;
+				}
+				this.bindThing()	
+			},
+			//输入手机号
+			inputThingfour(){
+				this.verifyfour=true;
+				if((/^[1][358][0-9]{9}$/).test(this.telenum)){
+					this.verifyfour=false;
+				}else if(this.telenum == ''){
+					this.telephone="手机号不能为空"
+				}else{
+					this.telephone="请输入正确的手机号"
+				}
+				this.bindThing()
+			},
+			//输入备注手机号
+			inputThingfive(){
+				this.verifyfive=true;
+				if((/^[1][358][0-9]{9}$/).test(this.standbytelenum) || this.standbytelenum == ''){
+					this.verifyfive=false;
+				}else{
+					this.standbytele="请输入正确的手机号"
+				}
+				this.bindThing();
+			},
+			bindThing(){
+				if(this.message && this.mesthree && !this.verifyfour){
+					this.butpart=true;
+				}else{
+					this.butpart=false;
+				}
+			},
+			//保存地址
+			async submitThing(){
+				// let res = await postAddAddress(this.userInfo.user_id, this.mesthree, this.addAddress, this.geohash, this.message, this.telenum, this.standbytelenum, 0, 1, '公司', 4);
+				// if (res.message) {
+				// 		this.showAlert = true;
+				// 		this.alertText = res.message;
+				// }else if(this.butpart){
+				// 	//保存的地址存入vuex
+				// 	this.ADD_ADDRESS({
+				// 		name: this.message,
+				// 		address: this.mesthree,
+				// 		address_detail: this.addAddress,
+				// 		geohash: 'wtw37r7cxep4',
+				// 		phone: this.telenum,
+				// 		phone_bk: this.standbytelenum,
+				// 		poi: this.addAddress,
+				// 		poi_type: 0,
+				// 	});
+				// 	this.$router.go(-1);
+				// }
+			}
+    },
+    watch: {
     }
-
+  }
 </script>
 
 <style lang="scss" scoped>
-    @import 'src/style/mixin';
-
-    .confirmOrderContainer{
-        padding-top: 1.95rem;
-        padding-bottom: 3rem;
-        p, span{
-            font-family: Helvetica Neue,Tahoma,Arial;
-        }
-    }
-    .container_style{
-        background-color: #fff;
-        margin-top: .4rem;
-        padding: 0 .7rem;
-    }
-    .address_container{
-        min-height: 3.5rem;
-        @include fj;
-        align-items: center;
-        padding: 0 0.6rem;
-        background: url(../../images/address_bottom.png) left bottom repeat-x;
-        background-color: #fff;
-        background-size: auto .12rem;
-        .address_empty_left{
-            display: flex;
-            align-items: center;
-            .location_icon{
-                @include wh(.8rem, .8rem);
-                fill: $blue;
-                margin-right: .2rem;
-            }
-            .add_address{
-                @include sc(.7rem, #333);
-            }
-            .address_detail_container{
-                margin-left: .2rem;
-                header{
-                    @include sc(.65rem, #333);
-                    span:nth-of-type(1){
-                        font-size: .8rem;
-                        font-weight: bold;
-                    }
-                }
-                .address_detail{
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    span{
-                        @include sc(.5rem, #fff);
-                        border-radius: .15rem;
-                        background-color: #ff5722;
-                        height: .6rem;
-                        line-height: .6rem;
-                        padding: 0 .2rem;
-                        margin-right: .3rem;
-                    }
-                    p{
-                        @include sc(.55rem, #777);
-                    }
-                }
-            }
-        }
-    }
-    .address_empty_right{
-        @include wh(.6rem, .6rem);
-        fill: #999;
-    }
-    .delivery_model{
-        border-left: .2rem solid $blue;
-        min-height: 4rem;
-        @include fj;
-        align-items: center;
-        .deliver_text{
-            @include sc(.8rem, #333);
-            font-weight: bold;
-            padding-left: .3rem;
-        }
-        .deliver_time{
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            p:nth-of-type(1){
-                @include sc(.7rem, $blue);
-            }
-            p:nth-of-type(2){
-                @include sc(.5rem, #fff);
-                background-color: $blue;
-                width: 2.4rem;
-                margin-top: .5rem;
-                text-align: center;
-                border-radius: 0.12rem;
-                padding: .1rem;
-            }
-        }
-    }
-    .pay_way{
-        .header_style{
-            @include fj;
-            line-height: 2rem;
-            span:nth-of-type(1){
-                @include sc(.7rem, #666);
-            }
-            .more_type{
-                span:nth-of-type(1){
-                    @include sc(.6rem, #aaa);
-                    width: 10rem;
-                    display: inline-block;
-                    text-align: right;
-                    vertical-align: middle;
-                }
-                svg{
-                    @include wh(.5rem, .5rem);
-                    fill: #ccc;
-                }
-            }
-        }
-        .hongbo{
-            @include fj;
-            border-top: 0.025rem solid #f5f5f5;
+  @import 'src/style/mixin';
+  .confirmOrderContainer {
+    padding-bottom: .5rem;
+  }
+	.shop_list_container {
+		background-color: $bc;
+		.swiper-container {
+			padding-bottom: .15rem;
+			.topBG {
+				@include wh(100%, .83rem);
+				@include bis('../../images/youpinchain/gwc-bg.png');
+			}
+			.shop_info {
+				margin: .15rem auto 0;
+				width: 95%;
+				background-color: $fc;
+				padding: .2rem .15rem;
+				border-radius: 10px;
+				overflow: hidden;
+				.goods {
+					li {
+						position: relative;
+						margin-bottom: .26rem;
+					}
+					.img {
+						display: inline-block;
+						border-radius: 5px;
+						@include wh (.95rem, .945rem);
+						background-color: #000;
+						vertical-align: middle;
+						margin-left: .05rem;
+					}
+					.goods_info {
+						display: inline-block;
+						.name {
+							@include sc(.15rem, $g3);
+							top: -.1rem;
+							position: relative;
+						}
+						.price {
+							@include sc(.18rem, $red);
+							font-weight: bold;
+							position: relative;
+    					top: .38rem;
+							span { 
+								display: inline-block;
+								@include sc(.12rem, $red);
+								font-weight: normal; 
+								transform: scale(.8) translateY(1px);
+							}
+						}
+					}
+					.cart_btns {
+						position: absolute;
+            right: .2rem;
+            bottom: .25rem;
+						.num {
+							display: inline-block;
+							text-align: center;
+							@include wh(.245rem, .245rem);
+							@include sc(.18rem, $red);
+              vertical-align: top;
+              font-weight: bold;
+						}
+					}
+				}
+				.payment_info {
+					overflow: hidden;
+					padding: .15rem 0;
+					border-bottom: 1px solid #ddd;
+					li {
+						@include wh(100%, .35rem);
+						line-height: .35rem;
+						p {
+							@include sc(.15rem, $g6);
+						}
+						p:nth-child(odd) {
+							float: left;
+						}
+						p:nth-child(even) {
+							float: right;
+						}
+						p.coupon {
+							color: $g9;
+						}
+					}
+					
+				}
+				.totalPrice {
+					margin-top: .12rem;
+					p {
+						display: inline-block;
+						@include sc(.2rem, $g3);
+						font-weight: bold;
+						span {
+							@include sc(.13rem, $g3);
+							font-weight: normal;
+						}
+					}
+				}
+      }
+      .address_info {
+        background-color: $fc;
+        width: 95%;
+        margin: -.48rem auto 0;
+        padding: .2rem .15rem .2rem .57rem;
+        @include fj(space-between);
+        border-radius: 10px;
+        box-shadow: 0px 1px 13.9px 0.6px rgba(181, 184, 188, 0.51);
+        .address-detail{
+          position: relative;
+          width: 2.3rem;
+          p{
+            line-height: 1.6;
+            @include sc(.15rem,$g3);
             span{
-                @include sc(.6rem, #aaa);
-                line-height: 2rem;
-                svg{
-                    @include wh(.5rem, .5rem);
-                    vertical-align: middle;
-                    fill: #ccc;
-                }
+              display:inline-block;
+              @include sc(.15rem,$g3);
             }
-            span:nth-of-type(2){
-                color: #aaa;
-            }
+          }
+          p:nth-of-type(1){
+            margin-bottom: .15rem;
+          }
         }
-        .support_is_available{
-            span{
-                color: #666;
-            }
+        .address-detail:before{
+          content: '';
+          position: absolute;
+          left: -.28rem;
+          top: 0rem;
+          @include bis('../../images/youpinchain/gwc-icon-add.png');
+          @include wh(.16rem,.22rem);
         }
-    }
-    .food_list{
-        background-color: #fff;
-        margin-top: .4rem;
-        header{
-            padding: .7rem;
-            border-bottom: 0.025rem solid #f5f5f5;
-            img{
-                @include wh(1.2rem, 1.2rem);
-                vertical-align: middle;
-            }
-            span{
-                @include sc(.8rem, #333);
-            }
+        .deletesite{
+          display: flex;
+          margin-top: .1rem;
+          span{
+            display: block;
+            @include wh(.10rem, .175rem);
+            @include bis('../../images/youpinchain/path.png');
+          }
         }
-        .food_list_ul{
-            padding-top: .5rem;
-        }
-        .food_item_style{
-            @include fj;
-            line-height: 1.8rem;
-            padding: 0 .7rem;
-            span,p{
-                @include sc(.65rem, #666);
-            }
-            .food_name{
-                width: 11rem;
-            }
-            .num_price{
-                flex: 1;
-                @include fj;
-                align-items: center;
-                span:nth-of-type(1){
-                    color: #f60;
-                }
-            }
-        }
-        .total_price{
-            border-top: 0.025rem solid #f5f5f5;
-        }
-    }
-    .confrim_order{
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        height: 2rem;
-        p{
-            line-height: 2rem;
-            @include sc(.75rem, #fff);
-        }
-        p:nth-of-type(1){
-            background-color: #3c3c3c;
-            flex: 5;
-            padding-left: .7rem;
-        }
-        p:nth-of-type(2){
-            flex: 2;
-            background-color: #56d176;
-            text-align: center;
-        }
-    }
-    .cover{
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: rgba(0,0,0,.3);
-        z-index: 203;
-    }
-    .choose_type_Container{
-        min-height: 10rem;
-        background-color: #fff;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        z-index: 204;
-        header{
-            background-color: #fafafa;
-            @include sc(.7rem, #333);
-            text-align: center;
-            line-height: 2rem;
-        }
-        ul{
-            li{
-                @include fj;
-                padding: 0 .7rem;
-                line-height: 2.5rem;
-                align-items: center;
-                span{
-                    @include sc(.7rem, #ccc);
-                }
-                svg{
-                    @include wh(.8rem, .8rem);
-                    fill: #eee;
-                }
-            }
-            .choose{
-                span{
-                    color: #333;
-                }
-                svg{
-                    fill: #4cd964;
-                }
-            }
-        }
-    }
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .3s;
-    }
-    .fade-enter, .fade-leave-active {
-        opacity: 0;
-    }
-    .slid_up-enter-active, .slid_up-leave-active {
-        transition: all .3s;
-    }
-    .slid_up-enter, .slid_up-leave-active {
-        transform: translate3d(0,10rem,0)
-    }
-    .router-slid-enter-active, .router-slid-leave-active {
-        transition: all .4s;
-    }
-    .router-slid-enter, .router-slid-leave-active {
-        transform: translate3d(2rem, 0, 0);
-        opacity: 0;
-    }
+      }
+			.no_address {
+				.adddetail {
+					margin-top:.11rem;
+					@include borderRadius(10px);
+					background: $fc;
+				}
+				.ui-padding-block {
+					.add-detail{display:block;}
+					.input-new{
+						@include wh(100%,.45rem);
+						padding: 0 0 0 .12rem;
+						display: flex;
+						@include sc(.15rem,$g6);
+						border-bottom: 1px solid $bc;
+						span{
+							width: .6rem;
+							line-height: .45rem;
+							margin-right: .14rem;
+						}
+						input{
+							display:flex;
+							width:2.7rem;
+							line-height: .45rem;
+							font-size: .15rem;
+						}
+						.verifies {
+							border-color:#ea3106;
+						}
+						p {
+							@include sc(.08rem,#ea3106);
+							padding-left:.1rem;
+							margin-top:.04rem;
+						}
+					}
+					.input-new:nth-of-type(4) {
+						height:.9rem;
+						textarea{
+							padding: .15rem 0 0 0;
+							width: 2.7rem;
+							font-size: .15rem;
+						}
+					}
+				}
+				.addbutton {
+					margin:.15rem auto;
+					width: 3.5rem;
+					button{
+						width: 100%;
+						@include sc(.15rem,$fc);
+						line-height: .45rem;
+						background :$red;
+						font-weight:700;
+						@include borderRadius(.23rem);
+					}
+					.butopacity{
+						transition: all .4s;
+						opacity:1;
+					}
+				}
+			}
+		}
+	}
+	.settlement {
+		position: fixed;
+		bottom: 0;
+		line-height: .49rem;
+		background-color: $fc;
+		border: solid 0.5px #cccccc;
+		@include wh(100%, .49rem);
+		overflow: hidden;
+		li {
+			float: right;
+			text-align: center;
+		}
+		li:nth-child(2) {
+			text-align: left;
+			padding-right: .12rem;
+			@include sc(.15rem, $g6);
+			.red {
+				@include sc(.18rem, $red);
+				font-weight: 600;
+			}
+		}
+		li:nth-child(1) {
+			width: 30.33%;
+			@include sc(.15rem, $fc);
+			background-color: $red;
+		}
+		.unselected {
+			border-radius: 50%;
+			display: inline-block;
+			border: 1.5px solid $g9;
+			@include wh (.19rem, .19rem);
+			vertical-align: text-bottom;
+		}
+		.selectAll {
+			@include bis('../../images/youpinchain/selected.png');
+			display: inline-block;
+			@include wh (.19rem, .19rem);
+			vertical-align: text-bottom;
+		}
+  }
+  .load_more {
+    @include wh(100%, .36rem);
+    @include sc(.15rem, $g6);
+    background-color: #f7f7f7;
+    text-align: center;
+    line-height: .36rem;
+  }
 </style>
