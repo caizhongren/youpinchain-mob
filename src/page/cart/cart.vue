@@ -200,11 +200,11 @@ export default {
 				}
 				.add_cart {
 					border: 2px solid $red;
-					@include wh(.325rem, .325rem);
+					@include wh(.32rem, .32rem);
 					@include sc(.35rem, $red);
 					border-radius: 50%;
-					line-height: .7;
-					font-weight: bold;
+					line-height: .78;
+					// font-weight: bold;
 					text-align: center;
 					margin-top: .08rem;
 				}
@@ -297,7 +297,7 @@ export default {
 						.subduction, .num, .add {
 							display: inline-block;
 							text-align: center;
-							@include wh(.245rem, .245rem);
+							@include wh(.23rem, .23rem);
 						}
 						.num {
 							@include sc(.18rem, $red);
@@ -307,13 +307,13 @@ export default {
 							border: 1px solid $g9;
 							@include sc(.3rem, #ddd);
 							border-radius: 50%;
-							line-height: .6;
+							line-height: .77;
 						}
 						.add {
 							border: 1px solid $red;
 							@include sc(.3rem, $red);
 							border-radius: 50%;
-							line-height: .6;
+							line-height: .77;
 						}
 					}
 				}

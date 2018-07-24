@@ -64,7 +64,7 @@
                     </div>
                 </router-link>
                 <!-- 联系客服 -->
-                <router-link to='/vipcard' class="myorder">
+                <div class="myorder" @click="showAlertTip = !showAlertTip">
                     <aside></aside>
                     <div class="myorder-div">
                         <span>联系客服</span>
@@ -74,7 +74,7 @@
                             </svg>
                         </span>
                     </div>
-                </router-link>
+                </div>
                 <!-- 关于我们 -->
                 <router-link to='/vipcard' class="myorder">
                     <aside></aside>
@@ -90,6 +90,7 @@
             </section>
             
         </section>
+        <alert-tip :showAlertTip="showAlertTip" :type="2" v-show="showAlertTip"></alert-tip>
         <foot-guide></foot-guide>
         <transition name="router-slid" mode="out-in">
             <router-view></router-view>
@@ -98,7 +99,7 @@
 </template>
 
 <script>
-import headTop from 'src/components/header/head'
+import alertTip from 'src/components/common/alertTip'
 import footGuide from 'src/components/footer/footGuide'
 import {mapState, mapMutations} from 'vuex'
 import {imgBaseUrl} from 'src/config/env'
@@ -116,6 +117,7 @@ export default {
             pointNumber : 0,       //积分数
             avatar: '',             //头像地址
             imgBaseUrl,
+            showAlertTip: false
         }
     },
     mounted(){
@@ -123,8 +125,8 @@ export default {
     },
     mixins: [getImgPath],
     components:{
-        headTop,
         footGuide,
+        alertTip
     },
 
     computed:{
