@@ -13,9 +13,9 @@
 								<p class="price"><span>¥</span>{{item.price}}</p>
 							</div>
 							<div class="cart_btns">
-								<span class="subduction" @click="item.num > 1 ? item.num -= 1 : null">-</span>
+								<span class="subduction" :class="{'disabled': item.num <= 1}" @click="item.num > 1 ? item.num -= 1 : null"></span>
 								<span class="num">{{item.num}}</span>
-								<span class="add" @click="item.num += 1">+</span>
+								<span class="add" @click="item.num += 1"></span>
 							</div>
 						</li>
 					</ul>
@@ -56,7 +56,7 @@
 						<p class="name">{{item.name}}</p>
 						<p class="price"><span>¥</span>{{item.price}} <s>¥{{item.marketPrice}}</s></p>
 					</div>
-					<div class="right add_cart">+</div>
+					<div class="right add_cart"></div>
 				</li>
 			</ul>
 			<router-link :to="'/home'" class="load_more">查看更多商品</router-link>
@@ -105,7 +105,7 @@ export default {
 			recommendList: [
 				{
 					id: 0,
-					name:'猪耳朵500g*1份',
+					name:'猪耳朵500g*1份aaaaaaaaaa',
           price: 23.99,
           marketPrice: 33.99,
 				},
@@ -181,8 +181,14 @@ export default {
 					border-radius: 5px;
 					margin-bottom: .02rem;
 				}
+				.left {
+					width: 80%;
+				}
 				.name {
 					@include sc(.15rem, $g3);
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
 				}
 				.price {
 					@include sc(.18rem, $red);
@@ -199,13 +205,8 @@ export default {
 					}
 				}
 				.add_cart {
-					border: 2px solid $red;
-					@include wh(.32rem, .32rem);
-					@include sc(.35rem, $red);
-					border-radius: 50%;
-					line-height: .78;
-					// font-weight: bold;
-					text-align: center;
+					@include wh(.315rem, .315rem);
+					@include bis('../../images/shopping_cart.png');
 					margin-top: .08rem;
 				}
 			}
@@ -294,26 +295,27 @@ export default {
 						position: absolute;
 						right: 0;
 						bottom: 0;
+						display: flex;
 						.subduction, .num, .add {
-							display: inline-block;
-							text-align: center;
 							@include wh(.23rem, .23rem);
+							display: inline-flex;
+							flex: 1;
+							align-items: center;
+							justify-content: center;
 						}
 						.num {
 							@include sc(.18rem, $red);
-							vertical-align: top;
+							vertical-align: top;    
+							margin: 0 .1rem;
 						}
 						.subduction {
-							border: 1px solid $g9;
-							@include sc(.3rem, #ddd);
-							border-radius: 50%;
-							line-height: .77;
+        			@include bis('../../images/sub-icon.png');
+						}
+						.subduction.disabled {
+        			@include bis('../../images/sub-disable-icon.png');
 						}
 						.add {
-							border: 1px solid $red;
-							@include sc(.3rem, $red);
-							border-radius: 50%;
-							line-height: .77;
+        			@include bis('../../images/add-icon.png');
 						}
 					}
 				}
