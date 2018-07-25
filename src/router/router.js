@@ -14,6 +14,7 @@ const undelivery = r => require.ensure([], () => r(require('../page/order/childr
 const delivered = r => require.ensure([], () => r(require('../page/order/children/delivered')), 'order')
 const completed = r => require.ensure([], () => r(require('../page/order/children/completed')), 'order')
 const orderDetail = r => require.ensure([], () => r(require('../page/order/children/orderDetail')), 'orderDetail')
+const orderTrack = r => require.ensure([], () => r(require('../page/order/children/orderTrack')), 'orderTrack')
 const confirmOrder = r => require.ensure([], () => r(require('../page/confirmOrder/confirmOrder')), 'confirmOrder')
 const info = r => require.ensure([], () => r(require('../page/profile/children/info')), 'info')
 const address = r => require.ensure([], () => r(require('../page/profile/children/children/address')), 'address')
@@ -104,7 +105,10 @@ export default [{
             children: [{
                 path: 'orderDetail', //订单详情页
                 component: orderDetail
-            }, {
+            },{
+                path: 'orderTrack',
+                component: orderTrack
+            },{
                 path: '',
                 component: allOrder, //全部订单
                 name: 'all'

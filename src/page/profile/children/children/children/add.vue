@@ -28,14 +28,14 @@
         		<section class="addbutton">
         			<button @click.prevent="submitThing">保存</button>
         		</section>
-                <div class="delete-address" @click="confirmDelete()"></div>
+                <div class="delete-address" @click="showAlertTip = !showAlertTip"></div>
                 <div id="city_container">aaaa</div>
         	</form>
         </section>
         <transition name="router-slid" mode="out-in">
             <router-view></router-view>
         </transition>
-        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+        <alert-tip :showAlertTip="showAlertTip" :type="1" v-show="showAlertTip"></alert-tip>
     </div>
 </template>
 
@@ -51,8 +51,7 @@ import AjaxPicker from 'ajax-picker'
     export default {
       data(){
             return{
-                showAlert: false, //弹出框
-                alertText: null, //弹出信息
+                showAlertTip: false, //弹出框
                 deleteNumber: '',
                 addressList:[[
                     {

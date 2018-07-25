@@ -4,88 +4,84 @@
             <section class="scroll_insert">
                 <div class="page-top-red"></div>
                 <section class="order_titel border_radius">
-                    <div class="status-img status_1"></div>
+                    <div class="status-img" :class="'status_' + orderData.order_status"></div>
                     <div>
-                        <p>{{orderDetail.status_bar.title}}</p>
-                        <p>您的订单已经发货啦～</p>
+                        <p>{{status_text[orderData.order_status].title}}</p>
+                        <p>{{status_text[orderData.order_status].text}}</p>
                     </div>
+                    <router-link to="/order/orderTrack" tag="svg" fill="#333" class="arrow_right" v-show="orderData.order_status === 1 || orderData.order_status === 2 || orderData.order_status === 3">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                    </router-link>
                 </section>
-                <section class="distribution-information border_radius">
+                <section class="distribution-information border_radius" v-if="orderData.order_status === 2 || orderData.order_status === 3">
                     <img src="../../../images/ddxq-ps.png" alt="">
                     <div>
-                        <p>配送员：张三</p>
-                        <p>联系电话：15210288888</p>
+                        <p>配送员：{{orderData.distribute.name}}</p>
+                        <p>联系电话：{{orderData.distribute.mobile}}</p>
                     </div>
                 </section>
                 <section class="address border_radius">
                     <div class="address-detail">
-                        <p>北京市海淀区中国科学院国家空间科学中心九章大厦B座</p>
-                        <p><span>张三</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>15210288888</span></p>
+                        <p>{{orderData.adress.position}}</p>
+                        <p><span>{{orderData.adress.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{orderData.adress.mobile}}</span></p>
                     </div>
-                    <!-- <div class="deletesite">
-                        <span @click="edit(index, item.number)"></span>
-                    </div> -->
                 </section>
                 <section class="food_list border_radius">
                     <div class="food_list_header">
                         <div class="shop_name">
-                            <span>{{orderDetail.restaurant_name}}</span>
+                            <span>商品清单</span>
                         </div>
-                        <svg fill="#333" class="arrow_right">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-                        </svg>
+                        <span class="food_number">共{{orderData.shopList.length}}件</span>
                     </div>
-                    <ul class="food_list_ul">
-                        <li v-for="item in orderDetail.basket.group[0]">
-                            <p class="food_name ellipsis">{{item.name}}</p>
-                            <div class="quantity_price">
-                                <span>X{{item.quantity}}</span>
-                                <span>¥{{item.price}}</span>
+                    <ul class="goods">
+                        <li v-for="item in orderData.shopList" :key="item.id">
+                            <img src="" alt="" class="img">
+                            <div class="goods_info">
+                                <p class="name">{{item.name}}</p>
+                                <p class="price"><span>¥</span>{{item.price}}</p>
+                            </div>
+                            <div class="cart_btns">
+                                <span class="num">x{{item.num}}</span>
                             </div>
                         </li>
                     </ul>
-                    <div class="deliver_fee">
-                        <span>配送费</span>
-                        <span>{{orderDetail.basket.deliver_fee&&orderDetail.basket.deliver_fee.price || 0}}</span>   
-                    </div>
-                    <div class="pay_ment">实付{{orderDetail.total_amount.toFixed(2)}}</div>
                 </section>
                 <section class="order_detail_style border_radius">
                     <header>订单价格</header>
                     <section class="item_style">
                         <p class="item_left">商品总价</p>
                         <div class="item_right">
-                            <p>{{orderData.deliver_time}}</p>
+                            <p>￥{{orderData.deliver_time}}</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">优惠价格</p>
                         <div class="item_right">
-                            <p>{{orderData.consignee}}</p>
+                            <p>-￥{{orderData.consignee}}</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">运费</p>
                         <div class="item_right">
-                            <p>蜂鸟专送</p>
+                            <p>+￥{{orderData.freight}}</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">包装费</p>
                         <div class="item_right">
-                            <p>蜂鸟专送</p>
+                            <p>+￥{{orderData.packing_fee}}</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">包装费减免</p>
                         <div class="item_right">
-                            <p>蜂鸟专送</p>
+                            <p>-￥{{orderData.package_fee_reduction}}</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">实际支付</p>
                         <div class="item_right">
-                            <p>蜂鸟专送</p>
+                            <p>￥{{orderData.actual_payment}}</p>
                         </div>
                     </section>
                 </section>
@@ -94,7 +90,7 @@
                     <section class="item_style">
                         <p class="item_left">订单编号</p>
                         <div class="item_right">
-                            <p>{{orderDetail.id}}</p>
+                            <p>{{orderData.orderDetail.id}}</p>
                         </div>
                     </section>
                     <section class="item_style">
@@ -106,22 +102,23 @@
                     <section class="item_style">
                         <p class="item_left">下单时间</p>
                         <div class="item_right">
-                            <p>{{orderDetail.formatted_created_at}}</p>
+                            <p>{{orderData.orderDetail.formatted_created_at}}</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">预计送达时间</p>
                         <div class="item_right">
-                            <p>{{orderDetail.formatted_created_at}}</p>
+                            <p>{{orderData.orderDetail.expected_delivery_time}}</p>
                         </div>
                     </section>
                 </section>
                 <section class="sale_after">
-                    <span class="red">联系客服</span>
+                    <span class="red" @click="showAlertTip = !showAlertTip">联系客服</span>
                     <span class="grey">取消订单</span>
                 </section>
             </section>
         </section>
+        <alert-tip :showAlertTip="showAlertTip" :type="2" v-show="showAlertTip"></alert-tip>
         <foot-guide></foot-guide>
         <transition name="loading">
             <loading v-if="showLoading"></loading>
@@ -130,42 +127,80 @@
 </template>
 
 <script>
-    import {mapState, mapMutations} from 'vuex'
-    import headTop from 'src/components/header/head'
-    import {getImgPath} from 'src/components/common/mixin'
-    import {getOrderDetail} from 'src/service/getData'
     import loading from 'src/components/common/loading'
-    import BScroll from 'better-scroll'
-    import {imgBaseUrl} from 'src/config/env'
     import footGuide from 'src/components/footer/footGuide'
-
+    import alertTip from 'src/components/common/alertTip'
 
     export default {
 
       data(){
             return{
                 showLoading: true, //显示加载动画
-                // orderData: {
-                //     status_bar: {
-                //         title: '支付超时',
-
-                //     }
-                // },
-                orderData: {"$__":{"strictMode":true,"selected":{"_id":0},"getters":{},"wasPopulated":false,"activePaths":{"paths":{"__v":"init","basket.abandoned_extra":"init","basket.deliver_fee.category_id":"init","basket.deliver_fee.name":"init","basket.deliver_fee.price":"init","basket.deliver_fee.quantity":"init","basket.extra":"init","basket.group":"init","basket.packing_fee.category_id":"init","basket.packing_fee.name":"init","basket.packing_fee.quantity":"init","basket.packing_fee.price":"init","basket.pindan_map":"init","is_brand":"init","is_deletable":"init","is_new_pay":"init","is_pindan":"init","operation_confirm":"init","operation_pay":"init","operation_rate":"init","operation_rebuy":"init","operation_upload_photo":"init","pay_remain_seconds":"init","rated_point":"init","remind_reply_count":"init","restaurant_type":"init","status_bar.title":"init","status_bar.sub_title":"init","status_bar.image_type":"init","status_bar.color":"init","status_code":"init","timeline_node.actions":"init","timeline_node.in_processing":"init","top_show":"init","address_id":"init","user_id":"init","id":"init","unique_id":"init","total_quantity":"init","total_amount":"init","time_pass":"init","order_time":"init","formatted_created_at":"init","restaurant_name":"init","restaurant_image_url":"init","restaurant_id":"init"},"states":{"ignore":{},"default":{},"init":{"__v":true,"basket.abandoned_extra":true,"basket.deliver_fee.category_id":true,"basket.deliver_fee.name":true,"basket.deliver_fee.price":true,"basket.deliver_fee.quantity":true,"basket.extra":true,"basket.group":true,"basket.packing_fee.category_id":true,"basket.packing_fee.name":true,"basket.packing_fee.quantity":true,"basket.packing_fee.price":true,"basket.pindan_map":true,"is_brand":true,"is_deletable":true,"is_new_pay":true,"is_pindan":true,"operation_confirm":true,"operation_pay":true,"operation_rate":true,"operation_rebuy":true,"operation_upload_photo":true,"pay_remain_seconds":true,"rated_point":true,"remind_reply_count":true,"restaurant_type":true,"status_bar.title":true,"status_bar.sub_title":true,"status_bar.image_type":true,"status_bar.color":true,"status_code":true,"timeline_node.actions":true,"timeline_node.in_processing":true,"top_show":true,"address_id":true,"user_id":true,"id":true,"unique_id":true,"total_quantity":true,"total_amount":true,"time_pass":true,"order_time":true,"formatted_created_at":true,"restaurant_name":true,"restaurant_image_url":true,"restaurant_id":true},"modify":{},"require":{}},"stateNames":["require","modify","init","default","ignore"]},"pathsToScopes":{},"emitter":{"domain":null,"_events":{"save":[null,null],"isNew":[null,null]},"_eventsCount":2,"_maxListeners":0},"$options":true},"isNew":false,"_doc":{"__v":0,"basket":{"abandoned_extra":[],"deliver_fee":{"category_id":2,"name":"配送费","price":4,"quantity":1},"extra":[],"group":[[{"name":"1-ok","price":21,"quantity":1,"_id":"5b4edfc274c2a223149ff73d","specs":["ok"],"new_specs":[],"attrs":[]},{"name":"1-dse","price":20,"quantity":1,"_id":"5b4edfc274c2a223149ff73c","specs":["dse"],"new_specs":[],"attrs":[]},{"name":"食品名称","price":20,"quantity":1,"_id":"5b4edfc274c2a223149ff73b","specs":[""],"new_specs":[],"attrs":[]}]],"packing_fee":{"category_id":1,"name":"餐盒","quantity":1,"price":3367},"pindan_map":[]},"is_brand":0,"is_deletable":1,"is_new_pay":1,"is_pindan":0,"operation_confirm":0,"operation_pay":0,"operation_rate":0,"operation_rebuy":2,"operation_upload_photo":0,"pay_remain_seconds":0,"rated_point":0,"remind_reply_count":0,"restaurant_type":0,"status_bar":{"title":"支付超时","sub_title":"15分钟内支付","image_type":"","color":"f60"},"status_code":0,"timeline_node":{"actions":[],"in_processing":0},"top_show":0,"address_id":3660,"user_id":12672,"id":4906,"unique_id":4906,"total_quantity":3,"total_amount":3432,"time_pass":528655,"order_time":1531895748263,"formatted_created_at":"2018-07-18 14:35","restaurant_name":"效果演示","restaurant_image_url":"16018a5c08533.jpeg","restaurant_id":1},"$init":true,"addressDetail":"九章大厦","consignee":"厄齐尔","deliver_time":"尽快送达","pay_method":"在线支付","phone":"1231332"},
-                imgBaseUrl,
-                orderDetail:{"$__":{"strictMode":true,"selected":{"_id":0},"getters":{},"wasPopulated":false,"activePaths":{"paths":{"__v":"init","basket.abandoned_extra":"init","basket.deliver_fee.category_id":"init","basket.deliver_fee.name":"init","basket.deliver_fee.price":"init","basket.deliver_fee.quantity":"init","basket.extra":"init","basket.group":"init","basket.packing_fee.category_id":"init","basket.packing_fee.name":"init","basket.packing_fee.quantity":"init","basket.packing_fee.price":"init","basket.pindan_map":"init","is_brand":"init","is_deletable":"init","is_new_pay":"init","is_pindan":"init","operation_confirm":"init","operation_pay":"init","operation_rate":"init","operation_rebuy":"init","operation_upload_photo":"init","pay_remain_seconds":"init","rated_point":"init","remind_reply_count":"init","restaurant_type":"init","status_bar.title":"init","status_bar.sub_title":"init","status_bar.image_type":"init","status_bar.color":"init","status_code":"init","timeline_node.actions":"init","timeline_node.in_processing":"init","top_show":"init","address_id":"init","user_id":"init","id":"init","unique_id":"init","total_quantity":"init","total_amount":"init","time_pass":"init","order_time":"init","formatted_created_at":"init","restaurant_name":"init","restaurant_image_url":"init","restaurant_id":"init"},"states":{"ignore":{},"default":{},"init":{"__v":true,"basket.abandoned_extra":true,"basket.deliver_fee.category_id":true,"basket.deliver_fee.name":true,"basket.deliver_fee.price":true,"basket.deliver_fee.quantity":true,"basket.extra":true,"basket.group":true,"basket.packing_fee.category_id":true,"basket.packing_fee.name":true,"basket.packing_fee.quantity":true,"basket.packing_fee.price":true,"basket.pindan_map":true,"is_brand":true,"is_deletable":true,"is_new_pay":true,"is_pindan":true,"operation_confirm":true,"operation_pay":true,"operation_rate":true,"operation_rebuy":true,"operation_upload_photo":true,"pay_remain_seconds":true,"rated_point":true,"remind_reply_count":true,"restaurant_type":true,"status_bar.title":true,"status_bar.sub_title":true,"status_bar.image_type":true,"status_bar.color":true,"status_code":true,"timeline_node.actions":true,"timeline_node.in_processing":true,"top_show":true,"address_id":true,"user_id":true,"id":true,"unique_id":true,"total_quantity":true,"total_amount":true,"time_pass":true,"order_time":true,"formatted_created_at":true,"restaurant_name":true,"restaurant_image_url":true,"restaurant_id":true},"modify":{},"require":{}},"stateNames":["require","modify","init","default","ignore"]},"pathsToScopes":{},"emitter":{"domain":null,"_events":{"save":[null,null],"isNew":[null,null]},"_eventsCount":2,"_maxListeners":0},"$options":true},"isNew":false,"_doc":{"__v":0,"basket":{"abandoned_extra":[],"deliver_fee":{"category_id":2,"name":"配送费","price":4,"quantity":1},"extra":[],"group":[[{"name":"1-ok","price":21,"quantity":1,"_id":"5b4edfc274c2a223149ff73d","specs":["ok"],"new_specs":[],"attrs":[]},{"name":"1-dse","price":20,"quantity":1,"_id":"5b4edfc274c2a223149ff73c","specs":["dse"],"new_specs":[],"attrs":[]},{"name":"食品名称","price":20,"quantity":1,"_id":"5b4edfc274c2a223149ff73b","specs":[""],"new_specs":[],"attrs":[]}]],"packing_fee":{"category_id":1,"name":"餐盒","quantity":1,"price":3367},"pindan_map":[]},"is_brand":0,"is_deletable":1,"is_new_pay":1,"is_pindan":0,"operation_confirm":0,"operation_pay":0,"operation_rate":0,"operation_rebuy":2,"operation_upload_photo":0,"pay_remain_seconds":0,"rated_point":0,"remind_reply_count":0,"restaurant_type":0,"status_bar":{"title":"支付超时","sub_title":"15分钟内支付","image_type":"","color":"f60"},"status_code":0,"timeline_node":{"actions":[],"in_processing":0},"top_show":0,"address_id":3660,"user_id":12672,"id":4906,"unique_id":4906,"total_quantity":3,"total_amount":3432,"time_pass":528655,"order_time":1531895748263,"formatted_created_at":"2018-07-18 14:35","restaurant_name":"效果演示","restaurant_image_url":"16018a5c08533.jpeg","restaurant_id":1},"$init":true,"addressDetail":"九章大厦","consignee":"厄齐尔","deliver_time":"尽快送达","pay_method":"在线支付","phone":"1231332"}
+                showAlertTip: false,
+                status_text:[{
+                    title: '未发货',
+                    text: '您的订单还未发货～'
+                },{
+                    title: '已发货',
+                    text: '您的订单已经发货啦～'
+                },{
+                    title: '配送中',
+                    text: '您的订单正在配送中～'
+                },{
+                    title: '已完成',
+                    text: '您的订单已完成～'
+                },{
+                    title: '待支付',
+                    text: '您的订单待支付～'
+                }],
+                orderData:{
+                    order_status: 3,// 未发货 0 已发货 1  配送中 2 已完成 3 待支付 4
+                    deliver_time: '88.88',
+                    consignee: '28.88',
+                    freight: '8.88',
+                    packing_fee: '8.88',
+                    package_fee_reduction: '8.88',
+                    actual_payment: '88.88',
+                    shopList: [
+                      { 
+                        id: 0,
+                        name: '猪耳朵500g*1份',
+                        price: 23.99,
+                        num: 1,
+                        choose: false
+                      },
+                      { 
+                        id: 1,
+                        name: '猪耳朵500g*2份',
+                        price: 23.99,
+                        num: 2,
+                        choose: true
+                      }
+                    ],
+                    orderDetail:{
+                        id: 4567852,
+                        formatted_created_at: '1028.06.10 12:29',
+                        expected_delivery_time: '2018.6.13'
+                    },
+                    distribute: {
+                        name: '张三',
+                        mobile: '15210288888'
+                    },
+                    adress: {
+                        position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
+                        name: '张三',
+                        mobile: '15210288888'
+                    }
+                }
             }
         },
         created () {
             this.showLoading = false
-            this.orderDetail = this.orderDetail._doc
-            console.log(this.orderDetail)
         },
         mounted(){
         },
-        mixins: [getImgPath],
         components: {
-            loading, footGuide
+            loading, footGuide, alertTip
         },
         computed: {
         },
@@ -199,8 +234,7 @@
         bottom: 0;
     }
     .scroll_insert{
-        padding-bottom: .6rem;
-        margin-bottom: .6rem;
+        padding-bottom: 1.2rem;
     }
     .page-top-red{
         width: 100%;
@@ -219,13 +253,32 @@
         margin-top: -.48rem;
         padding: .14rem .3rem;
         display: flex;
+        @include fj;
+        .status_0{
+            @include bis('../../../images/status1.png')
+        }
         .status_1{
+            @include bis('../../../images/status2.png')
+        }
+        .status_2{
+            @include bis('../../../images/status3.png')
+        }
+        .status_3{
+            @include bis('../../../images/status4.png')
+        }
+        .status_4{
             @include bis('../../../images/status5.png')
         }
         .status-img{
             border-radius: 50%;
             @include wh(1rem, 1rem);
-            margin-right: .2rem;
+        }
+        svg{
+            @include wh(.18rem,1rem);
+        }
+        .no-width {
+            width: 0;
+            height: 0;
         }
         div{
             p:nth-of-type(1){
@@ -236,7 +289,7 @@
             p:nth-of-type(2){
                 @include sc(.13rem, #666666);
                 margin-top: .12rem;
-                text-align: center;
+                max-width: 1.8rem;
             }
         }
         .order_again{
@@ -296,11 +349,10 @@
     }
     .food_list{
         background-color: #fff;
-        padding: .1rem;
         .food_list_header{
             @include fj;
             align-items: center;
-            padding: .04rem .1rem;
+            padding: .1rem;
             border-bottom: 1px solid #f5f5f5;
             .shop_name{
                 img{
@@ -312,42 +364,56 @@
                     @include sc(.15rem, #333);
                 }
             }
-            svg{
-                @include wh(.12rem, .12rem);
-                fill: #666;
+            .food_number{
+                color:#999999;
             }
         }
-        .food_list_ul{
-            li{
-                @include fj;
-                align-items: center;
-                padding: 0 .1rem;
-                line-height: .4rem;
-                .food_name{
-                    @include sc(.12rem, #666);
-                    flex: 4;
+        .goods {
+            padding: .3rem .15rem .1rem;
+            li {
+                position: relative;
+                margin-bottom: .26rem;
+            }
+            .img {
+                display: inline-block;
+                border-radius: 5px;
+                @include wh (.95rem, .945rem);
+                background-color: #000;
+                vertical-align: middle;
+                margin-left: .05rem;
+            }
+            .goods_info {
+                display: inline-block;
+                .name {
+                    @include sc(.15rem, $g3);
+                    top: -.1rem;
+                    position: relative;
                 }
-                .quantity_price{
-                    flex: 1;
-                    @include fj;
-                    align-items: center;
-                    span:nth-of-type(1){
-                        @include sc(.12rem, #ccc);
-                    }
-                    span:nth-of-type(2){
-                        @include sc(.12rem, #666);
+                .price {
+                    @include sc(.18rem, $red);
+                    font-weight: bold;
+                    position: relative;
+                top: .38rem;
+                    span { 
+                        display: inline-block;
+                        @include sc(.12rem, $red);
+                        font-weight: normal; 
+                        transform: scale(.8) translateY(1px);
                     }
                 }
             }
-        }
-        .deliver_fee{
-            @include fj;
-            align-items: center;
-            padding: 0 .1rem;
-            line-height: .4rem;
-            border-top: 1px solid #f5f5f5;
-            span{
-                @include sc(.12rem, #666);
+            .cart_btns {
+                position: absolute;
+                right: .2rem;
+                bottom: .25rem;
+                .num {
+                    display: inline-block;
+                    text-align: center;
+                    @include wh(.245rem, .245rem);
+                    @include sc(.18rem, $red);
+                    vertical-align: top;
+                    font-weight: bold;
+                }
             }
         }
         .pay_ment{
