@@ -2,10 +2,19 @@ import fetch from '../config/fetch'
 import {getStore} from '../config/mUtils'
 
 /**
+ * 查询首页数据
+ */
+
+export const homeIndex = () => fetch('/youpin/wx/home/index', {
+	type: 'guess'
+});
+
+
+/**
  * 微信授权登陆
  */
 
-export const login_oa = () => fetch('/wx/oa/login_oa');
+export const login_oa = () => fetch('/youpin/wx/oa/login_oa');
 
 /**
  * 获取首页热卖商品

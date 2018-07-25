@@ -24,12 +24,12 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         // proxyTable: {
-        //     '/wx': {
+        //     '/': {
         //         // target: 'http://127.0.0.1:8080', // 目标域名
-        //         target: 'https://heizhu360.datbc.com',
+        //         target: 'https://youpinlian.datbc.com',
         //         changeOrigin: true,
         //         pathRewrite: {
-        //             '^/wx': '/wx/wx' // 规则, 见下面说明
+        //             '^': '/youpin/wx' // 规则, 见下面说明
         //         },
         //         headers: {
         //         // 'Cookie': 'SID=810q3nmoi5mfp8geb9bkm9jql0;SESSION=34e6e7d6-d6f3-41b0-a487-3174bb55d582;' //这里可以设置cookies, 也可以不设置
@@ -37,9 +37,9 @@ module.exports = {
         //     }
         // },
         context: [ //代理路径
-            '/wx',
+            '/youpin/wx',
         ],
-        proxypath: 'https://heizhu360.datbc.com',
+        proxypath: 'http://youpinlian.datbc.com/youpin/wx',
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README
         // (https://github.com/webpack/css-loader#sourcemaps)
