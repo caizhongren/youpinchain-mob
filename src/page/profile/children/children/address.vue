@@ -2,14 +2,14 @@
   	<div class="rating_page">
         <section class="address">
         	<ul class="addresslist">
-        		<li v-for='(item,index) in adressList' @click="selectDefault(index)">
+        		<li v-for='(item,index) in adressList' @click="selectOrEdit(index,item.number)">
                     <span class="default-address" v-show="selectedAddress === index"></span>
         			<div class="address-detail">
         				<p>{{item.position}}</p>
         				<p><span>{{item.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{item.phone}}</span></p>
         			</div>
         			<div class="deletesite">
-        				<span @click="edit(index, item.number)"></span>
+        				<span></span>
         			</div>
         		</li>
         	</ul>
@@ -28,9 +28,7 @@
 
 <script>
     import headTop from 'src/components/header/head'
-    import {getImgPath} from 'src/components/common/mixin'
     import {mapState,mapActions,} from 'vuex'
-    import {getAddressList, deleteAddress} from 'src/service/getData'
 
     export default {
       data(){
@@ -51,13 +49,32 @@
                     name: '张三',
                     phone: '15210288888',
                     number: 2
+                },{
+                    position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
+                    name: '张三',
+                    phone: '15210288888',
+                    number: 0
+                },{
+                    position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
+                    name: '张三',
+                    phone: '15210288888',
+                    number: 1
+                },{
+                    position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
+                    name: '张三',
+                    phone: '15210288888',
+                    number: 2
                 }] //地址列表
             }
         },
         mounted(){
         },
-        mixins: [getImgPath],
         mounted(){
+        },
+        created () {
+            if(this.$route.query.path !== 'confirmOrder'){
+                this.selectedAddress = null;
+            }
         },
         components: {
         },
@@ -65,11 +82,13 @@
         },
         props:[],
         methods: {
-            edit (index,number) {
-                this.$router.push({name: 'editAddress', query:{index: index, number: number}})
-            },
-            selectDefault (number) {
-                this.selectedAddress = number;
+            selectOrEdit (index,number) {
+                if(this.$route.query.path === 'confirmOrder'){
+                    this.$router.go(-1);
+                    this.selectedAddress = number;
+                } else {
+                    this.$router.push({name: 'editAddress', query:{index: index, number: number}});
+                }
             }
         },
         watch: {
@@ -83,9 +102,6 @@
     .rating_page{
         position: absolute;
         top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
         background-color: #f2f2f2;
         z-index: 202;
         @include wh(100%,100);
@@ -101,7 +117,7 @@
     .address{
     	width:100%;
     	margin-top:.08rem;
-        margin-bottom: .7rem;
+        padding-bottom: .6rem;
     	.addresslist{
     		li{
                 margin: .16rem .12rem;

@@ -37,7 +37,7 @@
 							<button :class="{butopacity:butpart}" @click.prevent="submitThing">保存</button>
 						</section>
           </div>
-          <router-link :to="'/profile/info/address'" class="address_info" v-else>
+          <router-link :to="{name: 'addressList', query:{path: 'confirmOrder'}}" class="address_info" >
             <div class="address-detail">
               <p>{{address_info}}</p>
               <p><span>{{user_name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{user_mobile}}</span></p>
@@ -712,14 +712,13 @@
 						@include sc(.15rem,$g6);
 						border-bottom: 1px solid $bc;
 						span{
-							width: .6rem;
+							width: .7rem;
 							line-height: .45rem;
 							margin-right: .14rem;
 						}
 						input{
 							display:flex;
 							width:2.7rem;
-							line-height: .45rem;
 							font-size: .15rem;
 						}
 						.verifies {

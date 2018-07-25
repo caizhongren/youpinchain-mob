@@ -180,6 +180,7 @@ export default {
         p, span{
             font-family: Helvetica Neue,Tahoma,Arial;
         }
+        padding-bottom: .6rem;
     }
     .profile-top-red{
         height: .83rem;

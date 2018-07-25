@@ -1,6 +1,6 @@
  <template>
     <div class="rating_page">
-        <head-top head-title="账户信息" go-back='true'></head-top>
+<!--         <head-top head-title="账户信息" go-back='true'></head-top> -->
         <section class="profile-info">
             <section class="headportrait">
                 <input type="file" class="profileinfopanel-upload" @change="uploadAvatar">

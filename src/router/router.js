@@ -87,6 +87,7 @@ export default [{
                 children: [{
                     path: 'address',
                     component: address,     //编辑地址
+                    name: 'addressList',
                     children:[{
                         path:'add',
                         component:add,

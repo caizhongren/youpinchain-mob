@@ -411,14 +411,13 @@ import AjaxPicker from 'ajax-picker'
             @include sc(.15rem,#666666);
             border-bottom: 1px solid #efeff4;
             span{
-                width: .6rem;
+                width: .7rem;
                 line-height: .45rem;
                 margin-right: .14rem;
             }
     		input{
     			display:flex;
     			width:2.7rem;
-                line-height: .45rem;
                 font-size: .15rem;
     		}
     		.verifies{
