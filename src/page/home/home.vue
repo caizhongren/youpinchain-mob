@@ -32,6 +32,7 @@
 
 <script>
 import footGuide from '../../components/footer/footGuide'
+import {homeIndex} from '../../service/getData'
 // import {goodsList} from '../../service/getData'
 
 export default {
@@ -70,6 +71,9 @@ export default {
     // goodsList(1, 10).then(res => {
     //     this.goodsList = res;
     // })
+    homeIndex().then(res => {
+      console.log(res)
+    })
   },
   components:{
       footGuide

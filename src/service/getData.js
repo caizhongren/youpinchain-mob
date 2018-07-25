@@ -2,6 +2,15 @@ import fetch from '../config/fetch'
 import {getStore} from '../config/mUtils'
 
 /**
+ * 查询首页数据
+ */
+
+export const homeIndex = () => fetch('/youpin/wx/home/index', {
+	type: 'guess'
+});
+
+
+/**
  * 获取首页默认地址
  */
 
