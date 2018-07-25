@@ -40,7 +40,7 @@
             </section>
             <section class="profile-1reTe">
                 <!-- 我的优惠券 -->
-                <router-link to='/benefit' class="myorder">
+                <router-link to='/coupon' class="myorder">
                     <aside></aside>
                     <div class="myorder-div">
                         <span>我的优惠券</span>
