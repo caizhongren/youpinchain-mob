@@ -22,6 +22,7 @@
           <div class="shopping_cart"  @touchstart="addToCart($event)"></div>
         </li>
       </ul>
+			<div @click="loadMore()" class="load_more">查看更多商品</div>
       <transition appear @after-appear = 'afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot" :key="index">
         <span class="move_dot" v-if="item"></span>
       </transition>
@@ -32,7 +33,7 @@
 
 <script>
 import footGuide from '../../components/footer/footGuide'
-// import {goodsList} from '../../service/getData'
+import {hotgoods} from '../../service/getData'
 
 export default {
   data(){
@@ -67,9 +68,9 @@ export default {
   },
 	mounted(){
     //获取商品列表
-    // goodsList(1, 10).then(res => {
-    //     this.goodsList = res;
-    // })
+    hotgoods(1,10).then(res => {
+      this.goodsList = res;
+    })
   },
   components:{
       footGuide
@@ -77,6 +78,9 @@ export default {
   computed:{
   },
   methods:{
+    loadMore () {
+      alert('查看更多')
+    },
     toggleTab (index) {
       this.activeTab = index
       if (index === 0) {
@@ -147,6 +151,17 @@ export default {
     background-color: $fc;
     margin-top: .15rem;
     padding: .2rem 0;
+    .load_more {
+			@include wh(35%, .28rem);
+			@include sc(.14rem, $red);
+			background-color: $fc;
+			margin: 0rem auto;
+			text-align: center;
+			line-height: .28rem;
+			border-radius: 15px;
+			border: 1px solid $red;
+			display: block;
+		}
     .goods_title {
       text-align: center;
       margin: 0 auto;
@@ -158,7 +173,7 @@ export default {
       @include bis('../../images/home-bg-rmsp-normol.png');
     }
     .goodslistul {
-      padding: .25rem .15rem;
+      padding: .25rem .15rem .1rem;
       img {
         margin-right: .12rem;
         width: 1.4rem;

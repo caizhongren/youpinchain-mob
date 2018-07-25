@@ -2,13 +2,19 @@ import fetch from '../config/fetch'
 import {getStore} from '../config/mUtils'
 
 /**
- * 获取首页默认地址
+ * 微信授权登陆
  */
 
-export const cityGuess = () => fetch('/v1/cities', {
-	type: 'guess'
-});
+export const login_oa = () => fetch('/wx/oa/login_oa');
 
+/**
+ * 获取首页热卖商品
+ */
+
+export const hotgoods = (page, size) => fetch('/wx/home/index', {
+	'page': page,
+	'size': size
+});
 
 /**
  * 获取首页热门城市
