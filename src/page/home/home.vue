@@ -4,24 +4,25 @@
       <img src="../../images/1.png" alt="" width="100%" class="show">
     </router-link>
     <ul class="product_nav">
-      <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" @click="toggleTab(index)">{{tab}}</li>
+      <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" @click="toggleTab(index)">{{tab.name}}</li>
     </ul>
     <section id="hot_goods">
       <h4 class="goods_title">热卖商品</h4>
       <ul class="goodslistul clear">
         <li v-for="item in hotgoodslist" :key="item.id">
           <router-link  tag="div" :to="'/goods/' + item.id">
-            <img :src="item.imgUrl" alt="" class="left" :class="{'noImage': !item.imgUrl}">
+            <img :src="item.thumbnailPic" alt="" class="left" :class="{'noImage': !item.thumbnailPic}">
             <div class="left goods_info">
-              <p class="name">{{item.name}}</p>
-              <p class="desr">{{item.description}}</p>
+              <p class="name">{{item.name}}*1{{item.packing}}</p>
+              <p class="desr">{{item.describe}}</p>
               <p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>
-              <p class="price"><span>¥</span>{{item.price}} <s>¥{{item.marketPrice}}</s></p>
+              <p class="price"><span>¥</span>{{item.originalPrice}} <s>¥{{item.presentPrice}}</s></p>
             </div>
           </router-link>  
           <div class="shopping_cart"  @touchstart="addToCart($event)"></div>
         </li>
       </ul>
+			<div @click="loadMore()" class="load_more">查看更多商品</div>
       <transition appear @after-appear = 'afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot" :key="index">
         <span class="move_dot" v-if="item"></span>
       </transition>
@@ -32,34 +33,15 @@
 
 <script>
 import footGuide from '../../components/footer/footGuide'
-// import {goodsList} from '../../service/getData'
+import {homeIndex} from '../../service/getData'
 
 export default {
   data(){
     return{
       goodsList: [],
-      product_nav: ['生长环境', '饲养情况', '健康指标'],
+      product_nav: [],
       activeTab: 0,
-      hotgoodslist: [
-        {
-          id: 0,
-          name: '猪耳朵500g*1份',
-          description: '和黄瓜丝凉拌好吃极了～',
-          useCoupon: 0, // 0 优惠券不可使用，1 优惠券可使用
-          marketPrice: 33.99,
-          price: 23.99,
-          imgUrl: 'http://test321.hongcai.com/uploads/png/original/2018-07-18/goods/goods-561b43d97c9a4fdcbb77ae2f3d0919b9-original.png'
-        },
-        {
-          id: 2,
-          name: '猪耳朵500g*1份',
-          description: '和黄瓜丝凉拌好吃极了～',
-          useCoupon: 1, // 0 优惠券不可使用，1 优惠券可使用
-          marketPrice: 33.99,
-          price: 23.99,
-          imgUrl: ''
-        }
-      ],
+      hotgoodslist: [],
       showMoveDot: [], //控制下落的小圆点显示隐藏
       elLeft: 0, //当前点击加按钮在网页中的绝对top值
       elBottom: 0, //当前点击加按钮在网页中的绝对left值
@@ -67,9 +49,10 @@ export default {
   },
 	mounted(){
     //获取商品列表
-    // goodsList(1, 10).then(res => {
-    //     this.goodsList = res;
-    // })
+    homeIndex().then(res => {
+      this.hotgoodslist = res.data.products
+      this.product_nav = res.data.brandDatas
+    })
   },
   components:{
       footGuide
@@ -77,6 +60,9 @@ export default {
   computed:{
   },
   methods:{
+    loadMore () {
+      alert('查看更多')
+    },
     toggleTab (index) {
       this.activeTab = index
       if (index === 0) {
@@ -147,6 +133,17 @@ export default {
     background-color: $fc;
     margin-top: .15rem;
     padding: .2rem 0;
+    .load_more {
+			@include wh(35%, .28rem);
+			@include sc(.14rem, $red);
+			background-color: $fc;
+			margin: 0rem auto;
+			text-align: center;
+			line-height: .28rem;
+			border-radius: 15px;
+			border: 1px solid $red;
+			display: block;
+		}
     .goods_title {
       text-align: center;
       margin: 0 auto;
@@ -158,7 +155,7 @@ export default {
       @include bis('../../images/home-bg-rmsp-normol.png');
     }
     .goodslistul {
-      padding: .25rem .15rem;
+      padding: .25rem .15rem .1rem;
       img {
         margin-right: .12rem;
         width: 1.4rem;

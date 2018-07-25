@@ -17,14 +17,20 @@
   import Vue from 'vue'
   import * as custom from './plugins/custom'
 	import svgIcon from './components/common/svg';
+  import {login_oa} from './service/getData'
+  import {Utils} from './service/Utils'
   export default {
     data () {
       return {
         showErr: false,
         errMsg: '',
         timer: null,
-        styleObject: {}
+        styleObject: {},
+        userInfo: {}
       }
+    },
+    watch: {
+      '$route': 'login_oa'
     },
     components:{
       svgIcon,
@@ -37,6 +43,16 @@
       }, false)
     },
     methods: {
+      login_oa () {
+        var that = this
+        login_oa().then(res => {
+          console.log(res);
+          that.userInfo = res.data;
+        })
+        if (!that.$route.query.code) {
+          Utils.redirectToWechatAuth(window.location.href)
+        }
+      },
       showErrMsg (msg, setErrStyle) {
         var that = this
         setErrStyle ? that.styleObject = setErrStyle : null

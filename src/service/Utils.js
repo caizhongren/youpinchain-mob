@@ -42,7 +42,7 @@ let Utils = {
   redirectToWechatAuth: function (redirectUrl) {
     redirectUrl = Utils.removeParam('code', redirectUrl)
     redirectUrl = encodeURIComponent(Utils.removeParam('state', redirectUrl))
-    var wechatRedirectUrl = process.env.wechat_redirect_url + '?appid=' + process.env.wechatAppid +
+    var wechatRedirectUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize??appid=' + process.env.wechatAppid +
               '&redirect_uri=' + redirectUrl + '&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect'
     console.log(wechatRedirectUrl)
     window.location.href = wechatRedirectUrl
