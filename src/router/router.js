@@ -20,6 +20,7 @@ const info = r => require.ensure([], () => r(require('../page/profile/children/i
 const address = r => require.ensure([], () => r(require('../page/profile/children/children/address')), 'address')
 const add = r => require.ensure([], () => r(require('../page/profile/children/children/children/add')), 'add')
 const addDetail = r => require.ensure([], () => r(require('../page/profile/children/children/children/children/addDetail')), 'addDetail')
+const coupon = r => require.ensure([], () => r(require('../page/profile/children/coupon')), 'coupon')
 
 
 export default [{
@@ -130,5 +131,9 @@ export default [{
                 name: 'completed'
             }]
         },
+        {
+            path: '/coupon',
+            component: coupon,
+        }
     ]
 }]
