@@ -20,15 +20,15 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 
 	if (window.fetch && method == 'fetch') {
 		let requestConfig = {
-			credentials: 'include',
-			// credentials: 'same-origin',
+			// credentials: 'include',
+			credentials: 'same-origin',
 			method: type,
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 			},
 			mode: "cors",
-			cache: "force-cache"
+			cache: "no-cache"
 		}
 
 		if (type == 'POST') {

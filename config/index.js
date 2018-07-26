@@ -39,7 +39,7 @@ module.exports = {
         context: [ //代理路径
             '/youpin/wx',
         ],
-        proxypath: 'http://youpinlian.datbc.com/youpin/wx',
+        proxypath: 'http://youpinlian.datbc.com',
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README
         // (https://github.com/webpack/css-loader#sourcemaps)
