@@ -9,6 +9,29 @@ export const homeIndex = () => fetch('/youpin/wx/home/index', {
 	type: 'guess'
 });
 
+/**
+ * 根据商品id查询商品详情
+ */
+export const findProduct = (proId) => fetch('/youpin/wx/product/findProduct', {
+	proId: proId
+});
+
+/**
+ * 查询用户购物车
+ */
+export const findCart = (page, size) => fetch('/youpin/wx/cart/findCart', {
+	page: page,
+	size: size
+});
+
+/**
+ * 添加购物车
+ */
+export const addCart = (youpinCar, productId, number) => fetch('/youpin/wx/cart/add', {
+	youpinCar: youpinCar,
+	productId: productId,
+	number:  number
+}, 'POST');
 
 /**
  * 微信授权登陆

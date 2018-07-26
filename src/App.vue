@@ -1,12 +1,7 @@
 <template>
 	<div>
-		<transition name="router-fade" mode="out-in">
-			<keep-alive>
-			  <router-view v-if="$route.meta.keepAlive" :showErrMsg="showErrMsg"></router-view>
-			</keep-alive>
-    </transition>
     <transition name="router-fade" mode="out-in">
-			<router-view v-if="!$route.meta.keepAlive" :showErrMsg="showErrMsg"></router-view>
+			<router-view :addCartFn="addCartFn" :showErrMsg="showErrMsg"></router-view>
 		</transition>
     <div id="err" v-show="showErr" v-bind:style="styleObject">{{errMsg}}</div>
 		<svg-icon></svg-icon>	
@@ -30,7 +25,7 @@
       }
     },
     watch: {
-      '$route': 'login_oa'
+      // '$route': 'login_oa'
     },
     components:{
       svgIcon,
@@ -43,6 +38,11 @@
       }, false)
     },
     methods: {
+      addCartFn (youpinCart, productId, number) { // 添加购物车
+        addCart(youpinCar, productId, number).then(function (res) {
+          console.log(res)
+        })
+      },
       login_oa () {
         var that = this
         login_oa().then(res => {
