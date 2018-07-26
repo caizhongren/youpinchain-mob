@@ -34,6 +34,11 @@ export const addCart = (youpinCar, productId, number) => fetch('/youpin/wx/cart/
 }, 'POST');
 
 /**
+ * 地址列表查询
+ */
+export const getAddressList = () => fetch('/youpin/wx/address');
+
+/**
  * 微信授权登陆
  */
 
@@ -468,12 +473,6 @@ export const getOrderList = (user_id, offset) => fetch('/bos/v2/users/' + user_i
 
 export const getOrderDetail = (user_id, orderid) => fetch('/bos/v1/users/' + user_id + '/orders/' + orderid + '/snapshot');
 
-
-/**
-*个人中心里编辑地址
-*/
-
-export const getAddressList = (user_id) => fetch('/v1/users/'+user_id+'/addresses')
 
 /**
 *个人中心里搜索地址
