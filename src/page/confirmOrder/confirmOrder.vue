@@ -59,7 +59,9 @@
 								<span class="num">x{{item.num}}</span>
 							</div>
 						</li>
-            <div class="load_more">共{{shopList.length}}件 <img src="../../images/path-2.png" width="4%"> </div>
+						<transition name="fade">
+            	<div v-if="showTotal" class="load_more" @click="showTotal = false;">共{{shopList.length}}件 <img src="../../images/path-2.png" width="4%"> </div>
+						</transition>
 					</ul>
 					<ul class="payment_info">
 						<li>
@@ -103,6 +105,7 @@
   export default {
     data () {
       return {
+				showTotal: false,
         shopCart: null, // 购物车数据
         totalPrice: 188,
         goodsPrice: 88,
@@ -410,6 +413,7 @@
       }
     },
     created () {
+			this.shopList.length >= 2 ? this.showTotal = true : null
     },
     mounted () {
 			this.initAddress()
@@ -573,7 +577,13 @@
 </script>
 
 <style lang="scss" scoped>
-  @import 'src/style/mixin';
+	@import 'src/style/mixin';
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .5s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
+	}
   .confirmOrderContainer {
     padding-bottom: .5rem;
   }

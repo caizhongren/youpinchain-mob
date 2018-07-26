@@ -12,6 +12,7 @@ const state = {
 		name: '张1',
 		phone: '15210288888'
 	},//选择地址
+	// choosedAddress: null,
 	addressIndex: null,//选择地址的索引值
 	userInfo: {
 		user_id: 1
