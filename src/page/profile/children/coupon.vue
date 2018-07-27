@@ -1,6 +1,7 @@
 <template>
   <div class="coupon" v-client-height>
     <head-top head-title="我的优惠券" go-back='true'></head-top>
+    <span class="use_rule" @click="showRule()">使用说明</span>
     <div class="no_coupon">暂无可使用的优惠券哦～</div>
     <foot-guide></foot-guide>
   </div>
@@ -23,7 +24,9 @@
       
     },
     methods: {
-
+      showRule () {
+        alert('暂无优惠信息');
+      }
     },
     components: {
       headTop,
@@ -40,8 +43,14 @@
       text-align: center;
       margin-top: 2.615rem;
       flex: 1;
-      
       @include sc(.15rem, $g6)
+    }
+    .use_rule{
+      position: absolute;
+      z-index: 100;
+      right: 0.1rem;
+      top: .12rem;
+      @include sc(.13rem,#333333);
     }
   }
 </style>

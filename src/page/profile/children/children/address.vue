@@ -8,7 +8,7 @@
         				<p>{{item.position}}</p>
         				<p><span>{{item.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{item.phone}}</span></p>
         			</div>
-        			<div class="deletesite">
+        			<div class="deletesite" @click.stop="toEdit(item, index)">
         				<span></span>
         			</div>
         		</li>
@@ -77,8 +77,11 @@
                     this.CHOOSE_ADDRESS({address, index});
                     this.$router.go(-1);
                 } else {
-                    this.$router.push({name: 'editAddress', query:{index: index, number: number}});
+                    this.$router.push({name: 'editAddress', query:{number: index}});
                 }
+            },
+            toEdit (address, index) {
+                this.$router.push({name: 'editAddress', query:{number: index}})
             }
         },
         watch: {
@@ -150,9 +153,11 @@
     			.deletesite{
     				display:flex;
     				align-items:center;
+                    width: .5rem;
     				span{
     					display:block;
     					@include wh(.23rem,.23rem);
+                        margin-left: .2rem;
                         @include bis('../../../../images/icon-edit-nor.png')
     				}
     			}

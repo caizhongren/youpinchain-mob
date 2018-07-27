@@ -21,6 +21,7 @@ const address = r => require.ensure([], () => r(require('../page/profile/childre
 const add = r => require.ensure([], () => r(require('../page/profile/children/children/children/add')), 'add')
 const addDetail = r => require.ensure([], () => r(require('../page/profile/children/children/children/children/addDetail')), 'addDetail')
 const coupon = r => require.ensure([], () => r(require('../page/profile/children/coupon')), 'coupon')
+const aboutUs = r => require.ensure([], () => r(require('../page/home/aboutUs')), 'aboutUs')
 
 
 export default [{
@@ -99,6 +100,11 @@ export default [{
                     }]
                 }]
             }]
+        },
+        // 关于我们
+        {
+            path: '/aboutUs',
+            component: aboutUs
         },
         //订单列表页
         {
