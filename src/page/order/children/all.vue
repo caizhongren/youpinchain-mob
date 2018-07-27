@@ -1,23 +1,21 @@
 <template>
 	<div class="unpaid">
 		<ul class="order_list_ul">
-            <li class="order_list_li">
+            <li class="order_list_li" v-for="item in orderList">
                 <section class="order_item_top">
                     <section>
                         <header class="order_item_top_header">
-                            <p class="order_time">2018.6.20 12:34</p>
+                            <p class="order_time">{{item.createTime}}</p>
                             <p class="order_status">
-                                待支付
+                                {{status_title[item.order_status]}}
                             </p>
                         </header>
                         <router-link to="/order/orderDetail" tag="div">
 	                        <section class="goods_img">
 	                        	<div class="goods_box">
-	                        		<img class="restaurant_image">
-			                        <img class="restaurant_image">
-			                        <img class="restaurant_image">
+	                        		<img class="restaurant_image" v-for="(goods,index) in item.goods_list" :src="goods.imageUrl" v-if="index < 4">
 	                        	</div>
-		                        <p>共3件</p>
+		                        <p>共{{item.goods_list.length}}件</p>
 		                        <svg fill="#999" class="arrow_right" style="height:.64rem;width:.14rem;">
 	                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
 	                            </svg>
@@ -26,12 +24,18 @@
                     </section>
                     <div class="order_item_bottom">
                     	<span class="order_text">实际支付<b style="color:#e4372e;">￥<strong style="font-size:.2rem;font-weight:bold;">88.88</strong></b></span>
-                    	<div class="order_button_grey">联系客服</div>
-                        <compute-time></compute-time>
+                    	<div class="order_button_border_grey" @click="showAlertTip = !showAlertTip" v-if="item.order_status !== 3 || item.order_status !== 4">联系客服</div>
+                        <div class="order_again">
+                            <compute-time v-if="item.order_status == 0" :time="item.time_pass"></compute-time>
+                            <span class="order_button_border_red" v-if="item.order_status == 1">取消订单</span>
+                            <router-link tag="span" to="/order/orderTrack" class="order_button_border_red" v-if="item.order_status == 2">查看物流</router-link>
+                            <router-link tag="span" to="/home" class="order_button_red" v-if="item.order_status == 3 || item.order_status == 4" >再次购买</router-link>
+                        </div>
                     </div>
                 </section>
             </li>
         </ul>
+        <alert-tip :showAlertTip="showAlertTip" :type="2" v-show="showAlertTip"></alert-tip>       
         <transition name="loading">
             <loading v-show="showLoading"></loading>
         </transition>
@@ -48,16 +52,72 @@
     import {getOrderList} from 'src/service/getData'
     import {loadMore} from 'src/components/common/mixin'
     import {imgBaseUrl} from 'src/config/env'
+    import alertTip from 'src/components/common/alertTip'
 
 
     export default {
       data(){
             return{
-                orderList: null, //订单列表
-                offset: 0, 
-                preventRepeat: false,  //防止重复获取
+                showAlertTip: false,
+                status_title:['待支付', '待发货', '已发货', '已完成', '已取消'],
                 showLoading: true, //显示加载动画
-                imgBaseUrl
+                orderList: [
+                {
+                    createTime: '2018.6.20 12:34',
+                    time_pass: 890,
+                    order_status: 0,
+                    goods_list: [{
+                        imageUrl: '/static/img/1.png'
+                    },{
+                        imageUrl: '/static/img/1.png'
+                    },{
+                        imageUrl: '/static/img/1.png'
+                    },{
+                        imageUrl: '/static/img/1.png'
+                    },{
+                        imageUrl: '/static/img/1.png'
+                    }]
+                },{
+                    createTime: '2018.6.20 12:34',
+                    time_pass: 890,
+                    order_status: 1,
+                    goods_list: [{
+                        imageUrl: '/static/img/1.png'
+                    },{
+                        imageUrl: '/static/img/1.png'
+                    },{
+                        imageUrl: '/static/img/1.png'
+                    },{
+                        imageUrl: '/static/img/1.png'
+                    }]
+                },{
+                    createTime: '2018.6.20 12:34',
+                    time_pass: 890,
+                    order_status: 2,
+                    goods_list: [{
+                        imageUrl: '/static/img/1.png'
+                    },{
+                        imageUrl: '/static/img/1.png'
+                    },{
+                        imageUrl: '/static/img/1.png'
+                    }]
+                },{
+                    createTime: '2018.6.20 12:34',
+                    time_pass: 890,
+                    order_status: 3,
+                    goods_list: [{
+                        imageUrl: '/static/img/1.png'
+                    },{
+                        imageUrl: '/static/img/1.png'
+                    }]
+                },{
+                    createTime: '2018.6.20 12:34',
+                    time_pass: 890,
+                    order_status: 4,
+                    goods_list: [{
+                        imageUrl: '/static/img/1.png'
+                    }]
+                },]
             }
         },
         props:['sendData'],
@@ -70,6 +130,7 @@
         components: {
             loading,
             computeTime,
+            alertTip
         },
         computed: {
         },
@@ -127,7 +188,7 @@
                     padding: .115rem 0;
                     display: flex;
                     float: right;
-                    .order_button_grey{
+                    .order_button_border_grey{
                     	display: inline-block;
 					    height: .32rem;
 					    border-radius: .16rem;
@@ -136,7 +197,18 @@
 					    padding: 0 .1rem;
 					    font-size: .15rem;
 					    color: #666666;
-					    margin: 0 0rem 0 .2rem;
+					    margin: 0 0rem 0 .1rem;
+                    }
+                    .order_button_border_red{
+                        display: inline-block;
+                        height: .32rem;
+                        border-radius: .16rem;
+                        background: #fff;
+                        border: 1px solid #e4372e;
+                        padding: 0 .1rem;
+                        font-size: .15rem;
+                        color: #e4372e;
+                        margin: 0 0rem 0 .1rem;
                     }
                     .order_button_red{
                     	display: inline-block;
@@ -146,7 +218,7 @@
 					    padding: 0 .1rem;
 					    font-size: .15rem;
 					    color: #fff;
-					    margin: 0 0rem 0 .2rem;
+					    margin: 0 0rem 0 .1rem;
                     }
                     .order_text{
 						text-align: right;
