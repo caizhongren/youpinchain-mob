@@ -145,6 +145,10 @@ export const showBack = callback => {
     }
 }
 
+export const addzero = number => {
+    return number < 10 ? '0' + number : number;
+}
+
 
 /**
  * 运动效果

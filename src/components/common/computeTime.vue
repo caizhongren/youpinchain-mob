@@ -12,8 +12,7 @@
         data(){
             return{
                 countNum: 900,
-                showAlert: false,
-                alertText: null,
+                showAlert: false
             }
         },
         mounted(){
