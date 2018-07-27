@@ -45,6 +45,7 @@
   import shareMask from 'src/components/common/shareMask'
   import headTop from 'src/components/header/head'
   import { ModalHelper } from '../../service/Utils'
+  import { showBack } from 'src/config/mUtils'
   export default {
     data(){
       return{
@@ -68,15 +69,6 @@
     mounted(){
       this.goodsid = this.$route.params.goodsid;
       this.initData();
-      var that = this
-      window.onscroll = function () {
-        var t = document.documentElement.scrollTop || document.body.scrollTop
-        if (t >= 30) {
-          that.headTitle = that.goods.name;
-        } else {
-          that.headTitle = ''
-        }
-      }
     },
     components:{
       Carousel,
@@ -88,8 +80,9 @@
     },
     methods:{
       initData () {
-        if (this.goodsid === '0') {
-          this.goods = {
+        var that = this;
+        if (that.goodsid === '0') {
+          that.goods = {
             name:'猪耳朵500g*1份',
             description: '和黄瓜丝凉拌好吃极了～',
             price: 23.99,
@@ -99,7 +92,7 @@
             Desc: '<div>商品介绍内容 <br>商品介绍内容 </br>商品介绍内容</div>'
           }
         } else {
-          this.goods = {
+          that.goods = {
             name:'猪耳朵500g*2份',
             description: '和黄瓜丝凉拌好吃极了～',
             price: 23.99,
@@ -109,12 +102,13 @@
             Desc: '<div>商品介绍内容 <br>商品介绍内容 </br>商品介绍内容</div>'
           }
         }
+        //开始监听scrollTop的值，达到一定程度后显示返回顶部按钮
+        showBack(status => {
+          that.headTitle = status ? that.goods.name : '';
+        });
       },
       addCartList (goods) {
         this.cart_num += 1;
-      },
-      onScroll () {
-        console.log(onScroll)
       }
     }
   }

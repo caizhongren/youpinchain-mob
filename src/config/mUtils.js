@@ -104,6 +104,7 @@ export const loadMore = (element, callback) => {
 export const showBack = callback => {
     let requestFram;
     let oldScrollTop;
+    var scrollTop;
 
     document.addEventListener('scroll',() => {
        showBackFun();
@@ -117,14 +118,14 @@ export const showBack = callback => {
     },{passive: true})
 
     document.addEventListener('touchend',() => {
-        oldScrollTop = document.body.scrollTop;
+        oldScrollTop = scrollTop;
         moveEnd();
     },{passive: true})
     
     const moveEnd = () => {
         requestFram = requestAnimationFrame(() => {
-            if (document.body.scrollTop != oldScrollTop) {
-                oldScrollTop = document.body.scrollTop;
+            if (scrollTop != oldScrollTop) {
+                oldScrollTop = scrollTop;
                 moveEnd();
             }else{
                 cancelAnimationFrame(requestFram);
@@ -135,7 +136,8 @@ export const showBack = callback => {
 
     //判断是否达到目标点
     const showBackFun = () => {
-        if (document.body.scrollTop > 500) {
+        scrollTop = document.body.scrollTop + document.documentElement.scrollTop;
+        if (scrollTop > 50) {
             callback(true);
         }else{
             callback(false);
