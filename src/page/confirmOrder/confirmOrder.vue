@@ -2,9 +2,9 @@
   <div class="confirmOrderContainer">
     <nav class="shop_list_container">
 			<div class="swiper-container" v-if="shopList.length">
-				<div class="topBG" v-if="!no_address"></div>
+				<div class="topBG" v-if="choosedAddress"></div>
         <div class="address">
-          <div class="no_address" v-if="no_address">
+          <div class="no_address" v-if="!choosedAddress">
 						<section class="adddetail">
 							<form action="" v-on:submit.prevent>
 								<section class="ui-padding-block">
@@ -37,10 +37,10 @@
 							<button :class="{butopacity:butpart}" @click.prevent="submitThing">保存</button>
 						</section>
           </div>
-          <router-link :to="{name: 'addressList', query:{path: 'confirmOrder'}}" class="address_info" >
+          <router-link :to="{name: 'addressList', query:{path: 'confirmOrder'}}" class="address_info" v-else>
             <div class="address-detail">
-              <p>{{address_info}}</p>
-              <p><span>{{user_name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{user_mobile}}</span></p>
+              <p>{{choosedAddress.position}}</p>
+              <p><span>{{choosedAddress.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{choosedAddress.phone}}</span></p>
             </div>
             <div class="deletesite">
               <span></span>
@@ -59,7 +59,9 @@
 								<span class="num">x{{item.num}}</span>
 							</div>
 						</li>
-            <div class="load_more">共{{shopList.length}}件 <img src="../../images/path-2.png" width="4%"> </div>
+						<transition name="fade">
+            	<div v-if="showTotal" class="load_more" @click="showTotal = false;">共{{shopList.length}}件 <img src="../../images/path-2.png" width="4%"> </div>
+						</transition>
 					</ul>
 					<ul class="payment_info">
 						<li>
@@ -98,9 +100,12 @@
 
 <script>
 	import AjaxPicker from 'ajax-picker'
+  import {mapState, mapMutations} from 'vuex'
+  import {getAddressList} from 'src/service/getData'
   export default {
     data () {
       return {
+				showTotal: false,
         shopCart: null, // 购物车数据
         totalPrice: 188,
         goodsPrice: 88,
@@ -408,9 +413,11 @@
       }
     },
     created () {
+			this.shopList.length >= 2 ? this.showTotal = true : null
     },
     mounted () {
-			if (this.no_address) {
+			this.initAddress()
+			if (!this.choosedAddress) {
 				var that = this
 				var picker = new AjaxPicker({
 					title: '配送至',
@@ -444,41 +451,56 @@
     components: {
     },
     computed: {
+			...mapState([
+				'choosedAddress', 'userInfo'
+			]),
     },
     methods: {
+			...mapMutations([
+				'CHOOSE_ADDRESS'
+			]),
+			//获取地址信息，第一个地址为默认选择地址
+			async initAddress(){
+				if (this.userInfo && this.userInfo.user_id) {
+					const addressRes = await getAddressList(this.userInfo.user_id);
+					if (addressRes instanceof Array && addressRes.length) {
+						this.CHOOSE_ADDRESS({address: addressRes[0], index: 0});
+					}
+				}
+			},
       //确认订单
       async confrimOrder(){
-          //用户未登录时弹出提示框
-          if (!(this.userInfo && this.userInfo.user_id)) {
-              this.showAlert = true;
-              this.alertText = '请登录';
-              return
-              //未选择地址则提示
-          }else if(!this.choosedAddress){
-              this.showAlert = true;
-              this.alertText = '请添加一个收获地址';
-              return
-          }
-          //保存订单
-          this.SAVE_ORDER_PARAM({
-              user_id: this.userInfo.user_id,
-              cart_id: this.checkoutData.cart.id,
-              address_id: this.choosedAddress.id,
-              description: this.remarklist,
-              entities: this.checkoutData.cart.groups,
-              geohash: this.geohash,
-              sig: this.checkoutData.sig,
-          });
-          //发送订单信息
-          let orderRes = await placeOrders(this.userInfo.user_id, this.checkoutData.cart.id, this.choosedAddress.id, this.remarklist, this.checkoutData.cart.groups, this.geohash, this.checkoutData.sig);
-          //第一次下单的手机号需要进行验证，否则直接下单成功
-          if (orderRes.need_validation) {
-              this.NEED_VALIDATION(orderRes);
-              this.$router.push('/confirmOrder/userValidation');
-          }else{
-              this.ORDER_SUCCESS(orderRes);
-              this.$router.push('/confirmOrder/payment');
-          }
+				//用户未登录时弹出提示框
+				if (!(this.userInfo && this.userInfo.user_id)) {
+						this.showAlert = true;
+						this.alertText = '请登录';
+						return
+						//未选择地址则提示
+				}else if(!this.choosedAddress){
+						this.showAlert = true;
+						this.alertText = '请添加一个收获地址';
+						return
+				}
+				//保存订单
+				this.SAVE_ORDER_PARAM({
+						user_id: this.userInfo.user_id,
+						cart_id: this.checkoutData.cart.id,
+						address_id: this.choosedAddress.id,
+						description: this.remarklist,
+						entities: this.checkoutData.cart.groups,
+						geohash: this.geohash,
+						sig: this.checkoutData.sig,
+				});
+				//发送订单信息
+				let orderRes = await placeOrders(this.userInfo.user_id, this.checkoutData.cart.id, this.choosedAddress.id, this.remarklist, this.checkoutData.cart.groups, this.geohash, this.checkoutData.sig);
+				//第一次下单的手机号需要进行验证，否则直接下单成功
+				if (orderRes.need_validation) {
+						this.NEED_VALIDATION(orderRes);
+						this.$router.push('/confirmOrder/userValidation');
+				}else{
+						this.ORDER_SUCCESS(orderRes);
+						this.$router.push('/confirmOrder/payment');
+				}
 			},
 			inputThing(){
 				(!this.message) ? this.verify=true : this.verify=false;
@@ -555,7 +577,13 @@
 </script>
 
 <style lang="scss" scoped>
-  @import 'src/style/mixin';
+	@import 'src/style/mixin';
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .5s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
+	}
   .confirmOrderContainer {
     padding-bottom: .5rem;
   }
