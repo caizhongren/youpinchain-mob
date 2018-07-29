@@ -1,21 +1,21 @@
 <template>
 	<div>
 		<nav class="shop_list_container">
-			<div class="swiper-container" v-if="shopList.length">
+			<div class="swiper-container" v-if="carts.length">
 				<div class="topBG"></div>
 				<div class="shop_info">
 					<ul class="goods">
-						<li v-for="item in shopList" :key="item.id">
+						<li v-for="item in carts" :key="item.cartId">
 							<span :class="[item.choose ? 'choose' : 'unselected']" @click="item.choose = !item.choose"></span>
-							<img src="" alt="" class="img">
+							<img :src="item.thumbnailPic" alt="" class="img">
 							<div class="goods_info">
-								<p class="name">{{item.name}}</p>
-								<p class="price"><span>¥</span>{{item.price}}</p>
+								<p class="name">{{item.productName}}</p>
+								<p class="price"><span>¥</span>{{item.presentPrice}}</p>
 							</div>
 							<div class="cart_btns">
-								<span class="subduction" :class="{'disabled': item.num <= 1}" @click="item.num > 1 ? item.num -= 1 : null"></span>
-								<span class="num">{{item.num}}</span>
-								<span class="add" @click="item.num += 1"></span>
+								<span class="subduction" :class="{'disabled': item.number <= 1}" @click="item.number > 1 ? addNumber(item, -1) : deleteCart(item)"></span>
+								<span class="num">{{item.number}}</span>
+								<span class="add" @click="addNumber(item, 1)"></span>
 							</div>
 						</li>
 					</ul>
@@ -77,6 +77,7 @@
 
 <script>
 import footGuide from 'src/components/footer/footGuide'
+import {findCart, updateCart, deleteCart, submitOrder} from '../../service/getData'
 
 export default {
 	data(){
@@ -86,22 +87,7 @@ export default {
 			goodsPrice: 88,
 			payment: 88,
 			fare: 8.8,
-			shopList: [
-				{	
-					id: 0,
-					name: '猪耳朵500g*1份',
-					price: 23.99,
-					num: 1,
-					choose: false
-				},
-				{	
-					id: 1,
-					name: '猪耳朵500g*2份',
-					price: 23.99,
-					num: 2,
-					choose: true
-				}
-			],
+			carts: [],
 			recommendList: [
 				{
 					id: 0,
@@ -133,6 +119,9 @@ export default {
 	async beforeMount(){
 	},
 	mounted(){
+		findCart(1, 100).then(res => {
+			this.carts = res.data.cart;
+		})
 	},
 	components: {
 		footGuide,
@@ -141,6 +130,27 @@ export default {
 	},
 	methods: {
 		toSettlement () {
+		},
+		/**
+		 * 添加或删除购物车商品数量
+		 */
+		addNumber(cart, number) {
+			updateCart(cart.cartId, number).then(res => {
+				if (res.errno == 0) {
+					cart.number = cart.number + number;
+				} 
+			})
+		},
+
+		/**
+		 * 删除购物车
+		 */
+		deleteCart(cart) {
+			deleteCart(cart.cartId).then(res => {
+				if (res.errno == 0) {
+					this.carts.splice(this.carts.indexOf(cart), 1);
+				}
+			})
 		}
 	},
 	watch: {

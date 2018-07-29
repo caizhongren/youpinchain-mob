@@ -12,7 +12,7 @@ export const homeIndex = () => fetch('/home/index', {
  * @param {商品id} productId 
  * @param {数量} number 
  */
-export const addToCart = (productId, number) => fetch('carts', {
+export const addToCart = (productId, number) => fetch('/carts', {
 	productId: productId,
 	number: number
 }, 'POST')
@@ -199,4 +199,4 @@ export const cancelOrder = (orderId) => fetch('/orders/' + orderId, {}, 'DELETE'
  * 申请退款
  */
 
-export const cancelOrder = (orderId) => fetch('/orders/' + orderId + 'refund', {}, 'POST');
+export const refundOrder = (orderId) => fetch('/orders/' + orderId + 'refund', {}, 'POST');

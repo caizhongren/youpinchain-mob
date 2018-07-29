@@ -19,7 +19,7 @@
               <p class="price"><span>¥</span>{{item.originalPrice}} <s>¥{{item.presentPrice}}</s></p>
             </div>
           </router-link>  
-          <div class="shopping_cart"  @touchstart="addToCart($event)"></div>
+          <div class="shopping_cart"  @touchstart="addToCart(item.id, $event)"></div>
         </li>
       </ul>
 			<div @click="loadMore()" class="load_more">查看更多商品</div>
@@ -75,11 +75,14 @@ export default {
         this.$router.push({name: 'healthIndicators'})
       }
     },
-    addToCart (event) { // 加入购物车，计算按钮位置。
+    addToCart (productId, event) { // 加入购物车，计算按钮位置。
       let elLeft = event.target.getBoundingClientRect().left;
       let elBottom = event.target.getBoundingClientRect().bottom;
       this.showMoveDot.push(true);
       this.showMoveDotFun(this.showMoveDot, elLeft, elBottom);
+      addToCart(productId, 1).then(res => {
+        console.log(res);
+      })
     },
     showMoveDotFun (showMoveDot, elLeft, elBottom) { // 显示下落圆球
       this.showMoveDot = [...this.showMoveDot, ...showMoveDot];
