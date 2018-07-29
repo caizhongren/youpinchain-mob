@@ -7,8 +7,6 @@ import fetch from '../config/fetch'
 export const homeIndex = () => fetch('/home/index', {
 });
 
-export const login_oa = () => fetch('/oa/login_oa');
-
 /**
  * 添加购物车
  * @param {商品id} productId 
