@@ -5,10 +5,10 @@
 				<div class="page-top-red"></div>
 				<section class="order_track_detail border_radius">
 					<ul>
-						<li class="order_track_step">
+						<li class="order_track_step" v-if="order_track.order_track_step.length >= 5">
 							<div>
-								<p>12:23</p>
-								<p>06-20</p>
+								<p>{{order_track.order_track_step[4] | date_hm}}</p>
+								<p>{{order_track.order_track_step[4] | date_md}}</p>
 							</div>
 							<span class="have_after">收</span>
 							<div>
@@ -16,10 +16,10 @@
 								<p>感谢您的支持，欢迎再次来哦～</p>
 							</div>
 						</li>
-						<li class="order_track_step">
+						<li class="order_track_step" v-if="order_track.order_track_step.length >= 4">
 							<div>
-								<p>12:23</p>
-								<p>06-20</p>
+								<p>{{order_track.order_track_step[3] | date_hm}}</p>
+								<p>{{order_track.order_track_step[3] | date_md}}</p>
 							</div>
 							<span class="have_after distributing"><b></b></span>
 							<div>
@@ -28,20 +28,20 @@
  								<p>联系电话：<b class="phone_number">13899998888</b></p>
 							</div>
 						</li>
-						<li class="order_track_step">
+						<li class="order_track_step" v-if="order_track.order_track_step.length >= 3">
 							<div>
-								<p>12:23</p>
-								<p>06-20</p>
+								<p>{{order_track.order_track_step[2] | date_hm}}</p>
+								<p>{{order_track.order_track_step[2] | date_md}}</p>
 							</div>
 							<span class="have_after circle_only"><b></b></span>
 							<div class="align_center">
 								<p style="text-indent: -.06rem;">【商品已发货】</p>
 							</div>
 						</li>
-						<li class="order_track_step">
+						<li class="order_track_step" v-if="order_track.order_track_step.length >= 2">
 							<div>
-								<p>12:23</p>
-								<p>06-20</p>
+								<p>{{order_track.order_track_step[1] | date_hm}}</p>
+								<p>{{order_track.order_track_step[1] | date_md}}</p>
 							</div>
 							<span class="have_after circle_only"><b></b></span>
 							<div>
@@ -49,15 +49,15 @@
 								<p>我们会尽快发货的哟～</p>
 							</div>
 						</li>
-						<li class="order_track_step">
+						<li class="order_track_step" v-if="order_track.order_track_step.length >= 1">
 							<div>
-								<p>12:23</p>
-								<p>06-20</p>
+								<p>{{order_track.order_track_step[0] | date_hm}}</p>
+								<p>{{order_track.order_track_step[0] | date_md}}</p>
 							</div>
 							<span class="circle_only"><b></b></span>
 							<div>
 								<p> 订单提交成功</p>
- 								<p>订单号：<b class="phone_number">13899998888</b></p>
+ 								<p>订单号：<b class="phone_number">{{order_track.order_number}}</b></p>
 							</div>
 						</li>
 					</ul>	
@@ -74,17 +74,26 @@
 <script>
     import loading from 'src/components/common/loading'
     import footGuide from 'src/components/footer/footGuide'
-
+    import {addzero} from '../../../config/mUtils'
 
     export default {
 
       data(){
             return{
                 showLoading: true, //显示加载动画
+                // order_msg_title: ['订单提交成功', '支付成功', '商品已发货', '配送中', '订单完成'],
+                order_track:{
+                	order_track_step: [1529468580000, 1529468580000, 1529468580000, 1529468580000, 1529468580000],
+                	order_number: 13899998888,
+                	distribute_msg: {
+                		mobile: 13899998888 
+                	}
+                }
             }
         },
         created () {
             this.showLoading = false
+            console.log
         },
         mounted(){
         },
@@ -94,8 +103,19 @@
         computed: {
         },
         methods: {
+        	addzero (number) {
+        		return number < 10 ? '0' + number : number;
+        	}
         },
         watch: {
+        },
+        filters: {
+        	date_md: function(time) {
+        		return (addzero(new Date(time).getMonth() + 1)) + '-' + addzero(new Date(time).getDate()); 
+        	},
+        	date_hm: function(time) {
+        		return (addzero(new Date(time).getHours()) + ':' + addzero(new Date(time).getMinutes()));
+        	}
         }
     }
 </script>

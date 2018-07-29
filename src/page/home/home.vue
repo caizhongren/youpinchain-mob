@@ -112,7 +112,7 @@ export default {
     @include wh(.15rem, .15rem);
   }
   .home {
-    margin-bottom: .5rem;
+    padding-bottom: .5rem;
   }
   .product_nav{
     overflow: hidden;

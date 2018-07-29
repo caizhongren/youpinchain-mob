@@ -3,29 +3,36 @@
         <span class="rem_time">
            {{remaining}}
         </span>
-        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>  
     </div>
 </template>
 
 <script>
-    import alertTip from 'src/components/common/alertTip'
 
     export default {
-    	data(){
+        data(){
             return{
                 countNum: 900,
-                showAlert: false,
-                alertText: null,
+                showAlert: false
             }
         },
         mounted(){
+            this.countNum -= this.numTime;
+            this.remainingTime();
         },
         props: ['time'],
         components: {
-            alertTip,
         },
         methods: {
-            
+            closeTip(){
+                this.$emit('closeTip')
+            },
+            //计算时间
+            remainingTime(){
+                clearInterval(this.timer);
+                this.timer = setInterval(() => {
+                    this.countNum --;
+                }, 1000);
+            }
         },
         computed: {
             //转换时间成分秒
@@ -38,7 +45,12 @@
                 if (second < 10) {
                     second = '0' + second;
                 }
-                return '支付' + minute + ':' + second;
+                if(this.countNum > 0){
+                    return '支付 ' + minute + ':' + second;
+                } else {
+                    return '支付超时'
+                }
+                
             },
             //订单返回时间秒分分别处理
             numTime: function (){
@@ -49,6 +61,7 @@
                 }
             }
         },
+
     }
 </script>
 

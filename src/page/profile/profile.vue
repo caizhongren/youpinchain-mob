@@ -3,15 +3,15 @@
         <section>
             <div class="profile-top-red"></div>
             <section class="profile-number">
-                <router-link :to="userInfo&&userInfo.user_id? '/profile/info' : '/login'" class="profile-link">
-                    <img :src="imgBaseUrl + userInfo.avatar" class="privateImage" v-if="userInfo&&userInfo.user_id">
+                <div class="profile-link">
+                    <img :src="userInfo.userImgUrl" alt="" class="privateImage" v-if="userInfo && userInfo.userImgUrl">
                     <div class="privateImage" v-else>
                         <svg class="privateImage-svg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
                         </svg>
                     </div>
-                    <p class="user-name">Petite mignonne😉</p>
-                </router-link>
+                    <p class="user-name">{{userInfo.username}}</p>
+                </div>
             </section>
             <section class="info-data">
                 <router-link to='/order' class="my-order" tag="div">
@@ -25,15 +25,15 @@
                 </router-link>
                 <ul class="clear">
                     <router-link to="/order/unpaid" tag="li" class="info-data-link">
-                        <span class="info-data-top"></span>
+                        <span class="info-data-top"><b class="red-points" v-if="userInfo.unpaid">{{userInfo.unpaid}}</b></span>
                         <span class="info-data-bottom">待支付</span>
                     </router-link>
                     <router-link to="/order/undelivery" tag="li" class="info-data-link">
-                       <span class="info-data-top"><b data-v-4675cad9="" class="red-points">1</b></span>
+                       <span class="info-data-top"><b class="red-points" v-if="userInfo.undelivery">{{userInfo.undelivery}}</b></span>
                        <span class="info-data-bottom">待发货</span>
                     </router-link>
                     <router-link to="/order/delivered" tag="li" class="info-data-link">
-                        <span class="info-data-top"></span>
+                        <span class="info-data-top"><b class="red-points" v-if="userInfo.delivery">{{userInfo.delivery}}</b></span>
                         <span class="info-data-bottom">已发货</span>
                     </router-link>
                 </ul>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <!-- 关于我们 -->
-                <router-link to='/vipcard' class="myorder">
+                <router-link to='/aboutUs' class="myorder">
                     <aside></aside>
                     <div class="myorder-div">
                         <span>关于我们</span>
@@ -101,9 +101,6 @@
 <script>
 import alertTip from 'src/components/common/alertTip'
 import footGuide from 'src/components/footer/footGuide'
-import {mapState, mapMutations} from 'vuex'
-import {imgBaseUrl} from 'src/config/env'
-import {getImgPath} from 'src/components/common/mixin'
 
 export default {
     data(){
@@ -116,58 +113,29 @@ export default {
             count : 0,             //优惠券个数
             pointNumber : 0,       //积分数
             avatar: '',             //头像地址
-            imgBaseUrl,
-            showAlertTip: false
+            showAlertTip: false,
+            userInfo: {
+                userImgUrl: '/static/img/1.png',
+                username: 'Petite mignonne😉',
+                unpaid: 1,
+                undelivery: 2,
+                delivered: 3
+            }
         }
     },
     mounted(){
-        this.initData();
     },
-    mixins: [getImgPath],
     components:{
         footGuide,
         alertTip
     },
 
     computed:{
-        ...mapState([
-            'userInfo',
-        ]),
-        //后台会返回两种头像地址格式，分别处理
-        imgpath:function () {
-            let path;
-            if(this.avatar.indexOf('/') !==-1){
-                path = imgBaseUrl +　this.avatar;
-            }else{
-                path = this.getImgPath(this.avatar)
-            }
-            this.SAVE_AVANDER(path);
-            return path;
-        }
     },
 
     methods:{
-        ...mapMutations([
-            'SAVE_AVANDER'
-        ]),
-        initData(){
-            if (this.userInfo && this.userInfo.user_id) {
-                this.avatar = this.userInfo.avatar;
-                this.username = this.userInfo.username;
-                this.mobile = this.userInfo.mobile || '暂无绑定手机号';
-                this.balance = this.userInfo.balance;
-                this.count = this.userInfo.gift_amount;
-                this.pointNumber = this.userInfo.point;
-            }else{
-                this.username = '登录/注册';
-                this.mobile = '暂无绑定手机号';
-            }
-        },
     },
     watch: {
-        userInfo: function (value){
-            this.initData()
-        }
     }
 }
 
@@ -208,6 +176,7 @@ export default {
                 border-radius:50%;
                 vertical-align:middle;
                 margin: 0 auto;
+                display: block;
                 .privateImage-svg{
                     border-radius:50%;
                     @include wh(.75rem,.75rem);
