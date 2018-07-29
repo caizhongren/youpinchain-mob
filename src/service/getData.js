@@ -5,8 +5,7 @@ import {getStore} from '../config/mUtils'
  * 查询首页数据
  */
 
-export const homeIndex = () => fetch('/youpin/wx/home/index', {
-	type: 'guess'
+export const homeIndex = () => fetch('/home/index', {
 });
 
 
@@ -14,7 +13,17 @@ export const homeIndex = () => fetch('/youpin/wx/home/index', {
  * 微信授权登陆
  */
 
-export const login_oa = () => fetch('/youpin/wx/oa/login_oa');
+export const login_oa = () => fetch('/oa/login_oa');
+
+/**
+ * 添加购物车
+ * @param {商品id} productId 
+ */
+
+export const addToCart = productId => fetch('carts/products' + productId, {
+
+}, 'POST')
+
 
 /**
  * 获取首页热卖商品

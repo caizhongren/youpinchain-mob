@@ -26,6 +26,7 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
+				'X-youpinchain-Token': localStorage.getItem('X-youpinchain-Token'),
 			},
 			mode: "cors",
 			cache: "no-cache"

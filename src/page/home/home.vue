@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <router-link :to="'/product-introduction'">
-      <img src="../../images/1.png" alt="" width="100%" class="show">
+      <img :src="brand.pictureUrl" alt="" width="100%" class="show">
     </router-link>
     <ul class="product_nav">
       <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" @click="toggleTab(index)">{{tab.name}}</li>
@@ -33,11 +33,12 @@
 
 <script>
 import footGuide from '../../components/footer/footGuide'
-import {homeIndex} from '../../service/getData'
+import {homeIndex, addToCart} from '../../service/getData'
 
 export default {
   data(){
     return{
+      brand: {},
       goodsList: [],
       product_nav: [],
       activeTab: 0,
@@ -52,6 +53,7 @@ export default {
     homeIndex().then(res => {
       this.hotgoodslist = res.data.products
       this.product_nav = res.data.brandDatas
+      this.brand = res.data.brand
     })
   },
   components:{
