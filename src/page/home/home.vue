@@ -22,7 +22,7 @@
           <div class="shopping_cart"  @touchstart="addToCart(item.id, $event)"></div>
         </li>
       </ul>
-			<div @click="loadMore()" class="load_more">查看更多商品</div>
+			<div @click="loadMore()" class="load_more" v-if="hasMore">查看更多商品</div>
       <transition appear @after-appear = 'afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot" :key="index">
         <span class="move_dot" v-if="item"></span>
       </transition>
@@ -33,7 +33,7 @@
 
 <script>
 import footGuide from '../../components/footer/footGuide'
-import {homeIndex, addToCart} from '../../service/getData'
+import {homeIndex, addToCart, productList} from '../../service/getData'
 
 export default {
   data(){
@@ -46,14 +46,21 @@ export default {
       showMoveDot: [], //控制下落的小圆点显示隐藏
       elLeft: 0, //当前点击加按钮在网页中的绝对top值
       elBottom: 0, //当前点击加按钮在网页中的绝对left值
+      hasMore: false, // 是否有更多商品，是否可以点击加载更多
+      page: 1,
+      pageSize: 4
     }
   },
 	mounted(){
     //获取商品列表
     homeIndex().then(res => {
-      this.hotgoodslist = res.data.products
       this.product_nav = res.data.brandDatas
       this.brand = res.data.brand
+    })
+
+    productList(this.page, this.pageSize).then(res => {
+      this.hotgoodslist = res.data.productList
+      this.hasMore = res.data.totalPages > this.page
     })
   },
   components:{
@@ -63,7 +70,14 @@ export default {
   },
   methods:{
     loadMore () {
-      alert('查看更多')
+      if(!this.hasMore) {
+        return;
+      }
+      this.page++;
+      productList(this.page, this.pageSize).then(res => {
+        this.hotgoodslist = res.data.productList
+        this.hasMore = res.data.totalPages > this.page
+      })
     },
     toggleTab (index) {
       this.activeTab = index

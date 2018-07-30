@@ -43,10 +43,10 @@ export const hotcity = (page, size) => fetch('/wx/wx/photo/list', {
  * @param {品牌id} brandId
  */
 
-export const productList = (brandId, page, size) => fetch('/products', {
-	brandId: brandId,
+export const productList = (page, size, brandId) => fetch('/products', {
 	page: page,
-	size: size
+	size: size,
+	brandId: brandId,
 });
 
 
@@ -90,6 +90,11 @@ export const addCart = (youpinCar, productId, number) => fetch('/carts', {
 	productId: productId,
 	number: number
 }, 'POST');
+
+/**
+ * 地址列表查询
+ */
+export const getDefaultAddress = () => fetch('/addresses/defaultAddress');
 
 
 /**
@@ -200,3 +205,10 @@ export const cancelOrder = (orderId) => fetch('/orders/' + orderId, {}, 'DELETE'
  */
 
 export const refundOrder = (orderId) => fetch('/orders/' + orderId + 'refund', {}, 'POST');
+
+
+/**
+ * 订单统计
+ */
+
+export const orderStat = () => fetch('/orders/stat', {});
