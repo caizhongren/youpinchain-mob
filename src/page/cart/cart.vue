@@ -234,7 +234,7 @@ export default {
 		}
 	}
 	.shop_list_container {
-		background-color: $bc;
+		background-color: $fc;
 		.no_list {
 			padding: .5rem 0;
 			text-align: center;
