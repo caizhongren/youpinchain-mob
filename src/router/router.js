@@ -108,15 +108,17 @@ export default [{
         },
         //订单列表页
         {
+            path: 'orderTrack',
+            component: orderTrack
+        },
+        {
+            path: 'orderDetail', //订单详情页
+            component: orderDetail
+        },
+        {
             path: '/order',
             component: order,
             children: [{
-                path: 'orderDetail', //订单详情页
-                component: orderDetail
-            },{
-                path: 'orderTrack',
-                component: orderTrack
-            },{
                 path: '',
                 component: allOrder, //全部订单
                 name: 'all'
