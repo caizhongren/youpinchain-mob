@@ -13,15 +13,9 @@
 </template>
 
 <script>
-    import {mapState, mapMutations} from 'vuex'
-    import headTop from 'src/components/header/head'
     import computeTime from 'src/components/common/computeTime'
     import loading from 'src/components/common/loading'
-    import {getImgPath} from 'src/components/common/mixin'
-    import footGuide from 'src/components/footer/footGuide'
-    import {getOrderList} from 'src/service/getData'
     import {loadMore} from 'src/components/common/mixin'
-    import {imgBaseUrl} from 'src/config/env'
 
 
     export default {
@@ -31,7 +25,6 @@
                 offset: 0, 
                 preventRepeat: false,  //防止重复获取
                 showLoading: false, //显示加载动画
-                imgBaseUrl,
                 activeTab: 0,
                 tabList: [
                   {
