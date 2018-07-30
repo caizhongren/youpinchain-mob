@@ -2,10 +2,10 @@
   <!-- 拨打客服电话 -->
   <div class="mask-common mask1" v-client-height>
     <div class="alert-wrap">
-      <div class="text" v-html="type === 1 ? AddressText : TelText"></div>
+      <div class="text" v-html="alertText"></div>
       <div class="i-know">
         <div @click="closeAlertTip()">取消</div>
-        <div @click="closeAlertTip(1)">确定</div>
+        <div @click="closeAlertTip()">确定</div>
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@
         TelText: '<p>确定拨打客服电话 <br> 400-990-7626</p>'
       }
     },
-    props: ['showAlertTip', 'type'], // 判断来源 1: 删除地址，2: 拨打客服电话
+    props: ['alertText', 'showAlertTip', 'type', 'func'], // 判断来源 1: 删除地址，2: 拨打客服电话
     watch: {
       '$parent.showAlertTip': function (newVal, oldVal) {
         newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
@@ -32,13 +32,7 @@
     methods: {
       closeAlertTip (type) {
         this.$parent.showAlertTip = false
-        if (type) {
-          if (this.type === 2) {
-            window.location.href = "tel:400-990-7626";
-          } else {
-            alert('删除地址')
-          }
-        }
+        
       }
     },
     components: {},

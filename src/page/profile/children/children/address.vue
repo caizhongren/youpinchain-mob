@@ -5,8 +5,8 @@
         		<li v-for='(item,index) in adressList' @click="selectOrEdit(item, index)">
                     <span class="default-address" v-show="addressIndex === index"></span>
         			<div class="address-detail">
-        				<p>{{item.position}}</p>
-        				<p><span>{{item.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{item.phone}}</span></p>
+        				<p>{{item.detailedAddress}}</p>
+        				<p><span>{{item.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{item.mobile}}</span></p>
         			</div>
         			<div class="deletesite" @click.stop="toEdit(item, index)">
         				<span></span>
@@ -28,32 +28,19 @@
 
 <script>
     import headTop from 'src/components/header/head'
+    import {getAddressList} from '../../../../service/getData'
     import {mapState, mapMutations} from 'vuex'
 
     export default {
       data(){
             return{
-    			adressList:[{
-                    position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
-                    name: '张1',
-                    phone: '15210288888',
-                    number: 0
-                },{
-                    position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
-                    name: '张2',
-                    phone: '15210288888',
-                    number: 1
-                },{
-                    position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
-                    name: '张三',
-                    phone: '15210288888',
-                    number: 2
-                }] //地址列表
+    			adressList:[] //地址列表
             }
         },
         mounted(){
-        },
-        mounted(){
+            getAddressList().then(res => {
+                this.adressList = res.data;
+            })
         },
         created () {
             if(this.$route.query.path !== 'confirmOrder'){
@@ -77,11 +64,11 @@
                     this.CHOOSE_ADDRESS({address, index});
                     this.$router.go(-1);
                 } else {
-                    this.$router.push({name: 'editAddress', query:{number: index}});
+                    this.$router.push({name: 'editAddress', query:{addressId: address.id}});
                 }
             },
             toEdit (address, index) {
-                this.$router.push({name: 'editAddress', query:{number: index}})
+                this.$router.push({name: 'editAddress', query:{addressId: address.id}})
             }
         },
         watch: {

@@ -6,7 +6,7 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 	type = type.toUpperCase();
 	url = baseUrl + url;
 
-	if (type == 'GET' || type == 'PUT') {
+	if (type == 'GET') {
 		let dataStr = ''; //数据拼接字符串
 		Object.keys(data).forEach(key => {
 			if (data[key] != undefined) {
@@ -34,7 +34,7 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 			cache: "no-cache"
 		}
 
-		if (type == 'POST') {
+		if (type == 'POST' || type == 'PUT') {
 			Object.defineProperty(requestConfig, 'body', {
 				value: JSON.stringify(data)
 			})

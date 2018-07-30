@@ -113,11 +113,11 @@ export const getAddressDetail = (addressId) => fetch('/addresses/' + addressId);
  * 添加收货地址
  */
 
-export const addAddress = (name, provinceId, cityId, districtId, mobile, address) => fetch('/addresses', {
+export const addAddress = (name, provinceId, cityId, areaId, mobile, address) => fetch('/addresses', {
 	name,
 	provinceId,
 	cityId,
-	districtId,
+	areaId,
 	mobile,
 	address
 }, 'POST');
@@ -126,11 +126,11 @@ export const addAddress = (name, provinceId, cityId, districtId, mobile, address
  * 更新收货地址
  */
 
-export const updateAddress = (addressId, name, provinceId, cityId, districtId, mobile, address) => fetch('/addresses/' + addressId, {
+export const updateAddress = (addressId, name, provinceId, cityId, areaId, mobile, address) => fetch('/addresses/' + addressId, {
 	name,
 	provinceId,
 	cityId,
-	districtId,
+	areaId,
 	mobile,
 	address
 }, 'PUT');
@@ -212,3 +212,11 @@ export const refundOrder = (orderId) => fetch('/orders/' + orderId + 'refund', {
  */
 
 export const orderStat = () => fetch('/orders/stat', {});
+
+/**
+ * 查询区域
+ */
+
+export const getRegionsList = (parentId) => fetch('/regions', {
+	pid: parentId
+});
