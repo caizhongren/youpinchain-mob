@@ -9,7 +9,7 @@
                         <p>{{status_text[orderData.order_status].title}}</p>
                         <p>{{status_text[orderData.order_status].text}}</p>
                     </div>
-                    <router-link to="/order/orderTrack" tag="svg" fill="#333" class="arrow_right" v-show="orderData.order_status === 1 || orderData.order_status === 2 || orderData.order_status === 3">
+                    <router-link to="/orderTrack" tag="svg" fill="#333" class="arrow_right" v-show="orderData.order_status === 1 || orderData.order_status === 2 || orderData.order_status === 3">
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
                     </router-link>
                 </section>

@@ -10,7 +10,7 @@
                                 {{status_title[item.order_status]}}
                             </p>
                         </header>
-                        <router-link to="/order/orderDetail" tag="div">
+                        <router-link to="/orderDetail" tag="div">
                             <section class="goods_img">
                                 <div class="goods_box">
                                     <img class="restaurant_image" v-for="(goods,index) in item.goods_list" :src="goods.imageUrl" v-if="index < 4">
@@ -28,7 +28,7 @@
                         <div class="order_again">
                             <compute-time v-if="item.order_status == 0" :time="item.time_pass"></compute-time>
                             <span class="order_button_border_red" v-if="item.order_status == 1">取消订单</span>
-                            <router-link tag="span" to="/order/orderTrack" class="order_button_border_red" v-if="item.order_status == 2">查看物流</router-link>
+                            <router-link tag="span" to="/orderTrack" class="order_button_border_red" v-if="item.order_status == 2">查看物流</router-link>
                             <router-link tag="span" to="/home" class="order_button_red" v-if="item.order_status == 3 || item.order_status == 4" >再次购买</router-link>
                         </div>
                     </div>
@@ -43,15 +43,9 @@
 </template>
 
 <script>
-    import {mapState, mapMutations} from 'vuex'
-    import headTop from 'src/components/header/head'
     import computeTime from 'src/components/common/computeTime'
     import loading from 'src/components/common/loading'
-    import {getImgPath} from 'src/components/common/mixin'
-    import footGuide from 'src/components/footer/footGuide'
-    import {getOrderList} from 'src/service/getData'
     import {loadMore} from 'src/components/common/mixin'
-    import {imgBaseUrl} from 'src/config/env'
     import alertTip from 'src/components/common/alertTip'
 
 

@@ -229,11 +229,6 @@
     	display: flex;
 	    align-items: center;
     }
-    .loading-enter-active, .loading-leave-active {
-        transition: opacity .7s
-    }
-    .loading-enter, .loading-leave-active {
-        opacity: 0;
-    }
+
     
 </style>
