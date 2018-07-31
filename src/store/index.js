@@ -7,7 +7,7 @@ import getters from './getters'
 Vue.use(Vuex)
 
 const state = {
-	choosedAddress: {},//选择地址
+	choosedAddress: undefined,//选择地址
 	addressIndex: null,//选择地址的索引值
 	userInfo: {
 		user_id: 1
