@@ -160,7 +160,7 @@ export const login_oa = () => fetch('/oa/login_oa');
  * 提交订单
  */
 
-export const submitOrder = ({ cartIds, addressId }) => fetch('/orders', {
+export const submitOrder = (cartIds,addressId) => fetch('/orders', {
 	cartIds: cartIds,
 	addressId: addressId
 }, 'POST');
@@ -178,7 +178,7 @@ export const confirmOrder = ({ orderId }) => fetch('/orders/' + orderId + 'confi
  * 预付款
  */
 
-export const prepayOrder = ({ orderId }) => fetch('/orders' + orderId + '/prepay', {
+export const prepayOrder = ( orderId ) => fetch('/orders/' + orderId + '/prepay', {
 }, 'POST');
 
 

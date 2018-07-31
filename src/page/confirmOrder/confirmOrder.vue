@@ -89,6 +89,50 @@
                 </div>
             </div>
         </div>
+        <div class="shop_info">
+            <ul class="goods">
+                <li v-for="item in productList" :key="item.id">
+                    <img :src="item.thumbnailPic" alt="" class="img">
+                    <div class="goods_info">
+                        <p class="name">{{item.productName}}</p>
+                        <p class="price"><span>¥</span>{{item.presentPrice}}</p>
+                    </div>
+                    <div class="cart_btns">
+                        <span class="num">x{{item.number}}</span>
+                    </div>
+                </li>
+                <transition name="fade">
+                    <div v-if="showTotal" class="load_more" @click="loadAllProducts();">共{{productList.length}}件 <img src="../../images/path-2.png" width="4%"> </div>
+                </transition>
+            </ul>
+            <ul class="payment_info">
+                <li>
+                    <p>商品总价</p>
+                    <p>¥{{goodsPrice}}</p>
+                </li>
+                <li>
+                    <p>优惠价格</p>
+                    <p class="coupon">- ¥0.00</p>
+                </li>
+                <li>
+                    <p>运费</p>
+                    <p>¥{{fare}}</p>
+                </li>
+                <li>
+                    <p>包装费</p>
+                    <p>¥{{packingFee}}</p>
+                </li>
+                <li>
+                    <p>包装费减免</p>
+                    <p>¥{{packingFeeReduction}}</p>
+                </li>
+            </ul>
+            <div class="right totalPrice">
+                实际支付
+                <p><span>¥</span>{{totalPrice}}</p>
+            </div>
+        </div>
+
     </nav>
     <ul class="settlement">
         <li @click="submitOrder()">去付款</li>
@@ -125,7 +169,8 @@ export default {
             verifythree: false, // 地址
             butpart: false, //  新增地址按钮的透明度
             addAddress: "",
-            choosedAddress: undefined
+            choosedAddress: undefined,
+            addressId: ""
         };
     },
     created() {
@@ -147,10 +192,10 @@ export default {
                 let address = res.data;
                 let index = -1;
                 this.choosedAddress = address;
+                this.addressId = res.data.id;
                 localStorage.setItem('choosedAddress', JSON.stringify(address));
             });
         }
-
         if (!this.choosedAddress) {
             var that = this;
             var picker = new AjaxPicker({
@@ -181,16 +226,52 @@ export default {
                 }
             });
         }
-        this.$forceUpdate()
+
     },
     components: {},
-    computed: {
-    },
+    computed: {},
     methods: {
         // ...mapMutations(["CHOOSE_ADDRESS"]),
 
         loadAllProducts() {
 
+        },
+        paymentCall() {
+            let cartIds = [];
+            this.productList.forEach(cart => {
+                cartIds.push(cart.cartId);
+            });
+            let addressId = this.addressId;
+            console.info(cartIds + "和" + addressId)
+            submitOrder(cartIds, addressId).then(res => {
+                console.info(res)
+                alert(res.errno)
+                let orderId = res.data.orderId;
+                prepayOrder(orderId).then(resp => {
+                    console.info(resp)
+                    alert(resp.errno)
+                    if (resp.errno === 403) {
+                        alert("订单不可支付")
+                    } else {
+                        WeixinJSBridge.invoke(
+                            'getBrandWCPayRequest', {
+                                "appId": resp.data.appId, //公众号名称，由商户传入
+                                "timeStamp": resp.data.timeStamp, //时间戳，自1970年以来的秒数
+                                "nonceStr": resp.data.nonceStr, //随机串
+                                "package": resp.data.packageValue,
+                                "signType": resp.data.signType, //微信签名方式：
+                                "paySign": resp.data.paySign //微信签名
+                            },
+                            function (res) {
+                                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                    alert("付款成功")
+                                }
+                                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                            }
+                        );
+                    }
+                })
+            })
         },
 
         //确认订单
