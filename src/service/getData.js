@@ -178,7 +178,7 @@ export const prepayOrder = ({ orderId }) => fetch('/orders' + orderId + '/prepay
 
 /**
  * 获取订单列表
- *  showType 0:全部，1：待付款，2：待发货，3：待收货，4：待评价
+ * showType 0:全部，1：待付款，2：待发货，3：待收货，4：待评价
  */
 
 export const getOrderList = (page, size, showType) => fetch('/orders', {

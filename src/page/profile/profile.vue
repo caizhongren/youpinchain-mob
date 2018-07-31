@@ -90,7 +90,7 @@
             </section>
             
         </section>
-        <alert-tip :showAlertTip="showAlertTip" :type="2" v-show="showAlertTip"></alert-tip>
+        <alert-tip :showAlertTip="showAlertTip" :type="2" :alertText='`<p>确定拨打客服电话 <br> 400-990-7626</p>`' v-show="showAlertTip"></alert-tip>
         <foot-guide></foot-guide>
         <transition name="router-slid" mode="out-in">
             <router-view></router-view>
@@ -149,7 +149,6 @@ export default {
 
       userInfo().then(res => {
         if (res.errno == 0) {
-          console.log(res.data);
           this.userInfo.userImgUrl = res.data.headImgUrl;
           this.userInfo.username = res.data.nickName;
         }

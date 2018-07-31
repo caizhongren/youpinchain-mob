@@ -32,7 +32,9 @@
     methods: {
       closeAlertTip (type) {
         this.$parent.showAlertTip = false
-        
+        if( type == 2) {
+          window.location.href = "tel:10086"
+        }
       }
     },
     components: {},

@@ -47,6 +47,7 @@
     import loading from 'src/components/common/loading'
     import {loadMore} from 'src/components/common/mixin'
     import alertTip from 'src/components/common/alertTip'
+    import {getOrderList} from "../../../service/getData";
 
 
     export default {
@@ -55,51 +56,18 @@
                 showAlertTip: false,
                 status_title:['待支付', '待发货', '已发货', '已完成', '已取消'],
                 showLoading: true, //显示加载动画
-                orderList: [
-                {
-                    createTime: '2018.6.20 12:34',
-                    time_pass: 890,
-                    order_status: 3,
-                    goods_list: [{
-                        imageUrl: '/static/img/1.png'
-                    },{
-                        imageUrl: '/static/img/1.png'
-                    },{
-                        imageUrl: '/static/img/1.png'
-                    },{
-                        imageUrl: '/static/img/1.png'
-                    },{
-                        imageUrl: '/static/img/1.png'
-                    }]
-                },{
-                    createTime: '2018.6.20 12:34',
-                    time_pass: 890,
-                    order_status: 3,
-                    goods_list: [{
-                        imageUrl: '/static/img/1.png'
-                    },{
-                        imageUrl: '/static/img/1.png'
-                    },{
-                        imageUrl: '/static/img/1.png'
-                    },{
-                        imageUrl: '/static/img/1.png'
-                    }]
-                },{
-                    createTime: '2018.6.20 12:34',
-                    time_pass: 890,
-                    order_status: 3,
-                    goods_list: [{
-                        imageUrl: '/static/img/1.png'
-                    },{
-                        imageUrl: '/static/img/1.png'
-                    },{
-                        imageUrl: '/static/img/1.png'
-                    }]
-                }]
+                orderList: []
             }
         },
         props:['sendData'],
         mounted(){
+            getOrderList(this.page, this.pageSize, 4).then(res => {
+                if (res.errno !== 0){
+                    return;
+                }
+                this.orderList = res.data.orderVoList;
+                this.showLoading = false;
+            })
         },
         created () {
             this.showLoading = false
