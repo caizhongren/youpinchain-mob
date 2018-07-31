@@ -55,6 +55,14 @@ export const productList = (page, size, brandId) => fetch('/products', {
 	brandId: brandId,
 });
 
+/**
+ * 查询热卖商品列表
+ */
+
+export const productHotList = (page, size) => fetch('/products/hot', {
+    page: page,
+    size: size
+});
 
 /**
  * 根据商品id查询商品详情
