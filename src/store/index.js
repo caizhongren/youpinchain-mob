@@ -11,7 +11,8 @@ const state = {
 	addressIndex: null,//选择地址的索引值
 	userInfo: {
 		user_id: 1
-	}
+	},
+	cart_num: 0 //购物车中商品种类个数
 }
 
 export default new Vuex.Store({
