@@ -60,6 +60,7 @@
 				'CHOOSE_ADDRESS'
 			]),
             selectOrEdit (address, index) {
+                index = -1
                 if(this.$route.query.path === 'confirmOrder'){
                     this.CHOOSE_ADDRESS({address, index});
                     this.$router.go(-1);
