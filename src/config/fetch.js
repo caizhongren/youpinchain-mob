@@ -43,6 +43,9 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 		try {
 			const response = await fetch(url, requestConfig);
 			const responseJson = await response.json();
+			if (responseJson.errno === 401){
+                localStorage.removeItem('X-youpinchain-Token')
+			}
 			return responseJson
 		} catch (error) {
 			throw new Error(error)
