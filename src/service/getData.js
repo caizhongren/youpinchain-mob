@@ -220,3 +220,11 @@ export const orderStat = () => fetch('/orders/stat', {});
 export const getRegionsList = (parentId) => fetch('/regions', {
 	pid: parentId
 });
+
+
+/**
+ * 用户信息
+ */
+
+export const userInfo = () => fetch('/oa/users/info', {
+});

@@ -33,7 +33,7 @@
                        <span class="info-data-bottom">待发货</span>
                     </router-link>
                     <router-link to="/order/delivered" tag="li" class="info-data-link">
-                        <span class="info-data-top"><b class="red-points" v-if="userInfo.delivery">{{userInfo.delivery}}</b></span>
+                        <span class="info-data-top"><b class="red-points" v-if="userInfo.delivered">{{userInfo.delivered}}</b></span>
                         <span class="info-data-bottom">已发货</span>
                     </router-link>
                 </ul>
@@ -101,7 +101,7 @@
 <script>
 import alertTip from "src/components/common/alertTip";
 import footGuide from "src/components/footer/footGuide";
-import { orderStat } from '../../service/getData';
+import { orderStat, userInfo } from '../../service/getData';
 
 export default {
   data() {
@@ -119,15 +119,40 @@ export default {
       userInfo: {
         userImgUrl: "/static/img/1.png",
         username: "Petite mignonne😉",
-        unpaid: 1,
-        undelivery: 2,
-        delivered: 3
+        unpaid: 0,
+        undelivery: 0,
+        delivered: 0
       }
     };
   },
   mounted() {
-      this.orderStat = orderStat(res => {
-          
+      orderStat(res => {
+          if(res.errno !== 0){
+            return;
+          }
+
+          res.data.orderStat.forEach(stat => {
+            if (stat.status == 101) {
+              this.userInfo.unpaid = stat.count;
+            }
+            if (stat.status == 201) {
+              this.userInfo.undelivery = stat.count;
+            }
+
+            if (stat.status == 301) {
+              this.userInfo.delivered = stat.count;
+            }
+
+          });
+
+      }),
+
+      userInfo().then(res => {
+        if (res.errno == 0) {
+          console.log(res.data);
+          this.userInfo.userImgUrl = res.data.headImgUrl;
+          this.userInfo.username = res.data.nickName;
+        }
       })
   },
   components: {

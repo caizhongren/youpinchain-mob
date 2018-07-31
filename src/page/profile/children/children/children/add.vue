@@ -35,7 +35,7 @@
         <transition name="router-slid" mode="out-in">
             <router-view></router-view>
         </transition>
-        <alert-tip :showAlertTip="showAlertTip" :alertText='`<p>确定要删除该地址吗！</p>`' :type="1" :func="deleteAddress()" v-show="showAlertTip"></alert-tip>
+        <alert-tip :showAlertTip="showAlertTip" :alertText='`<p>确定要删除该地址吗！</p>`' :type="1" v-show="showAlertTip"></alert-tip>
     </div>
 </template>
 
@@ -126,6 +126,9 @@ export default {
   computed: {},
   props: [],
   methods: {
+    ...mapMutations([
+            'CHOOSE_ADDRESS'
+        ]),
     confirmDelete() {
       // this.showAlert = true;
       this.$router.go(-1);
@@ -158,6 +161,8 @@ export default {
             address.id = res.data;
         });
       }
+      var index = 0;
+      history.go(-1)
     },
 
     // 删除地址
