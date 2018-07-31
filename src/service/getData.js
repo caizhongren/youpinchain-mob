@@ -8,15 +8,21 @@ export const homeIndex = () => fetch('/home/index', {
 });
 
 /**
- * 
+ * 添加到购物车
  * @param {商品id} productId 
  * @param {数量} number 
  */
+
 export const addToCart = (productId, number) => fetch('/carts', {
 	productId: productId,
 	number: number
 }, 'POST')
 
+/**
+ * 购物车中商品数量
+ */
+
+export const cartProductCount = () => fetch('/carts/stat', {})
 
 /**
  * 获取首页热卖商品

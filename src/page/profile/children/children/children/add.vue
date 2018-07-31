@@ -147,7 +147,10 @@ export default {
           address.mobile,
           address.address
         ).then(res => {
-            
+            if(res.errno == 0){
+                var index = 0;
+                history.go(-1)
+            }
         });
       } else {
         addAddress(
@@ -159,10 +162,12 @@ export default {
           address.address
         ).then(res => {
             address.id = res.data;
+            if(res.errno == 0){
+                var index = 0;
+                history.go(-1)
+            }
         });
       }
-      var index = 0;
-      history.go(-1)
     },
 
     // 删除地址

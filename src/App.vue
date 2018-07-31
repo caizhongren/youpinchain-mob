@@ -12,7 +12,7 @@
   import Vue from 'vue'
   import * as custom from './plugins/custom'
 	import svgIcon from './components/common/svg';
-  import {login_oa} from './service/getData'
+  import {login_oa, cartProductCount} from './service/getData'
   import {Utils} from './service/Utils'
   export default {
     data () {
@@ -36,6 +36,7 @@
         event.stopPropagation()
         vue.showErr ? vue.showErr = false : null
       }, false)
+      this.getCartNum();
     },
     methods: {
       addCartFn (youpinCart, productId, number) { // 添加购物车
@@ -43,6 +44,15 @@
           console.log(res)
         })
       },
+
+      getCartNum() {
+        cartProductCount().then(res => {
+          if (res.errno == 0) {
+            this.$store.state.cart_num = res.data;
+          }
+        }) 
+      },
+
       login_oa () {
         var that = this
         login_oa().then(res => {
