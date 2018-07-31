@@ -92,7 +92,7 @@
 			</div>
 		</nav>
 		<ul class="settlement">
-			<li @click="submitOrder()">去付款</li>
+			<li @click="paymentCall()">去付款</li>
 			<li>付款 <span class="red">¥{{totalPrice}}</span></li>
 		</ul>
   </div>
@@ -101,7 +101,7 @@
 <script>
 import AjaxPicker from "ajax-picker";
 import { mapState, mapMutations } from "vuex";
-import {submitOrder, getDefaultAddress} from "../../service/getData";
+import {submitOrder, getDefaultAddress,prepayOrder} from "../../service/getData";
 export default {
   data() {
     return {
@@ -120,7 +120,8 @@ export default {
       verifythree: false, // 地址
       butpart: false, //  新增地址按钮的透明度
       addAddress: "",
-      addressList: []
+      addressList: [],
+	  addressId:""
     };
   },
   created() {
@@ -139,6 +140,7 @@ export default {
 	getDefaultAddress().then(res => {
 		let address = res.data;
 		let index = -1;
+		this.addressId = res.data.id;
 		this.CHOOSE_ADDRESS({address, index});
 	});
     if (!this.choosedAddress) {
@@ -181,6 +183,68 @@ export default {
 	
 	loadAllProducts() {
 
+	},
+    paymentCall() {
+        prepayOrder(4).then(resp => {
+            console.info(resp)
+            if(resp.errno === 403){
+                alert("订单不可支付")
+            }else{
+                alert("成功了")
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', {
+                        "appId":resp.data.appId,     //公众号名称，由商户传入
+                        "timeStamp":resp.data.timeStamp,         //时间戳，自1970年以来的秒数
+                        "nonceStr":resp.data.nonceStr, //随机串
+                        "package":resp.data.packageValue,
+                        "signType":resp.data.signType,         //微信签名方式：
+                        "paySign":resp.data.paySign //微信签名
+                    },
+                    function(res){
+                        if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                            alert("付款成功")
+                        }
+                        // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                    }
+                );
+            }
+        })
+		return;
+
+
+        let cartIds = [];
+        this.productList.forEach(cart => {
+            cartIds.push(cart.cartId);
+        });
+        let addressId = this.addressId;
+        console.info(cartIds+"和"+addressId)
+        submitOrder(cartIds,addressId).then(res => {
+            console.info(res)
+			let orderId = res.data.orderId;
+            prepayOrder(orderId).then(resp => {
+                console.info(resp)
+				if(resp.errno === 403){
+                    alert("订单不可支付")
+				}else{
+                    WeixinJSBridge.invoke(
+                        'getBrandWCPayRequest', {
+                            "appId":resp.data.appId,     //公众号名称，由商户传入
+                            "timeStamp":resp.data.timeStamp,         //时间戳，自1970年以来的秒数
+                            "nonceStr":resp.data.nonceStr, //随机串
+                            "package":resp.data.packageValue,
+                            "signType":resp.data.signType,         //微信签名方式：
+                            "paySign":resp.data.paySign //微信签名
+                        },
+                        function(res){
+                            if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                                alert("付款成功")
+                            }
+                            // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                        }
+                    );
+				}
+            })
+        })
 	},
 
     //确认订单
