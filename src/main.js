@@ -42,16 +42,17 @@ router.beforeEach((to, from, next) => {
         let token = to.query.T;
         if(token){
             localStorage.setItem("X-youpinchain-Token",token);
-            next({path:to.path});
+            next(to.path);
+        }else{
+            let url = encodeURIComponent(domainUrl + to.path);
+            let redirect_uri = encodeURIComponent(redirect);
+            window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                "appid=" +appid+
+                "&redirect_uri=" +redirect_uri+
+                "&response_type=code&scope=snsapi_userinfo" +
+                "&state=" +url+
+                "&connect_redirect=1#wechat_redirect"
         }
-    	let url = encodeURIComponent(domainUrl + to.path);
-    	let redirect_uri = encodeURIComponent(redirect);
-       window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?" +
-            "appid=" +appid+
-            "&redirect_uri=" +redirect_uri+
-            "&response_type=code&scope=snsapi_userinfo" +
-            "&state=" +url+
-            "&connect_redirect=1#wechat_redirect"
     }
     next()
 })
