@@ -7,9 +7,12 @@
  * 
  */
 
-let baseUrl = ''; 
+let baseUrl = '';
+let domainUrl = 'http://192.168.0.146:8889';
 let routerMode = 'hash';
 let imgBaseUrl;
+let appid = 'wx39e1a9f3d6c8cdc5';
+let redirect = 'http://youpinlian.datbc.com/youpin/wx/oa/wxCallBack';
 
 
 if (process.env.NODE_ENV == 'development') {
@@ -26,4 +29,7 @@ export {
 	baseUrl,
 	routerMode,
 	imgBaseUrl,
+	domainUrl,
+	appid,
+	redirect
 }
