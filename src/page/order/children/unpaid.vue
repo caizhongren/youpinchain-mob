@@ -25,7 +25,7 @@
                     <span class="order_text">实际支付<b style="color:#e4372e;">￥<strong style="font-size:.2rem;font-weight:bold;">{{item.actualPrice}}</strong></b></span>
                     <div class="order_button_border_grey" @click="showAlertTip = !showAlertTip">联系客服</div>
                     <div class="order_again">
-                        <compute-time v-if="item.handleOption.pay" :time="item.expiryTime" @click="toPay(item.id)"></compute-time>
+                        <compute-time v-if="item.handleOption.pay" :time="item.expiryTime" @click.native="toPay(item.id)"></compute-time>
                         <span class="order_button_border_red" v-if="item.handleOption.refund">取消订单</span>
                         <router-link tag="span" to="/orderTrack" class="order_button_border_red" v-if="item.handleOption.confirm">查看物流</router-link>
                         <span class="order_button_border_red" v-if="item.handleOption.confirm">确认收货</span>
@@ -35,7 +35,7 @@
             </section>
         </li>
     </ul>
-    <alert-tip :showAlertTip="showAlertTip" :type="2" v-show="showAlertTip"></alert-tip>
+    <alert-tip :showAlertTip="showAlertTip" :type="2" v-show="showAlertTip" :alertText="`<p>确定拨打客服电话 <br> 400-990-7626</p>`"></alert-tip>
     <transition name="loading">
         <loading v-show="showLoading"></loading>
     </transition>
@@ -84,8 +84,6 @@ export default {
     methods: {
         toPay(orderId) {
             prepayOrder(orderId).then(resp => {
-                console.info(resp)
-                alert(resp.errno)
                 if (resp.errno === 403) {
                     alert("订单不可支付")
                 } else {
