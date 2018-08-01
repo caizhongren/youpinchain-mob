@@ -18,11 +18,13 @@ let redirect = 'http://youpinlian.datbc.com/youpin/wx/oa/wxCallBack';
 if (process.env.NODE_ENV == 'development') {
 	imgBaseUrl = 'http://cangdu.org:8001/img/';
 	baseUrl = '/youpin/wx'
+	// baseUrl = '/wx'
 
 }else if(process.env.NODE_ENV == 'production'){
 	// baseUrl = 'http://cangdu.org:8001';
 	imgBaseUrl = 'http://cangdu.org:8001/img/';
-	baseUrl = '/youpin/wx'
+	baseUrl = '/youpin/wx';
+	domainUrl = 'http://youpinlian.datbc.com';
 }
 
 export {
