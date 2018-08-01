@@ -1,32 +1,37 @@
 <template>
   <div class="home">
-    <router-link :to="'/product-introduction'">
-      <img :src="brand.pictureUrl" alt="" width="100%" class="show">
-    </router-link>
-    <ul class="product_nav">
-      <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" @click="toggleTab(index)">{{tab.name}}</li>
-    </ul>
-    <section id="hot_goods">
-      <h4 class="goods_title">热卖商品</h4>
-      <ul class="goodslistul clear">
-        <li v-for="item in hotgoodslist" :key="item.id">
-          <router-link  tag="div" :to="'/goods/' + item.id">
-            <img :src="item.thumbnailPic" alt="" class="left" :class="{'noImage': !item.thumbnailPic}">
-            <div class="left goods_info">
-              <p class="name">{{item.name}}*1{{item.packing}}</p>
-              <p class="desr">{{item.describe}}</p>
-              <p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>
-              <p class="price"><span>¥</span>{{item.originalPrice}} <s>¥{{item.presentPrice}}</s></p>
-            </div>
-          </router-link>  
-          <div class="shopping_cart"  @touchstart="addToCart(item.id, $event)"></div>
-        </li>
+    <transition name="loading">
+      <loading v-show="showLoading"></loading>
+    </transition>
+    <div v-show="!showLoading">
+      <router-link :to="'/product-introduction'">
+        <img :src="brand.pictureUrl" alt="" width="100%" class="show">
+      </router-link>
+      <ul class="product_nav">
+        <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" @click="toggleTab(index)">{{tab.name}}</li>
       </ul>
-			<div @click="loadMore()" class="load_more" v-if="hasMore">查看更多商品</div>
-      <transition appear @after-appear = 'afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot" :key="index">
-        <span class="move_dot" v-if="item"></span>
-      </transition>
-    </section>
+      <section id="hot_goods">
+        <h4 class="goods_title">热卖商品</h4>
+        <ul class="goodslistul clear">
+          <li v-for="item in hotgoodslist" :key="item.id">
+            <router-link  tag="div" :to="'/goods/' + item.id">
+              <img :src="item.thumbnailPic" alt="" class="left" :class="{'noImage': !item.thumbnailPic}">
+              <div class="left goods_info">
+                <p class="name">{{item.name}}*1{{item.packing}}</p>
+                <p class="desr">{{item.describe}}</p>
+                <p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>
+                <p class="price"><span>¥</span>{{item.originalPrice}} <s>¥{{item.presentPrice}}</s></p>
+              </div>
+            </router-link>  
+            <div class="shopping_cart"  @touchstart="addToCart(item.id, $event)"></div>
+          </li>
+        </ul>
+        <div @click="loadMore()" class="load_more" v-if="hasMore">查看更多商品</div>
+        <transition appear @after-appear = 'afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot" :key="index">
+          <span class="move_dot" v-if="item"></span>
+        </transition>
+      </section>
+    </div>
     <foot-guide></foot-guide>
   </div>
 </template>
@@ -34,6 +39,7 @@
 <script>
 import footGuide from '../../components/footer/footGuide'
 import {homeIndex, addToCart, productList} from '../../service/getData'
+import loading from "../../components/common/loading";
 
 export default {
   data(){
@@ -43,6 +49,7 @@ export default {
       product_nav: [],
       activeTab: 0,
       hotgoodslist: [],
+      showLoading: true,
       showMoveDot: [], //控制下落的小圆点显示隐藏
       elLeft: 0, //当前点击加按钮在网页中的绝对top值
       elBottom: 0, //当前点击加按钮在网页中的绝对left值
@@ -56,15 +63,18 @@ export default {
     homeIndex().then(res => {
       this.product_nav = res.data.brandDatas
       this.brand = res.data.brand
+      this.showLoading = false;
     })
 
     productList(this.page, this.pageSize).then(res => {
       this.hotgoodslist = res.data.productList
       this.hasMore = res.data.totalPages > this.page
+      this.showLoading = false;
     })
   },
   components:{
-      footGuide
+    footGuide,
+    loading
   },
   computed:{
   },

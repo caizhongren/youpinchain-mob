@@ -167,7 +167,7 @@ export default {
                             localStorage.setItem('choosedAddress', JSON.stringify(address));
                             this.$router.go(-2);
                         } else {
-                            this.$router.push('/profile/info/address');
+                            this.$router.go(-1);
                         }
                     }
                 });
@@ -187,7 +187,7 @@ export default {
                             localStorage.setItem('choosedAddress', JSON.stringify(address));
                             this.$router.go(-2);
                         } else {
-                            this.$router.push('/profile/info/address');
+                            this.$router.go(-1);
                         }
                     }
                 });
