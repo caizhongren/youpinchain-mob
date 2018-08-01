@@ -11,7 +11,7 @@
                                 {{item.orderStatusText}}
                             </p>
                         </header>
-                        <router-link to="/orderDetail" tag="div">
+                        <router-link :to="{path:'/orderDetail',query:{orderId:item.id}}" tag="div">
 	                        <section class="goods_img">
 	                        	<div class="goods_box">
 	                        		<img class="restaurant_image" v-for="(goods,index) in item.productList" :src="goods.picUrl" v-if="index < 4" :key="index">

@@ -4,26 +4,26 @@
             <section class="scroll_insert">
                 <div class="page-top-red"></div>
                 <section class="order_titel border_radius">
-                    <div class="status-img" :class="'status_' + orderData.order_status"></div>
+                    <div class="status-img" :class="'status_0'"></div>
                     <div>
-                        <p>{{status_text[orderData.order_status].title}}</p>
-                        <p>{{status_text[orderData.order_status].text}}</p>
+                        <p>{{orderData.orderStatusText}}</p>
+                        <!--<p>{{status_text[orderData.order_status].text}}</p>-->
                     </div>
-                    <router-link to="/orderTrack" tag="svg" fill="#333" class="arrow_right" v-show="orderData.order_status === 1 || orderData.order_status === 2 || orderData.order_status === 3">
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                    <router-link to="/orderTrack" tag="svg" fill="#333" class="arrow_right" v-show="orderData.handleOption.confirm">
+
                     </router-link>
                 </section>
-                <section class="distribution-information border_radius" v-if="orderData.order_status === 2 || orderData.order_status === 3">
+                <section class="distribution-information border_radius" v-if="orderData.handleOption.confirm">
                     <img src="../../../images/ddxq-ps.png" alt="">
                     <div>
-                        <p>配送员：{{orderData.distribute.name}}</p>
-                        <p>联系电话：{{orderData.distribute.mobile}}</p>
+                        <p>配送员：{{orderData.expCode}}</p>
+                        <p>联系电话：{{orderData.expNo}}</p>
                     </div>
                 </section>
                 <section class="address border_radius">
                     <div class="address-detail">
-                        <p>{{orderData.adress.position}}</p>
-                        <p><span>{{orderData.adress.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{orderData.adress.mobile}}</span></p>
+                        <p>{{orderData.address}}</p>
+                        <p><span>{{orderData.consignee}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{orderData.mobile}}</span></p>
                     </div>
                 </section>
                 <section class="food_list border_radius">
@@ -31,17 +31,17 @@
                         <div class="shop_name">
                             <span>商品清单</span>
                         </div>
-                        <span class="food_number">共{{orderData.shopList.length}}件</span>
+                        <span class="food_number">共{{orderProduct.length}}件</span>
                     </div>
                     <ul class="goods">
-                        <li v-for="item in orderData.shopList" :key="item.id">
-                            <img src="" alt="" class="img">
+                        <li v-for="item in orderProduct" :key="item.id">
+                            <img :src="item.picUrl" alt="" class="img">
                             <div class="goods_info">
-                                <p class="name">{{item.name}}</p>
-                                <p class="price"><span>¥</span>{{item.price}}</p>
+                                <p class="name">{{item.productName}}</p>
+                                <p class="price"><span>¥</span>{{item.retailPrice}}</p>
                             </div>
                             <div class="cart_btns">
-                                <span class="num">x{{item.num}}</span>
+                                <span class="num">x{{item.number}}</span>
                             </div>
                         </li>
                     </ul>
@@ -51,37 +51,37 @@
                     <section class="item_style">
                         <p class="item_left">商品总价</p>
                         <div class="item_right">
-                            <p>￥{{orderData.deliver_time}}</p>
+                            <p>￥{{orderData.productPrice}}</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">优惠价格</p>
                         <div class="item_right">
-                            <p>-￥{{orderData.consignee}}</p>
+                            <p>-￥0</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">运费</p>
                         <div class="item_right">
-                            <p>+￥{{orderData.freight}}</p>
+                            <p>+￥{{orderData.freightPrice}}</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">包装费</p>
                         <div class="item_right">
-                            <p>+￥{{orderData.packing_fee}}</p>
+                            <p>+￥0</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">包装费减免</p>
                         <div class="item_right">
-                            <p>-￥{{orderData.package_fee_reduction}}</p>
+                            <p>-￥0</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">实际支付</p>
                         <div class="item_right">
-                            <p>￥{{orderData.actual_payment}}</p>
+                            <p>￥{{orderData.actualPrice}}</p>
                         </div>
                     </section>
                 </section>
@@ -90,7 +90,7 @@
                     <section class="item_style">
                         <p class="item_left">订单编号</p>
                         <div class="item_right">
-                            <p>{{orderData.orderDetail.id}}</p>
+                            <p>{{orderData.orderSn}}</p>
                         </div>
                     </section>
                     <section class="item_style">
@@ -102,13 +102,13 @@
                     <section class="item_style">
                         <p class="item_left">下单时间</p>
                         <div class="item_right">
-                            <p>{{orderData.orderDetail.formatted_created_at}}</p>
+                            <p>{{orderData.addTime}}</p>
                         </div>
                     </section>
                     <section class="item_style">
                         <p class="item_left">预计送达时间</p>
                         <div class="item_right">
-                            <p>{{orderData.orderDetail.expected_delivery_time}}</p>
+                            <p>--</p>
                         </div>
                     </section>
                 </section>
@@ -130,11 +130,13 @@
     import loading from 'src/components/common/loading'
     import footGuide from 'src/components/footer/footGuide'
     import alertTip from 'src/components/common/alertTip'
+    import {getOrderDetail} from "../../../service/getData";
 
     export default {
 
       data(){
             return{
+                orderId:"",
                 showLoading: true, //显示加载动画
                 showAlertTip: false,
                 status_text:[{
@@ -153,51 +155,23 @@
                     title: '待支付',
                     text: '您的订单待支付～'
                 }],
-                orderData:{
-                    order_status: 3,// 未发货 0 已发货 1  配送中 2 已完成 3 待支付 4
-                    deliver_time: '88.88',
-                    consignee: '28.88',
-                    freight: '8.88',
-                    packing_fee: '8.88',
-                    package_fee_reduction: '8.88',
-                    actual_payment: '88.88',
-                    shopList: [
-                      { 
-                        id: 0,
-                        name: '猪耳朵500g*1份',
-                        price: 23.99,
-                        num: 1,
-                        choose: false
-                      },
-                      { 
-                        id: 1,
-                        name: '猪耳朵500g*2份',
-                        price: 23.99,
-                        num: 2,
-                        choose: true
-                      }
-                    ],
-                    orderDetail:{
-                        id: 4567852,
-                        formatted_created_at: '1028.06.10 12:29',
-                        expected_delivery_time: '2018.6.13'
-                    },
-                    distribute: {
-                        name: '张三',
-                        mobile: '15210288888'
-                    },
-                    adress: {
-                        position: '北京市海淀区中国科学院国家空间科学中心九章大厦B座',
-                        name: '张三',
-                        mobile: '15210288888'
-                    }
-                }
+                orderData:{},
+                orderProduct:{}
             }
         },
         created () {
-            this.showLoading = false
+            this.orderId = this.$route.query.orderId
+            console.info(this.$route.query.orderId)
         },
         mounted(){
+            getOrderDetail(this.orderId).then(res => {
+                if (res.errno !== 0){
+                    return;
+                }
+                this.orderData = res.data.orderInfo;
+                this.orderProduct = res.data.orderProduct;
+                this.showLoading = false;
+            })
         },
         components: {
             loading, footGuide, alertTip
