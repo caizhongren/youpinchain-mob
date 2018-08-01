@@ -242,3 +242,5 @@ export const getRegionsList = (parentId) => fetch('/regions', {
 
 export const userInfo = () => fetch('/oa/users/info', {
 });
+
+export const expresses = (expNo) => fetch('/expresses/'+expNo);

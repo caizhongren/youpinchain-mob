@@ -5,59 +5,17 @@
 				<div class="page-top-red"></div>
 				<section class="order_track_detail border_radius">
 					<ul>
-						<li class="order_track_step" v-if="order_track.order_track_step.length >= 5">
+						<li class="order_track_step" v-for="(item,index) in trackData.data" :key="index">
 							<div>
-								<p>{{order_track.order_track_step[4] | date_hm}}</p>
-								<p>{{order_track.order_track_step[4] | date_md}}</p>
+								<p>{{item.time}}</p>
 							</div>
-							<span class="have_after">收</span>
+							<span v-if="item.context.indexOf('已收取快件') !== -1" class="circle_only"><b></b></span>
+							<span v-else-if="item.context.indexOf('正在派送') !== -1" class="have_after distributing"><b></b></span>
+							<span v-else-if="item.context.indexOf('已签收') !== -1" class="have_after">收</span>
+							<span v-else class="have_after circle_only"><b></b></span>
+
 							<div>
-								<p style="text-indent: -.06rem;">【订单完成】</p>
-								<p>感谢您的支持，欢迎再次来哦～</p>
-							</div>
-						</li>
-						<li class="order_track_step" v-if="order_track.order_track_step.length >= 4">
-							<div>
-								<p>{{order_track.order_track_step[3] | date_hm}}</p>
-								<p>{{order_track.order_track_step[3] | date_md}}</p>
-							</div>
-							<span class="have_after distributing"><b></b></span>
-							<div>
-								<p style="text-indent: -.06rem;">【配送中】</p>
-								<p> 快递小哥已出发，请耐心等待</p>
- 								<p>联系电话：<b class="phone_number">13899998888</b></p>
-							</div>
-						</li>
-						<li class="order_track_step" v-if="order_track.order_track_step.length >= 3">
-							<div>
-								<p>{{order_track.order_track_step[2] | date_hm}}</p>
-								<p>{{order_track.order_track_step[2] | date_md}}</p>
-							</div>
-							<span class="have_after circle_only"><b></b></span>
-							<div class="align_center">
-								<p style="text-indent: -.06rem;">【商品已发货】</p>
-							</div>
-						</li>
-						<li class="order_track_step" v-if="order_track.order_track_step.length >= 2">
-							<div>
-								<p>{{order_track.order_track_step[1] | date_hm}}</p>
-								<p>{{order_track.order_track_step[1] | date_md}}</p>
-							</div>
-							<span class="have_after circle_only"><b></b></span>
-							<div>
-								<p style="text-indent: -.06rem;">【支付成功】</p>
-								<p>我们会尽快发货的哟～</p>
-							</div>
-						</li>
-						<li class="order_track_step" v-if="order_track.order_track_step.length >= 1">
-							<div>
-								<p>{{order_track.order_track_step[0] | date_hm}}</p>
-								<p>{{order_track.order_track_step[0] | date_md}}</p>
-							</div>
-							<span class="circle_only"><b></b></span>
-							<div>
-								<p> 订单提交成功</p>
- 								<p>订单号：<b class="phone_number">{{order_track.order_number}}</b></p>
+								<p>{{item.context}}</p>
 							</div>
 						</li>
 					</ul>	
@@ -75,6 +33,7 @@
     import loading from 'src/components/common/loading'
     import footGuide from 'src/components/footer/footGuide'
     import {addzero} from '../../../config/mUtils'
+    import {expresses} from "../../../service/getData";
 
     export default {
 
@@ -88,13 +47,28 @@
                 	distribute_msg: {
                 		mobile: 13899998888 
                 	}
-                }
+                },
+                expNo:"",
+				trackData:{}
             }
         },
         created () {
-            this.showLoading = false
+            this.expNo = this.$route.query.expNo
+			if(!this.expNo){
+                this.expNo="821721174311"
+			}
         },
         mounted(){
+            expresses(this.expNo).then(res => {
+                if (res.errno !== 0){
+                    return;
+                }
+                this.trackData = JSON.parse(
+                    res.data
+                );
+                console.info(this.trackData)
+                this.showLoading = false;
+            })
         },
         components: {
             loading, footGuide

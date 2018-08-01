@@ -9,8 +9,9 @@
                         <p>{{orderData.orderStatusText}}</p>
                         <!--<p>{{status_text[orderData.order_status].text}}</p>-->
                     </div>
-                    <router-link to="/orderTrack" tag="svg" fill="#333" class="arrow_right" v-show="orderData.handleOption.confirm">
-
+                    <router-link :to="{path:'/orderTrack',query:{expNo:orderData.expNo}}" tag="svg" fill="#333" class="arrow_right" >
+                        <!--v-show="orderData.handleOption.confirm"-->
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
                     </router-link>
                 </section>
                 <section class="distribution-information border_radius" v-if="orderData.handleOption.confirm">
@@ -114,7 +115,7 @@
                 </section>
                 <section class="sale_after">
                     <span class="red" @click="showAlertTip = !showAlertTip">联系客服</span>
-                    <span class="grey">取消订单</span>
+                    <span class="grey" @click="cancelOrder()" v-if="orderData.handleOption.refund">取消订单</span>
                 </section>
             </section>
         </section>
@@ -130,7 +131,7 @@
     import loading from 'src/components/common/loading'
     import footGuide from 'src/components/footer/footGuide'
     import alertTip from 'src/components/common/alertTip'
-    import {getOrderDetail} from "../../../service/getData";
+    import {getOrderDetail,cancelOrder} from "../../../service/getData";
 
     export default {
 
@@ -179,6 +180,15 @@
         computed: {
         },
         methods: {
+          cancelOrder(){
+              cancelOrder(this.orderId).then(res=> {
+                  if (res.errno !== 0){
+                      alert("成功")
+                  }else{
+                      alert("失败")
+                  }
+              })
+          }
         },
         watch: {
         }
