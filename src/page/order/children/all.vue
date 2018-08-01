@@ -72,7 +72,6 @@ export default {
       })
   },
   created() {
-    this.showLoading = true;
   },
   mixins: [loadMore],
   components: {

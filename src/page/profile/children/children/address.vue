@@ -2,7 +2,7 @@
 <div class="rating_page">
     <section class="address">
         <ul class="addresslist">
-            <li v-for='(item, index) in adressList' @click="selectOrEdit(item, index)">
+            <li v-for='(item, index) in adressList' @click="selectOrEdit(item, index)" :key="index">
                 <span class="default-address" v-show="choosedAddressIndex === index"></span>
                 <div class="address-detail">
                     <p>{{item.detailedAddress}}</p>
