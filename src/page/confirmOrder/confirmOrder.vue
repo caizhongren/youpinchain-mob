@@ -132,11 +132,10 @@
                 <p><span>¥</span>{{totalPrice}}</p>
             </div>
         </div>
-
     </nav>
     <ul class="settlement">
         <li @click="submitOrder()">去付款</li>
-        <li>付款 <span class="red">¥{{totalPrice}}</span></li>
+        <li>付款 &nbsp;<span class="red">¥{{totalPrice}}</span></li>
     </ul>
 </div>
 </template>
@@ -149,7 +148,8 @@ import {
 } from "vuex";
 import {
     submitOrder,
-    getDefaultAddress
+    getDefaultAddress,
+    getRegionsList
 } from "../../service/getData";
 export default {
     data() {
@@ -196,32 +196,45 @@ export default {
         }
         if (!this.choosedAddress) {
             var that = this;
-            var picker = new AjaxPicker({
-                title: "配送至",
-                tipText: ["省份", "城市", "区/县"],
-                input: "address-input",
-                container: "container",
-                renderArr: [
-                    function () {
-                        picker.render(that.addressList[0]);
-                    },
-                    function () {
-                        console.log("用户在列表1选择了 " + picker.result1);
-                        picker.render(that.addressList[1]);
-                    },
-                    function () {
-                        console.log("用户在列表2选择了 " + picker.result2);
-                        picker.render(that.addressList[2]);
+            getRegionsList(0).then(res => {
+                this.provinces = res.data;
+                var provinces = this.provinces;
+                var picker = new AjaxPicker({
+                    title: "配送至",
+                    tipText: ["省份", "城市", "区/县"],
+                    input: "address-input",
+                    container: "city_container",
+                    renderArr: [
+                        function () {
+                            picker.render(provinces);
+                        },
+                        function () {
+                            getRegionsList(picker.result1.id).then(res => {
+                                picker.render(res.data);
+                            });
+                        },
+                        function () {
+                            getRegionsList(picker.result2.id).then(res => {
+                                picker.render(res.data);
+                            });
+                        }
+                    ],
+                    success: function (arr) {
+                        console.log(arr)
+                        var addressD = "";
+                        for (var i = 0; i < arr.length; i++) {
+                            addressD += " " + arr[i].value;
+                        }
+                        document.getElementById("address-input").value = addressD.substring(1);
+                        that.address.provinceId = picker.result1.id;
+                        that.address.provinceName = picker.result1.value;
+                        that.address.cityId = picker.result2.id;
+                        that.address.cityName = picker.result1.value;
+                        that.address.areaId = picker.result3.id;
+                        that.address.areaName = picker.result3.value;
+                        that.address.tipText = addressD.substring(1);
                     }
-                ],
-                success: function (arr) {
-                    console.log(arr);
-                    var address = "";
-                    for (var i = 0; i < arr.length; i++) {
-                        address += " " + arr[i].value;
-                    }
-                    document.getElementById("address-input").value = address.substring(1);
-                }
+                });
             });
         }
 
@@ -418,94 +431,6 @@ export default {
             @include wh(100%, 0.83rem);
             @include bis("../../images/gwc-bg.png");
         }
-        .shop_info {
-            margin: 0.15rem auto 0;
-            width: 95%;
-            background-color: $fc;
-            padding: 0.2rem 0.15rem;
-            border-radius: 10px;
-            overflow: hidden;
-            .goods {
-                li {
-                    position: relative;
-                    margin-bottom: 0.26rem;
-                }
-                .img {
-                    display: inline-block;
-                    border-radius: 5px;
-                    @include wh(0.95rem, 0.945rem);
-                    background-color: #000;
-                    vertical-align: middle;
-                    margin-left: 0.05rem;
-                }
-                .goods_info {
-                    display: inline-block;
-                    .name {
-                        @include sc(0.15rem, $g3);
-                        top: -0.1rem;
-                        position: relative;
-                    }
-                    .price {
-                        @include sc(0.18rem, $red);
-                        font-weight: bold;
-                        position: relative;
-                        top: 0.38rem;
-                        span {
-                            display: inline-block;
-                            @include sc(0.12rem, $red);
-                            font-weight: normal;
-                            transform: scale(0.8) translateY(1px);
-                        }
-                    }
-                }
-                .cart_btns {
-                    position: absolute;
-                    right: 0.2rem;
-                    bottom: 0.25rem;
-                    .num {
-                        display: inline-block;
-                        text-align: center;
-                        @include wh(0.245rem, 0.245rem);
-                        @include sc(0.18rem, $red);
-                        vertical-align: top;
-                        font-weight: bold;
-                    }
-                }
-            }
-            .payment_info {
-                overflow: hidden;
-                padding: 0.15rem 0;
-                border-bottom: 1px solid $gd;
-                li {
-                    @include wh(100%, 0.35rem);
-                    line-height: 0.35rem;
-                    p {
-                        @include sc(0.15rem, $g6);
-                    }
-                    p:nth-child(odd) {
-                        float: left;
-                    }
-                    p:nth-child(even) {
-                        float: right;
-                    }
-                    p.coupon {
-                        color: $g9;
-                    }
-                }
-            }
-            .totalPrice {
-                margin-top: 0.12rem;
-                p {
-                    display: inline-block;
-                    @include sc(0.2rem, $g3);
-                    font-weight: bold;
-                    span {
-                        @include sc(0.13rem, $g3);
-                        font-weight: normal;
-                    }
-                }
-            }
-        }
         .address_info {
             background-color: $fc;
             width: 95%;
@@ -605,6 +530,94 @@ export default {
                 .butopacity {
                     transition: all 0.4s;
                     opacity: 1;
+                }
+            }
+        }
+    }
+    .shop_info {
+        margin: 0.15rem auto 0;
+        width: 95%;
+        background-color: $fc;
+        padding: 0.2rem 0.15rem;
+        border-radius: 10px;
+        overflow: hidden;
+        .goods {
+            li {
+                position: relative;
+                margin-bottom: 0.26rem;
+            }
+            .img {
+                display: inline-block;
+                border-radius: 5px;
+                @include wh(0.95rem, 0.945rem);
+                background-color: #000;
+                vertical-align: middle;
+                margin-left: 0.05rem;
+            }
+            .goods_info {
+                display: inline-block;
+                .name {
+                    @include sc(0.15rem, $g3);
+                    top: -0.1rem;
+                    position: relative;
+                }
+                .price {
+                    @include sc(0.18rem, $red);
+                    font-weight: bold;
+                    position: relative;
+                    top: 0.38rem;
+                    span {
+                        display: inline-block;
+                        @include sc(0.12rem, $red);
+                        font-weight: normal;
+                        transform: scale(0.8) translateY(1px);
+                    }
+                }
+            }
+            .cart_btns {
+                position: absolute;
+                right: 0.2rem;
+                bottom: 0.25rem;
+                .num {
+                    display: inline-block;
+                    text-align: center;
+                    @include wh(0.245rem, 0.245rem);
+                    @include sc(0.18rem, $red);
+                    vertical-align: top;
+                    font-weight: bold;
+                }
+            }
+        }
+        .payment_info {
+            overflow: hidden;
+            padding: 0.15rem 0;
+            border-bottom: 1px solid $gd;
+            li {
+                @include wh(100%, 0.35rem);
+                line-height: 0.35rem;
+                p {
+                    @include sc(0.15rem, $g6);
+                }
+                p:nth-child(odd) {
+                    float: left;
+                }
+                p:nth-child(even) {
+                    float: right;
+                }
+                p.coupon {
+                    color: $g9;
+                }
+            }
+        }
+        .totalPrice {
+            margin-top: 0.12rem;
+            p {
+                display: inline-block;
+                @include sc(0.2rem, $g3);
+                font-weight: bold;
+                span {
+                    @include sc(0.13rem, $g3);
+                    font-weight: normal;
                 }
             }
         }
