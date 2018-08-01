@@ -7,14 +7,14 @@
 					<ul>
 						<li class="order_track_step" v-for="(item,index) in trackData.data" :key="index">
 							<div>
-								<p>{{item.time}}</p>
+								<p>{{item.time | date_hm}}</p>
+								<p>{{item.time | date_md}}</p>
 							</div>
 							<span v-if="item.context.indexOf('已收取快件') !== -1" class="circle_only"><b></b></span>
 							<span v-else-if="item.context.indexOf('正在派送') !== -1" class="have_after distributing"><b></b></span>
 							<span v-else-if="item.context.indexOf('已签收') !== -1" class="have_after">收</span>
 							<span v-else class="have_after circle_only"><b></b></span>
-
-							<div>
+							<div class="align_center">
 								<p>{{item.context}}</p>
 							</div>
 						</li>
