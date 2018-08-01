@@ -32,7 +32,7 @@
                         </form>
                     </section>
                     <section class="addbutton">
-                        <button :class="{butopacity:butpart}" @click.prevent="submitThing">保存</button>
+                        <button :class="{butopacity:butpart}" @click.prevent="submitAddress">保存</button>
                     </section>
                 </div>
                 <router-link :to="{name: 'addressList', query:{path: 'confirmOrder'}}" class="address_info" v-else>
@@ -170,7 +170,8 @@ export default {
             butpart: false, //  新增地址按钮的透明度
             addAddress: "",
             choosedAddress: undefined,
-        };
+            address: {},
+        }
     },
     created() {
         this.productList = JSON.parse(
@@ -203,7 +204,7 @@ export default {
                     title: "配送至",
                     tipText: ["省份", "城市", "区/县"],
                     input: "address-input",
-                    container: "city_container",
+                    container: "container",
                     renderArr: [
                         function () {
                             picker.render(provinces);
@@ -379,25 +380,26 @@ export default {
             }
         },
         //保存地址
-        async submitThing() {
-            // let res = await postAddAddress(this.userInfo.user_id, this.mesthree, this.addAddress, this.geohash, this.message, this.telenum, this.standbytelenum, 0, 1, '公司', 4);
-            // if (res.message) {
-            // 		this.showAlert = true;
-            // 		this.alertText = res.message;
-            // }else if(this.butpart){
-            // 	//保存的地址存入vuex
-            // 	this.ADD_ADDRESS({
-            // 		name: this.message,
-            // 		address: this.mesthree,
-            // 		address_detail: this.addAddress,
-            // 		geohash: 'wtw37r7cxep4',
-            // 		phone: this.telenum,
-            // 		phone_bk: this.standbytelenum,
-            // 		poi: this.addAddress,
-            // 		poi_type: 0,
-            // 	});
-            // 	this.$router.go(-1);
-            // }
+        async submitAddress() {
+           addAddress(
+                address.name,
+                address.provinceId,
+                address.cityId,
+                address.areaId,
+                address.mobile,
+                address.address
+            ).then(res => {
+                address.id = res.data;
+                if (res.errno == 0) {
+                    var index = 0;
+                    if (this.$route.query.path == 'confirmOrder') {
+                        localStorage.setItem('choosedAddress', JSON.stringify(address));
+                        this.$router.go(-2);
+                    } else {
+                        this.$router.push('/profile/info/address');
+                    }
+                }
+            });
         }
     },
     watch: {}
