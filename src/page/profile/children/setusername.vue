@@ -94,7 +94,7 @@
             input{
                 background:none;
                 width:15.2rem;
-                border:1px solid #ddd;
+                border:1px solid $gd;
                 @include borderRadius(2px);
                 padding:.2rem .1rem;
                 line-height:1.2rem;
@@ -106,7 +106,7 @@
             }
             p{
                 width:100%;
-                @include sc(.4rem,#666);
+                @include sc(.4rem,$g6);
                 padding:.4rem 0 1rem;
             }
             .unlikep{
@@ -122,7 +122,7 @@
                 width:100%;
                 background:none;
                 line-height:2rem;
-                @include sc(.7rem,#fff);
+                @include sc(.7rem,$fc);
                 opacity:.6;
                 transition: all 1s;
             }

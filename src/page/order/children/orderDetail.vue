@@ -245,7 +245,7 @@
         box-shadow: 0px 1px 13.9px 0.6px rgba(181, 184, 188, 0.51);
         border-radius: .1rem;
         @include wh(3.5rem, auto);
-        background-color: #fff;
+        background-color: $fc;
         margin: 0 auto;
         margin-bottom: .16rem;
     }
@@ -282,22 +282,15 @@
         }
         div{
             p:nth-of-type(1){
-                @include sc(.15rem, #333);
+                @include sc(.15rem, $g3);
                 font-weight: bold;
                 margin-top: .28rem;
             }
             p:nth-of-type(2){
-                @include sc(.13rem, #666666);
+                @include sc(.13rem, $g6);
                 margin-top: .12rem;
                 max-width: 1.8rem;
             }
-        }
-        .order_again{
-            @include sc(.12rem, $blue);
-            margin-top: .1rem;
-            border: 0.005rem solid $blue;
-            padding: .03rem .08rem;
-            border-radius: .02rem;
         }
     }
     .address{
@@ -305,7 +298,7 @@
         padding: .21rem .17rem .2rem .57rem;
         @include fj(space-between);
         border-radius: 10px;
-        background-color: #ffffff;
+        background-color: $fc;
         box-shadow: 0px 1px 13.9px 0.6px rgba(110, 194, 46, 0.24);
         position: relative;
         .address-detail{
@@ -313,10 +306,10 @@
             width: 2.3rem;
             p{
                 line-height: 1.6;
-                @include sc(.15rem,#333333);
+                @include sc(.15rem,$g3);
                 span{
                     display:inline-block;
-                    @include sc(.15rem,#333333);
+                    @include sc(.15rem,$g3);
                 }
             }
             p:nth-of-type(1){
@@ -342,18 +335,18 @@
         }
         div{
             p{
-                @include sc(.15rem,#666666);
+                @include sc(.15rem,$g6);
                 line-height: .28rem;
             }
         }
     }
     .food_list{
-        background-color: #fff;
+        background-color: $fc;
         .food_list_header{
             @include fj;
             align-items: center;
             padding: .1rem;
-            border-bottom: 1px solid #f5f5f5;
+            border-bottom: 1px solid $f5;
             .shop_name{
                 img{
                     @include wh(.24rem, .24rem);
@@ -361,11 +354,11 @@
                     margin-right: .04rem;
                 }
                 span{
-                    @include sc(.15rem, #333);
+                    @include sc(.15rem, $g3);
                 }
             }
             .food_number{
-                color:#999999;
+                color:$g9;
             }
         }
         .goods {
@@ -418,7 +411,7 @@
         }
         .pay_ment{
             @include sc(.12rem, #fb6b23);
-            border-top: 1px solid #f5f5f5;
+            border-top: 1px solid $f5;
             font-weight: bold;
             line-height: .4rem;
             text-align: right;
@@ -426,19 +419,19 @@
         }
     }
     .order_detail_style{
-        background-color: #fff;
+        background-color: $fc;
         margin-top: 0.1rem;
         header{
-            @include sc(.15rem, #333);
+            @include sc(.15rem, $g3);
             padding: .1rem;
-            border-bottom: 1px solid #f5f5f5;
+            border-bottom: 1px solid $f5;
         }
         .item_style{
             display: flex;
             padding: .1rem;
             @include fj;
             p{
-                @include sc(.15rem, #666);
+                @include sc(.15rem, $g6);
                 line-height: .2rem;
             }
         }
@@ -457,12 +450,12 @@
             margin-left: .1rem;
         }
         .red{
-            border: solid 1px #e4372e;
-            color: #e4372e;
+            border: solid 1px $red;
+            color: $red;
         }
         .grey{
-            border: solid 1px #999999;
-            color: #666666;
+            border: solid 1px $g9;
+            color: $g6;
         }
     }
     .loading-enter-active, .loading-leave-active {

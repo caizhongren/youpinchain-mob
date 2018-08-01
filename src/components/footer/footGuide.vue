@@ -52,7 +52,7 @@
     bottom: 0;
     @include wh(100%, .49rem);
     display: flex;
-    border-top: 2px solid #efeff4;
+    border-top: 2px solid $bc;
   }
   .guide_item{
     flex: 1;
@@ -61,7 +61,7 @@
     flex-direction: column;
     align-items: center;
     span{
-      @include sc(.1rem, #e4372e);
+      @include sc(.1rem, $red);
     }
   }
   .icon1_style, .icon2_style, .icon3_style, .icon1_style2, .icon2_style2, .icon3_style2 {

@@ -94,8 +94,8 @@
     }
     .nav_tab{
         @include wh(100%,.45rem);
-        @include sc(.15rem,#666666);
-        background: #fff;
+        @include sc(.15rem,$g6);
+        background: $fc;
         line-height: .45rem;
         display: flex;
         margin-bottom: .16rem;
@@ -104,8 +104,8 @@
             text-align: center;
         }
         .active{
-            color: #e4372e;
-            border-bottom: .02rem solid #e4372e; 
+            color: $red;
+            border-bottom: .02rem solid $red; 
         }
     }
 

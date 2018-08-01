@@ -1,7 +1,8 @@
 <template>
 	<div class="unpaid">
 		<ul class="order_list_ul">
-            <li class="order_list_li" v-for="item in orderList">
+            <div v-if="orderList.length <= 0" class="no_list">暂无订单记录</div>
+            <li v-else class="order_list_li" v-for="item in orderList">
                 <section class="order_item_top">
                     <section>
                         <header class="order_item_top_header">
@@ -13,7 +14,7 @@
                         <router-link to="/orderDetail" tag="div">
 	                        <section class="goods_img">
 	                        	<div class="goods_box">
-	                        		<img class="restaurant_image" v-for="(goods,index) in item.goods_list" :src="goods.imageUrl" v-if="index < 4">
+	                        		<img class="restaurant_image" v-for="(goods,index) in item.goods_list" :src="goods.imageUrl" v-if="index < 4" :key="index">
 	                        	</div>
 		                        <p>共{{item.goods_list.length}}件</p>
 		                        <svg fill="#999" class="arrow_right" style="height:.64rem;width:.14rem;">
@@ -90,8 +91,14 @@ export default {
 @import "src/style/mixin";
 
 .order_list_ul {
+  .no_list {
+    padding: 2.615rem 0;
+    text-align: center;
+    background-color: $f5;
+    @include sc(.15rem, $g6);
+  }
   .order_list_li {
-    background-color: #fff;
+    background-color: $fc;
     display: flex;
     margin-bottom: 0.1rem;
     padding: 0 0.04rem 0 0.1rem;
@@ -105,12 +112,12 @@ export default {
     .order_item_top {
       flex: 5;
       .order_item_top_header {
-        border-bottom: 0.005rem solid #f5f5f5;
+        border-bottom: 0.005rem solid $f5;
         padding-bottom: 0.06rem;
         @include fj;
         height: 0.4rem;
         line-height: 0.4rem;
-        @include sc(0.15rem, #666666);
+        @include sc(0.15rem, $g6);
         .order_status {
           margin-right: 0.1rem;
         }
@@ -118,13 +125,13 @@ export default {
       .goods_img {
         display: flex;
         padding: 0.1rem 0;
-        border-bottom: 0.005rem solid #f5f5f5;
+        border-bottom: 0.005rem solid $f5;
         .goods_box {
           width: 3rem;
         }
         p {
           line-height: 0.64rem;
-          @include sc(0.15rem, #666666);
+          @include sc(0.15rem, $g6);
         }
       }
       .order_item_bottom {
@@ -136,37 +143,37 @@ export default {
           display: inline-block;
           height: 0.32rem;
           border-radius: 0.16rem;
-          background: #fff;
-          border: 1px solid #999999;
+          background: $fc;
+          border: 1px solid $g9;
           padding: 0 0.1rem;
           font-size: 0.15rem;
-          color: #666666;
+          color: $g6;
           margin: 0 0rem 0 0.1rem;
         }
         .order_button_border_red {
           display: inline-block;
           height: 0.32rem;
           border-radius: 0.16rem;
-          background: #fff;
-          border: 1px solid #e4372e;
+          background: $fc;
+          border: 1px solid $red;
           padding: 0 0.1rem;
           font-size: 0.15rem;
-          color: #e4372e;
+          color: $red;
           margin: 0 0rem 0 0.1rem;
         }
         .order_button_red {
           display: inline-block;
           height: 0.32rem;
           border-radius: 0.16rem;
-          background: #e4372e;
+          background: $red;
           padding: 0 0.1rem;
           font-size: 0.15rem;
-          color: #fff;
+          color: $fc;
           margin: 0 0rem 0 0.1rem;
         }
         .order_text {
           text-align: right;
-          @include sc(0.15rem, #666666);
+          @include sc(0.15rem, $g6);
         }
       }
     }
