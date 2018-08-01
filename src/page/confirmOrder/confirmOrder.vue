@@ -89,49 +89,6 @@
                 </div>
             </div>
         </div>
-        <div class="shop_info">
-            <ul class="goods">
-                <li v-for="item in productList" :key="item.id">
-                    <img :src="item.thumbnailPic" alt="" class="img">
-                    <div class="goods_info">
-                        <p class="name">{{item.productName}}</p>
-                        <p class="price"><span>¥</span>{{item.presentPrice}}</p>
-                    </div>
-                    <div class="cart_btns">
-                        <span class="num">x{{item.number}}</span>
-                    </div>
-                </li>
-                <transition name="fade">
-                    <div v-if="showTotal" class="load_more" @click="loadAllProducts();">共{{productList.length}}件 <img src="../../images/path-2.png" width="4%"> </div>
-                </transition>
-            </ul>
-            <ul class="payment_info">
-                <li>
-                    <p>商品总价</p>
-                    <p>¥{{goodsPrice}}</p>
-                </li>
-                <li>
-                    <p>优惠价格</p>
-                    <p class="coupon">- ¥0.00</p>
-                </li>
-                <li>
-                    <p>运费</p>
-                    <p>¥{{fare}}</p>
-                </li>
-                <li>
-                    <p>包装费</p>
-                    <p>¥{{packingFee}}</p>
-                </li>
-                <li>
-                    <p>包装费减免</p>
-                    <p>¥{{packingFeeReduction}}</p>
-                </li>
-            </ul>
-            <div class="right totalPrice">
-                实际支付
-                <p><span>¥</span>{{totalPrice}}</p>
-            </div>
-        </div>
     </nav>
     <ul class="settlement">
         <li @click="paymentCall()">去付款</li>
@@ -149,7 +106,8 @@ import {
 import {
     submitOrder,
     getDefaultAddress,
-    getRegionsList
+    getRegionsList,
+    prepayOrder
 } from "../../service/getData";
 export default {
     data() {
