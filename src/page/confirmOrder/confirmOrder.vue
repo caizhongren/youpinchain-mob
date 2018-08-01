@@ -147,10 +147,12 @@ export default {
         if (!this.choosedAddress) {
             // 默认用户地址
             getDefaultAddress().then(res => {
-                let address = res.data;
-                let index = -1;
-                this.choosedAddress = address;
-                localStorage.setItem('choosedAddress', JSON.stringify(address));
+                if (res.data) {
+                    let address = res.data;
+                    let index = -1;
+                    this.choosedAddress = address;
+                    localStorage.setItem('choosedAddress', JSON.stringify(address));
+                }
             });
         }
         if (!this.choosedAddress) {
