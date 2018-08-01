@@ -93,9 +93,10 @@ export default {
       let elLeft = event.target.getBoundingClientRect().left;
       let elBottom = event.target.getBoundingClientRect().bottom;
       this.showMoveDot.push(true);
+      let that = this;
       this.showMoveDotFun(this.showMoveDot, elLeft, elBottom);
       addToCart(productId, 1).then(res => {
-        console.log(res);
+        that.$parent.getCartNum();
       })
     },
     showMoveDotFun (showMoveDot, elLeft, elBottom) { // 显示下落圆球

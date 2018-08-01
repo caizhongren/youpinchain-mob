@@ -170,7 +170,6 @@ export default {
             butpart: false, //  新增地址按钮的透明度
             addAddress: "",
             choosedAddress: undefined,
-            addressId: ""
         };
     },
     created() {
@@ -192,7 +191,6 @@ export default {
                 let address = res.data;
                 let index = -1;
                 this.choosedAddress = address;
-                this.addressId = res.data.id;
                 localStorage.setItem('choosedAddress', JSON.stringify(address));
             });
         }
@@ -241,11 +239,13 @@ export default {
             this.productList.forEach(cart => {
                 cartIds.push(cart.cartId);
             });
-            let addressId = this.addressId;
+            let addressId = this.choosedAddress.id;
             console.info(cartIds + "和" + addressId)
             submitOrder(cartIds, addressId).then(res => {
-                console.info(res)
-                alert(res.errno)
+                if(res.errno !== 0) {
+                    alert(res.message);
+                    return;
+                }
                 let orderId = res.data.orderId;
                 prepayOrder(orderId).then(resp => {
                     console.info(resp)

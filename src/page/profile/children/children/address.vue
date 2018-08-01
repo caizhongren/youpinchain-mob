@@ -48,9 +48,10 @@ export default {
             this.adressList = res.data;
             if(localStorage.getItem('choosedAddress')) {
                 var index = -1;
+                let choosedAddress = JSON.parse(localStorage.getItem('choosedAddress'));
                 this.adressList.forEach(address => {
                     index++;
-                    if (address.id == JSON.parse(localStorage.getItem('choosedAddress')).id) {
+                    if (choosedAddress && address.id == choosedAddress.id) {
                         this.choosedAddressIndex = index;
                     }
                 });
