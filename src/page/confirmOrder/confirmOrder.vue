@@ -135,7 +135,7 @@
 
     </nav>
     <ul class="settlement">
-        <li @click="submitOrder()">去付款</li>
+        <li @click="paymentCall()">去付款</li>
         <li>付款 <span class="red">¥{{totalPrice}}</span></li>
     </ul>
 </div>
