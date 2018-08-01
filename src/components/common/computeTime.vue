@@ -11,7 +11,7 @@
     export default {
         data(){
             return{
-                countNum: 900,
+                countNum: 0,
                 showAlert: false
             }
         },

@@ -8,29 +8,28 @@
                         <header class="order_item_top_header">
                             <p class="order_time">{{item.createTime}}</p>
                             <p class="order_status">
-                                {{status_title[item.order_status]}}
+                                {{item.orderStatusText}}
                             </p>
                         </header>
                         <router-link to="/orderDetail" tag="div">
 	                        <section class="goods_img">
 	                        	<div class="goods_box">
-	                        		<img class="restaurant_image" v-for="(goods,index) in item.goods_list" :src="goods.imageUrl" v-if="index < 4" :key="index">
+	                        		<img class="restaurant_image" v-for="(goods,index) in item.productList" :src="goods.picUrl" v-if="index < 4" :key="index">
+                                    <p class="" v-if="item.productList.length == 1">{{item.productList[0].productName}}</p>
 	                        	</div>
-		                        <p>共{{item.goods_list.length}}件</p>
-		                        <svg fill="#999" class="arrow_right" style="height:.64rem;width:.14rem;">
-	                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-	                            </svg>
+		                        <p>共{{item.productList.length}}件</p>
 	                        </section>
                         </router-link>
                     </section>
                     <div class="order_item_bottom">
-                    	<span class="order_text">实际支付<b style="color:#e4372e;">￥<strong style="font-size:.2rem;font-weight:bold;">88.88</strong></b></span>
-                    	<div class="order_button_border_grey" @click="showAlertTip = !showAlertTip" v-if="item.order_status !== 3 || item.order_status !== 4">联系客服</div>
+                    	<span class="order_text">实际支付<b style="color:#e4372e;">￥<strong style="font-size:.2rem;font-weight:bold;">{{item.actualPrice}}</strong></b></span>
+                    	<div class="order_button_border_grey" @click="showAlertTip = !showAlertTip">联系客服</div>
                         <div class="order_again">
-                            <compute-time v-if="item.order_status == 0" :time="item.time_pass"></compute-time>
-                            <span class="order_button_border_red" v-if="item.order_status == 1">取消订单</span>
-                            <router-link tag="span" to="/orderTrack" class="order_button_border_red" v-if="item.order_status == 2">查看物流</router-link>
-                            <router-link tag="span" to="/home" class="order_button_red" v-if="item.order_status == 3 || item.order_status == 4" >再次购买</router-link>
+                            <compute-time v-if="item.handleOption.pay" :time="item.expiryTime"></compute-time>
+                            <span class="order_button_border_red" v-if="item.handleOption.refund">取消订单</span>
+                            <router-link tag="span" to="/orderTrack" class="order_button_border_red" v-if="item.handleOption.confirm">查看物流</router-link>
+                            <span class="order_button_border_red" v-if="item.handleOption.confirm">确认收货</span>
+                            <!--<router-link tag="span" to="/home" class="order_button_red" v-if="item.order_status == 3 || item.order_status == 4" >再次购买</router-link>-->
                         </div>
                     </div>
                 </section>
