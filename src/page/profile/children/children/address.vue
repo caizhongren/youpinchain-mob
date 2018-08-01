@@ -37,6 +37,17 @@ import {
 } from 'vuex'
 
 export default {
+    beforeRouteUpdate(to, from, next) {
+        // 在当前路由改变，但是该组件被复用时调用
+        // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+        // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+        // 可以访问组件实例 `this`
+        if (to.name == 'addressList'){
+            this.loadAddresses();
+        }
+        
+        next();
+    },
     data() {
         return {
             adressList: [], //地址列表,
@@ -44,30 +55,34 @@ export default {
         }
     },
     mounted() {
-        getAddressList().then(res => {
-            this.adressList = res.data;
-            if(localStorage.getItem('choosedAddress')) {
-                var index = -1;
-                let choosedAddress = JSON.parse(localStorage.getItem('choosedAddress'));
-                this.adressList.forEach(address => {
-                    index++;
-                    if (choosedAddress && address.id == choosedAddress.id) {
-                        this.choosedAddressIndex = index;
-                    }
-                });
-            }
-        })
+    },
+    updated() {
     },
     created() {
         if (this.$route.query.path !== 'confirmOrder') {
             this.selectedAddress = null;
         }
+        this.loadAddresses();
     },
     components: {},
-    computed: {
-    },
+    computed: {},
     props: [],
     methods: {
+        loadAddresses() {
+            getAddressList().then(res => {
+                this.adressList = res.data;
+                if (localStorage.getItem('choosedAddress')) {
+                    var index = -1;
+                    let choosedAddress = JSON.parse(localStorage.getItem('choosedAddress'));
+                    this.adressList.forEach(address => {
+                        index++;
+                        if (choosedAddress && address.id == choosedAddress.id) {
+                            this.choosedAddressIndex = index;
+                        }
+                    });
+                }
+            })
+        },
         ...mapMutations([
             'CHOOSE_ADDRESS'
         ]),
@@ -87,8 +102,8 @@ export default {
         },
         toEdit(address, index) {
             var query = {
-                    addressId: address.id
-                }
+                addressId: address.id
+            }
             if (this.$route.query.path === 'confirmOrder') {
                 query = {
                     addressId: address.id,
