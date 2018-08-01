@@ -126,7 +126,7 @@ export default {
     };
   },
   mounted() {
-      orderStat(res => {
+      orderStat().then(res => {
           if(res.errno !== 0){
             return;
           }
