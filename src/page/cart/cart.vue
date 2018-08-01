@@ -70,10 +70,10 @@
 				<span :class="[selectAll ? 'selectAll' : 'unselected']"></span> 全选
 			</li>
 			<li>
-				<p>合计 <span class="red">¥{{totalPrice}}</span></p>
-				<p>运费 ¥{{fare}}</p>
+				<p>合计 &nbsp;&nbsp;<span class="red">¥{{totalPrice}}</span></p>
+				<p>运费 &nbsp;&nbsp;¥{{fare}}</p>
 			</li>
-			<div tag="li" @click="toSubmitOrder()">去结算</div>
+			<li @click="toSubmitOrder()">去结算</li>
 		</ul>
 		<foot-guide></foot-guide>
 	</div>    
@@ -275,7 +275,7 @@ export default {
   }
 }
 .shop_list_container {
-  background-color: $bc;
+  background-color: $fc;
   .no_list {
     padding: 0.5rem 0;
     text-align: center;
@@ -298,7 +298,7 @@ export default {
       border-radius: 10px;
       overflow: hidden;
       .goods {
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid $gd;
         li {
           position: relative;
           margin-bottom: 0.26rem;
@@ -375,7 +375,7 @@ export default {
       .payment_info {
         overflow: hidden;
         padding: 0.15rem 0;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid $gd;
         li {
           @include wh(100%, 0.35rem);
           line-height: 0.35rem;
@@ -421,15 +421,15 @@ export default {
     text-align: center;
   }
   li:nth-child(1) {
-    width: 46.33%;
+    width: 38.33%;
     text-align: left;
     padding-left: 0.2rem;
   }
   li:nth-child(2) {
     text-align: left;
-    padding-right: 0.12rem;
     line-height: 1;
     padding-top: 0.05rem;
+		width: 31.3333%;
     .red {
       @include sc(0.18rem, $red);
       font-weight: 600;

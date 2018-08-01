@@ -50,7 +50,7 @@
       z-index: 100;
       right: 0.1rem;
       top: .12rem;
-      @include sc(.13rem,#333333);
+      @include sc(.13rem,$g3);
     }
   }
 </style>

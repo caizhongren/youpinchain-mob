@@ -123,7 +123,7 @@ export default {
 
 .edit {
     right: 0.08rem;
-    @include sc(0.14rem, #fff);
+    @include sc(0.14rem, $fc);
     @include ct;
 }
 
@@ -137,7 +137,7 @@ export default {
             padding: .21rem .17rem .25rem .57rem;
             @include fj(space-between);
             border-radius: 10px;
-            background-color: #ffffff;
+            background-color: $fc;
             box-shadow: 0px 1px 13.9px 0.6px rgba(110, 194, 46, 0.24);
             position: relative;
             .default-address {
@@ -152,10 +152,10 @@ export default {
                 width: 2.3rem;
                 p {
                     line-height: 1.6;
-                    @include sc(.15rem, #666666);
+                    @include sc(.15rem, $g6);
                     span {
                         display: inline-block;
-                        @include sc(.15rem, #666666);
+                        @include sc(.15rem, $g6);
                     }
                 }
                 p:nth-of-type(1) {
@@ -184,22 +184,22 @@ export default {
         }
     }
     .no_address {
-        @include sc(.15rem, #666666);
+        @include sc(.15rem, $g6);
         text-align: center;
         line-height: 6rem;
-        background: #fff;
+        background: $fc;
         position: fixed;
         bottom: .5rem;
         width: 100%;
     }
     .addsite {
-        background: #e4372e;
+        background: $red;
         @include wh(100%, .5rem);
         line-height: .5rem;
         position: fixed;
         bottom: 0;
         text-align: center;
-        @include sc(.15rem, #fff);
+        @include sc(.15rem, $fc);
         font-weight: bold;
     }
 }

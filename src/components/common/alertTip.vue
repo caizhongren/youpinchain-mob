@@ -60,7 +60,7 @@
     display: flex;
     @include sc(.18rem, $g3);
     line-height: .46rem;
-    background-color: #fff;
+    background-color: $fc;
     border-radius: 0 0 .2rem .2rem;
   }
   .i-know div{
@@ -68,16 +68,16 @@
   }
   .i-know div:first-child{
     color: $g3;
-    border-right: 1px solid #ddd;
+    border-right: 1px solid $gd;
   }
   .i-know div:last-child {
-    color: #e4372e;
+    color: $red;
   }
   .mask1 .alert-wrap .text{
     @include sc(.18rem, $g3);
     height: 1rem;
     padding: .3rem .2rem 0;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid $gd;
     border-radius: .2rem .2rem 0 0;
     line-height: 1.33;
   }

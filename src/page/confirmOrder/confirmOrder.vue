@@ -475,7 +475,7 @@ export default {
             .payment_info {
                 overflow: hidden;
                 padding: 0.15rem 0;
-                border-bottom: 1px solid #ddd;
+                border-bottom: 1px solid $gd;
                 li {
                     @include wh(100%, 0.35rem);
                     line-height: 0.35rem;

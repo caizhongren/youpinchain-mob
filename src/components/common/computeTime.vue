@@ -71,12 +71,12 @@
         display: inline-block;
         height: .32rem;
         border-radius: .16rem;
-        background: #e4372e;
+        background: $red;
         padding: 0 .1rem;
         margin-left: .1rem;
         .rem_time{
             border-radius: .03rem;
-            @include sc(.15rem,#fff);
+            @include sc(.15rem,$fc);
             line-height: .32rem;
         }
     }

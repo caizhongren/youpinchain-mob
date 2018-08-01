@@ -93,7 +93,6 @@
         },
         created () {
             this.showLoading = false
-            console.log
         },
         mounted(){
         },
