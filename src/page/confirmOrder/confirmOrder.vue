@@ -11,29 +11,29 @@
                             <section class="ui-padding-block">
                                 <div class="input-new">
                                     <span>姓名</span>
-                                    <input type="text" placeholder="请填写你的姓名" :class="{verifies:verify}" v-model="message" @input="inputThing">
+                                    <input type="text" placeholder="请填写你的姓名" v-model="address.name">
                                 </div>
                                 <div class="add-detail">
                                     <div class="input-new">
                                         <span>联系电话</span>
-                                        <input type="text" placeholder="请填写收货人手机号" v-model="addAddress" />
+                                        <input type="tel" maxlength="11" placeholder="请填写收货人手机号" v-model="address.mobile" v-on:input="address.mobile = address.mobile.replace(/\D/g, '')" />
                                     </div>
                                 </div>
                                 <div class="input-new">
                                     <span>所在地区</span>
-                                    <input type="text" id="address-input" readonly="readonly" style="width:2.5rem;" placeholder="请选择" :class="{verifies:verifythree}" @input="inputThingthree" v-model="mesthree" />
+                                    <input type="text" id="address-input" readonly="readonly" style="width:2.5rem;" placeholder="请选择" v-model="address.tipText" />
                                     <svg fill="#bbb" style="width: 0.18rem;margin-left: .1rem;">		<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>		</svg>
                                 </div>
                                 <div class="input-new">
                                     <span>地址</span>
-                                    <textarea placeholder="请填写详细地址" id="adinfo" value="" rows="2"></textarea>
+                                    <textarea placeholder="请填写详细地址" id="adinfo" value="" rows="2" v-model="address.address"></textarea>
                                 </div>
                             </section>
                             <div id="container"></div>
                         </form>
                     </section>
                     <section class="addbutton">
-                        <button :class="{butopacity:butpart}" @click.prevent="submitAddress">保存</button>
+                        <button :class="{butopacity:butpart}" @click.prevent="submitAddress(address)">保存</button>
                     </section>
                 </div>
                 <router-link :to="{name: 'addressList', query:{path: 'confirmOrder'}}" class="address_info" v-else>
@@ -109,7 +109,8 @@ import {
     submitOrder,
     getDefaultAddress,
     getRegionsList,
-    prepayOrder
+    prepayOrder,
+    addAddress
 } from "../../service/getData";
 export default {
     data() {
@@ -122,15 +123,24 @@ export default {
             packingFeeReduction: 0,
             fare: 0,
             productList: [],
-            no_address: true,
-            message: "", // 信息
-            verify: false, // 姓名
-            mesthree: "", // 送餐地址
-            verifythree: false, // 地址
             butpart: false, //  新增地址按钮的透明度
-            addAddress: "",
             choosedAddress: undefined,
-            address: {},
+            address: {
+				name: '', // 姓名
+				mobile: '', // 手机号
+				tipText: '', // 送餐地址
+            	address: '', // 地址
+			},
+        }
+    },
+    props: ['showErrMsg'],
+    watch: {},
+    computed: {},
+    mounted() {
+        this.choosedAddress = JSON.parse(localStorage.getItem('choosedAddress'));
+        if (!this.choosedAddress) {
+			this.setRegions();
+			this.getDefaultAddress()
         }
     },
     created() {
@@ -144,68 +154,6 @@ export default {
             this.goodsPrice += product.presentPrice * product.number;
         });
     },
-    mounted() {
-        this.choosedAddress = JSON.parse(localStorage.getItem('choosedAddress'));
-        if (!this.choosedAddress) {
-            // 默认用户地址
-            getDefaultAddress().then(res => {
-                if (res.data) {
-                    let address = res.data;
-                    let index = -1;
-                    this.choosedAddress = address;
-                    localStorage.setItem('choosedAddress', JSON.stringify(address));
-                }
-            });
-        }
-        if (!this.choosedAddress) {
-            var that = this;
-            getRegionsList(0).then(res => {
-                this.provinces = res.data;
-                var provinces = this.provinces;
-                var picker = new AjaxPicker({
-                    title: "配送至",
-                    tipText: ["省份", "城市", "区/县"],
-                    input: "address-input",
-                    container: "container",
-                    renderArr: [
-                        function () {
-                            picker.render(provinces);
-                        },
-                        function () {
-                            getRegionsList(picker.result1.id).then(res => {
-                                picker.render(res.data);
-                            });
-                        },
-                        function () {
-                            getRegionsList(picker.result2.id).then(res => {
-                                picker.render(res.data);
-                            });
-                        }
-                    ],
-                    success: function (arr) {
-                        console.log(arr)
-                        var addressD = "";
-                        for (var i = 0; i < arr.length; i++) {
-                            addressD += " " + arr[i].value;
-                        }
-                        document.getElementById("address-input").value = addressD.substring(1);
-                        that.address.provinceId = picker.result1.id;
-                        that.address.provinceName = picker.result1.value;
-                        that.address.cityId = picker.result2.id;
-                        that.address.cityName = picker.result1.value;
-                        that.address.areaId = picker.result3.id;
-                        that.address.areaName = picker.result3.value;
-                        that.address.tipText = addressD.substring(1);
-                    }
-                });
-            });
-        }
-
-    },
-    components: {
-        headTop
-    },
-    computed: {},
     methods: {
         // ...mapMutations(["CHOOSE_ADDRESS"]),
 
@@ -213,6 +161,10 @@ export default {
 
         },
         paymentCall() {
+            if (!this.choosedAddress) {
+                this.showErrMsg('请填写正确收货地址！')
+                return
+            }
             let cartIds = [];
             this.productList.forEach(cart => {
                 cartIds.push(cart.cartId);
@@ -249,101 +201,29 @@ export default {
                 })
             })
         },
-
-        //确认订单
-        async confrimOrder() {
-            //用户未登录时弹出提示框
-            if (!(this.userInfo && this.userInfo.user_id)) {
-                this.showAlert = true;
-                this.alertText = "请登录";
-                return;
-                //未选择地址则提示
-            } else if (!this.choosedAddress) {
-                this.showAlert = true;
-                this.alertText = "请添加一个收获地址";
-                return;
-            }
-            //保存订单
-            this.SAVE_ORDER_PARAM({
-                user_id: this.userInfo.user_id,
-                cart_id: this.checkoutData.cart.id,
-                address_id: this.choosedAddress.id,
-                description: this.remarklist,
-                entities: this.checkoutData.cart.groups,
-                geohash: this.geohash,
-                sig: this.checkoutData.sig
-            });
-            //发送订单信息
-            let orderRes = await placeOrders(
-                this.userInfo.user_id,
-                this.checkoutData.cart.id,
-                this.choosedAddress.id,
-                this.remarklist,
-                this.checkoutData.cart.groups,
-                this.geohash,
-                this.checkoutData.sig
-            );
-            //第一次下单的手机号需要进行验证，否则直接下单成功
-            if (orderRes.need_validation) {
-                this.NEED_VALIDATION(orderRes);
-                this.$router.push("/confirmOrder/userValidation");
-            } else {
-                this.ORDER_SUCCESS(orderRes);
-                this.$router.push("/confirmOrder/payment");
-            }
-        },
-        inputThing() {
-            !this.message ? (this.verify = true) : (this.verify = false);
-            this.bindThing();
-        },
-        //输入地址
-        inputThingthree() {
-            this.verifythree = true;
-            if (this.mesthree.length == 0) {
-                this.sendaddress = "请详细填写送餐地址";
-            } else if (this.mesthree.length > 0 && this.mesthree.length <= 2) {
-                this.sendaddress = "送餐地址太短了，不能辨识";
-            } else {
-                this.sendaddress = "";
-                this.verifythree = false;
-            }
-            this.bindThing();
-        },
-        //输入手机号
-        inputThingfour() {
-            this.verifyfour = true;
-            if (/^[1][358][0-9]{9}$/.test(this.telenum)) {
-                this.verifyfour = false;
-            } else if (this.telenum == "") {
-                this.telephone = "手机号不能为空";
-            } else {
-                this.telephone = "请输入正确的手机号";
-            }
-            this.bindThing();
-        },
-        //输入备注手机号
-        inputThingfive() {
-            this.verifyfive = true;
-            if (
-                /^[1][358][0-9]{9}$/.test(this.standbytelenum) ||
-                this.standbytelenum == ""
-            ) {
-                this.verifyfive = false;
-            } else {
-                this.standbytele = "请输入正确的手机号";
-            }
-            this.bindThing();
-        },
-        bindThing() {
-            if (this.message && this.mesthree && !this.verifyfour) {
-                this.butpart = true;
-            } else {
-                this.butpart = false;
-            }
-        },
         //保存地址
-        async submitAddress() {
-           addAddress(
+        async submitAddress(address) {
+            if (!address.name) {
+               this.showErrMsg('请填写你的姓名')
+               return
+		    }
+		    if (!address.mobile) {
+               this.showErrMsg('请填写收货人手机号')
+               return
+			}
+			if (address.mobile.length < 11) {
+               this.showErrMsg('请填写正确的收货人手机号')
+               return
+            }
+			if (!address.tipText) {
+				this.showErrMsg('请选择您的所在地区')
+            	return
+			}
+			if (!address.address) {
+				this.showErrMsg('请填写详细地址')
+            	return
+			}
+            addAddress(
                 address.name,
                 address.provinceId,
                 address.cityId,
@@ -353,18 +233,71 @@ export default {
             ).then(res => {
                 address.id = res.data;
                 if (res.errno == 0) {
-                    var index = 0;
-                    if (this.$route.query.path == 'confirmOrder') {
-                        localStorage.setItem('choosedAddress', JSON.stringify(address));
-                        this.$router.go(-2);
-                    } else {
-                        this.$router.push('/profile/info/address');
-                    }
+					localStorage.setItem('choosedAddress', JSON.stringify(address));
+					window.reload();
                 }
             });
-        }
+		},
+		// 设置地址插件
+		setRegions () {
+            var that = this;
+            getRegionsList(0).then(res => {
+                that.provinces = res.data;
+                var provinces = this.provinces;
+                var picker = new AjaxPicker({
+                    title: "配送至",
+                    tipText: ["省份", "城市", "区/县"],
+                    input: "address-input",
+                    container: "container",
+                    renderArr: [
+                        function () {
+                            picker.render(provinces);
+                        },
+                        function () {
+                            getRegionsList(picker.result1.id).then(res => {
+                                picker.render(res.data);
+                            });
+                        },
+                        function () {
+                            getRegionsList(picker.result2.id).then(res => {
+                                picker.render(res.data);
+                            });
+                        }
+                    ],
+                    success: function (arr) {
+                        console.log(arr)
+                        var addressD = "";
+                        for (var i = 0; i < arr.length; i++) {
+                            addressD += " " + arr[i].value;
+                        }
+						document.getElementById("address-input").value = addressD.substring(1);
+                        that.address.provinceId = picker.result1.id;
+                        that.address.provinceName = picker.result1.value;
+                        that.address.cityId = picker.result2.id;
+                        that.address.cityName = picker.result1.value;
+                        that.address.areaId = picker.result3.id;
+                        that.address.areaName = picker.result3.value;
+                        that.address.tipText = addressD.substring(1);
+                    }
+                });
+            });
+		},
+		// 获取默认地址信息
+		getDefaultAddress () {
+			// 默认用户地址
+			getDefaultAddress().then(res => {
+				if (res.data) {
+					let address = res.data;
+					let index = -1;
+					this.choosedAddress = address;
+					localStorage.setItem('choosedAddress', JSON.stringify(address));
+				}
+			});
+		}
     },
-    watch: {}
+    components: {
+        headTop
+    },
 };
 </script>
 
