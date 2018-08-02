@@ -15,11 +15,11 @@
             </li>
         </ul>
         <div class="no_address" v-show="adressList.length === 0">您还没有添加过地址哦～</div>
-        <router-link to='/profile/info/address/add'>
+        <div @click="toAddAddress()">
             <div class="addsite">
                 + 添加新地址
             </div>
-        </router-link>
+        </div>
     </section>
     <transition name="router-slid" mode="out-in">
         <router-view></router-view>
@@ -111,6 +111,19 @@ export default {
             if (this.$route.query.path === 'confirmOrder') {
                 query = {
                     addressId: address.id,
+                    path: 'confirmOrder'
+                }
+            }
+
+            this.$router.push({
+                name: 'editAddress',
+                query: query
+            })
+        },
+        toAddAddress() {
+            var query = {}
+            if (this.$route.query.path === 'confirmOrder') {
+                query = {
                     path: 'confirmOrder'
                 }
             }
