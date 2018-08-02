@@ -29,7 +29,7 @@
     },
     created() {
         this.dataId = this.$route.query.dataId;
-        this.headTitle = this.dataId === '2' ? '生长环境' : this.dataId === '4' ? '饲养情况' : '健康指标'
+        this.headTitle = this.dataId === '2' ? '生长环境' : this.dataId === '4' ? '饲养情况' : this.dataId === '6' ? '健康指标' : ''
     },
     methods: {
 
