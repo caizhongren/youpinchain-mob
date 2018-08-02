@@ -194,7 +194,7 @@
 	    	}
 	    	div:nth-of-type(2){
 	    		min-height:.72rem;
-	    		min-width: 2.1rem;
+	    		width: 2.1rem;
 	    	}
     	}
     }
