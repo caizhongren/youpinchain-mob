@@ -107,13 +107,7 @@ export default {
   },
   async beforeMount() {},
   mounted() {
-    findCart(1, 100).then(res => {
-      this.carts = res.data.cart;
-      this.carts.forEach(cart => {
-        cart.choose = true;
-      });
-      this.reComputePrice();
-    });
+    this.getCartList();
     productHotList(1,4).then(res => {
         this.hotgoodslist = res.data.productList
         this.hasMore = res.data.totalPages > this.page
@@ -124,6 +118,15 @@ export default {
   },
   computed: {},
   methods: {
+    getCartList () {
+        findCart(1, 100).then(res => {
+            this.carts = res.data.cart;
+            this.carts.forEach(cart => {
+                cart.choose = true;
+            });
+            this.reComputePrice();
+        });
+    },
     addToCart (productId) {
       var that = this
       let elLeft = event.target.getBoundingClientRect().left;
@@ -132,6 +135,7 @@ export default {
       that.showMoveDotFun(that.showMoveDot, elLeft, elBottom);
       addToCart(productId, 1).then(res => {
         that.$parent.getCartNum();
+        that.getCartList();
       })
     },
     showMoveDotFun (showMoveDot, elLeft, elBottom) { // 显示下落圆球
@@ -207,6 +211,7 @@ export default {
         if (res.errno == 0) {
           cart.number = cart.number + number;
           this.reComputePrice();
+          this.$parent.getCartNum();
         }
       });
     },
@@ -219,6 +224,7 @@ export default {
         if (res.errno == 0) {
           this.carts.splice(this.carts.indexOf(cart), 1);
           this.reComputePrice();
+          this.$parent.getCartNum();
         }
       });
     }
@@ -460,7 +466,7 @@ export default {
     text-align: center;
   }
   li:nth-child(1) {
-    width: 41.33%;
+    width: 32.33%;
     text-align: left;
     padding-left: 0.2rem;
     color: $g6;
@@ -469,7 +475,7 @@ export default {
     text-align: left;
     line-height: 1;
     padding-top: 0.05rem;
-		width: 31.3333%;
+		width: 40.3333%;
     .red {
       @include sc(0.18rem, $red);
       font-weight: 600;

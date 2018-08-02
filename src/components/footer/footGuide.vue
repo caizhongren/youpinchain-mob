@@ -25,10 +25,14 @@
     },
     mounted(){
       
-     
     },
     computed: {
       cartNum() {
+        cartProductCount().then(res => {
+          if (res.errno == 0) {
+            this.$store.state.cart_num = res.data;
+          }
+        }) 
         return this.$store.state.cart_num;
       }
     },
