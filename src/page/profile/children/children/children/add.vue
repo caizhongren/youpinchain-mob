@@ -29,7 +29,7 @@
             <section class="addbutton">
                 <button @click="submitAddress()">{{submitText}}</button>
             </section>
-            <div class="delete-address" @click="showAlertTip = !showAlertTip"></div>
+            <div class="delete-address" @click="showAlertTip = !showAlertTip" v-show="showDelete"></div>
             <div id="city_container"></div>
         </form>
     </section>
@@ -69,7 +69,8 @@ export default {
             deleteNumber: "",
             address: {},
             provinces: [],
-            submitText: '保存'
+            submitText: '保存',
+            showDelete: true
         };
     },
     mounted() {
@@ -131,6 +132,7 @@ export default {
         this.deleteNumber = this.$route.query.number;
         if (this.$route.query.path == 'confirmOrder') {
             this.submitText = '保存并使用';
+            this.showDelete = false
         }
     },
     mixins: [getImgPath],

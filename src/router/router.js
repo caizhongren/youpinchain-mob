@@ -13,7 +13,7 @@ const completed = r => require.ensure([], () => r(require('../page/order/childre
 const orderDetail = r => require.ensure([], () => r(require('../page/order/children/orderDetail')), 'orderDetail')
 const orderTrack = r => require.ensure([], () => r(require('../page/order/children/orderTrack')), 'orderTrack')
 const confirmOrder = r => require.ensure([], () => r(require('../page/confirmOrder/confirmOrder')), 'confirmOrder')
-const info = r => require.ensure([], () => r(require('../page/profile/children/info')), 'info')
+// const info = r => require.ensure([], () => r(require('../page/profile/children/info')), 'info')
 const address = r => require.ensure([], () => r(require('../page/profile/children/children/address')), 'address')
 const add = r => require.ensure([], () => r(require('../page/profile/children/children/children/add')), 'add')
 const addDetail = r => require.ensure([], () => r(require('../page/profile/children/children/children/children/addDetail')), 'addDetail')
@@ -62,22 +62,14 @@ export default [{
             path: '/profile',
             component: profile,
             children: [{
-                path: 'info', //个人信息详情页
-                component: info,
-                children: [{
-                    path: 'address',
-                    component: address,     //编辑地址
-                    name: 'addressList',
-                    children:[{
-                        path:'add',
-                        component:add,
-                        name: 'editAddress',
-                        children:[{
-                            path:'addDetail',
-                            component:addDetail
-                        }]
-                    }]
-                }]
+                path: 'address',
+                component: address,     //编辑地址
+                name: 'addressList'
+            },
+            {
+                path:'add',
+                component:add,
+                name: 'editAddress'
             }]
         },
         // 关于我们

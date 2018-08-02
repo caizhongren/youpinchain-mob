@@ -1,6 +1,6 @@
  <template>
     <div class="rating_page">
-<!--         <head-top head-title="账户信息" go-back='true'></head-top> -->
+        <head-top head-title="账户信息" go-back='true'></head-top>
         <section class="profile-info">
             <section class="headportrait">
                 <input type="file" class="profileinfopanel-upload" @change="uploadAvatar">
@@ -32,7 +32,7 @@
                     </div>
                 </section>
             </router-link>
-            <router-link to="/profile/info/address" class="info-router">
+            <router-link to="/profile/address" class="info-router">
                 <section class="headportrait headportraitwo headportraithree">
                         <h2>收货地址</h2>
                         <div class="headportrait-div">
@@ -504,3 +504,15 @@ body .coverpart .cover-animate-leave{
     opacity: 0;
 }
 </style>
+
+<!--  <template>
+     <div>
+         <router-view></router-view>
+     </div>
+ </template>
+ <style>
+     
+ </style>
+ <script>
+     
+ </script> -->
