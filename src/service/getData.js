@@ -178,7 +178,7 @@ export const submitOrder = (cartIds,addressId) => fetch('/orders', {
  * 确认收货
  */
 
-export const confirmOrder = ({ orderId }) => fetch('/orders/' + orderId + 'confirm', {
+export const confirmOrder = ( orderId ) => fetch('/orders/' + orderId + '/confirm', {
 }, 'POST');
 
 
@@ -256,3 +256,10 @@ export const expresses = (expNo) => fetch('/expresses/'+expNo);
  * @returns {Promise<*>}
  */
 export const brandsPics = (dataId) => fetch('/brands/'+dataId+"/pics", {});
+
+/**
+ * 再来一单
+ * @param orderId
+ * @returns {Promise<*>}
+ */
+export const rebuy = (orderId) => fetch('/orders/'+orderId+"/rebuy", {} ,'POST');

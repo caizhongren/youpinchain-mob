@@ -170,7 +170,6 @@ export default {
                 cartIds.push(cart.cartId);
             });
             let addressId = this.choosedAddress.id;
-            console.info(cartIds + "和" + addressId)
             submitOrder(cartIds, addressId).then(res => {
                 if(res.errno !== 0) {
                     return;

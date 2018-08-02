@@ -103,7 +103,8 @@ export default {
       showMoveDot: [], //控制下落的小圆点显示隐藏
       elLeft: 0, //当前点击加按钮在网页中的绝对top值
       elBottom: 0, //当前点击加按钮在网页中的绝对left值
-	  hasMore: false
+	  hasMore: false,
+      proIds:[]
     };
   },
   async beforeMount() {},
@@ -113,6 +114,13 @@ export default {
         this.hasMore = res.data.totalPages > this.page
     })
     this.loadCarts();
+  },
+   created() {
+     this.proIds = JSON.parse(
+        sessionStorage.getItem(this.$route.query.rebuyKey)
+     );
+     console.info(this.proIds)
+       //TODO 需要根据proIds选择勾选
   },
   components: {
     footGuide

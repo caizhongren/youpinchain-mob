@@ -27,10 +27,11 @@
                         <div class="order_button_border_grey" @click="showAlertTip = !showAlertTip">联系客服</div>
                         <div class="order_again">
                             <compute-time v-if="item.handleOption.pay" :time="item.expiryTime"></compute-time>
-                            <span class="order_button_border_red" v-if="item.handleOption.refund">取消订单</span>
-                            <router-link tag="span" to="/orderTrack" class="order_button_border_red" v-if="item.handleOption.confirm">查看物流</router-link>
-                            <span class="order_button_border_red" v-if="item.handleOption.confirm">确认收货</span>
-                            <!--<router-link tag="span" to="/home" class="order_button_red" v-if="item.order_status == 3 || item.order_status == 4" >再次购买</router-link>-->
+                            <span class="order_button_border_red" @click="cancelOrder(item.id)" v-if="item.handleOption.refund">取消订单</span>
+                            <router-link :to="{path:'/orderTrack',query:{expNo:item.expNo}}" tag="span" class="order_button_border_red"
+                                         v-if="item.handleOption.confirm" >查看物流</router-link>
+                            <span class="order_button_border_red" @click="confirmOrder(item.id)" v-if="item.handleOption.confirm">确认收货</span>
+                            <!--<router-link tag="span" to="/home" class="order_button_red" v-if="item.handleOption.rebuy" >再次购买</router-link>-->
                         </div>
                     </div>
                 </section>
@@ -48,7 +49,7 @@
     import loading from 'src/components/common/loading'
     import {loadMore} from 'src/components/common/mixin'
     import alertTip from 'src/components/common/alertTip'
-    import {getOrderList} from "../../../service/getData";
+    import {getOrderList,cancelOrder,confirmOrder} from "../../../service/getData";
 
     export default {
       data(){
@@ -80,6 +81,26 @@
         computed: {
         },
         methods: {
+            // 取消订单
+            cancelOrder(orderId){
+                cancelOrder(orderId).then(res =>{
+                    if(res.errno !== 0) {
+                        alert("失败");
+                        return;
+                    }
+                    alert("成功");
+                })
+            },
+            // 确认收货
+            confirmOrder(orderId){
+                confirmOrder(orderId).then(res =>{
+                    if(res.errno !== 0) {
+                        alert("失败");
+                        return;
+                    }
+                    alert("成功");
+                })
+            },
         },
         watch: {
         }

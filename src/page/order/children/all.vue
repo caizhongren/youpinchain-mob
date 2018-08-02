@@ -26,11 +26,12 @@
                     	<span class="order_text">实际支付<b style="color:#e4372e;">￥<strong style="font-size:.2rem;font-weight:bold;">{{item.actualPrice}}</strong></b></span>
                     	<div class="order_button_border_grey" @click="showAlertTip = !showAlertTip">联系客服</div>
                         <div class="order_again">
-                            <compute-time v-if="item.handleOption.pay" :time="item.expiryTime"></compute-time>
-                            <span class="order_button_border_red" v-if="item.handleOption.refund">取消订单</span>
-                            <router-link tag="span" to="/orderTrack" class="order_button_border_red" v-if="item.handleOption.confirm">查看物流</router-link>
-                            <span class="order_button_border_red" v-if="item.handleOption.confirm">确认收货</span>
-                            <!--<router-link tag="span" to="/home" class="order_button_red" v-if="item.order_status == 3 || item.order_status == 4" >再次购买</router-link>-->
+                            <compute-time v-if="item.handleOption.pay" :time="item.expiryTime" @click.native="toPay(item.id)"></compute-time>
+                            <span class="order_button_border_red" @click="cancelOrder(item.id)" v-if="item.handleOption.refund">取消订单</span>
+                            <router-link :to="{path:'/orderTrack',query:{expNo:item.expNo}}" tag="span" class="order_button_border_red"
+                                         v-if="item.handleOption.confirm" >查看物流</router-link>
+                            <span class="order_button_border_red" @click="confirmOrder(item.id)" v-if="item.handleOption.confirm">确认收货</span>
+                            <span class="order_button_border_red" @click="rebuy(item.id)" v-if="item.handleOption.rebuy">再次购买</span>
                         </div>
                     </div>
                 </section>
@@ -48,7 +49,7 @@ import computeTime from "src/components/common/computeTime";
 import loading from "src/components/common/loading";
 import { loadMore } from "src/components/common/mixin";
 import alertTip from "src/components/common/alertTip";
-import {getOrderList} from "../../../service/getData";
+import {getOrderList,cancelOrder,confirmOrder,prepayOrder,rebuy} from "../../../service/getData";
 
 export default {
   data() {
@@ -80,7 +81,79 @@ export default {
     alertTip
   },
   computed: {},
-  methods: {},
+  methods: {
+      // 取消订单
+      cancelOrder(orderId){
+          cancelOrder(orderId).then(res =>{
+              if(res.errno !== 0) {
+                  alert("失败");
+                  return;
+              }
+              alert("成功");
+          })
+      },
+      // 确认收货
+      confirmOrder(orderId){
+          confirmOrder(orderId).then(res =>{
+              if(res.errno !== 0) {
+                  alert("失败");
+                  return;
+              }
+              alert("成功");
+          })
+      },
+      toPay(orderId) {
+          var that = this;
+          prepayOrder(orderId).then(resp => {
+              if (resp.errno === 403) {
+                  alert("订单不可支付")
+              } else {
+                  WeixinJSBridge.invoke(
+                      'getBrandWCPayRequest', {
+                          "appId": resp.data.appId, //公众号名称，由商户传入
+                          "timeStamp": resp.data.timeStamp, //时间戳，自1970年以来的秒数
+                          "nonceStr": resp.data.nonceStr, //随机串
+                          "package": resp.data.packageValue,
+                          "signType": resp.data.signType, //微信签名方式：
+                          "paySign": resp.data.paySign //微信签名
+                      },
+                      function (res) {
+                          if (res.err_msg == "get_brand_wcpay_request:ok") {
+                              that.$router.push('/order/undelivery');
+                          }
+                          // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                      }
+                  );
+              }
+          })
+      },
+      rebuy(orderId){
+          rebuy(orderId).then(res => {
+              console.info(res)
+              if(res.errno !== 0) {
+                  alert("失败");
+                  return;
+              }
+              var arr = [];
+              for (var i = 0; i < sessionStorage.length; i++) {
+                  if (sessionStorage.key(i).substring(0, 7) == "proIds_") {
+                      arr.push(sessionStorage.key(i));
+                  }
+              }
+
+              for (var i = 0; i < arr.length; i++) {
+                  sessionStorage.removeItem(arr[i]);
+              }
+
+              let currentTime = new Date().getTime();
+              sessionStorage.setItem(
+                  "proIds_" + currentTime,
+                  JSON.stringify(res.data)
+              );
+              this.$router.push("/cart?rebuyKey=proIds_" + currentTime);
+          })
+      }
+  },
   watch: {}
 };
 </script>

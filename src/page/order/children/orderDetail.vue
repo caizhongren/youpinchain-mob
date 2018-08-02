@@ -112,7 +112,12 @@
                 </section>
                 <section class="sale_after">
                     <span class="red" @click="showAlertTip = !showAlertTip">联系客服</span>
-                    <span class="grey" @click="cancelOrder()" v-if="orderData.handleOption.refund">取消订单</span>
+                    <compute-time v-if="item.handleOption.pay" :time="item.expiryTime" @click.native="toPay(item.id)"></compute-time>
+                    <span class="order_button_border_red" @click="cancelOrder(item.id)" v-if="item.handleOption.refund">取消订单</span>
+                    <router-link :to="{path:'/orderTrack',query:{expNo:item.expNo}}" tag="span" class="order_button_border_red"
+                                 v-if="item.handleOption.confirm" >查看物流</router-link>
+                    <span class="order_button_border_red" @click="confirmOrder(item.id)" v-if="item.handleOption.confirm">确认收货</span>
+                    <!--<router-link tag="span" to="/home" class="order_button_red" v-if="item.handleOption.rebuy" >再次购买</router-link>-->
                 </section>
             </section>
         </section>
@@ -128,7 +133,7 @@
     import loading from 'src/components/common/loading'
     import footGuide from 'src/components/footer/footGuide'
     import alertTip from 'src/components/common/alertTip'
-    import {getOrderDetail,cancelOrder} from "../../../service/getData";
+    import {getOrderList,cancelOrder,confirmOrder,prepayOrder} from "../../../service/getData";
 
     export default {
 
@@ -177,15 +182,51 @@
         computed: {
         },
         methods: {
-          cancelOrder(){
-              cancelOrder(this.orderId).then(res=> {
-                  if (res.errno !== 0){
-                      alert("成功")
-                  }else{
-                      alert("失败")
-                  }
-              })
-          }
+            // 取消订单
+            cancelOrder(orderId){
+                cancelOrder(orderId).then(res =>{
+                    if(res.errno !== 0) {
+                        alert("失败");
+                        return;
+                    }
+                    alert("成功");
+                })
+            },
+            // 确认收货
+            confirmOrder(orderId){
+                confirmOrder(orderId).then(res =>{
+                    if(res.errno !== 0) {
+                        alert("失败");
+                        return;
+                    }
+                    alert("成功");
+                })
+            },
+            toPay(orderId) {
+                var that = this;
+                prepayOrder(orderId).then(resp => {
+                    if (resp.errno === 403) {
+                        alert("订单不可支付")
+                    } else {
+                        WeixinJSBridge.invoke(
+                            'getBrandWCPayRequest', {
+                                "appId": resp.data.appId, //公众号名称，由商户传入
+                                "timeStamp": resp.data.timeStamp, //时间戳，自1970年以来的秒数
+                                "nonceStr": resp.data.nonceStr, //随机串
+                                "package": resp.data.packageValue,
+                                "signType": resp.data.signType, //微信签名方式：
+                                "paySign": resp.data.paySign //微信签名
+                            },
+                            function (res) {
+                                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                    that.$router.push('/order/undelivery');
+                                }
+                                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                            }
+                        );
+                    }
+                })
+            }
         },
         watch: {
         }
