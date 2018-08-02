@@ -3,32 +3,29 @@
     <head-top class="header" go-back='true' is-share="true" :showShare="showShare" :headTitle="headTitle"></head-top>
     <div class="top_main">
       <carousel :loop="true" :autoplay="true" :minSwipeDistance="6" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="5" :paginationSize="8" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color">
-        <slide>
-          <img src="../../images/1.png" alt="" width="100%" class="show">
-        </slide>
-        <slide>
-          <img src="../../images/1.png" alt="" width="100%" class="show">
-        </slide>
-        <slide>
-          <img src="../../images/1.png" alt="" width="100%" class="show">
+        <slide v-for="item in goods.headPic" :key="item.id">
+          <img :src="item" alt="" width="100%" class="show">
         </slide>
       </carousel>
-      <div class="presell_box" v-if="goods.presell">
+      <div class="presell_box" v-if="goods.preSale">
         <div class="left_price left">
-          <p class="price"><span>¥</span>{{goods.price}} <s>¥{{goods.marketPrice}}</s></p>
-          <p class="tip">商品预售预计{{goods.presellTime | dateCharacter}}发货</p>
+          <p class="price"><span>¥</span>{{goods.presentPrice}} <s>¥{{goods.originalPrice}}</s></p>
+          <!--<p class="tip">商品预售预计{{goods.presellTime | dateCharacter}}发货</p>-->
         </div>
         <div class="right_tip right">预售</div>
       </div>
       <div class="title">
-        <p class="price" v-if="!goods.presell"><span>¥</span>{{goods.price}} <s>¥{{goods.marketPrice}}</s></p>
-        <p class="name"><span class="presell_text" v-if="goods.presell">【预售】</span>{{goods.name}}</p>
-        <p class="desr">{{goods.description}}</p>
+        <p class="price" v-if="!goods.preSale"><span>¥</span>{{goods.presentPrice}} <s>¥{{goods.originalPrice}}</s></p>
+        <p class="name"><span class="presell_text" v-if="goods.preSale">【预售】</span>{{goods.name}}</p>
+        <p class="desr">{{goods.describe}}</p>
       </div>
     </div>
     <div class="goods_info">
       <div class="info_title">商品详情</div>
-      <div class="info_content" v-html="goods.Desc"></div>
+      <!--<div class="info_content" v-html="goods.Desc"></div>-->
+      <div>
+        <img v-for="item in goods.footPic" :src="item" alt="" width="100%" class="show">
+      </div>
     </div>
     <div class="add_cart_container">
       <router-link class="cart_icon_num left" :to="'/cart'">
@@ -46,6 +43,7 @@
   import headTop from 'src/components/header/head'
   import { ModalHelper } from '../../service/Utils'
   import { showBack } from 'src/config/mUtils'
+  import {addToCart,getProductDetail,cartProductCount} from '../../service/getData'
   export default {
     data(){
       return{
@@ -53,7 +51,7 @@
         headTitle: '',
         goodsid:'',
         goods: {},
-        cart_num: 8,
+        cart_num: 0,
         number: [1, 2, 3, 4, 5],
         pagination: {
           activeColor: '#e4372e',
@@ -69,6 +67,7 @@
     mounted(){
       this.goodsid = this.$route.params.goodsid;
       this.initData();
+      this.initCartCount();
     },
     components:{
       Carousel,
@@ -81,34 +80,32 @@
     methods:{
       initData () {
         var that = this;
-        if (that.goodsid === '0') {
-          that.goods = {
-            name:'猪耳朵500g*1份',
-            description: '和黄瓜丝凉拌好吃极了～',
-            price: 23.99,
-            marketPrice: 33.99,
-            presellTime: 11111111,
-            presell: true, // 是否预售
-            Desc: '<div>商品介绍内容 <br>商品介绍内容 </br>商品介绍内容</div>'
-          }
-        } else {
-          that.goods = {
-            name:'猪耳朵500g*2份',
-            description: '和黄瓜丝凉拌好吃极了～',
-            price: 23.99,
-            marketPrice: 33.99,
-            presellTime: 11111111,
-            presell: false, // 是否预售
-            Desc: '<div>商品介绍内容 <br>商品介绍内容 </br>商品介绍内容</div>'
-          }
-        }
+          getProductDetail(that.goodsid).then(res =>{
+              if (res.errno !== 0){
+                  return;
+              }
+              that.goods = res.data;
+          })
+
         //开始监听scrollTop的值，达到一定程度后显示返回顶部按钮
         showBack(status => {
           that.headTitle = status ? that.goods.name : '';
         });
       },
+      initCartCount () {
+          cartProductCount().then(res =>{
+              if (res.errno == 0) {
+                  this.cart_num = res.data;
+              }
+          })
+      },
       addCartList (goods) {
-        this.cart_num += 1;
+          addToCart(this.goodsid, 1).then(res => {
+            if (res.errno === 0){
+                alert("添加成功")
+                this.initCartCount();
+            }
+          })
       }
     }
   }

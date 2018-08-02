@@ -243,4 +243,16 @@ export const getRegionsList = (parentId) => fetch('/regions', {
 export const userInfo = () => fetch('/oa/users/info', {
 });
 
+/**
+ * 物流查询
+ * @param expNo
+ * @returns {Promise<*>}
+ */
 export const expresses = (expNo) => fetch('/expresses/'+expNo);
+
+/**
+ * 查询品牌资料详情
+ * @param dataId
+ * @returns {Promise<*>}
+ */
+export const brandsPics = (dataId) => fetch('/brands/'+dataId+"/pics", {});
