@@ -4,11 +4,12 @@
       <loading v-show="showLoading"></loading>
     </transition>
     <div v-show="!showLoading">
-      <router-link tag="div" class="header_image" :to="'/product-introduction'">
+      <router-link tag="div" class="header_image" :to="{path:'/growing-environment',query:{dataId:datasBrandId}}">
         <img :src="brand.pictureUrl" alt="" width="100%" class="show">
       </router-link>
       <ul class="product_nav">
-        <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" @click="toggleTab(tab.id,index)">{{tab.name}}</li>
+        <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" v-if="tab.name !== 'brand'"
+            @click="toggleTab(tab.id,index)">{{tab.name}}</li>
       </ul>
       <section id="hot_goods">
         <h4 class="goods_title">热卖商品</h4>
@@ -55,7 +56,8 @@ export default {
       elBottom: 0, //当前点击加按钮在网页中的绝对left值
       hasMore: false, // 是否有更多商品，是否可以点击加载更多
       page: 1,
-      pageSize: 4
+      pageSize: 4,
+      datasBrandId:""
     }
   },
 	mounted(){
@@ -64,6 +66,7 @@ export default {
       this.product_nav = res.data.brandDatas
       this.brand = res.data.brand
       this.showLoading = false;
+      this.getDatasBrandId(res.data.brandDatas)
     })
 
     productList(this.page, this.pageSize).then(res => {
@@ -71,6 +74,8 @@ export default {
       this.hasMore = res.data.totalPages > this.page
       this.showLoading = false;
     })
+
+
   },
   components:{
     footGuide,
@@ -125,6 +130,13 @@ export default {
       this.showMoveDot = this.showMoveDot.map(item => false);
       el.style.opacity = 1;
     },
+    getDatasBrandId(nav){
+        nav.forEach(key => {
+          if(key.name === 'brand'){
+              this.datasBrandId = key.id
+          }
+      })
+    }
   },
 }
 </script>
