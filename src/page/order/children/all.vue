@@ -15,9 +15,10 @@
 	                        <section class="goods_img">
 	                        	<div class="goods_box">
 	                        		<img class="restaurant_image" v-for="(goods,index) in item.productList" :src="goods.picUrl" v-if="index < 4" :key="index">
-                                    <p class="" v-if="item.productList.length == 1">{{item.productList[0].productName}}</p>
+                              <!-- <p class="" v-if="item.productList.length == 1">{{item.productList[0].productName}}</p> -->
 	                        	</div>
 		                        <p>共{{item.productList.length}}件</p>
+                            <svg fill="#bbb" style="width: 0.15rem;margin-left: 0rem;height: .64rem;"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use></svg>
 	                        </section>
                         </router-link>
                     </section>
@@ -35,7 +36,7 @@
                 </section>
             </li>
         </ul>
-        <alert-tip :showAlertTip="showAlertTip" :type="2" v-show="showAlertTip"></alert-tip>       
+        <alert-tip :showAlertTip="showAlertTip" :type="2" :alertText='`<p>确定拨打客服电话 <br> 400-990-7626</p>`' v-show="showAlertTip"></alert-tip>       
         <transition name="loading">
             <loading v-show="showLoading"></loading>
         </transition>

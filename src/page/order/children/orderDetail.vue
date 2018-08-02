@@ -5,11 +5,8 @@
                 <div class="page-top-red"></div>
                 <section class="order_titel border_radius">
                     <div class="status-img" :class="'status_0'"></div>
-                    <div>
-                        <p>{{orderData.orderStatusText}}</p>
-                        <!--<p>{{status_text[orderData.order_status].text}}</p>-->
-                    </div>
-                    <router-link :to="{path:'/orderTrack',query:{expNo:orderData.expNo}}" tag="svg" fill="#333" class="arrow_right" >
+                    <div>{{orderData.orderStatusText}}</div>
+                    <router-link :to="{path:'/orderTrack',query:{expNo:orderData.expNo}}" tag="svg" fill="#333" class="arrow_right" v-show="orderData.handleOption.confirm">
                         <!--v-show="orderData.handleOption.confirm"-->
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
                     </router-link>
@@ -119,7 +116,7 @@
                 </section>
             </section>
         </section>
-        <alert-tip :showAlertTip="showAlertTip" :type="2" v-show="showAlertTip"></alert-tip>
+        <alert-tip :showAlertTip="showAlertTip" :type="2" :alertText='`<p>确定拨打客服电话 <br> 400-990-7626</p>`' v-show="showAlertTip"></alert-tip>
         <foot-guide></foot-guide>
         <transition name="loading">
             <loading v-if="showLoading"></loading>
@@ -162,7 +159,7 @@
         },
         created () {
             this.orderId = this.$route.query.orderId
-            console.info(this.$route.query.orderId)
+            // console.info(this.$route.query.orderId)
         },
         mounted(){
             getOrderDetail(this.orderId).then(res => {
@@ -237,7 +234,6 @@
         margin-top: -.48rem;
         padding: .14rem .3rem;
         display: flex;
-        @include fj;
         .status_0{
             @include bis('../../../images/status1.png')
         }
@@ -256,6 +252,7 @@
         .status-img{
             border-radius: 50%;
             @include wh(1rem, 1rem);
+            margin-right: .3rem;
         }
         svg{
             @include wh(.18rem,1rem);
@@ -265,16 +262,11 @@
             height: 0;
         }
         div{
-            p:nth-of-type(1){
-                @include sc(.15rem, $g3);
-                font-weight: bold;
-                margin-top: .28rem;
-            }
-            p:nth-of-type(2){
-                @include sc(.13rem, $g6);
-                margin-top: .12rem;
-                max-width: 1.8rem;
-            }
+            width: 1.4rem;
+            @include sc(.15rem, $g3);
+            font-weight: bold;
+            align-items: center;
+            display: flex;
         }
     }
     .address{

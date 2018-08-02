@@ -106,19 +106,11 @@ import { orderStat, userInfo } from '../../service/getData';
 export default {
   data() {
     return {
-      profiletitle: "我的",
-      username: "登录/注册", //用户名
-      resetname: "",
-      mobile: "暂无绑定手机号", //电话号码
-      balance: 0, //我的余额
-      count: 0, //优惠券个数
-      pointNumber: 0, //积分数
-      avatar: "", //头像地址
       showAlertTip: false,
       orderStat: {},
       userInfo: {
-        userImgUrl: "/static/img/1.png",
-        username: "Petite mignonne😉",
+        userImgUrl: "",
+        username: "",
         unpaid: 0,
         undelivery: 0,
         delivered: 0
