@@ -48,7 +48,7 @@ export default {
         confirmAlertTip(type) {
             this.$parent.showAlertTip = false
             if (type == 2) {
-                window.location.href = "tel:10086"
+                window.location.href = "tel:10086#mp.weixin.qq.com"
             }
             this.fn();
         },
