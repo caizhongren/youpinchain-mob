@@ -1,5 +1,6 @@
  <template>
     <div class="order_page">
+        <head-top head-title="我的订单" go-back='true'></head-top>
         <ul class="nav_tab">
             <li v-for="(item,index) in tabList" :class="{active: activeTab == index }" @click="findOrder(index)">{{item.tab}}</li>
         </ul> 
@@ -9,6 +10,7 @@
         <transition name="loading">
             <loading v-show="showLoading"></loading>
         </transition>
+        <foot-guide></foot-guide>
     </div>
 </template>
 
@@ -16,7 +18,8 @@
     import computeTime from 'src/components/common/computeTime'
     import loading from 'src/components/common/loading'
     import {loadMore} from 'src/components/common/mixin'
-
+    import headTop from 'src/components/header/head'
+    import footGuide from 'src/components/footer/footGuide'
 
     export default {
       data(){
@@ -65,6 +68,8 @@
         components: {
             loading,
             computeTime,
+            headTop,
+            footGuide
         },
         computed: {
         },
@@ -93,6 +98,7 @@
         }
     }
     .nav_tab{
+        margin-top: .45rem;
         @include wh(100%,.45rem);
         @include sc(.15rem,$g6);
         background: $fc;

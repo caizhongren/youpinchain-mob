@@ -1,9 +1,10 @@
 <template>
 <div class="rating_page">
+    <head-top head-title="地址管理" go-back='true'></head-top>
     <section class="address">
         <ul class="addresslist">
             <li v-for='(item, index) in adressList' @click="selectOrEdit(item, index)" :key="index">
-                <span class="default-address" v-show="choosedAddressIndex === index"></span>
+                <span class="default-address" v-show="choosedAddressIndex === index && selectedAddress"></span>
                 <div class="address-detail">
                     <p>{{item.detailedAddress}}</p>
                     <p><span>{{item.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{item.mobile}}</span></p>
@@ -36,6 +37,7 @@ import {
     mapMutations
 } from 'vuex'
 
+
 export default {
     beforeRouteUpdate(to, from, next) {
         // 在当前路由改变，但是该组件被复用时调用
@@ -45,13 +47,13 @@ export default {
         if (to.name == 'addressList'){
             this.loadAddresses();
         }
-        
         next();
     },
     data() {
         return {
             adressList: [], //地址列表,
-            choosedAddressIndex: -1 // 用户选中的地址
+            choosedAddressIndex: -1, // 用户选中的地址
+            selectedAddress: true
         }
     },
     mounted() {
@@ -60,11 +62,13 @@ export default {
     },
     created() {
         if (this.$route.query.path !== 'confirmOrder') {
-            this.selectedAddress = null;
+            this.selectedAddress = false;
         }
         this.loadAddresses();
     },
-    components: {},
+    components: {
+        headTop,
+    },
     computed: {},
     props: [],
     methods: {
@@ -125,6 +129,7 @@ export default {
 <style lang="scss" scoped>
 @import 'src/style/mixin';
 .rating_page {
+    padding-bottom: .5rem;
     position: absolute;
     top: 0;
     background-color: #f2f2f2;
@@ -144,7 +149,7 @@ export default {
 
 .address {
     width: 100%;
-    margin-top: .08rem;
+    margin-top: .54rem;
     padding-bottom: .6rem;
     .addresslist {
         li {

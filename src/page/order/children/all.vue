@@ -89,6 +89,7 @@ export default {
 @import "src/style/mixin";
 
 .order_list_ul {
+  padding-bottom: .5rem;
   .no_list {
     padding: 2.615rem 0;
     text-align: center;

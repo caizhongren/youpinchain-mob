@@ -1,5 +1,6 @@
 <template>
 <div class="rating_page">
+    <head-top head-title="编辑地址" go-back='true'></head-top>
     <section class="adddetail">
         <form action="" v-on:submit.prevent>
             <section class="ui-padding-block">
@@ -29,7 +30,7 @@
                 <button @click="submitAddress()">{{submitText}}</button>
             </section>
             <div class="delete-address" @click="showAlertTip = !showAlertTip"></div>
-            <div id="city_container">aaaa</div>
+            <div id="city_container"></div>
         </form>
     </section>
     <transition name="router-slid" mode="out-in">
@@ -72,7 +73,7 @@ export default {
         };
     },
     mounted() {
-        console.log(this.$route.query.addressId);
+        // console.log(this.$route.query.addressId);
         if (this.$route.query.addressId != undefined) {
             getAddressDetail(this.$route.query.addressId).then(res => {
                 this.address = res.data;
@@ -234,7 +235,7 @@ export default {
 }
 
 .adddetail {
-    margin-top: 0.11rem;
+    margin-top: 0.5rem;
     @include borderRadius(10px);
     background: #fff;
     height: 98%;
