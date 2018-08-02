@@ -243,4 +243,9 @@ export const getRegionsList = (parentId) => fetch('/regions', {
 export const userInfo = () => fetch('/oa/users/info', {
 });
 
+/**
+ * 物流查询
+ * @param expNo
+ * @returns {Promise<*>}
+ */
 export const expresses = (expNo) => fetch('/expresses/'+expNo);
