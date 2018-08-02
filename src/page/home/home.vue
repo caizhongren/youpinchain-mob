@@ -8,7 +8,7 @@
         <img :src="brand.pictureUrl" alt="" width="100%" class="show">
       </router-link>
       <ul class="product_nav">
-        <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" @click="toggleTab(index)">{{tab.name}}</li>
+        <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" @click="toggleTab(tab.id,index)">{{tab.name}}</li>
       </ul>
       <section id="hot_goods">
         <h4 class="goods_title">热卖商品</h4>
@@ -89,15 +89,16 @@ export default {
         this.hasMore = res.data.totalPages > this.page
       })
     },
-    toggleTab (index) {
-      this.activeTab = index
-      if (index === 0) {
-        this.$router.push({name: 'growingEnvironment'})
-      } else if (index === 1) {
-        this.$router.push({name: 'feedingSituation'})
-      } else {
-        this.$router.push({name: 'healthIndicators'})
-      }
+    toggleTab (dataId,index) {
+        this.$router.push("/growing-environment?dataId=" + dataId);
+        this.activeTab = index
+      // if (index === 0) {
+      //   this.$router.push({name: 'growingEnvironment'})
+      // } else if (index === 1) {
+      //   this.$router.push({name: 'feedingSituation'})
+      // } else {
+      //   this.$router.push({name: 'healthIndicators'})
+      // }
     },
     addToCart (productId, event) { // 加入购物车，计算按钮位置。
       let elLeft = event.target.getBoundingClientRect().left;

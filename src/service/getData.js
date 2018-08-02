@@ -249,3 +249,10 @@ export const userInfo = () => fetch('/oa/users/info', {
  * @returns {Promise<*>}
  */
 export const expresses = (expNo) => fetch('/expresses/'+expNo);
+
+/**
+ * 查询品牌资料详情
+ * @param dataId
+ * @returns {Promise<*>}
+ */
+export const brandsPics = (dataId) => fetch('/brands/'+dataId+"/pics", {});
