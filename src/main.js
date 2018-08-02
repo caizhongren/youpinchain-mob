@@ -5,10 +5,10 @@ import store from './store/'
 import wx from 'weixin-js-sdk'
 import './config/rem'
 import FastClick from 'fastclick'
-import {baseUrl,domainUrl,appid,redirect} from './config/env'
+import { baseUrl, domainUrl, appid, redirect } from './config/env'
 
 if ('addEventListener' in document) {
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         FastClick.attach(document.body);
     }, false);
 }
@@ -20,7 +20,7 @@ const router = new VueRouter({
     history: true, // use history=false when testing
     mode: 'history',
     strict: process.env.NODE_ENV !== 'production',
-    scrollBehavior (to, from, savedPosition) {
+    scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
             return savedPosition
         } else {
@@ -38,23 +38,24 @@ router.beforeEach((to, from, next) => {
         document.title = to.meta.title
     }
 
-    if ( localStorage.getItem('X-youpinchain-Token') == undefined ){
+    if (localStorage.getItem('X-youpinchain-Token') == undefined) {
         let token = to.query.T;
-        if(token){
-            localStorage.setItem("X-youpinchain-Token",token);
+        if (token) {
+            localStorage.setItem("X-youpinchain-Token", token);
             next(to.path);
-        }else{
+        } else {
             let url = encodeURIComponent(domainUrl + to.path);
             let redirect_uri = encodeURIComponent(redirect);
-            window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?" +
-                "appid=" +appid+
-                "&redirect_uri=" +redirect_uri+
+            window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                "appid=" + appid +
+                "&redirect_uri=" + redirect_uri +
                 "&response_type=code&scope=snsapi_userinfo" +
-                "&state=" +url+
+                "&state=" + url +
                 "&connect_redirect=1#wechat_redirect"
         }
+    } else {
+        next();
     }
-    next()
 })
 
 new Vue({
