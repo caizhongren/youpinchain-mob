@@ -4,7 +4,7 @@
       <loading v-show="showLoading"></loading>
     </transition>
     <div v-show="!showLoading">
-      <router-link :to="'/product-introduction'">
+      <router-link tag="div" class="header_image" :to="'/product-introduction'">
         <img :src="brand.pictureUrl" alt="" width="100%" class="show">
       </router-link>
       <ul class="product_nav">
@@ -130,6 +130,9 @@ export default {
 
 <style lang="scss" scoped>
   @import '../../style/mixin';
+  .header_image {
+    height: 3.61rem;
+  }
   .move_dot {
     position: fixed;
     bottom: .35rem;
