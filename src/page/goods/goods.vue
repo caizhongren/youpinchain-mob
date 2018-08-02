@@ -23,6 +23,12 @@
     <div class="goods_info">
       <div class="info_title">商品详情</div>
       <!--<div class="info_content" v-html="goods.Desc"></div>-->
+      <div class="info_content">
+        净含量：{{goods.netContent}} <br>
+        包装：{{goods.packing}} <br>
+        保质期：{{goods.qualityGuaranteePeriod}} <br>
+        储存方法：{{goods.storage}} <br>
+      </div>
       <div>
         <img v-for="item in goods.footPic" :src="item" alt="" width="100%" class="show">
       </div>
