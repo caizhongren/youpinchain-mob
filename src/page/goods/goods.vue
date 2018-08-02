@@ -67,6 +67,7 @@
     mounted(){
       this.goodsid = this.$route.params.goodsid;
       this.initData();
+      this.initCartCount();
     },
     components:{
       Carousel,
@@ -85,20 +86,24 @@
               }
               that.goods = res.data;
           })
-          cartProductCount().then(res =>{
-              if (res.errno == 0) {
-                  that.cart_num = res.data;
-              }
-          })
+
         //开始监听scrollTop的值，达到一定程度后显示返回顶部按钮
         showBack(status => {
           that.headTitle = status ? that.goods.name : '';
         });
       },
+      initCartCount () {
+          cartProductCount().then(res =>{
+              if (res.errno == 0) {
+                  this.cart_num = res.data;
+              }
+          })
+      },
       addCartList (goods) {
           addToCart(this.goodsid, 1).then(res => {
             if (res.errno === 0){
-                this.cart_num += 1;
+                alert("添加成功")
+                this.initCartCount();
             }
           })
       }
