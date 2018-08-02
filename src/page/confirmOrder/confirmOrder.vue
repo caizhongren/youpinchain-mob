@@ -1,5 +1,6 @@
 <template>
-<div class="confirmOrderContainer">
+<div class="confirmOrderContainer header-top">
+    <head-top head-title="订单确认" go-back='true'></head-top>
     <nav class="shop_list_container">
         <div class="swiper-container" v-if="productList.length">
             <div class="topBG" v-if="choosedAddress"></div>
@@ -98,6 +99,7 @@
 </template>
 
 <script>
+import headTop from '../../components/header/head'
 import AjaxPicker from "ajax-picker";
 import {
     mapState,
@@ -200,7 +202,9 @@ export default {
         }
 
     },
-    components: {},
+    components: {
+        headTop
+    },
     computed: {},
     methods: {
         // ...mapMutations(["CHOOSE_ADDRESS"]),
