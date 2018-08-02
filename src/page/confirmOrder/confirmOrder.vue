@@ -217,13 +217,11 @@ export default {
             console.info(cartIds + "和" + addressId)
             submitOrder(cartIds, addressId).then(res => {
                 if(res.errno !== 0) {
-                    alert(res.message);
                     return;
                 }
                 let orderId = res.data.orderId;
                 prepayOrder(orderId).then(resp => {
-                    console.info(resp)
-                    alert(resp.errno)
+                    var that = this;
                     if (resp.errno === 403) {
                         alert("订单不可支付")
                     } else {
@@ -238,7 +236,7 @@ export default {
                             },
                             function (res) {
                                 if (res.err_msg == "get_brand_wcpay_request:ok") {
-                                    this.$router.push('/order/undelivery');
+                                    that.$router.push('/order/undelivery');
                                 }
                                 // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                             }
