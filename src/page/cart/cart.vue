@@ -22,7 +22,7 @@
 					<ul class="payment_info">
 						<li>
 							<p>商品总价</p>
-							<p>¥{{goodsPrice}}</p>
+							<p>¥{{goodsPrice | number}}</p>
 						</li>
 						<li>
 							<p>优惠券</p>
@@ -30,7 +30,7 @@
 						</li>
 						<li>
 							<p>商品实付</p>
-							<p>¥{{payment}}</p>
+							<p>¥{{payment | number}}</p>
 						</li>
 						<li>
 							<p>运费</p>
@@ -38,7 +38,7 @@
 						</li>
 					</ul>
 					<div class="right totalPrice">
-						合计 <p><span>¥</span>{{totalPrice}}</p>
+						合计 <p><span>¥</span>{{totalPrice | number}}</p>
 					</div>
 				</div>
 			</div>
@@ -61,12 +61,15 @@
             </ul>
 			<router-link :to="'/home'" class="load_more" v-if="hasMore">查看更多商品</router-link>
 		</div>
+        <transition appear @after-appear = 'afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot" :key="index">
+          <span class="move_dot" v-if="item"></span>
+        </transition>
 		<ul class="settlement">
 			<li @click="checkSelectAll()">
 				<span :class="[selectAll ? 'selectAll' : 'unselected']"></span> 全选
 			</li>
 			<li>
-				<p>合计 &nbsp;&nbsp;<span class="red">¥{{totalPrice}}</span></p>
+				<p>合计 &nbsp;&nbsp;<span class="red">¥{{totalPrice | number}}</span></p>
 				<p>运费 &nbsp;&nbsp;¥{{fare}}</p>
 			</li>
 			<li @click="toSubmitOrder()">去结算</li>
@@ -82,7 +85,8 @@ import {
   updateCart,
   deleteCart,
   submitOrder,
-  productHotList
+  productHotList,
+  addToCart
 } from "../../service/getData";
 
 export default {
@@ -94,7 +98,10 @@ export default {
       payment: 0,
       fare: 0,
       carts: [],
-	  hotgoodslist: [],
+      hotgoodslist: [],
+      showMoveDot: [], //控制下落的小圆点显示隐藏
+      elLeft: 0, //当前点击加按钮在网页中的绝对top值
+      elBottom: 0, //当前点击加按钮在网页中的绝对left值
 	  hasMore: false
     };
   },
@@ -117,6 +124,31 @@ export default {
   },
   computed: {},
   methods: {
+    addToCart (productId) {
+      var that = this
+      let elLeft = event.target.getBoundingClientRect().left;
+      let elBottom = event.target.getBoundingClientRect().bottom;
+      that.showMoveDot.push(true);
+      that.showMoveDotFun(that.showMoveDot, elLeft, elBottom);
+      addToCart(productId, 1).then(res => {
+        that.$parent.getCartNum();
+      })
+    },
+    showMoveDotFun (showMoveDot, elLeft, elBottom) { // 显示下落圆球
+      this.showMoveDot = [...this.showMoveDot, ...showMoveDot];
+      this.elLeft = elLeft;
+      this.elBottom = elBottom;
+    },
+    beforeEnter(el){
+      el.style.transform = `translate3d(${this.elLeft - 180}px,${this.elBottom - window.innerHeight}px,0px)`;
+      el.style.opacity = 0;
+    },
+    afterEnter(el){
+      el.style.transform = `translate3d(0,0,0px)`;
+      el.style.transition = 'transform .55s cubic-bezier(0.3, -0.25, 0.7, -0.15)';
+      this.showMoveDot = this.showMoveDot.map(item => false);
+      el.style.opacity = 1;
+    },
     checkCart(cart) {
       cart.choose = !cart.choose;
     },
@@ -178,7 +210,7 @@ export default {
         }
       });
     },
-
+    
     /**
      * 删除购物车
      */
@@ -197,6 +229,16 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/style/mixin";
+.move_dot {
+    position: fixed;
+    bottom: .3rem;
+    left: 52.7%;
+    background: $red;
+    display: block;
+    border-radius: 50%;
+    @include wh(.15rem, .15rem);
+    z-index: 99999;
+}
 .recommend_nav {
   background-color: $fc;
   padding-bottom: 1.65rem;
