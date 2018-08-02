@@ -7,7 +7,7 @@
 					<ul class="goods">
 						<li v-for="item in carts" :key="item.cartId">
 							<span :class="[item.choose ? 'choose' : 'unselected']" @click="checkCart(item)"></span>
-							<img :src="item.thumbnailPic" alt="" class="img">
+							<img :src="item.thumbnailPic" alt="" class="img" :class="{'noImage': !item.thumbnailPic}">
 							<div class="goods_info">
 								<p class="name">{{item.productName}}</p>
 								<p class="price"><span>¥</span>{{item.presentPrice}}</p>
@@ -49,21 +49,17 @@
 		</nav>
 		<div class="recommend_nav">
 			<div class="recommend_header">推荐商品</div>
-			<ul class="goodslistul clear">
-				<li v-for="item in hotgoodslist" :key="item.id">
-					<router-link  tag="div" :to="'/goods/' + item.id">
-						<img :src="item.thumbnailPic" alt="" class="left" :class="{'noImage': !item.thumbnailPic}">
-						<div class="left goods_info">
-							<p class="name">{{item.name}}*1{{item.packing}}</p>
-							<p class="desr">{{item.describe}}</p>
-							<p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>
-							<p class="price"><span>¥</span>{{item.originalPrice}} <s>¥{{item.presentPrice}}</s></p>
-						</div>
-					</router-link>
-					<div class="shopping_cart"  @touchstart="addToCart(item.id, $event)"></div>
-				</li>
-			</ul>
-			<router-link :to="'/home'" class="load_more">查看更多商品</router-link>
+            <ul class="recommend_list">
+                <li v-for="item in hotgoodslist" :key="item.id">
+                <img :src="item.thumbnailPic" alt="" class="img">
+                <div class="left">
+                    <p class="name">{{item.name}}*1{{item.packing}}</p>
+                    <p class="price"><span>¥</span>{{item.presentPrice}} <s>¥{{item.originalPrice}}</s></p>
+                </div>
+                <div class="right add_cart" @touchstart="addToCart(item.id, $event)"></div>
+                </li>
+            </ul>
+			<router-link :to="'/home'" class="load_more" v-if="hasMore">查看更多商品</router-link>
 		</div>
 		<ul class="settlement">
 			<li @click="checkSelectAll()">
@@ -286,6 +282,7 @@ export default {
   }
   .swiper-container {
     padding-bottom: 0.15rem;
+    background-color: $bc;
     .topBG {
       @include wh(100%, 0.83rem);
       @include bis("../../images/gwc-bg.png");
@@ -421,9 +418,10 @@ export default {
     text-align: center;
   }
   li:nth-child(1) {
-    width: 38.33%;
+    width: 41.33%;
     text-align: left;
     padding-left: 0.2rem;
+    color: $g6;
   }
   li:nth-child(2) {
     text-align: left;
@@ -440,84 +438,22 @@ export default {
     }
   }
   li:nth-child(3) {
-    width: 30.33%;
+    width: 27.33%;
     @include sc(0.15rem, $fc);
     background-color: $red;
   }
-  .unselected {
-    border-radius: 50%;
+  .unselected, .selectAll {
     display: inline-block;
-    border: 1.5px solid $g9;
     @include wh(0.19rem, 0.19rem);
     vertical-align: text-bottom;
+    margin-right: 5px;
+  }
+  .unselected {
+    border: 1.5px solid $g9;
+    border-radius: 50%;
   }
   .selectAll {
     @include bis("../../images/selected.png");
-    display: inline-block;
-    @include wh(0.19rem, 0.19rem);
-    vertical-align: text-bottom;
   }
-}
-.goodslistul {
-	padding: .25rem .15rem .1rem;
-	img {
-		margin-right: .12rem;
-		width: 1.4rem;
-		height: 1.4rem;
-		border-radius: 5px;
-	}
-	img.noImage {
-		background-color: #000;
-	}
-	li {
-		width: 100%;
-		clear: both;
-		overflow: hidden;
-		margin-bottom: .12rem;
-		position: relative;
-	}
-	.goods_info {
-		.name {
-			@include sc(.15rem, $g3);
-			padding: .05rem 0 .03rem;
-		}
-		.desr {
-			@include sc(.12rem, $g6);
-		}
-		.coupon {
-			border-radius: 7px;
-			display: inline-block;
-			transform: scale(0.82) translateX(-8px);
-			margin: .2rem 0 .1rem;
-			padding: 0 2px;
-		}
-		.useCoupon {
-			@include sc(.12rem, $red);
-			border: 1px solid $red;
-		}
-		.unuseCoupon {
-			@include sc(.12rem, $g9);
-			border: 1px solid $g9;
-		}
-		.price {
-			@include sc(.18rem, $red);
-			font-weight: bold;
-			span {
-				@include sc(.12rem, $red);
-				font-weight: normal;
-			}
-			s {
-				@include sc(.12rem, $g9);
-				font-weight: normal;
-			}
-		}
-	}
-	.shopping_cart {
-		position: absolute;
-		right: 0;
-		bottom: .25rem;
-		@include wh(.315rem, .315rem);
-		@include bis('../../images/shopping_cart.png');
-	}
 }
 </style>
