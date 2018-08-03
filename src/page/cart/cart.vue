@@ -193,6 +193,9 @@ export default {
      * 到提交订单页面
      */
     toSubmitOrder() {
+      if (!this.carts || this.carts.length <= 0) {
+        return;
+      }
       var arr = []; 
       for (var i = 0; i < sessionStorage.length; i++) {
         if (sessionStorage.key(i).substring(0, 9) == "products_") {
