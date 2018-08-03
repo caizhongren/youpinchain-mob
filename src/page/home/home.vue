@@ -20,7 +20,7 @@
               <div class="left goods_info">
                 <p class="name">{{item.name}}*1{{item.packing}}</p>
                 <p class="desr">{{item.describe}}</p>
-                <p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>
+                <!--<p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>-->
                 <p class="price"><span class="RMB">￥</span>{{item.presentPrice}} <s>￥{{item.originalPrice}}</s></p>
               </div>
             </router-link>  
@@ -121,7 +121,8 @@ export default {
       this.elBottom = elBottom;
     },
     beforeEnter(el){
-      el.style.transform = `translate3d(${this.elLeft - 30}px,${this.elBottom - window.innerHeight - 150}px,0px)`;
+      console.log(this.elBottom)
+      el.style.transform = `translate3d(${this.elLeft - 200}px,${20 +this.elBottom - window.innerHeight}px,0px)`;
       el.style.opacity = 0;
     },
     afterEnter(el){
@@ -148,8 +149,8 @@ export default {
   }
   .move_dot {
     position: fixed;
-    bottom: .35rem;
-    left: 45.7%;
+    bottom: .32rem;
+    left: 52.7%;
     background: $red;
     display: block;
     border-radius: 50%;
@@ -244,6 +245,7 @@ export default {
           border: 1px solid $g9;
         }
         .price {
+          margin-top: .6rem;
           @include sc(.18rem, $red);
           font-weight: bold;
           s { 
