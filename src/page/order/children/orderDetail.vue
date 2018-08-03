@@ -14,8 +14,9 @@
                 <section class="distribution-information border_radius" v-if="orderData.handleOption.confirm">
                     <img src="../../../images/ddxq-ps.png" alt="">
                     <div>
-                        <p>配送员：{{orderData.expCode}}</p>
-                        <p>联系电话：{{orderData.expNo}}</p>
+                        <!--<p>配送员：{{orderData.expCode}}</p>-->
+                        <!--<p>联系电话：{{orderData.expNo}}</p>-->
+                        <p>{{exp.context}}</p>
                     </div>
                 </section>
                 <section class="address border_radius">
@@ -133,7 +134,7 @@
     import loading from 'src/components/common/loading'
     import footGuide from 'src/components/footer/footGuide'
     import alertTip from 'src/components/common/alertTip'
-    import {getOrderDetail,cancelOrder,confirmOrder,prepayOrder} from "../../../service/getData";
+    import {getOrderDetail,cancelOrder,confirmOrder,prepayOrder,expresses} from "../../../service/getData";
 
     export default {
 
@@ -159,7 +160,8 @@
                     text: '您的订单待支付～'
                 }],
                 orderData:{},
-                orderProduct:{}
+                orderProduct:{},
+                exp:{}
             }
         },
         created () {
@@ -173,6 +175,24 @@
                 this.orderData = res.data.orderInfo;
                 this.orderProduct = res.data.orderProduct;
                 this.showLoading = false;
+
+                //TODO 测试使用单号
+                if(!this.orderData.expNo){
+                    this.orderData.expNo="821721174311"
+                }
+                if (this.orderData.handleOption.confirm && this.orderData.expNo){
+                    expresses(this.orderData.expNo).then(res => {
+                        if (res.errno !== 0){
+                            return;
+                        }
+                        var trackData = JSON.parse(
+                            res.data
+                        );
+                        if (trackData.message === "ok"){
+                            this.exp = trackData.data[0]
+                        }
+                    })
+                }
             })
         },
         components: {

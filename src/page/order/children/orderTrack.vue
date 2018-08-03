@@ -54,6 +54,7 @@
         },
         created () {
             this.expNo = this.$route.query.expNo
+			//TODO 测试使用单号
 			if(!this.expNo){
                 this.expNo="821721174311"
 			}
