@@ -131,7 +131,8 @@ export default {
 				mobile: '', // 手机号
 				tipText: '', // 送餐地址
             	address: '', // 地址
-			},
+            },
+            orderId: 0
         }
     },
     props: ['showErrMsg'],
@@ -161,44 +162,54 @@ export default {
         loadAllProducts() {
 
         },
-        paymentCall() {
+        async paymentCall() {
             if (!this.choosedAddress) {
                 this.showErrMsg('请填写正确收货地址！')
                 return
             }
+            if (this.orderId != 0) {
+                this.doPay(this.orderId);
+                return;
+            }
+
             let cartIds = [];
             this.productList.forEach(cart => {
                 cartIds.push(cart.cartId);
             });
             let addressId = this.choosedAddress.id;
+            let that = this;
             submitOrder(cartIds, addressId).then(res => {
                 if(res.errno !== 0) {
                     return;
                 }
-                let orderId = res.data.orderId;
-                prepayOrder(orderId).then(resp => {
-                    var that = this;
-                    if (resp.errno === 403) {
-                        alert("订单不可支付")
-                    } else {
-                        WeixinJSBridge.invoke(
-                            'getBrandWCPayRequest', {
-                                "appId": resp.data.appId, //公众号名称，由商户传入
-                                "timeStamp": resp.data.timeStamp, //时间戳，自1970年以来的秒数
-                                "nonceStr": resp.data.nonceStr, //随机串
-                                "package": resp.data.packageValue,
-                                "signType": resp.data.signType, //微信签名方式：
-                                "paySign": resp.data.paySign //微信签名
-                            },
-                            function (res) {
-                                if (res.err_msg == "get_brand_wcpay_request:ok") {
-                                    that.$router.push('/order/undelivery');
-                                }
-                                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                that.orderId = res.data.orderId;
+                that.doPay(that.orderId);
+            })
+        },
+        
+        doPay(orderId) {
+            prepayOrder(orderId).then(resp => {
+                var that = this;
+                if (resp.errno === 403) {
+                    alert("订单不可支付")
+                } else {
+                    WeixinJSBridge.invoke(
+                        'getBrandWCPayRequest', {
+                            "appId": resp.data.appId, //公众号名称，由商户传入
+                            "timeStamp": resp.data.timeStamp, //时间戳，自1970年以来的秒数
+                            "nonceStr": resp.data.nonceStr, //随机串
+                            "package": resp.data.packageValue,
+                            "signType": resp.data.signType, //微信签名方式：
+                            "paySign": resp.data.paySign //微信签名
+                        },
+                        function (res) {
+                            if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                that.$router.push('/order/undelivery');
                             }
-                        );
-                    }
-                })
+                            // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                        }
+                    );
+                }
             })
         },
         //保存地址
