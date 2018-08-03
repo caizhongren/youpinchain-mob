@@ -191,10 +191,10 @@ export default {
       this.payment = 0;
       this.totalPrice = 0;
       this.carts.forEach(cart => {
-        if (cart.choose) {
+      if (cart.choose && !cart.isShow) {
           this.goodsPrice += cart.presentPrice * cart.number;
           this.payment += cart.presentPrice * cart.number;
-        }
+      }
       });
       this.totalPrice = this.fare + this.payment;
     },
@@ -206,6 +206,16 @@ export default {
       if (!this.carts || this.carts.length <= 0) {
         return;
       }
+      let orderCar = [];
+      this.carts.forEach(item => {
+          if (item.choose && item.available){
+              orderCar.push(item);
+          }
+      })
+      if (!orderCar || orderCar.length <= 0) {
+          return;
+      }
+
       var arr = []; 
       for (var i = 0; i < sessionStorage.length; i++) {
         if (sessionStorage.key(i).substring(0, 9) == "products_") {
@@ -220,7 +230,7 @@ export default {
       let currentTime = new Date().getTime();
       sessionStorage.setItem(
         "products_" + currentTime,
-        JSON.stringify(this.carts)
+      JSON.stringify(orderCar)
       );
       this.$router.push("/confirmOrder?cartsKey=products_" + currentTime);
     },
