@@ -167,6 +167,7 @@ export default {
     },
     checkCart(cart) {
       cart.choose = !cart.choose;
+      this.reComputePrice();
     },
 
     checkSelectAll() {
