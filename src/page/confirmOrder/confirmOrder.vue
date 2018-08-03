@@ -52,7 +52,7 @@
                         <img :src="item.thumbnailPic" alt="" class="img">
                         <div class="goods_info">
                             <p class="name">{{item.productName}}</p>
-                            <p class="price"><span>¥</span>{{item.presentPrice}}</p>
+                            <p class="price"><span class="RMB">¥</span>{{item.presentPrice}}</p>
                         </div>
                         <div class="cart_btns">
                             <span class="num">x{{item.number}}</span>
@@ -65,35 +65,35 @@
                 <ul class="payment_info">
                     <li>
                         <p>商品总价</p>
-                        <p>¥{{goodsPrice}}</p>
+                        <p><span class="RMB">¥</span>{{goodsPrice}}</p>
                     </li>
                     <li>
                         <p>优惠价格</p>
-                        <p class="coupon">- ¥0.00</p>
+                        <p class="coupon">- <span class="RMB">¥</span>0.00</p>
                     </li>
                     <li>
                         <p>运费</p>
-                        <p>¥{{fare}}</p>
+                        <p><span class="RMB">¥</span>{{fare}}</p>
                     </li>
                     <li>
                         <p>包装费</p>
-                        <p>¥{{packingFee}}</p>
+                        <p><span class="RMB">¥</span>{{packingFee}}</p>
                     </li>
                     <li>
                         <p>包装费减免</p>
-                        <p>¥{{packingFeeReduction}}</p>
+                        <p><span class="RMB">¥</span>{{packingFeeReduction}}</p>
                     </li>
                 </ul>
                 <div class="right totalPrice">
                     实际支付
-                    <p><span>¥</span>{{totalPrice}}</p>
+                    <p><span class="RMB">¥</span>{{totalPrice}}</p>
                 </div>
             </div>
         </div>
     </nav>
     <ul class="settlement">
         <li @click="paymentCall()">去付款</li>
-        <li>付款 &nbsp;<span class="red">¥{{totalPrice}}</span></li>
+        <li>付款 &nbsp;<span class="red"><span class="RMB">¥</span>{{totalPrice}}</span></li>
     </ul>
 </div>
 </template>
@@ -470,12 +470,6 @@ export default {
                     font-weight: bold;
                     position: relative;
                     top: 0.38rem;
-                    span {
-                        display: inline-block;
-                        @include sc(0.12rem, $red);
-                        font-weight: normal;
-                        transform: scale(0.8) translateY(1px);
-                    }
                 }
             }
             .cart_btns {
@@ -498,7 +492,8 @@ export default {
             border-bottom: 1px solid $gd;
             li {
                 @include wh(100%, 0.35rem);
-                line-height: 0.35rem;
+				line-height: 0.35rem;
+				display: flex;
                 p {
                     @include sc(0.15rem, $g6);
                 }
@@ -506,7 +501,8 @@ export default {
                     float: left;
                 }
                 p:nth-child(even) {
-                    float: right;
+					flex: 4;
+					text-align: right;
                 }
                 p.coupon {
                     color: $g9;
@@ -519,15 +515,10 @@ export default {
                 display: inline-block;
                 @include sc(0.2rem, $g3);
                 font-weight: bold;
-                span {
-                    @include sc(0.13rem, $g3);
-                    font-weight: normal;
-                }
             }
         }
     }
 }
-
 .settlement {
     position: fixed;
     bottom: 0;
@@ -535,7 +526,7 @@ export default {
     background-color: $fc;
     border: solid 0.5px #cccccc;
     @include wh(100%, 0.49rem);
-    overflow: hidden;
+	overflow: hidden;
     li {
         float: right;
         text-align: center;

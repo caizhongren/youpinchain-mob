@@ -1,5 +1,5 @@
 <template>
-<div class="rating_page">
+<div class="rating_page header-top">
     <head-top head-title="编辑地址" go-back='true'></head-top>
     <section class="adddetail">
         <form action="" v-on:submit.prevent>
@@ -232,7 +232,6 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #f2f2f2;
     z-index: 202;
     p,
     span {
@@ -241,7 +240,7 @@ export default {
 }
 
 .adddetail {
-    margin-top: 0.5rem;
+    margin-top: 0.05rem;
     @include borderRadius(10px);
     background: #fff;
     height: 98%;

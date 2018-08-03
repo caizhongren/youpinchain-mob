@@ -10,7 +10,7 @@
                         <img :src="item.thumbnailPic" alt="" class="img" :class="{'noImage': !item.thumbnailPic}">
                         <div class="goods_info">
                             <p class="name">{{item.productName}}</p>
-                            <p class="price"><span>¥</span>{{item.presentPrice}}</p>
+                            <p class="price"><span class="RMB">¥</span>{{item.presentPrice}}</p>
                         </div>
                         <div class="cart_btns">
                             <p style="color: #e4372e" v-if="!item.isShow">已下架</p>
@@ -24,7 +24,7 @@
                 <ul class="payment_info">
                     <li>
                         <p>商品总价</p>
-                        <p>¥{{goodsPrice | number}}</p>
+                        <p><span class="RMB">¥</span>{{goodsPrice | number}}</p>
                     </li>
                     <li>
                         <p>优惠券</p>
@@ -32,16 +32,16 @@
                     </li>
                     <li>
                         <p>商品实付</p>
-                        <p>¥{{payment | number}}</p>
+                        <p><span class="RMB">¥</span>{{payment | number}}</p>
                     </li>
                     <li>
                         <p>运费</p>
-                        <p>¥{{fare}}</p>
+                        <p><span class="RMB">¥</span>{{fare}}</p>
                     </li>
                 </ul>
                 <div class="right totalPrice">
                     合计
-                    <p><span>¥</span>{{totalPrice | number}}</p>
+                    <p><span class="RMB">¥</span>{{totalPrice | number}}</p>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@
                 <img :src="item.thumbnailPic" alt="" class="img">
                 <div class="left">
                     <p class="name">{{item.name}}*1{{item.packing}}</p>
-                    <p class="price"><span>¥</span>{{item.presentPrice}} <s>¥{{item.originalPrice}}</s></p>
+                    <p class="price"><span class="RMB">¥</span>{{item.presentPrice}} <s class="RMB">¥{{item.originalPrice}}</s></p>
                 </div>
                 <div class="right add_cart" @touchstart="addToCart(item.id, $event)"></div>
             </li>
@@ -72,8 +72,8 @@
             <span :class="[selectAll ? 'selectAll' : 'unselected']"></span> 全选
         </li>
         <li>
-            <p>合计 &nbsp;&nbsp;<span class="red">¥{{totalPrice | number}}</span></p>
-            <p>运费 &nbsp;&nbsp;¥{{fare}}</p>
+            <p>合计 &nbsp;&nbsp;<span class="red"><span class="RMB">¥</span>{{totalPrice | number}}</span></p>
+            <p>运费 &nbsp;&nbsp;<span class="RMB">¥</span>{{fare}}</p>
         </li>
         <li @click="toSubmitOrder()">去结算</li>
     </ul>
@@ -95,7 +95,7 @@ import {
 export default {
   data() {
     return {
-      selectAll: true,
+      selectAll: false,
       totalPrice: 0,
       goodsPrice: 0,
       payment: 0,
@@ -320,12 +320,6 @@ export default {
             .price {
                 @include sc(0.18rem, $red);
                 font-weight: bold;
-                span {
-                    @include sc(0.12rem, $red);
-                    font-weight: normal;
-                    display: inline-block;
-                    transform: scale(0.7) translateY(2px);
-                }
                 s {
                     @include sc(0.12rem, $g9);
                     font-weight: normal;
@@ -412,12 +406,6 @@ export default {
                         font-weight: bold;
                         position: relative;
                         top: 0.38rem;
-                        span {
-                            display: inline-block;
-                            @include sc(0.12rem, $red);
-                            font-weight: normal;
-                            transform: scale(0.8) translateY(1px);
-                        }
                     }
                 }
                 .cart_btns {
@@ -457,6 +445,7 @@ export default {
                 li {
                     @include wh(100%, 0.35rem);
                     line-height: 0.35rem;
+                    display: flex;
                     p {
                         @include sc(0.15rem, $g6);
                     }
@@ -464,7 +453,8 @@ export default {
                         float: left;
                     }
                     p:nth-child(even) {
-                        float: right;
+                        flex: 4;
+                        text-align: right;
                     }
                     p.coupon {
                         color: $g9;
@@ -477,10 +467,6 @@ export default {
                     display: inline-block;
                     @include sc(0.2rem, $g3);
                     font-weight: bold;
-                    span {
-                        @include sc(0.13rem, $g3);
-                        font-weight: normal;
-                    }
                 }
             }
         }

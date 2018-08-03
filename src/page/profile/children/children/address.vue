@@ -145,7 +145,6 @@ export default {
     padding-bottom: .5rem;
     position: absolute;
     top: 0;
-    background-color: #f2f2f2;
     z-index: 202;
     @include wh(100%, 100);
     p,
