@@ -108,6 +108,7 @@ import {
 import {
     submitOrder,
     getDefaultAddress,
+    getAddressList,
     getRegionsList,
     prepayOrder,
     addAddress
@@ -285,12 +286,22 @@ export default {
 		getDefaultAddress () {
 			// 默认用户地址
 			getDefaultAddress().then(res => {
-				if (res.data) {
+				if (res.errno == 0 && res.data) {
 					let address = res.data;
 					let index = -1;
 					this.choosedAddress = address;
 					localStorage.setItem('choosedAddress', JSON.stringify(address));
-				}
+				} else {
+                    getAddressList({
+                        page: 1,
+                        pageSize: 1
+                    }).then(res => {
+                        if (res.errno == 0 && res.data.size() > 0) {
+                            this.choosedAddress = res.data[0];
+                            localStorage.setItem('choosedAddress', JSON.stringify(this.choosedAddress));
+                        }
+                    })
+                }
 			});
 		}
     },
