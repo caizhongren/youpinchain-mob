@@ -101,7 +101,7 @@
                     <section class="item_style">
                         <p class="item_left">下单时间</p>
                         <div class="item_right">
-                            <p>{{orderData.addTime}}</p>
+                            <p>{{orderData.addTime | timeformat}}</p>
                         </div>
                     </section>
                     <section class="item_style">

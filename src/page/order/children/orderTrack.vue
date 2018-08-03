@@ -40,14 +40,6 @@
       data(){
             return{
                 showLoading: true, //显示加载动画
-                // order_msg_title: ['订单提交成功', '支付成功', '商品已发货', '配送中', '订单完成'],
-                order_track:{
-                	order_track_step: [1529468580000, 1529468580000, 1529468580000, 1529468580000, 1529468580000],
-                	order_number: 13899998888,
-                	distribute_msg: {
-                		mobile: 13899998888 
-                	}
-                },
                 expNo:"",
 				trackData:{}
             }

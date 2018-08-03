@@ -13,7 +13,6 @@
 
 <script>
     import computeTime from 'src/components/common/computeTime'
-    import loading from 'src/components/common/loading'
     import {loadMore} from 'src/components/common/mixin'
     import headTop from 'src/components/header/head'
     import footGuide from 'src/components/footer/footGuide'
@@ -59,7 +58,6 @@
         },
         mixins: [loadMore],
         components: {
-            loading,
             computeTime,
             headTop,
             footGuide

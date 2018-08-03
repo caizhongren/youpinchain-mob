@@ -25,6 +25,16 @@
                     <span>地址</span>
                     <textarea placeholder="请填写详细地址" id="adinfo" value="" rows="2" v-model="address.address"></textarea>
                 </div>
+                <div class="input-new">
+                    <!-- <span>姓名</span>
+                    <input type="text" placeholder="请填写你的姓名" @input="" v-model="address.name"> -->
+                    <p class="setDefault">设置为默认地址</p>
+                    <div style="display:flex;align-items:center;margin-right: .1rem;">
+                        <div class="wrap">
+                            <my-switch size="md" open-name="" close-name="" v-model="toggle"></my-switch>
+                        </div>
+                    </div>
+                </div>
             </section>
             <section class="addbutton">
                 <button @click="submitAddress()">{{submitText}}</button>
@@ -43,6 +53,7 @@
 <script>
 import AjaxPicker from "ajax-picker";
 import headTop from "src/components/header/head";
+import mySwitch from '../../../../../components/common/vue-switch';
 import {
     getImgPath
 } from "src/components/common/mixin";
@@ -70,7 +81,8 @@ export default {
             address: {},
             provinces: [],
             submitText: '保存',
-            showDelete: true
+            showDelete: true,
+            toggle: true
         };
     },
     mounted() {
@@ -138,7 +150,8 @@ export default {
     mixins: [getImgPath],
     components: {
         headTop,
-        alertTip
+        alertTip,
+        'my-switch': mySwitch
     },
     computed: {},
     props: [],
@@ -239,6 +252,10 @@ export default {
     }
 }
 
+.wrap{
+    display: flex;
+    align-items: center;
+}
 .adddetail {
     margin-top: 0.05rem;
     @include borderRadius(10px);
@@ -281,6 +298,16 @@ export default {
             padding: 0.15rem 0 0 0;
             width: 2.7rem;
             font-size: 0.15rem;
+        }
+    }
+    .input-new:last-child {
+        display: flex;
+        justify-content: space-between;
+        p{
+            @include sc(.15rem,#666666);
+            line-height: .45rem;
+            margin: 0;
+            padding: 0;
         }
     }
 }
