@@ -2,7 +2,7 @@
     <div class="unpaid">
         <ul class="order_list_ul">
             <div v-if="orderList.length <= 0" class="no_list">暂无订单记录</div>
-            <li v-else class="order_list_li" v-for="item in orderList">
+            <li v-else class="order_list_li" v-for="item in orderList" :key="item.id">
                 <section class="order_item_top">
                     <section>
                         <header class="order_item_top_header">
@@ -11,7 +11,7 @@
                                 {{item.orderStatusText}}
                             </p>
                         </header>
-                        <router-link to="/orderDetail" tag="div">
+                        <router-link :to="{path:'/orderDetail/' + item.id}" tag="div">
                             <section class="goods_img">
                                 <div class="goods_box">
                                     <img class="restaurant_image" v-for="(goods,index) in item.productList" :src="goods.picUrl" v-if="index < 4" :key="index">
@@ -113,10 +113,10 @@
     
     .order_list_ul{
         padding-bottom: .5rem;
+        background-color: $f5;
         .no_list {
-            padding: 2.615rem 0;
+            padding-top: 2.215rem;
             text-align: center;
-            background-color: $f5;
             @include sc(.15rem, $g6);
         }
         .order_list_li{

@@ -163,8 +163,7 @@
             }
         },
         created () {
-            this.orderId = this.$route.query.orderId
-            // console.info(this.$route.query.orderId)
+            this.orderId = this.$route.params.orderId
         },
         mounted(){
             getOrderDetail(this.orderId).then(res => {
