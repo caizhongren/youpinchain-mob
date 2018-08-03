@@ -113,7 +113,7 @@
                 <section class="sale_after">
                     <span class="red" @click="showAlertTip = !showAlertTip">联系客服</span>
                     <compute-time v-if="orderData.handleOption.pay" :time="orderData.expiryTime" @click.native="toPay(orderData.id)"></compute-time>
-                    <span class="grey" @click="cancelOrder(orderData.id)" v-if="orderData.handleOption.refund">取消订单</span>
+                    <span class="grey" @click="cancelOrder(orderData.id)" v-if="orderData.handleOption.cancel">取消订单</span>
                     <router-link :to="{path:'/orderTrack',query:{expNo:orderData.expNo}}" tag="span" class="grey"
                                  v-if="orderData.handleOption.confirm" >查看物流</router-link>
                     <span class="grey" @click="confirmOrder(orderData.id)" v-if="orderData.handleOption.confirm">确认收货</span>
@@ -164,7 +164,7 @@
         },
         created () {
             this.orderId = this.$route.query.orderId
-            // console.info(this.$route.query.orderId)
+             console.info(this.$route.query.orderId)
         },
         mounted(){
             getOrderDetail(this.orderId).then(res => {
@@ -184,22 +184,25 @@
         methods: {
             // 取消订单
             cancelOrder(orderId){
+                var that = this;
                 cancelOrder(orderId).then(res =>{
                     if(res.errno !== 0) {
                         alert("失败");
                         return;
                     }
-                    alert("成功");
+                    that.$router.push('/order/undelivery');
                 })
             },
             // 确认收货
             confirmOrder(orderId){
+                var that = this;
                 confirmOrder(orderId).then(res =>{
                     if(res.errno !== 0) {
                         alert("失败");
                         return;
                     }
-                    alert("成功");
+                    var that = this;
+                    that.$router.push('/order/completed');
                 })
             },
             toPay(orderId) {
