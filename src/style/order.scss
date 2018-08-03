@@ -1,0 +1,112 @@
+@import '/mixin';
+.order_list_ul {
+    padding-bottom: .5rem;
+    background-color: $f5;
+    .no_list {
+        padding-top: 2.215rem;
+        text-align: center;
+        @include sc(.15rem, $g6);
+    }
+    .order_list_li {
+        background-color: $fc;
+        display: flex;
+        margin-bottom: 0.1rem;
+        padding: 0 .04rem 0 .1rem;
+        border-radius: .06rem;
+        .restaurant_image {
+            @include wh(.64rem, .64rem);
+            margin-right: 0.1rem;
+            border-radius: .06rem;
+            background: #000;
+        }
+        .order_item_top {
+            flex: 5;
+            .order_item_top_header {
+                border-bottom: 0.005rem solid $f5;
+                padding-bottom: .06rem;
+                @include fj;
+                height: .4rem;
+                line-height: .4rem;
+                @include sc(.15rem, $g6);
+                .order_status {
+                    margin-right: .1rem;
+                }
+            }
+            .goods_img {
+                display: flex;
+                padding: .1rem 0;
+                border-bottom: 0.005rem solid $f5;
+                .goods_box {
+                    width: 3rem;
+                }
+                p {
+                    line-height: .64rem;
+                    @include sc(.15rem, $g6);
+                }
+            }
+            .order_item_bottom {
+                line-height: .24rem;
+                padding: .115rem 0;
+                display: flex;
+                float: right;
+                .order_button_border_grey {
+                    display: inline-block;
+                    height: .25rem;
+                    border-radius: .16rem;
+                    background: $fc;
+                    border: 1px solid $g9;
+                    padding: 0 .1rem;
+                    font-size: .12rem;
+                    color: $g6;
+                    margin: 0 0rem 0 .1rem;
+                }
+                .order_button_border_red {
+                    display: inline-block;
+                    height: .25rem;
+                    border-radius: .16rem;
+                    background: $fc;
+                    border: 1px solid $red;
+                    padding: 0 .1rem;
+                    font-size: .12rem;
+                    color: $red;
+                    margin: 0 0rem 0 .1rem;
+                }
+                .order_button_red {
+                    display: inline-block;
+                    height: .25rem;
+                    border-radius: .16rem;
+                    background: $red;
+                    padding: 0 .1rem;
+                    font-size: .12rem;
+                    color: $fc;
+                    margin: 0 0rem 0 .1rem;
+                }
+                .order_text {
+                    text-align: right;
+                    @include sc(.15rem, $g6);
+                }
+            }
+        }
+    }
+}
+
+.loading-enter-active,
+.loading-leave-active {
+    transition: opacity .7s
+}
+
+.loading-enter,
+.loading-leave-active {
+    opacity: 0
+}
+
+.router-slid-enter-active,
+.router-slid-leave-active {
+    transition: all .4s;
+}
+
+.router-slid-enter,
+.router-slid-leave-active {
+    transform: translate3d(.4rem, 0, 0);
+    opacity: 0;
+}
