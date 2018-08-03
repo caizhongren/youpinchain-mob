@@ -119,8 +119,6 @@ export default {
      this.proIds = JSON.parse(
         sessionStorage.getItem(this.$route.query.rebuyKey)
      );
-     console.info(this.proIds)
-       //TODO 需要根据proIds选择勾选
   },
   components: {
     footGuide
@@ -132,6 +130,11 @@ export default {
             this.carts = res.data.cart;
             this.carts.forEach(cart => {
                 cart.choose = true;
+                if(this.proIds){
+                    if(this.proIds.indexOf(cart.productId) == -1){
+                        cart.choose = false;
+                    }
+                }
             });
             this.reComputePrice();
         });
