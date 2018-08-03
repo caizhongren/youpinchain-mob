@@ -6,13 +6,15 @@
             <div class="shop_info">
                 <ul class="goods">
                     <li v-for="item in carts" :key="item.cartId">
-                        <span :class="[item.choose ? 'choose' : 'unselected']" @click="checkCart(item)"></span>
+                        <span :class="[item.choose && item.available ? 'choose' : 'unselected']" @click="checkCart(item)"></span>
                         <img :src="item.thumbnailPic" alt="" class="img" :class="{'noImage': !item.thumbnailPic}">
                         <div class="goods_info">
                             <p class="name">{{item.productName}}</p>
-                            <p class="price"><span>¥</span>{{item.presentPrice}}</p>
+                            <p class="price"><span class="RMB">￥</span>{{item.presentPrice}}</p>
                         </div>
                         <div class="cart_btns">
+                            <p style="color: #e4372e" v-if="!item.isShow">已下架</p>
+                            <p style="color: #e4372e" v-else-if="!item.available">库存不足</p>
                             <span class="subduction" :class="{'disabled': item.number <= 1}" @click="item.number > 1 ? addNumber(item, -1) : deleteCart(item)"></span>
                             <span class="num">{{item.number}}</span>
                             <span class="add" @click="addNumber(item, 1)"></span>
@@ -22,7 +24,7 @@
                 <ul class="payment_info">
                     <li>
                         <p>商品总价</p>
-                        <p>¥{{goodsPrice | number}}</p>
+                        <p><span class="RMB">￥</span>{{goodsPrice | number}}</p>
                     </li>
                     <li>
                         <p>优惠券</p>
@@ -30,16 +32,16 @@
                     </li>
                     <li>
                         <p>商品实付</p>
-                        <p>¥{{payment | number}}</p>
+                        <p><span class="RMB">￥</span>{{payment | number}}</p>
                     </li>
                     <li>
                         <p>运费</p>
-                        <p>¥{{fare}}</p>
+                        <p><span class="RMB">￥</span>{{fare}}</p>
                     </li>
                 </ul>
                 <div class="right totalPrice">
                     合计
-                    <p><span>¥</span>{{totalPrice | number}}</p>
+                    <p><span class="RMB">￥</span>{{totalPrice | number}}</p>
                 </div>
             </div>
         </div>
@@ -55,7 +57,7 @@
                 <img :src="item.thumbnailPic" alt="" class="img">
                 <div class="left">
                     <p class="name">{{item.name}}*1{{item.packing}}</p>
-                    <p class="price"><span>¥</span>{{item.presentPrice}} <s>¥{{item.originalPrice}}</s></p>
+                    <p class="price"><span class="RMB">￥</span>{{item.presentPrice}} <s class="RMB">￥{{item.originalPrice}}</s></p>
                 </div>
                 <div class="right add_cart" @touchstart="addToCart(item.id, $event)"></div>
             </li>
@@ -70,8 +72,8 @@
             <span :class="[selectAll ? 'selectAll' : 'unselected']"></span> 全选
         </li>
         <li>
-            <p>合计 &nbsp;&nbsp;<span class="red">¥{{totalPrice | number}}</span></p>
-            <p>运费 &nbsp;&nbsp;¥{{fare}}</p>
+            <p>合计 &nbsp;&nbsp;<span class="red"><span class="RMB">￥</span>{{totalPrice | number}}</span></p>
+            <p>运费 &nbsp;&nbsp;<span class="RMB">￥</span>{{fare}}</p>
         </li>
         <li @click="toSubmitOrder()">去结算</li>
     </ul>
@@ -93,7 +95,7 @@ import {
 export default {
   data() {
     return {
-      selectAll: true,
+      selectAll: false,
       totalPrice: 0,
       goodsPrice: 0,
       payment: 0,
@@ -119,8 +121,6 @@ export default {
      this.proIds = JSON.parse(
         sessionStorage.getItem(this.$route.query.rebuyKey)
      );
-     console.info(this.proIds)
-       //TODO 需要根据proIds选择勾选
   },
   components: {
     footGuide
@@ -132,6 +132,15 @@ export default {
             this.carts = res.data.cart;
             this.carts.forEach(cart => {
                 cart.choose = true;
+                if(this.proIds){
+                    if(this.proIds.indexOf(cart.productId) == -1){
+                        cart.choose = false;
+                    }
+                }
+                cart.available = true;
+                if (cart.stock - cart.number < 0 || !cart.isShow){
+                    cart.available = false;
+                }
             });
             this.reComputePrice();
         });
@@ -164,6 +173,7 @@ export default {
     },
     checkCart(cart) {
       cart.choose = !cart.choose;
+      this.reComputePrice();
     },
 
     checkSelectAll() {
@@ -181,10 +191,10 @@ export default {
       this.payment = 0;
       this.totalPrice = 0;
       this.carts.forEach(cart => {
-        if (cart.choose) {
+      if (cart.choose && cart.available) {
           this.goodsPrice += cart.presentPrice * cart.number;
           this.payment += cart.presentPrice * cart.number;
-        }
+      }
       });
       this.totalPrice = this.fare + this.payment;
     },
@@ -193,6 +203,19 @@ export default {
      * 到提交订单页面
      */
     toSubmitOrder() {
+      if (!this.carts || this.carts.length <= 0) {
+        return;
+      }
+      let orderCar = [];
+      this.carts.forEach(item => {
+          if (item.choose && item.available){
+              orderCar.push(item);
+          }
+      })
+      if (!orderCar || orderCar.length <= 0) {
+          return;
+      }
+
       var arr = []; 
       for (var i = 0; i < sessionStorage.length; i++) {
         if (sessionStorage.key(i).substring(0, 9) == "products_") {
@@ -207,7 +230,7 @@ export default {
       let currentTime = new Date().getTime();
       sessionStorage.setItem(
         "products_" + currentTime,
-        JSON.stringify(this.carts)
+      JSON.stringify(orderCar)
       );
       this.$router.push("/confirmOrder?cartsKey=products_" + currentTime);
     },
@@ -216,9 +239,19 @@ export default {
      * 添加或删除购物车商品数量
      */
     addNumber(cart, number) {
+        if(number < 0 && !cart.isShow){
+            this.deleteCart(cart);
+            return;
+        }
       updateCart(cart.cartId, number).then(res => {
         if (res.errno == 0) {
           cart.number = cart.number + number;
+
+        if (cart.stock - cart.number < 0 || !cart.isShow){
+            cart.available = false;
+        }else {
+            cart.available = true;
+        }
           this.reComputePrice();
           this.$parent.getCartNum();
         }
@@ -298,12 +331,6 @@ export default {
             .price {
                 @include sc(0.18rem, $red);
                 font-weight: bold;
-                span {
-                    @include sc(0.12rem, $red);
-                    font-weight: normal;
-                    display: inline-block;
-                    transform: scale(0.7) translateY(2px);
-                }
                 s {
                     @include sc(0.12rem, $g9);
                     font-weight: normal;
@@ -390,12 +417,6 @@ export default {
                         font-weight: bold;
                         position: relative;
                         top: 0.38rem;
-                        span {
-                            display: inline-block;
-                            @include sc(0.12rem, $red);
-                            font-weight: normal;
-                            transform: scale(0.8) translateY(1px);
-                        }
                     }
                 }
                 .cart_btns {
@@ -435,6 +456,7 @@ export default {
                 li {
                     @include wh(100%, 0.35rem);
                     line-height: 0.35rem;
+                    display: flex;
                     p {
                         @include sc(0.15rem, $g6);
                     }
@@ -442,7 +464,8 @@ export default {
                         float: left;
                     }
                     p:nth-child(even) {
-                        float: right;
+                        flex: 4;
+                        text-align: right;
                     }
                     p.coupon {
                         color: $g9;
@@ -455,10 +478,6 @@ export default {
                     display: inline-block;
                     @include sc(0.2rem, $g3);
                     font-weight: bold;
-                    span {
-                        @include sc(0.13rem, $g3);
-                        font-weight: normal;
-                    }
                 }
             }
         }
@@ -470,7 +489,7 @@ export default {
     bottom: 0.49rem;
     line-height: 0.675rem;
     background-color: $fc;
-    border: solid 0.5px #cccccc;
+    border-top: solid 0.5px $bc;
     @include wh(100%, 0.675rem);
     overflow: hidden;
     li {

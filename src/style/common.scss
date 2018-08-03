@@ -111,6 +111,12 @@ html,body{
     padding-top: .45rem;
 }
 
+.RMB {
+	font-size: .12rem;
+	font-weight: normal;
+	margin-right: 1.5px;
+}
+
 @keyframes backOpacity{
    0%   { opacity: 1 }
    25%  { opacity: .5 }
@@ -134,7 +140,7 @@ html,body{
     line-height: .18rem;
     background: $red;
     border-radius: 50%;
-    right: -.15rem;
+    right: -.13rem;
     top: -.05rem;
     text-align: center;
 }

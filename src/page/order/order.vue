@@ -1,8 +1,8 @@
  <template>
-    <div class="order_page">
+    <div class="order_page header-top">
         <head-top head-title="我的订单" go-back='true'></head-top>
         <ul class="nav_tab">
-            <li v-for="(item,index) in tabList" :class="{active: activeTab == index }" @click="findOrder(index)">{{item.tab}}</li>
+            <li v-for="(item,index) in tabList" :key="index" :class="{active: activeTab == index }" @click="findOrder(index)">{{item.tab}}</li>
         </ul> 
         <transition name="router-slid" mode="out-in">
             <router-view @findOrder="updateOrder()" :sendData="activeTab"></router-view>
@@ -91,7 +91,6 @@
         }
     }
     .nav_tab{
-        margin-top: .45rem;
         @include wh(100%,.45rem);
         @include sc(.15rem,$g6);
         background: $fc;

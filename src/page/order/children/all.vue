@@ -2,7 +2,7 @@
 	<div class="unpaid">
 		<ul class="order_list_ul">
             <div v-if="orderList.length <= 0" class="no_list">暂无订单记录</div>
-            <li v-else class="order_list_li" v-for="item in orderList">
+            <li v-else class="order_list_li" v-for="item in orderList" :key="item.id">
                 <section class="order_item_top">
                     <section>
                         <header class="order_item_top_header">
@@ -11,7 +11,7 @@
                                 {{item.orderStatusText}}
                             </p>
                         </header>
-                        <router-link :to="{path:'/orderDetail',query:{orderId:item.id}}" tag="div">
+                        <router-link :to="{path:'/orderDetail/' + item.id}" tag="div">
 	                        <section class="goods_img">
 	                        	<div class="goods_box">
 	                        		<img class="restaurant_image" v-for="(goods,index) in item.productList" :src="goods.picUrl" v-if="index < 4" :key="index">
@@ -23,11 +23,11 @@
                         </router-link>
                     </section>
                     <div class="order_item_bottom">
-                    	<span class="order_text">实际支付<b style="color:#e4372e;">￥<strong style="font-size:.2rem;font-weight:bold;">{{item.actualPrice}}</strong></b></span>
+                    	<span class="order_text">实际支付<b style="color:#e4372e;"><span class="RMB">￥</span><strong style="font-size:.2rem;font-weight:bold;">{{item.actualPrice}}</strong></b></span>
                     	<div class="order_button_border_grey" @click="showAlertTip = !showAlertTip">联系客服</div>
                         <div class="order_again">
                             <compute-time v-if="item.handleOption.pay" :time="item.expiryTime" @click.native="toPay(item.id)"></compute-time>
-                            <span class="order_button_border_red" @click="cancelOrder(item.id)" v-if="item.handleOption.refund">取消订单</span>
+                            <!--<span class="order_button_border_red" @click="cancelOrder(item.id)" v-if="item.handleOption.cancel">取消订单</span>-->
                             <router-link :to="{path:'/orderTrack',query:{expNo:item.expNo}}" tag="span" class="order_button_border_red"
                                          v-if="item.handleOption.confirm" >查看物流</router-link>
                             <span class="order_button_border_red" @click="confirmOrder(item.id)" v-if="item.handleOption.confirm">确认收货</span>
@@ -164,10 +164,10 @@ export default {
 
 .order_list_ul {
   padding-bottom: .5rem;
+  background-color: $f5;
   .no_list {
-    padding: 2.615rem 0;
+    padding-top: 2.215rem;
     text-align: center;
-    background-color: $f5;
     @include sc(.15rem, $g6);
   }
   .order_list_li {
@@ -208,29 +208,29 @@ export default {
         }
       }
       .order_item_bottom {
-        line-height: 0.32rem;
+        line-height: 0.24rem;
         padding: 0.115rem 0;
         display: flex;
         float: right;
         .order_button_border_grey {
           display: inline-block;
-          height: 0.32rem;
+          height: 0.25rem;
           border-radius: 0.16rem;
           background: $fc;
           border: 1px solid $g9;
           padding: 0 0.1rem;
-          font-size: 0.15rem;
+          font-size: 0.12rem;
           color: $g6;
           margin: 0 0rem 0 0.1rem;
         }
         .order_button_border_red {
           display: inline-block;
-          height: 0.32rem;
+          height: 0.25rem;
           border-radius: 0.16rem;
           background: $fc;
           border: 1px solid $red;
           padding: 0 0.1rem;
-          font-size: 0.15rem;
+          font-size: 0.12rem;
           color: $red;
           margin: 0 0rem 0 0.1rem;
         }

@@ -83,7 +83,7 @@ export default [{
             component: orderTrack
         },
         {
-            path: 'orderDetail', //订单详情页
+            path: 'orderDetail/:orderId', //订单详情页
             component: orderDetail
         },
         {

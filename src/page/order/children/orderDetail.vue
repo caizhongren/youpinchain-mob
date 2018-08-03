@@ -14,8 +14,9 @@
                 <section class="distribution-information border_radius" v-if="orderData.handleOption.confirm">
                     <img src="../../../images/ddxq-ps.png" alt="">
                     <div>
-                        <p>配送员：{{orderData.expCode}}</p>
-                        <p>联系电话：{{orderData.expNo}}</p>
+                        <!--<p>配送员：{{orderData.expCode}}</p>-->
+                        <!--<p>联系电话：{{orderData.expNo}}</p>-->
+                        <p>{{exp.context}}</p>
                     </div>
                 </section>
                 <section class="address border_radius">
@@ -36,7 +37,7 @@
                             <img :src="item.picUrl" alt="" class="img">
                             <div class="goods_info">
                                 <p class="name">{{item.productName}}</p>
-                                <p class="price"><span>¥</span>{{item.retailPrice}}</p>
+                                <p class="price"><span>￥</span>{{item.retailPrice}}</p>
                             </div>
                             <div class="cart_btns">
                                 <span class="num">x{{item.number}}</span>
@@ -113,7 +114,7 @@
                 <section class="sale_after">
                     <span class="red" @click="showAlertTip = !showAlertTip">联系客服</span>
                     <compute-time v-if="orderData.handleOption.pay" :time="orderData.expiryTime" @click.native="toPay(orderData.id)"></compute-time>
-                    <span class="grey" @click="cancelOrder(orderData.id)" v-if="orderData.handleOption.refund">取消订单</span>
+                    <span class="grey" @click="cancelOrder(orderData.id)" v-if="orderData.handleOption.cancel">取消订单</span>
                     <router-link :to="{path:'/orderTrack',query:{expNo:orderData.expNo}}" tag="span" class="grey"
                                  v-if="orderData.handleOption.confirm" >查看物流</router-link>
                     <span class="grey" @click="confirmOrder(orderData.id)" v-if="orderData.handleOption.confirm">确认收货</span>
@@ -133,7 +134,7 @@
     import loading from 'src/components/common/loading'
     import footGuide from 'src/components/footer/footGuide'
     import alertTip from 'src/components/common/alertTip'
-    import {getOrderDetail,cancelOrder,confirmOrder,prepayOrder} from "../../../service/getData";
+    import {getOrderDetail,cancelOrder,confirmOrder,prepayOrder,expresses} from "../../../service/getData";
 
     export default {
 
@@ -159,12 +160,12 @@
                     text: '您的订单待支付～'
                 }],
                 orderData:{},
-                orderProduct:{}
+                orderProduct:{},
+                exp:{}
             }
         },
         created () {
-            this.orderId = this.$route.query.orderId
-            // console.info(this.$route.query.orderId)
+            this.orderId = this.$route.params.orderId
         },
         mounted(){
             getOrderDetail(this.orderId).then(res => {
@@ -174,6 +175,24 @@
                 this.orderData = res.data.orderInfo;
                 this.orderProduct = res.data.orderProduct;
                 this.showLoading = false;
+
+                //TODO 测试使用单号
+                if(!this.orderData.expNo){
+                    this.orderData.expNo="821721174311"
+                }
+                if (this.orderData.handleOption.confirm && this.orderData.expNo){
+                    expresses(this.orderData.expNo).then(res => {
+                        if (res.errno !== 0){
+                            return;
+                        }
+                        var trackData = JSON.parse(
+                            res.data
+                        );
+                        if (trackData.message === "ok"){
+                            this.exp = trackData.data[0]
+                        }
+                    })
+                }
             })
         },
         components: {
@@ -184,22 +203,25 @@
         methods: {
             // 取消订单
             cancelOrder(orderId){
+                var that = this;
                 cancelOrder(orderId).then(res =>{
                     if(res.errno !== 0) {
                         alert("失败");
                         return;
                     }
-                    alert("成功");
+                    that.$router.push('/order/undelivery');
                 })
             },
             // 确认收货
             confirmOrder(orderId){
+                var that = this;
                 confirmOrder(orderId).then(res =>{
                     if(res.errno !== 0) {
                         alert("失败");
                         return;
                     }
-                    alert("成功");
+                    var that = this;
+                    that.$router.push('/order/completed');
                 })
             },
             toPay(orderId) {
@@ -316,7 +338,7 @@
         @include fj(space-between);
         border-radius: 10px;
         background-color: $fc;
-        box-shadow: 0px 1px 13.9px 0.6px rgba(110, 194, 46, 0.24);
+        box-shadow: 0px 1px 13.9px 0.6px rgba(181, 184, 188, 0.4);
         position: relative;
         .address-detail{
             position: relative;
@@ -438,6 +460,7 @@
     .order_detail_style{
         background-color: $fc;
         margin-top: 0.1rem;
+        padding-bottom: .15rem;
         header{
             @include sc(.15rem, $g3);
             padding: .1rem;

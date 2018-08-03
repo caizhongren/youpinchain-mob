@@ -114,7 +114,10 @@ export const getDefaultAddress = () => fetch('/addresses/defaultAddress');
 /**
  * 地址列表查询
  */
-export const getAddressList = () => fetch('/addresses');
+export const getAddressList = (page, pageSize) => fetch('/addresses', {
+	page: page,
+	pageSize: pageSize
+});
 
 
 /**

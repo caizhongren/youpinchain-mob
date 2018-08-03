@@ -22,7 +22,7 @@
                                 <div class="input-new">
                                     <span>所在地区</span>
                                     <input type="text" id="address-input" readonly="readonly" style="width:2.5rem;" placeholder="请选择" v-model="address.tipText" />
-                                    <svg fill="#bbb" style="width: 0.18rem;margin-left: .1rem;">		<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>		</svg>
+                                    <svg fill="#bbb" style="width: 0.18rem;margin: 0 0.05rem 0 0.1rem;"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use></svg>
                                 </div>
                                 <div class="input-new">
                                     <span>地址</span>
@@ -52,7 +52,7 @@
                         <img :src="item.thumbnailPic" alt="" class="img">
                         <div class="goods_info">
                             <p class="name">{{item.productName}}</p>
-                            <p class="price"><span>¥</span>{{item.presentPrice}}</p>
+                            <p class="price"><span class="RMB">￥</span>{{item.presentPrice}}</p>
                         </div>
                         <div class="cart_btns">
                             <span class="num">x{{item.number}}</span>
@@ -65,35 +65,35 @@
                 <ul class="payment_info">
                     <li>
                         <p>商品总价</p>
-                        <p>¥{{goodsPrice}}</p>
+                        <p><span class="RMB">￥</span>{{goodsPrice}}</p>
                     </li>
                     <li>
                         <p>优惠价格</p>
-                        <p class="coupon">- ¥0.00</p>
+                        <p class="coupon">- <span class="RMB">￥</span>0.00</p>
                     </li>
                     <li>
                         <p>运费</p>
-                        <p>¥{{fare}}</p>
+                        <p><span class="RMB">￥</span>{{fare}}</p>
                     </li>
                     <li>
                         <p>包装费</p>
-                        <p>¥{{packingFee}}</p>
+                        <p><span class="RMB">￥</span>{{packingFee}}</p>
                     </li>
                     <li>
                         <p>包装费减免</p>
-                        <p>¥{{packingFeeReduction}}</p>
+                        <p><span class="RMB">￥</span>{{packingFeeReduction}}</p>
                     </li>
                 </ul>
                 <div class="right totalPrice">
                     实际支付
-                    <p><span>¥</span>{{totalPrice}}</p>
+                    <p><span class="RMB">￥</span>{{totalPrice}}</p>
                 </div>
             </div>
         </div>
     </nav>
     <ul class="settlement">
         <li @click="paymentCall()">去付款</li>
-        <li>付款 &nbsp;<span class="red">¥{{totalPrice}}</span></li>
+        <li>付款 &nbsp;<span class="red"><span class="RMB">￥</span>{{totalPrice}}</span></li>
     </ul>
 </div>
 </template>
@@ -131,7 +131,8 @@ export default {
 				mobile: '', // 手机号
 				tipText: '', // 送餐地址
             	address: '', // 地址
-			},
+            },
+            orderId: 0
         }
     },
     props: ['showErrMsg'],
@@ -161,44 +162,54 @@ export default {
         loadAllProducts() {
 
         },
-        paymentCall() {
+        async paymentCall() {
             if (!this.choosedAddress) {
                 this.showErrMsg('请填写正确收货地址！')
                 return
             }
+            if (this.orderId != 0) {
+                this.doPay(this.orderId);
+                return;
+            }
+
             let cartIds = [];
             this.productList.forEach(cart => {
                 cartIds.push(cart.cartId);
             });
             let addressId = this.choosedAddress.id;
+            let that = this;
             submitOrder(cartIds, addressId).then(res => {
                 if(res.errno !== 0) {
                     return;
                 }
-                let orderId = res.data.orderId;
-                prepayOrder(orderId).then(resp => {
-                    var that = this;
-                    if (resp.errno === 403) {
-                        alert("订单不可支付")
-                    } else {
-                        WeixinJSBridge.invoke(
-                            'getBrandWCPayRequest', {
-                                "appId": resp.data.appId, //公众号名称，由商户传入
-                                "timeStamp": resp.data.timeStamp, //时间戳，自1970年以来的秒数
-                                "nonceStr": resp.data.nonceStr, //随机串
-                                "package": resp.data.packageValue,
-                                "signType": resp.data.signType, //微信签名方式：
-                                "paySign": resp.data.paySign //微信签名
-                            },
-                            function (res) {
-                                if (res.err_msg == "get_brand_wcpay_request:ok") {
-                                    that.$router.push('/order/undelivery');
-                                }
-                                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                that.orderId = res.data.orderId;
+                that.doPay(that.orderId);
+            })
+        },
+        
+        doPay(orderId) {
+            prepayOrder(orderId).then(resp => {
+                var that = this;
+                if (resp.errno === 403) {
+                    alert("订单不可支付")
+                } else {
+                    WeixinJSBridge.invoke(
+                        'getBrandWCPayRequest', {
+                            "appId": resp.data.appId, //公众号名称，由商户传入
+                            "timeStamp": resp.data.timeStamp, //时间戳，自1970年以来的秒数
+                            "nonceStr": resp.data.nonceStr, //随机串
+                            "package": resp.data.packageValue,
+                            "signType": resp.data.signType, //微信签名方式：
+                            "paySign": resp.data.paySign //微信签名
+                        },
+                        function (res) {
+                            if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                that.$router.push('/order/undelivery');
                             }
-                        );
-                    }
-                })
+                            // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                        }
+                    );
+                }
             })
         },
         //保存地址
@@ -292,11 +303,8 @@ export default {
 					this.choosedAddress = address;
 					localStorage.setItem('choosedAddress', JSON.stringify(address));
 				} else {
-                    getAddressList({
-                        page: 1,
-                        pageSize: 1
-                    }).then(res => {
-                        if (res.errno == 0 && res.data.size() > 0) {
+                    getAddressList(1,1).then(res => {
+                        if (res.errno == 0 && res.data.length > 0) {
                             this.choosedAddress = res.data[0];
                             localStorage.setItem('choosedAddress', JSON.stringify(this.choosedAddress));
                         }
@@ -327,7 +335,7 @@ export default {
 }
 
 .confirmOrderContainer {
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.49rem;
 }
 
 .shop_list_container {
@@ -473,12 +481,6 @@ export default {
                     font-weight: bold;
                     position: relative;
                     top: 0.38rem;
-                    span {
-                        display: inline-block;
-                        @include sc(0.12rem, $red);
-                        font-weight: normal;
-                        transform: scale(0.8) translateY(1px);
-                    }
                 }
             }
             .cart_btns {
@@ -501,7 +503,8 @@ export default {
             border-bottom: 1px solid $gd;
             li {
                 @include wh(100%, 0.35rem);
-                line-height: 0.35rem;
+				line-height: 0.35rem;
+				display: flex;
                 p {
                     @include sc(0.15rem, $g6);
                 }
@@ -509,7 +512,8 @@ export default {
                     float: left;
                 }
                 p:nth-child(even) {
-                    float: right;
+					flex: 4;
+					text-align: right;
                 }
                 p.coupon {
                     color: $g9;
@@ -522,23 +526,18 @@ export default {
                 display: inline-block;
                 @include sc(0.2rem, $g3);
                 font-weight: bold;
-                span {
-                    @include sc(0.13rem, $g3);
-                    font-weight: normal;
-                }
             }
         }
     }
 }
-
 .settlement {
     position: fixed;
     bottom: 0;
     line-height: 0.49rem;
     background-color: $fc;
-    border: solid 0.5px #cccccc;
+    border-top: solid 1px $bc;
     @include wh(100%, 0.49rem);
-    overflow: hidden;
+	overflow: hidden;
     li {
         float: right;
         text-align: center;
