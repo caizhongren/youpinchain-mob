@@ -296,7 +296,7 @@ export default {
                         page: 1,
                         pageSize: 1
                     }).then(res => {
-                        if (res.errno == 0 && res.data.size() > 0) {
+                        if (res.errno == 0 && res.data.length > 0) {
                             this.choosedAddress = res.data[0];
                             localStorage.setItem('choosedAddress', JSON.stringify(this.choosedAddress));
                         }
