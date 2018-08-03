@@ -56,6 +56,7 @@
     bottom: 0;
     @include wh(100%, .49rem);
     display: flex;
+    border-top: 1px solid $bc;
   }
   .guide_item{
     flex: 1;

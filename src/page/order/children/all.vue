@@ -23,7 +23,7 @@
                         </router-link>
                     </section>
                     <div class="order_item_bottom">
-                    	<span class="order_text">实际支付<b style="color:#e4372e;"><span class="RMB">￥¥</span><strong style="font-size:.2rem;font-weight:bold;">{{item.actualPrice}}</strong></b></span>
+                    	<span class="order_text">实际支付<b style="color:#e4372e;"><span class="RMB">￥</span><strong style="font-size:.2rem;font-weight:bold;">{{item.actualPrice}}</strong></b></span>
                     	<div class="order_button_border_grey" @click="showAlertTip = !showAlertTip">联系客服</div>
                         <div class="order_again">
                             <compute-time v-if="item.handleOption.pay" :time="item.expiryTime" @click.native="toPay(item.id)"></compute-time>
@@ -208,29 +208,29 @@ export default {
         }
       }
       .order_item_bottom {
-        line-height: 0.32rem;
+        line-height: 0.24rem;
         padding: 0.115rem 0;
         display: flex;
         float: right;
         .order_button_border_grey {
           display: inline-block;
-          height: 0.32rem;
+          height: 0.25rem;
           border-radius: 0.16rem;
           background: $fc;
           border: 1px solid $g9;
           padding: 0 0.1rem;
-          font-size: 0.15rem;
+          font-size: 0.12rem;
           color: $g6;
           margin: 0 0rem 0 0.1rem;
         }
         .order_button_border_red {
           display: inline-block;
-          height: 0.32rem;
+          height: 0.25rem;
           border-radius: 0.16rem;
           background: $fc;
           border: 1px solid $red;
           padding: 0 0.1rem;
-          font-size: 0.15rem;
+          font-size: 0.12rem;
           color: $red;
           margin: 0 0rem 0 0.1rem;
         }

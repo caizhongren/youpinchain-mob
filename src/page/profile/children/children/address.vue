@@ -170,7 +170,7 @@ export default {
             @include fj(space-between);
             border-radius: 10px;
             background-color: $fc;
-            box-shadow: 0px 1px 13.9px 0.6px rgba(110, 194, 46, 0.24);
+            box-shadow: 0px 1px 13.9px 0.6px rgba(181, 184, 188, 0.4);
             position: relative;
             .default-address {
                 @include wh(.43rem, .42rem);

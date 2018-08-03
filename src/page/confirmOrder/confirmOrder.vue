@@ -22,7 +22,7 @@
                                 <div class="input-new">
                                     <span>所在地区</span>
                                     <input type="text" id="address-input" readonly="readonly" style="width:2.5rem;" placeholder="请选择" v-model="address.tipText" />
-                                    <svg fill="#bbb" style="width: 0.18rem;margin-left: .1rem;">		<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>		</svg>
+                                    <svg fill="#bbb" style="width: 0.18rem;margin: 0 0.05rem 0 0.1rem;"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use></svg>
                                 </div>
                                 <div class="input-new">
                                     <span>地址</span>
@@ -52,7 +52,7 @@
                         <img :src="item.thumbnailPic" alt="" class="img">
                         <div class="goods_info">
                             <p class="name">{{item.productName}}</p>
-                            <p class="price"><span class="RMB">¥</span>{{item.presentPrice}}</p>
+                            <p class="price"><span class="RMB">￥</span>{{item.presentPrice}}</p>
                         </div>
                         <div class="cart_btns">
                             <span class="num">x{{item.number}}</span>
@@ -65,35 +65,35 @@
                 <ul class="payment_info">
                     <li>
                         <p>商品总价</p>
-                        <p><span class="RMB">¥</span>{{goodsPrice}}</p>
+                        <p><span class="RMB">￥</span>{{goodsPrice}}</p>
                     </li>
                     <li>
                         <p>优惠价格</p>
-                        <p class="coupon">- <span class="RMB">¥</span>0.00</p>
+                        <p class="coupon">- <span class="RMB">￥</span>0.00</p>
                     </li>
                     <li>
                         <p>运费</p>
-                        <p><span class="RMB">¥</span>{{fare}}</p>
+                        <p><span class="RMB">￥</span>{{fare}}</p>
                     </li>
                     <li>
                         <p>包装费</p>
-                        <p><span class="RMB">¥</span>{{packingFee}}</p>
+                        <p><span class="RMB">￥</span>{{packingFee}}</p>
                     </li>
                     <li>
                         <p>包装费减免</p>
-                        <p><span class="RMB">¥</span>{{packingFeeReduction}}</p>
+                        <p><span class="RMB">￥</span>{{packingFeeReduction}}</p>
                     </li>
                 </ul>
                 <div class="right totalPrice">
                     实际支付
-                    <p><span class="RMB">¥</span>{{totalPrice}}</p>
+                    <p><span class="RMB">￥</span>{{totalPrice}}</p>
                 </div>
             </div>
         </div>
     </nav>
     <ul class="settlement">
         <li @click="paymentCall()">去付款</li>
-        <li>付款 &nbsp;<span class="red"><span class="RMB">¥</span>{{totalPrice}}</span></li>
+        <li>付款 &nbsp;<span class="red"><span class="RMB">￥</span>{{totalPrice}}</span></li>
     </ul>
 </div>
 </template>
@@ -324,7 +324,7 @@ export default {
 }
 
 .confirmOrderContainer {
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.49rem;
 }
 
 .shop_list_container {
@@ -524,7 +524,7 @@ export default {
     bottom: 0;
     line-height: 0.49rem;
     background-color: $fc;
-    border: solid 0.5px #cccccc;
+    border-top: solid 1px $bc;
     @include wh(100%, 0.49rem);
 	overflow: hidden;
     li {

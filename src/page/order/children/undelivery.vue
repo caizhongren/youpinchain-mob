@@ -157,14 +157,14 @@
                     }
                 }
                 .order_item_bottom{
-                    line-height: .32rem;
+                    line-height: .24rem;
                     padding: .115rem 0;
                     display: flex;
                     float: right;
                     .order_button_border_grey{
                         display: inline-block;
-                        height: .32rem;
-                        border-radius: .16rem;
+                        height: .25rem;
+                        border-radius: .12rem;
                         background: $fc;
                         border: 1px solid $g9;
                         padding: 0 .1rem;
@@ -174,8 +174,8 @@
                     }
                     .order_button_border_red{
                         display: inline-block;
-                        height: .32rem;
-                        border-radius: .16rem;
+                        height: .25rem;
+                        border-radius: .12rem;
                         background: $fc;
                         border: 1px solid $red;
                         padding: 0 .1rem;
@@ -185,8 +185,8 @@
                     }
                     .order_button_red{
                         display: inline-block;
-                        height: .32rem;
-                        border-radius: .16rem;
+                        height: .25rem;
+                        border-radius: .12rem;
                         background: $red;
                         padding: 0 .1rem;
                         font-size: .15rem;

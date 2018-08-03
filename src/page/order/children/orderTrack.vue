@@ -161,7 +161,7 @@
 	    		border: .005rem solid #cdcdcd;
 	    		background: #cdcdcd;
 	    		position: absolute;
-	    		left: 0.116rem;
+	    		left: 0.11rem;
 			    top: .25rem;
 	    	}
 	    	.received:after{
@@ -172,7 +172,7 @@
 	    		padding: .075rem;
 	    		b{
 	    			background: #ccc;
-	    			@include wh(.1rem,.1rem);
+	    			@include wh(.08rem,.08rem);
 	    			display: block;
 	    			border-radius: 50%;
 	    		}

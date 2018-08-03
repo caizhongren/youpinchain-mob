@@ -21,7 +21,7 @@
                 <p class="name">{{item.name}}*1{{item.packing}}</p>
                 <p class="desr">{{item.describe}}</p>
                 <p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>
-                <p class="price"><span class="RMB">¥</span>{{item.presentPrice}} <s>¥{{item.originalPrice}}</s></p>
+                <p class="price"><span class="RMB">￥</span>{{item.presentPrice}} <s>￥{{item.originalPrice}}</s></p>
               </div>
             </router-link>  
             <div class="shopping_cart"  @touchstart="addToCart(item.id, $event)"></div>
@@ -217,7 +217,7 @@ export default {
         overflow: hidden;
         margin-bottom: .12rem;
         position: relative;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #f8f8f8;
         padding-bottom: .15rem;
       }
       .goods_info {

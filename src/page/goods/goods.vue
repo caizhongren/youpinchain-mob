@@ -9,13 +9,13 @@
       </carousel>
       <div class="presell_box" v-if="goods.preSale">
         <div class="left_price left">
-          <p class="price"><span>¥</span>{{goods.presentPrice}} <s>¥{{goods.originalPrice}}</s></p>
+          <p class="price"><span>￥</span>{{goods.presentPrice}} <s>￥{{goods.originalPrice}}</s></p>
           <!--<p class="tip">商品预售预计{{goods.presellTime | dateCharacter}}发货</p>-->
         </div>
         <div class="right_tip right">预售</div>
       </div>
       <div class="title">
-        <p class="price" v-if="!goods.preSale"><span>¥</span>{{goods.presentPrice}} <s>¥{{goods.originalPrice}}</s></p>
+        <p class="price" v-if="!goods.preSale"><span>￥</span>{{goods.presentPrice}} <s>￥{{goods.originalPrice}}</s></p>
         <p class="name"><span class="presell_text" v-if="goods.preSale">【预售】</span>{{goods.name}}</p>
         <p class="desr">{{goods.describe}}</p>
       </div>

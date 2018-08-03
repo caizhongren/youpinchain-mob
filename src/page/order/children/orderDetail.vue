@@ -37,7 +37,7 @@
                             <img :src="item.picUrl" alt="" class="img">
                             <div class="goods_info">
                                 <p class="name">{{item.productName}}</p>
-                                <p class="price"><span>¥</span>{{item.retailPrice}}</p>
+                                <p class="price"><span>￥</span>{{item.retailPrice}}</p>
                             </div>
                             <div class="cart_btns">
                                 <span class="num">x{{item.number}}</span>
@@ -338,7 +338,7 @@
         @include fj(space-between);
         border-radius: 10px;
         background-color: $fc;
-        box-shadow: 0px 1px 13.9px 0.6px rgba(110, 194, 46, 0.24);
+        box-shadow: 0px 1px 13.9px 0.6px rgba(181, 184, 188, 0.4);
         position: relative;
         .address-detail{
             position: relative;
@@ -460,6 +460,7 @@
     .order_detail_style{
         background-color: $fc;
         margin-top: 0.1rem;
+        padding-bottom: .15rem;
         header{
             @include sc(.15rem, $g3);
             padding: .1rem;
