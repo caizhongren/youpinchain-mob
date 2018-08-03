@@ -52,7 +52,7 @@
                     </div>
                 </router-link>
                 <!-- 地址管理 -->
-                <router-link to='/profile/address' class="myorder">
+                <router-link to='/address' class="myorder">
                     <aside></aside>
                     <div class="myorder-div">
                         <span>地址管理</span>

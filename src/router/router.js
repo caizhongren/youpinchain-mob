@@ -61,16 +61,16 @@ export default [{
         {
             path: '/profile',
             component: profile,
-            children: [{
-                path: 'address',
-                component: address,     //编辑地址
-                name: 'addressList'
-            },
-            {
-                path:'add',
-                component:add,
-                name: 'editAddress'
-            }]
+        },
+        {
+            path: 'address',
+            component: address,  //地址管理
+            name: 'addressList'
+        },
+        {
+            path:'add',
+            component:add,     //编辑地址
+            name: 'editAddress'
         },
         // 关于我们
         {

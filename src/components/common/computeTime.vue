@@ -74,6 +74,8 @@
         background: $red;
         padding: 0 .1rem;
         margin-left: .1rem;
+        min-width: .92rem;
+        text-align: center;
         .rem_time{
             border-radius: .03rem;
             @include sc(.15rem,$fc);
