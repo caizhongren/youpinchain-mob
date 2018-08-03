@@ -112,12 +112,12 @@
                 </section>
                 <section class="sale_after">
                     <span class="red" @click="showAlertTip = !showAlertTip">联系客服</span>
-                    <compute-time v-if="item.handleOption.pay" :time="item.expiryTime" @click.native="toPay(item.id)"></compute-time>
-                    <span class="order_button_border_red" @click="cancelOrder(item.id)" v-if="item.handleOption.refund">取消订单</span>
-                    <router-link :to="{path:'/orderTrack',query:{expNo:item.expNo}}" tag="span" class="order_button_border_red"
-                                 v-if="item.handleOption.confirm" >查看物流</router-link>
-                    <span class="order_button_border_red" @click="confirmOrder(item.id)" v-if="item.handleOption.confirm">确认收货</span>
-                    <!--<router-link tag="span" to="/home" class="order_button_red" v-if="item.handleOption.rebuy" >再次购买</router-link>-->
+                    <compute-time v-if="orderData.handleOption.pay" :time="orderData.expiryTime" @click.native="toPay(orderData.id)"></compute-time>
+                    <span class="grey" @click="cancelOrder(orderData.id)" v-if="orderData.handleOption.refund">取消订单</span>
+                    <router-link :to="{path:'/orderTrack',query:{expNo:orderData.expNo}}" tag="span" class="grey"
+                                 v-if="orderData.handleOption.confirm" >查看物流</router-link>
+                    <span class="grey" @click="confirmOrder(orderData.id)" v-if="orderData.handleOption.confirm">确认收货</span>
+                    <!--<router-link tag="span" to="/home" class="order_button_red" v-if="orderData.handleOption.rebuy" >再次购买</router-link>-->
                 </section>
             </section>
         </section>
@@ -133,7 +133,7 @@
     import loading from 'src/components/common/loading'
     import footGuide from 'src/components/footer/footGuide'
     import alertTip from 'src/components/common/alertTip'
-    import {getOrderList,cancelOrder,confirmOrder,prepayOrder} from "../../../service/getData";
+    import {getOrderDetail,cancelOrder,confirmOrder,prepayOrder} from "../../../service/getData";
 
     export default {
 
