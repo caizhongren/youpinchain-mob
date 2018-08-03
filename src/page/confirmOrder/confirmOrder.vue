@@ -233,7 +233,7 @@ export default {
                 address.id = res.data;
                 if (res.errno == 0) {
 					localStorage.setItem('choosedAddress', JSON.stringify(address));
-					window.reload();
+					this.choosedAddress = JSON.parse(localStorage.getItem('choosedAddress'));
                 }
             });
 		},
