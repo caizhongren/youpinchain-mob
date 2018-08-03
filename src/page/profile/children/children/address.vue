@@ -164,6 +164,7 @@ export default {
     width: 100%;
     margin-top: .54rem;
     padding-bottom: .6rem;
+    min-height: 6rem;
     .addresslist {
         li {
             margin: .16rem .12rem;

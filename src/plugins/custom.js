@@ -93,6 +93,10 @@ let amount = number => {
     return outputdollars(Math.floor(number - 0) + '') + outputcents(number - 0)
   }
 }
+let timeformat = number => {
+  // 接口返回时间格式含有‘T’ 处理为yy-MM-dd HH:mm
+  return number.split('T')[0].split('-').join('.') + ' ' + number.split('T')[1].split(':')[0] + ':' + number.split('T')[1].split(':')[1]
+}
 
 export { date }
 export { number }
@@ -100,3 +104,4 @@ export { dateTime }
 export { dateCharacter }
 export { monthDay }
 export { amount }
+export { timeformat }

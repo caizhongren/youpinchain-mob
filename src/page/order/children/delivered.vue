@@ -6,7 +6,7 @@
                 <section class="order_item_top">
                     <section>
                         <header class="order_item_top_header">
-                            <p class="order_time">{{item.createTime}}</p>
+                            <p class="order_time">{{item.addTime | timeformat}}</p>
                             <p class="order_status">
                                 {{item.orderStatusText}}
                             </p>

@@ -7,9 +7,6 @@
         <transition name="router-slid" mode="out-in">
             <router-view @findOrder="updateOrder()" :sendData="activeTab"></router-view>
         </transition>
-        <transition name="loading">
-            <loading v-show="showLoading"></loading>
-        </transition>
         <foot-guide></foot-guide>
     </div>
 </template>
@@ -24,10 +21,6 @@
     export default {
       data(){
             return{
-                orderList: null, //订单列表
-                offset: 0, 
-                preventRepeat: false,  //防止重复获取
-                showLoading: false, //显示加载动画
                 activeTab: 0,
                 tabList: [
                   {
@@ -113,13 +106,6 @@
             color: $red;
             border-bottom: .02rem solid $red; 
         }
-    }
-
-    .loading-enter-active, .loading-leave-active {
-        transition: opacity .7s
-    }
-    .loading-enter, .loading-leave-active {
-        opacity: 0
     }
     .router-slid-enter-active, .router-slid-leave-active {
         transition: all .4s;

@@ -5,7 +5,7 @@
           <span>首页</span>
         </section>
         <section @click = "gotoAddress({path: '/cart'})" class="guide_item" :class="[$route.path.indexOf('cart') !== -1 ? 'icon2_style' : 'icon2_style2']">
-        	<a class="position-re"><b class="red-points">{{cartNum}}</b></a>
+        	<a class="position-re"><b class="red-points" v-show="cartNum !== 0">{{cartNum}}</b></a>
           <span>购物车</span>
         </section>
         <section @click = "gotoAddress('/profile')" class="guide_item" :class="[$route.path.indexOf('profile') !== -1 ? 'icon3_style' : 'icon3_style2']">
