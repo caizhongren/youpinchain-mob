@@ -191,7 +191,7 @@ export default {
       this.payment = 0;
       this.totalPrice = 0;
       this.carts.forEach(cart => {
-      if (cart.choose && cart.isShow) {
+      if (cart.choose && cart.available) {
           this.goodsPrice += cart.presentPrice * cart.number;
           this.payment += cart.presentPrice * cart.number;
       }
@@ -239,7 +239,8 @@ export default {
      * 添加或删除购物车商品数量
      */
     addNumber(cart, number) {
-        if(!cart.isShow){
+        if(number < 0 && !cart.isShow){
+            this.deleteCart(cart);
             return;
         }
       updateCart(cart.cartId, number).then(res => {
