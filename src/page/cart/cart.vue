@@ -6,13 +6,15 @@
             <div class="shop_info">
                 <ul class="goods">
                     <li v-for="item in carts" :key="item.cartId">
-                        <span :class="[item.choose ? 'choose' : 'unselected']" @click="checkCart(item)"></span>
+                        <span :class="[item.choose && item.available ? 'choose' : 'unselected']" @click="checkCart(item)"></span>
                         <img :src="item.thumbnailPic" alt="" class="img" :class="{'noImage': !item.thumbnailPic}">
                         <div class="goods_info">
                             <p class="name">{{item.productName}}</p>
                             <p class="price"><span>¥</span>{{item.presentPrice}}</p>
                         </div>
                         <div class="cart_btns">
+                            <p style="color: #e4372e" v-if="!item.isShow">已下架</p>
+                            <p style="color: #e4372e" v-else-if="!item.available">库存不足</p>
                             <span class="subduction" :class="{'disabled': item.number <= 1}" @click="item.number > 1 ? addNumber(item, -1) : deleteCart(item)"></span>
                             <span class="num">{{item.number}}</span>
                             <span class="add" @click="addNumber(item, 1)"></span>
@@ -135,6 +137,10 @@ export default {
                         cart.choose = false;
                     }
                 }
+                cart.available = true;
+                if (cart.stock - cart.number < 0 || !cart.isShow){
+                    cart.available = false;
+                }
             });
             this.reComputePrice();
         });
@@ -223,9 +229,18 @@ export default {
      * 添加或删除购物车商品数量
      */
     addNumber(cart, number) {
+        if(!cart.isShow){
+            return;
+        }
       updateCart(cart.cartId, number).then(res => {
         if (res.errno == 0) {
           cart.number = cart.number + number;
+
+        if (cart.stock - cart.number < 0 || !cart.isShow){
+            cart.available = false;
+        }else {
+            cart.available = true;
+        }
           this.reComputePrice();
           this.$parent.getCartNum();
         }
