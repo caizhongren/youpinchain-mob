@@ -292,10 +292,7 @@ export default {
 					this.choosedAddress = address;
 					localStorage.setItem('choosedAddress', JSON.stringify(address));
 				} else {
-                    getAddressList({
-                        page: 1,
-                        pageSize: 1
-                    }).then(res => {
+                    getAddressList(1,1).then(res => {
                         if (res.errno == 0 && res.data.length > 0) {
                             this.choosedAddress = res.data[0];
                             localStorage.setItem('choosedAddress', JSON.stringify(this.choosedAddress));

@@ -73,7 +73,7 @@ export default {
     props: [],
     methods: {
         loadAddresses() {
-            getAddressList().then(res => {
+            getAddressList(1, 100).then(res => {
                 this.adressList = res.data;
                 if (localStorage.getItem('choosedAddress')) {
                     var index = -1;

@@ -197,8 +197,12 @@ export default {
         deleteAddress1() {
             var that = this;
             if (that.address.id) {
-                deleteAddress(this.address.id).then(res => {
+                deleteAddress(that.address.id).then(res => {
                   if (res.errno == 0) {
+                    var sessionAddr = localStorage.getItem('choosedAddress');
+                    if (sessionAddr && JSON.parse(sessionAddr).id == that.addAddress.id) {
+                        localStorage.removeItem('choosedAddress');
+                    }
                     that.$router.go(-1);
                   }  
                 });
