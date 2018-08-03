@@ -98,7 +98,8 @@
                         alert("失败");
                         return;
                     }
-                    alert("成功");
+                    var that = this;
+                    that.$router.push('/order/completed');
                 })
             },
         },
