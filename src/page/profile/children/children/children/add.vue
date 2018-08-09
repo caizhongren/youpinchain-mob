@@ -46,7 +46,7 @@
     <transition name="router-slid" mode="out-in">
         <router-view></router-view>
     </transition>
-    <alert-tip :showAlertTip="showAlertTip" :alertText='`<p>确定要删除该地址吗！</p>`' :type="1" v-show="showAlertTip" v-bind:fn="deleteAddress1"></alert-tip>
+    <alert-tip :showAlertTip="showAlertTip" :alertText='`<p>确定要删除该地址吗！</p>`' :type="1" v-show="showAlertTip" @fn="deleteAddress1"></alert-tip>
 </div>
 </template>
 

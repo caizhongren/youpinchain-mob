@@ -5,7 +5,7 @@
         <div class="text" v-html="alertText"></div>
         <div class="i-know">
             <div @click="cancelAlertTip()">取消</div>
-            <div @click="confirmAlertTip()">确定</div>
+            <div @click="confirmAlertTip(type)">确定</div>
         </div>
     </div>
 </div>
@@ -32,9 +32,6 @@ export default {
         },
         'type': {
             type: Number
-        },
-        'fn': {
-            type: Function
         }
     }, // 判断来源 1: 删除地址，2: 拨打客服电话
     watch: {
@@ -48,9 +45,10 @@ export default {
         confirmAlertTip(type) {
             this.$parent.showAlertTip = false
             if (type == 2) {
-                window.location.href = "tel:10086#mp.weixin.qq.com"
+                window.location.href = "tel:10086"
+            } else {
+                this.$emit('fn')
             }
-            this.fn();
         },
         cancelAlertTip(type) {
           this.$parent.showAlertTip = false;
