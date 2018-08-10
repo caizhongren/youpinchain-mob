@@ -1,6 +1,6 @@
 <template>
   <div class="bounty_plan">
-    aaaa
+    <router-view></router-view>
   </div>
 </template>
 <script>

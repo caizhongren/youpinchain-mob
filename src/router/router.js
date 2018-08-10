@@ -122,7 +122,7 @@ export default [{
             component: coupon,
         },
         {
-            path: '/bounty-plan',
+            path: '/bountyPlan',
             component: BountyPlan,
             meta: {title: '赏金计划'},
             children: [
