@@ -19,7 +19,7 @@
                     <p class="desr">今日登录+15金条</p>
                     <p class="status_finish"><img src="../../../../images/bounty-plan/finished.png" width="10%"> 已完成</p>
                 </li>
-                <router-link tag="li" :to="'/bountyPlan/invite'">
+                <router-link tag="li" :to="'/bountyPlan/invite/'+ data.invitationsSum">
                     <p class="task_name">邀请好友</p>
                     <img src="../../../../images/bounty-plan/invite_icon.png" class="icon">
                     <p class="desr">邀请1位好友+10金条</p>
@@ -41,10 +41,10 @@
                     <img src="../../../../images/bounty-plan/new_activity.png" class="new_icon">
                     <img :src="task.themePic" class="task_icon">
                     <p class="task_name">{{task.name}}</p>
-                    <p class="status_finish" v-if="data.taskUser !== null"><img src="../../../../images/bounty-plan/finished.png" width="10%"> 已完成</p>
-                    <p class="reward task_reward" v-if="data.taskUser === null"><img src="../../../../images/bounty-plan/money_reward_icon1.png" width="10%"> +{{task.rewardPrice}}</p>
+                    <p class="status_finish" v-if="data.taskUser !== null && data.taskUser[index].taskStatus === 1"><img src="../../../../images/bounty-plan/finished.png" width="10%"> 已完成</p>
+                    <p class="reward task_reward" v-if="data.taskUser === null || data.taskUser[index].taskStatus === 0"><img src="../../../../images/bounty-plan/money_reward_icon1.png" width="10%"> +{{task.rewardPrice}}</p>
                 </router-link>
-                <li>
+                <li v-if="data.task.length < 3"> 
                     <img src="../../../../images/bounty-plan/coming_soon.png" class="coming_soon">
                     <p class="task_name">敬请期待</p>
                 </li>
@@ -62,7 +62,9 @@
                         goldDrill: 0,
                         bullion: 0,
                     },
-
+                    taskUser: null,
+                    task: [],
+                    invitationsSum: 0
                 },
             }
         },
@@ -71,9 +73,9 @@
         },
         mounted() {
             //获取首页信息
+            var that = this
             bountyHome().then(res => {
-                this.data = res.data
-                console.log(this.data.taskUser === null)
+                that.data = res.data
             })
         },
         created() {
@@ -111,7 +113,7 @@
                border-radius: .163rem;
                padding: 0 .05rem;
                margin-right: -.1rem;
-               @include wh(2.65rem, .325rem);
+               @include wh(2.25rem, .325rem);
                background: rgba(255, 255, 255, 0.4);
                color: $fc;
                p {
@@ -167,21 +169,22 @@
                     .desr {
                         letter-spacing: 0.5px;
                         @include sc(.1rem, $g6);
-                        transform: scale(.85);
+                        transform: scale(0.95) translateX(-7%);
+                        width: 114%;
                     }
                     .status_finish {
                         @include sc(.13rem, $g6);
                         @include wh(1.065rem, .23rem);
                         margin: 0.06rem auto 0;
                         img {
-                            width: 11%;
+                            width: 13%;
                             vertical-align: middle;
                         }
                     }
                     .reward {
                         @include sc(.14rem, $g6);
                         @include wh(1.02rem, .25rem);
-                        line-height: .25rem;
+                        line-height: .26rem;
                         border-radius: .025rem;
                         margin: 0.04rem auto 0;
                         background-color: #ffeeec;

@@ -1,28 +1,93 @@
 <template>
-  <div class="invite">
-  </div>
+    <div class="invite" v-client-height>
+        <div class="top_head">
+            <p class="title">品质商城 &nbsp; 放心臻品</p>
+            <div class="box">
+                <p>您的邀请二维码</p>
+                <div class="qrcode"></div>
+                <div class="invitationsSum">
+                    <p><img src="../../../../images/bounty-plan/invite_num_icon.png" width="11%">您已邀请好友{{invitationsSum}}人</p>
+                    <p><img src="../../../../images/bounty-plan/invite_amount_icon.png" width="10%">累计获得金条{{invitationsSum > 50 ? 500 : invitationsSum * 10}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="invite_btn">立即邀请好友</div>
+    </div>
 </template>
 <script>
-  export default {
+import { inviteCode } from '../../../../service/getData'
+export default {
     data () {
-      return {
-
-      }
+        return {
+            invitationsSum: Number(this.$route.params.invitationsSum)
+        }
     },
     watch: {
 
     },
     mounted() {
-      
+        //获取我的分享码
+        var that = this
+        inviteCode().then(res => {
+            // that.data = res.data
+        })
     },
     created() {
-      
+
     },
     methods: {
 
     },
-  }
+}
 </script>
-<style>
-
+<style lang="scss" scoped>
+    @import '../../../../style/mixin';
+    .invite {
+        background-color: #06020a;
+        .top_head {
+            @include wh(100%,3.8rem);
+            @include bis('../../../../images/bounty-plan/starry_sky_bg1.png');
+            .title {
+                @include sc(.185rem, $fc);
+                text-align: center;
+                padding: .35rem 0 .2rem;
+            }
+            .box {
+                @include sc(.15rem, $g3);
+                @include wh(2.79rem,3rem);
+                background: $fc;
+                box-shadow: 0px 1px 13.9px 0.6px rgba(181, 184, 188, 0.51);
+                margin: 0 auto;
+                border-radius: .1rem;
+                padding: .15rem .5rem;
+                text-align: center;
+                .qrcode {
+                    @include wh(1.41rem,1.41rem);
+                    border-radius: .05rem;
+                    background: #000;
+                    margin: 0.32rem auto .18rem;
+                }
+                .invitationsSum {
+                    text-align: left;
+                    margin-left: .2rem;
+                    p {
+                        margin-bottom: .1rem;
+                    }
+                    img {
+                        vertical-align: middle;
+                        margin-right: .1rem;
+                    }
+                }
+            }
+        }
+        .invite_btn {
+            @include sc(.15rem, $fc);
+            @include wh(2.735rem,.45rem);
+            background: #fc5340;
+            line-height: .46rem;
+            text-align: center;
+            margin: .8rem auto 0;
+            border-radius: .05rem;
+        }
+    }
 </style>
