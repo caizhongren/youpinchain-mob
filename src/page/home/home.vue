@@ -97,13 +97,6 @@ export default {
     toggleTab (dataId,index) {
         this.$router.push("/growing-environment?dataId=" + dataId);
         this.activeTab = index
-      // if (index === 0) {
-      //   this.$router.push({name: 'growingEnvironment'})
-      // } else if (index === 1) {
-      //   this.$router.push({name: 'feedingSituation'})
-      // } else {
-      //   this.$router.push({name: 'healthIndicators'})
-      // }
     },
     addToCart (productId, event) { // 加入购物车，计算按钮位置。
       let elLeft = event.target.getBoundingClientRect().left;

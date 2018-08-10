@@ -266,3 +266,26 @@ export const brandsPics = (dataId) => fetch('/brands/'+dataId+"/pics", {});
  * @returns {Promise<*>}
  */
 export const rebuy = (orderId) => fetch('/orders/'+orderId+"/rebuy", {} ,'POST');
+
+
+// 赏金计划活动
+
+/**
+ * 获取我的分享码
+ */
+export const inviteCode = () => fetch('/act/bounty/home/inv', {});
+
+/**
+ * 赏金活动首页
+ */
+export const bountyHome = () => fetch('/act/bounty/home', {});
+
+/**
+ * 获取金条记录
+ */
+export const bullion = () => fetch('/act/bounty/home/bullion', {});
+
+/**
+ * 获取金钻记录
+ */
+export const goldDrill = () => fetch('/act/bounty/home/goldDrill', {});

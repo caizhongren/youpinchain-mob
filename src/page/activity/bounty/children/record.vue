@@ -1,6 +1,5 @@
 <template>
-  <div class="healthIndicators">
-    健康指标
+  <div class="gold_record">
   </div>
 </template>
 <script>

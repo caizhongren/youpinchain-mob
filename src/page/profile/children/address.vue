@@ -31,7 +31,7 @@
 import headTop from 'src/components/header/head'
 import {
     getAddressList
-} from '../../../../service/getData'
+} from '../../../service/getData'
 import {
     mapState,
     mapMutations
@@ -178,7 +178,7 @@ export default {
                 position: absolute;
                 left: 0;
                 top: 0;
-                @include bis('../../../../images/add-slected.png');
+                @include bis('../../../images/add-slected.png');
             }
             .address-detail {
                 position: relative;
@@ -200,7 +200,7 @@ export default {
                 position: absolute;
                 left: -.28rem;
                 top: 0rem;
-                @include bis('../../../../images/gwc-icon-add.png');
+                @include bis('../../../images/gwc-icon-add.png');
                 @include wh(.16rem, .22rem);
             }
             .deletesite {
@@ -211,7 +211,7 @@ export default {
                     display: block;
                     @include wh(.23rem, .23rem);
                     margin-left: .2rem;
-                    @include bis('../../../../images/icon-edit-nor.png')
+                    @include bis('../../../images/icon-edit-nor.png')
                 }
             }
         }

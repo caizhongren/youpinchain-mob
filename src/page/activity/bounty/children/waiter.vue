@@ -1,6 +1,5 @@
 <template>
-  <div class="feedingSituation">
-    饲养情况
+  <div class="waiter">
   </div>
 </template>
 <script>

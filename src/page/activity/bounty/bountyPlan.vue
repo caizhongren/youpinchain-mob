@@ -1,6 +1,6 @@
 <template>
-  <div class="productIntroduction">
-    商品介绍
+  <div class="bounty_plan">
+    aaaa
   </div>
 </template>
 <script>

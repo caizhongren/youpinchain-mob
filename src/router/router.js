@@ -13,12 +13,18 @@ const completed = r => require.ensure([], () => r(require('../page/order/childre
 const orderDetail = r => require.ensure([], () => r(require('../page/order/children/orderDetail')), 'orderDetail')
 const orderTrack = r => require.ensure([], () => r(require('../page/order/children/orderTrack')), 'orderTrack')
 const confirmOrder = r => require.ensure([], () => r(require('../page/confirmOrder/confirmOrder')), 'confirmOrder')
-// const info = r => require.ensure([], () => r(require('../page/profile/children/info')), 'info')
-const address = r => require.ensure([], () => r(require('../page/profile/children/children/address')), 'address')
-const add = r => require.ensure([], () => r(require('../page/profile/children/children/children/add')), 'add')
-const addDetail = r => require.ensure([], () => r(require('../page/profile/children/children/children/children/addDetail')), 'addDetail')
+const address = r => require.ensure([], () => r(require('../page/profile/children/address')), 'address')
+const add = r => require.ensure([], () => r(require('../page/profile/children/add')), 'add')
 const coupon = r => require.ensure([], () => r(require('../page/profile/children/coupon')), 'coupon')
 const aboutUs = r => require.ensure([], () => r(require('../page/home/aboutUs')), 'aboutUs')
+const BountyPlan = r => require.ensure([], () => r(require('../page/activity/bounty/bountyPlan')), 'bountyPlan')
+const BountyHome = r => require.ensure([], () => r(require('../page/activity/bounty/children/home')), 'bountyHome')
+const BountyUserCenter = r => require.ensure([], () => r(require('../page/activity/bounty/children/userCenter')), 'bountyUserCenter')
+const GoldRecord = r => require.ensure([], () => r(require('../page/activity/bounty/children/record')), 'goldRecord')
+const Invite = r => require.ensure([], () => r(require('../page/activity/bounty/children/invite')), 'invite')
+const InviteLanding = r => require.ensure([], () => r(require('../page/activity/bounty/children/inviteLanding')), 'inviteLanding')
+const Waiter = r => require.ensure([], () => r(require('../page/activity/bounty/children/waiter')), 'waiter')
+const BountyTask = r => require.ensure([], () => r(require('../page/activity/bounty/children/bountyTask')), 'bountyTask')
 
 
 export default [{
@@ -114,6 +120,51 @@ export default [{
         {
             path: '/coupon',
             component: coupon,
+        },
+        {
+            path: '/bounty-plan',
+            component: BountyPlan,
+            meta: {title: '赏金计划'},
+            children: [
+                {
+                    path: '',
+                    component: BountyHome,
+                    name: 'BountyHome',
+                    meta: {title: '赏金计划'}
+                }, {
+                    path: 'task',
+                    component: BountyTask,
+                    name: 'BountyTask',
+                    meta: {title: '淘金任务'}
+                }, {
+                    path: 'invite',
+                    component: Invite,
+                    name: 'Invite',
+                    meta: {title: '邀请好友'}
+                }, {
+                    path: 'invite-landing',
+                    component: InviteLanding,
+                    name: 'InviteLanding',
+                    meta: {title: '邀请好友'}
+                }, {
+                    path: 'waiter',
+                    component: Waiter,
+                    name: 'Waiter',
+                    meta: {title: '添加客服'}
+                }, {
+                    path: 'userCenter',
+                    component: BountyUserCenter,
+                    name: 'BountyUserCenter',
+                    meta: {title: '个人中心'},
+                    children: [
+                        {
+                            path: 'goldRecord/:type',
+                            component: GoldRecord,
+                            name: 'GoldRecord'
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }]

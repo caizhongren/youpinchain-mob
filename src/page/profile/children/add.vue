@@ -53,25 +53,18 @@
 <script>
 import AjaxPicker from "ajax-picker";
 import headTop from "src/components/header/head";
-import mySwitch from '../../../../../components/common/vue-switch';
+import mySwitch from '../../../components/common/vue-switch';
+import alertTip from "src/components/common/alertTip";
 import {
-    getImgPath
-} from "src/components/common/mixin";
-import {
-    mapState,
     mapMutations
 } from "vuex";
-import {
-    postAddAddress
-} from "src/service/getData";
-import alertTip from "src/components/common/alertTip";
 import {
     getAddressDetail,
     getRegionsList,
     deleteAddress,
     updateAddress,
-    addAddress
-} from "../../../../../service/getData";
+    addAddress,
+} from "../../../service/getData";
 
 export default {
     data() {
@@ -147,7 +140,6 @@ export default {
             this.showDelete = false
         }
     },
-    mixins: [getImgPath],
     components: {
         headTop,
         alertTip,
@@ -331,7 +323,7 @@ export default {
 
 .delete-address {
     @include wh(0.43rem, 0.43rem);
-    @include bis("../../../../../images/add-delete.png");
+    @include bis("../../../images/add-delete.png");
     margin: 0 auto;
 }
 </style>
