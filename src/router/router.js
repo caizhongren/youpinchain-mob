@@ -137,7 +137,7 @@ export default [{
                     name: 'BountyTask',
                     meta: {title: '淘金任务'}
                 }, {
-                    path: 'invite',
+                    path: 'invite/:invitationsSum',
                     component: Invite,
                     name: 'Invite',
                     meta: {title: '邀请好友'}
