@@ -1,12 +1,56 @@
 <template>
-  <div class="gold_record">
+  <div class="gold_record" v-if="type === '1'">
+    <div class="top">
+      <p>{{number}}</p>
+      <p>我的金钻</p>
+    </div>
+    <div class="description">
+      <p>金钻介绍</p>
+      <p>金钻是基于链上臻品居民参与赏金计划中淘金任务获得奖励产生的。金钻可以用来直接兑换数字资产、京东E卡等产品。</p>
+    </div>
+    <div class="record_detail">
+      <p class="title">金钻记录</p>
+      <ul>
+        <li>
+          <div>
+            <p>每日登录</p>
+            <p>2018.7.21 11:18</p>
+          </div>
+          <div>+10</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="gold_record" v-else-if="type === '0'">
+    <div class="top">
+      <p>{{number}}</p>
+      <p>我的金条</p>
+      <div class="frozen">冻结：666666</div>
+    </div>
+    <div class="description">
+      <p>金条介绍</p>
+      <p>金条是基于链上臻品居民参与体系建设任务获得奖励产生的。帮助居民更好的了解区块链，近距离接触、参与链上臻品活动，享受链上商城带来的品质和福利。后续还将开发更多基于金条的功能。</p>
+    </div>
+    <div class="record_detail">
+      <p class="title">金条记录</p>
+      <ul>
+        <li>
+          <div>
+            <p>每日登录</p>
+            <p>2018.7.21 11:18</p>
+          </div>
+          <div>+10</div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
   export default {
     data () {
       return {
-
+        number: 88888888,
+        type: 0
       }
     },
     watch: {
@@ -15,8 +59,8 @@
     mounted() {
       
     },
-    created() {
-      
+    created() { 
+      this.type = this.$route.params.type
     },
     methods: {
 
@@ -24,5 +68,87 @@
   }
 </script>
 <style>
-
+  .gold_record{
+    background: #efeff4;
+  }
+  .gold_record .top{
+    color: #fff;
+    height: 1.55rem;
+    background-image: linear-gradient(74deg, #836252, #383052);
+    padding-top: .24rem;
+    text-align: center;
+    position: relative;
+  }
+  .top p{
+    font-size: .13rem;
+  }
+  .top p:first-child{
+    font-size: .4rem;
+    font-weight: bold;
+  }
+  .frozen{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: .4rem;
+    background: rgba(181, 184, 188, 0.51);
+    line-height: .4rem;
+    width: 100%;
+    text-align: left;
+    padding-left: .22rem;
+    font-size: .13rem;
+  }
+  .description,.record_detail{
+    margin-top: .16rem;
+    border-radius: .1rem;
+    background: #fff;
+    color: #666666;
+  }
+  .description p{
+    font-size: .13rem;
+    padding: .15rem .12rem .2rem .12rem;
+    line-height: 2;
+    text-align: justify;
+  }
+  .description p:first-child{
+    line-height: .45rem;
+    font-size: .15rem;
+    border-bottom: 0.01rem solid #dddddd;
+    padding: 0;
+    padding-left: .12rem;
+  }
+  .record_detail .title{
+    line-height: .45rem;
+    font-size: .15rem;
+    border-bottom: 0.01rem solid #dddddd;
+    padding: 0;
+    padding-left: .12rem;
+  }
+  .record_detail ul{
+    padding-bottom: 1rem;
+    background: #efeff4;
+  }
+  .record_detail li{
+    padding: 0 .12rem;
+    height: .6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+  }
+  .record_detail li:nth-child(even){
+    background: #f6f5f5;
+  }
+  .record_detail li p{
+    margin-bottom: .06rem;
+    font-size: .125rem;
+  }
+  .record_detail li p:last-child{
+    font-size: .12rem;
+    color: #999999;
+  }
+  .record_detail li div:last-child{
+    color: #fc4c42;
+    font-size: .15rem;
+  }
 </style>

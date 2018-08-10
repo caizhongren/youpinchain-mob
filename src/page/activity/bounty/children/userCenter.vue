@@ -1,5 +1,6 @@
 <template>
   <div class="user_center">
+    <router-view></router-view>    
   </div>
 </template>
 <script>
