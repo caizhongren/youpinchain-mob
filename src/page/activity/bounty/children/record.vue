@@ -1,7 +1,7 @@
 <template>
-  <div class="gold_record" v-if="type === '1'">
+  <div class="gold_record" v-if="type === '0'">
     <div class="top">
-      <p>{{number}}</p>
+      <p>{{goldData.balancePrice}}</p>
       <p>我的金钻</p>
     </div>
     <div class="description">
@@ -11,21 +11,21 @@
     <div class="record_detail">
       <p class="title">金钻记录</p>
       <ul>
-        <li>
+        <li v-for="item in goldData.record">
           <div>
-            <p>每日登录</p>
-            <p>2018.7.21 11:18</p>
+            <p>{{itme.remark}}</p>
+            <p>{{item.addTime}}</p>
           </div>
-          <div>+10</div>
+          <div>{{item.bookType == 0 ? '+' : '-'}}{{item.actualPrice}}</div>
         </li>
       </ul>
     </div>
   </div>
-  <div class="gold_record" v-else-if="type === '0'">
+  <div class="gold_record" v-else-if="type === '1'">
     <div class="top">
-      <p>{{number}}</p>
+      <p>{{goldData.balancePrice}}</p>
       <p>我的金条</p>
-      <div class="frozen">冻结：666666</div>
+      <div class="frozen">冻结：{{goldData.freezing}}</div>
     </div>
     <div class="description">
       <p>金条介绍</p>
@@ -34,23 +34,23 @@
     <div class="record_detail">
       <p class="title">金条记录</p>
       <ul>
-        <li>
+        <li v-for="item in goldData.record">
           <div>
-            <p>每日登录</p>
-            <p>2018.7.21 11:18</p>
+            <p>{{item.remark}}</p>
+            <p>{{item.addTime}}</p>
           </div>
-          <div>+10</div>
+          <div>{{item.bookType == 0 ? '+' : '-'}}{{item.actualPrice}}</div>
         </li>
       </ul>
     </div>
   </div>
 </template>
 <script>
+  import { goldDrill, bullion } from '../../../../service/getData' 
   export default {
     data () {
       return {
-        number: 88888888,
-        type: 0
+        goldData: {}
       }
     },
     watch: {
@@ -60,7 +60,18 @@
       
     },
     created() { 
-      this.type = this.$route.params.type
+      var that = this
+      that.type = that.$route.params.type
+      if (that.type === '0') {
+        goldDrill().then(function (res) {
+          that.goldData = res.data
+        })
+      } else if (that.type === '1') {
+        bullion().then(function (res) {
+          that.goldData = res.data
+          // console.log(that.goldData.freezing)
+        })
+      }
     },
     methods: {
 

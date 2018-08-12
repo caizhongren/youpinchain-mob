@@ -25,7 +25,7 @@
                     <p class="desr">邀请1位好友+10金条</p>
                     <p class="reward">最多+150<img src="../../../../images/bounty-plan/money_reward_icon2.png" width="10%"></p>
                 </router-link>
-                <router-link tag="li" :to="'/bountyPlan/waiter'">
+                <router-link tag="li" :to="{ path:'/bountyPlan/waiter', query:{ 'waiter': data.waiter}}">
                     <p class="task_name">添加客服微信</p>
                     <img src="../../../../images/bounty-plan/wx_icon.png" class="icon">
                     <p class="desr"> 添加成功获得</p>
@@ -64,7 +64,8 @@
                     },
                     taskUser: null,
                     task: [],
-                    invitationsSum: 0
+                    invitationsSum: 0,
+                    waiter: false
                 },
             }
         },
@@ -76,6 +77,7 @@
             var that = this
             bountyHome().then(res => {
                 that.data = res.data
+                that.data.waiter = res.data.waiter
             })
         },
         created() {

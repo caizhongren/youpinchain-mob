@@ -20,6 +20,7 @@ const aboutUs = r => require.ensure([], () => r(require('../page/home/aboutUs'))
 const BountyPlan = r => require.ensure([], () => r(require('../page/activity/bounty/bountyPlan')), 'bountyPlan')
 const BountyHome = r => require.ensure([], () => r(require('../page/activity/bounty/children/home')), 'bountyHome')
 const BountyUserCenter = r => require.ensure([], () => r(require('../page/activity/bounty/children/userCenter')), 'bountyUserCenter')
+const userCenterHome = r => require.ensure([], () => r(require('../page/activity/bounty/children/userCenterHome')), 'userCenterHome')
 const GoldRecord = r => require.ensure([], () => r(require('../page/activity/bounty/children/record')), 'goldRecord')
 const Invite = r => require.ensure([], () => r(require('../page/activity/bounty/children/invite')), 'invite')
 const InviteLanding = r => require.ensure([], () => r(require('../page/activity/bounty/children/inviteLanding')), 'inviteLanding')
@@ -158,6 +159,10 @@ export default [{
                     meta: {title: '个人中心'},
                     children: [
                         {
+                            path: '',
+                            component: userCenterHome,
+                            name: 'userCenterHome'
+                        }, {
                             path: 'goldRecord/:type',
                             component: GoldRecord,
                             name: 'GoldRecord'
