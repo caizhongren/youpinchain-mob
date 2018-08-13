@@ -138,7 +138,7 @@
         }
         .task_box {
             background: $fc;
-            border-radius: .1rem;
+            border-radius: .05rem;
             padding: .1rem .15rem 0;
             .task_title {
                 @include sc(.15rem, $g3);

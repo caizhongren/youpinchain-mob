@@ -88,7 +88,7 @@
       .qrcode {
         @include wh(1.41rem,1.41rem);
         border-radius: .05rem;
-        // background: #000;
+        background: #000;
         margin: 0.12rem auto .05rem;
       }
       p{
@@ -129,6 +129,10 @@
       }
     }
     .user_name{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
       margin: .2rem 0 .1rem;
       color: $fc;
       font-size: .18rem;
@@ -140,7 +144,9 @@
   }
   .gold_entry{
     background: $fc;
-    border-radius: .1rem;
+    border-top-left-radius: .1rem;
+    border-top-right-radius: .1rem;
+    margin-top: -.1rem;
     ul {
       li{
         height: .55rem;

@@ -4,7 +4,10 @@ import routes from './router/router'
 import store from './store/'
 import wx from 'weixin-js-sdk'
 import './config/rem'
+import 'babel-polyfill'
 import FastClick from 'fastclick'
+import VueHtml2Canvas from 'vue-html2canvas';
+Vue.use(VueHtml2Canvas);
 import VueClipboard from 'vue-clipboard2'
 VueClipboard.config.autoSetContainer = true // add this line
 Vue.use(VueClipboard)
