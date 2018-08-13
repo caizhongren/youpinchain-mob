@@ -158,3 +158,10 @@ body.modal-open{
     position:fixed;
     width:100%;
 }
+
+.invite, .user_center {
+    .qrcode img {
+        width: 100% !important;
+        border-radius: 0.05rem;
+    }
+}
