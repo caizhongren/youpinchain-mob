@@ -4,7 +4,7 @@
             <p class="title">品质商城 &nbsp; 放心臻品</p>
             <div class="box">
                 <p>您的邀请二维码</p>
-                <div class="qrcode"></div>
+                <div class="qrcode" id="qrcode"></div>
                 <div class="invitationsSum">
                     <p><img src="../../../../images/bounty-plan/invite_num_icon.png" width="11%">您已邀请好友{{invitationsSum}}人</p>
                     <p><img src="../../../../images/bounty-plan/invite_amount_icon.png" width="10%">累计获得金条{{invitationsSum > 50 ? 500 : invitationsSum * 10}}</p>
@@ -15,11 +15,14 @@
     </div>
 </template>
 <script>
+import {QRCode} from '../../../../plugins/qrcode.js'
 import { inviteCode } from '../../../../service/getData'
 export default {
     data () {
         return {
-            invitationsSum: Number(this.$route.params.invitationsSum)
+            invitationsSum: Number(this.$route.params.invitationsSum),
+            qrcode: Object,
+            url: ''
         }
     },
     watch: {
@@ -29,7 +32,14 @@ export default {
         //获取我的分享码
         var that = this
         inviteCode().then(res => {
-            // that.data = res.data
+            that.url = res.data
+            that.qrcode = new QRCode(document.getElementById('qrcode'), {
+                text: that.url,
+                width: 150,
+                height: 150,
+                colorDark: '#000000',
+                colorLight: '#ffffff'
+            })
         })
     },
     created() {

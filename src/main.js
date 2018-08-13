@@ -5,7 +5,9 @@ import store from './store/'
 import wx from 'weixin-js-sdk'
 import './config/rem'
 import FastClick from 'fastclick'
-import { baseUrl, domainUrl, appid, redirect } from './config/env'
+import VueClipboard from 'vue-clipboard2'
+VueClipboard.config.autoSetContainer = true // add this line
+Vue.use(VueClipboard)
 
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function () {
