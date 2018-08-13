@@ -63,7 +63,7 @@
     },
   }
 </script>
-<style lang="scss" scope>
+<style lang="scss" scoped>
   @import '../../../../style/mixin';
   .user_center{
     background-color: $bc;

@@ -48,7 +48,7 @@
     },
   }
 </script>
-<style>
+<style lang="scss" scoped>
   .waiter{
     background-color: #06020a;
     min-height: 100vh;

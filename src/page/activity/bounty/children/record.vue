@@ -114,7 +114,7 @@
     },
   }
 </script>
-<style>
+<style scoped>
   .gold_record{
     background: #efeff4;
   }
