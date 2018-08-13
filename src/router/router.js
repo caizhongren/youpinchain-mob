@@ -24,6 +24,7 @@ const userCenterHome = r => require.ensure([], () => r(require('../page/activity
 const GoldRecord = r => require.ensure([], () => r(require('../page/activity/bounty/children/record')), 'goldRecord')
 const Invite = r => require.ensure([], () => r(require('../page/activity/bounty/children/invite')), 'invite')
 const InviteLanding = r => require.ensure([], () => r(require('../page/activity/bounty/children/inviteLanding')), 'inviteLanding')
+const poster = r => require.ensure([], () => r(require('../page/activity/bounty/children/poster')), 'poster')
 const Waiter = r => require.ensure([], () => r(require('../page/activity/bounty/children/waiter')), 'waiter')
 const BountyTask = r => require.ensure([], () => r(require('../page/activity/bounty/children/bountyTask')), 'bountyTask')
 
@@ -146,6 +147,11 @@ export default [{
                     path: 'invite-landing',
                     component: InviteLanding,
                     name: 'InviteLanding',
+                    meta: {title: '邀请好友'}
+                },{
+                    path: 'poster',
+                    component: poster,
+                    name: 'poster',
                     meta: {title: '邀请好友'}
                 }, {
                     path: 'waiter',

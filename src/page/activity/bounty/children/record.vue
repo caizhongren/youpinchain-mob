@@ -34,14 +34,16 @@
     <div class="record_detail">
       <p class="title">金条记录</p>
       <ul>
-        <li v-for="item in goldData.record">
+        <li v-for="item in record">
           <div>
             <p>{{item.remark}}</p>
             <p>{{item.addTime}}</p>
           </div>
           <div>{{item.bookType == 0 ? '+' : '-'}}{{item.actualPrice}}</div>
         </li>
+        <p @click="loadMore" v-show="page < totalPages" class="loadMore">加载更多</p>
       </ul>
+<!--       <p @click="loadMore" v-show="page < totalPages" class="loadMore">加载更多</p> -->
     </div>
   </div>
 </template>
@@ -50,7 +52,11 @@
   export default {
     data () {
       return {
-        goldData: {}
+        page: 1,
+        size: 2,
+        goldData: {},
+        record: [],
+        totalPages: 0
       }
     },
     watch: {
@@ -63,18 +69,48 @@
       var that = this
       that.type = that.$route.params.type
       if (that.type === '0') {
-        goldDrill().then(function (res) {
+        goldDrill(this.page, this.size).then(function (res) {
           that.goldData = res.data
+          that.totalPages = res.data.totalPages
+          for (var i = 0; i < that.goldData.record.length; i++){
+            that.record.push(that.goldData.record[i])
+          }
         })
       } else if (that.type === '1') {
-        bullion().then(function (res) {
+        bullion(this.page, this.size).then(function (res) {
           that.goldData = res.data
-          // console.log(that.goldData.freezing)
+          that.totalPages = res.data.totalPages
+          for (var i = 0; i < that.goldData.record.length; i++){
+            that.record.push(that.goldData.record[i])
+          }
         })
       }
     },
     methods: {
-
+      loadMore () {
+        var that = this
+        that.page += 1
+        if(that.page > that.totalPages){
+          return
+        }
+        if (that.type === '0') {
+          goldDrill(this.page, this.size).then(function (res) {
+            that.goldData = res.data
+            console.log(that.record)
+            for (var i = 0; i < that.goldData.record.length; i++){
+              that.record.push(that.goldData.record[i])
+            }
+          })
+        } else if (that.type === '1') {
+          bullion(this.page, this.size).then(function (res) {
+            that.goldData = res.data
+            console.log(that.record)
+            for (var i = 0; i < that.goldData.record.length; i++){
+              that.record.push(that.goldData.record[i])
+            }
+          })
+        }
+      }
     },
   }
 </script>
@@ -161,5 +197,20 @@
   .record_detail li div:last-child{
     color: #fc4c42;
     font-size: .15rem;
+  }
+  .loadMore{
+    width: 35%;
+    height: 0.28rem;
+    font-size: 0.14rem;
+    color: #666666;
+    background-color: #efeff4;
+    margin: 0rem auto;
+    text-align: center;
+    line-height: .28rem;
+    border-radius: 15px;
+    border: 1px solid #666666;
+    display: block;
+    text-align: center;
+    margin-top: .1rem;
   }
 </style>

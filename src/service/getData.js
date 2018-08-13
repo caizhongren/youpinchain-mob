@@ -283,9 +283,15 @@ export const bountyHome = () => fetch('/act/bounty/home', {});
 /**
  * 获取金条记录
  */
-export const bullion = () => fetch('/act/bounty/home/bullion', {});
+export const bullion = (page, size) => fetch('/act/bounty/home/bullion', {
+	page: page,
+	size: size
+});
 
 /**
  * 获取金钻记录
  */
-export const goldDrill = () => fetch('/act/bounty/home/goldDrill', {});
+export const goldDrill = (page, size) => fetch('/act/bounty/home/goldDrill', {
+	page: page,
+	size: size
+});

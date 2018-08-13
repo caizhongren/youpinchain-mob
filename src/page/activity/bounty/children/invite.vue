@@ -11,7 +11,14 @@
                 </div>
             </div>
         </div>
-        <div class="invite_btn">立即邀请好友</div>
+        <div class="invite_btn" @click="showPoster = true">立即邀请好友</div>
+        <div class="poster">
+            <div class="share_poster">
+                <span>宣传语</span>
+                <div class="qrCode"><img src="" alt=""></div>
+                <span>宣传语宣传语宣传语</span>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -21,6 +28,7 @@ export default {
     data () {
         return {
             invitationsSum: Number(this.$route.params.invitationsSum),
+            showPoster: false,
             qrcode: Object,
             url: ''
         }
@@ -54,6 +62,7 @@ export default {
     @import '../../../../style/mixin';
     .invite {
         background-color: #06020a;
+        position: relative;
         .top_head {
             @include wh(100%,3.8rem);
             @include bis('../../../../images/bounty-plan/starry_sky_bg1.png');
@@ -98,6 +107,40 @@ export default {
             text-align: center;
             margin: .8rem auto 0;
             border-radius: .05rem;
+        }
+        .poster{
+            position: absolute;
+            top: 0;
+            @include wh(100vw,100vh);
+            background: rgba(0, 0, 0, .5);
+            .share_poster{
+                position: relative;
+                top: 0.8rem;
+                left: 0;
+                @include wh(80%,5rem);
+                margin: 0 auto;
+                @include bis('../../../../images/bounty-plan/share_poster.png');
+                span:first-child{
+                    @include sc(.18rem, #333333);
+                    position: absolute;
+                    top: 1.52rem;
+                    left: 1.2rem;
+                }
+                span:last-child{
+                    position: absolute;
+                    @include sc(.15rem, #333333);
+                    top: 4rem;
+                    width: 100%;
+                    text-align: center;
+                }
+                .qrCode{
+                    @include wh(1.8rem, 1.8rem);
+                    background: #333;
+                    position: absolute;
+                    top: 2.1rem;
+                    left: .62rem;
+                }
+            }
         }
     }
 </style>

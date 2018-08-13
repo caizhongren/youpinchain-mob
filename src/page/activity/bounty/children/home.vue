@@ -13,7 +13,7 @@
         <div class="task_box">
             <p class="task_title">领金任务</p>
             <ul class="task_list">
-                <li>
+                <li @click="showMask = !showMask">
                     <p class="task_name">每日登录</p>
                     <img src="../../../../images/bounty-plan/login_icon.png" class="icon">
                     <p class="desr">今日登录+15金条</p>
@@ -50,6 +50,23 @@
                 </li>
             </ul>
         </div>
+        <div class="showMask" v-if="showMask">
+            <div class="sign_in">
+                <img src="../../../../images/bounty-plan/sign_in.png" alt="" class="success_img">
+                <ul>
+                    <li v-for="(item,index) in data.dictionarydata_SIR" :class="{ 'margin_left_5' : index === 4 }">
+                        <p :class="{ 'font_color' : index >= 4 }">{{item.dictdataName}}</p>
+                        <div :class="{ 'sign_in_success' : index < data.signInNow.days }">
+                            <img src="../../../../images/bounty-plan/money_reward_icon2.png" width="30" alt="">
+                            <p>金条+{{item.dictdataValue}}</p>
+                        </div>
+                    </li>
+                </ul>
+                <p class="tips">连续登录可领取更多金条哦～</p>
+                <button class="i_know" @click="showMask = !showMask">知道了</button>
+                <img @click="showMask = !showMask" src="../../../../images/bounty-plan/close_model.png" alt="" width="30" class="close_btn">
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -65,8 +82,13 @@
                     taskUser: null,
                     task: [],
                     invitationsSum: 0,
-                    waiter: false
+                    waiter: false,
+                    dictionarydata_SIR: {},
+                    signInNow: {
+                        days: 1
+                    }
                 },
+                showMask: false,
             }
         },
         watch: {
@@ -78,6 +100,8 @@
             bountyHome().then(res => {
                 that.data = res.data
                 that.data.waiter = res.data.waiter
+                that.data.signInNow = {days : 1}
+                that.data.showMask = false
             })
         },
         created() {
@@ -219,6 +243,73 @@
                     border: none;
                     padding-left: .1rem;
                     width: 32%;
+                }
+            }
+        }
+        .showMask{
+            position: absolute;
+            top: 0;
+            @include wh(100%, 100vh);
+            background: rgba(0, 0, 0, .8);
+            .sign_in{
+                @include wh(3.3rem, auto);
+                @include bis('../../../../images/bounty-plan/sign_in_bg.png');
+                background-size: 100% 100%;
+                margin: 0 auto;
+                margin-top: 1.4rem;
+                text-align: center;
+                position: relative;
+                padding-bottom: .1rem;
+                .success_img{
+                    width: 1.05rem;
+                    margin-top: .16rem;
+                }
+                ul {
+                    overflow: hidden;
+                    .margin_left_5{
+                        margin-left: .5rem;
+                    }
+                    li{
+                        width: .7rem;
+                        @include sc(.15rem, #ffffff);
+                        margin: .1rem .06rem .1rem .064rem;;
+                        float: left;
+                        div{
+                            border-radius: 5px;
+                            padding: .1rem 0 .07rem 0;
+                            text-align: center;
+                            margin-top: .08rem;
+                            background: #f1eef4;
+                            p{
+                                @include sc(.13rem, #666666);
+                            }
+                        }
+                        .sign_in_success{
+                            background-image: linear-gradient(313deg, #ffd807, #ffe55a);
+                        }
+                        .font_color{
+                            color: #a4170f;
+                        }
+                    }
+                }
+                .tips{
+                    @include sc(.12rem, #feb33c);
+                    margin-bottom: .1rem;
+                }
+                .i_know{
+                    @include sc(.15rem, #fff);
+                    background: #fc5340;
+                    line-height: .4rem;
+                    display: block;
+                    margin: 0 auto;
+                    @include wh(1.92rem, .4rem);
+                    border-radius: .05rem;
+                    margin-bottom: .1rem;
+                }
+                .close_btn{
+                    position: absolute;
+                    bottom: -.4rem;
+                    left: 45.8%;
                 }
             }
         }
