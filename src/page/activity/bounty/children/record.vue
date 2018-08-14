@@ -37,7 +37,7 @@
         <li v-for="item in record">
           <div>
             <p>{{item.remark}}</p>
-            <p>{{item.addTime}}</p>
+            <p>{{item.addTime | timeformat}}</p>
           </div>
           <div>{{item.bookType == 0 ? '+' : '-'}}{{item.actualPrice}}</div>
         </li>
