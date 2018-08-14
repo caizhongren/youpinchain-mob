@@ -207,8 +207,6 @@
     margin: 0rem auto;
     text-align: center;
     line-height: .28rem;
-    border-radius: 15px;
-    border: 1px solid #666666;
     display: block;
     text-align: center;
     margin-top: .1rem;

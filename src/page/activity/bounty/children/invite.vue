@@ -11,12 +11,17 @@
                 </div>
             </div>
         </div>
-        <div class="invite_btn" @click="showPoster = true">立即邀请好友</div>
-        <div class="poster">
-            <div class="share_poster">
-                <span>宣传语</span>
-                <div class="qrCode"><img src="" alt=""></div>
-                <span>宣传语宣传语宣传语</span>
+        <div class="invite_btn" @click="sharePoster">立即邀请好友</div>
+        <div class="poster" v-show="showPoster">
+            <div class="invite_landing" ref="test">
+                <img :src="output" width="100%" v-if="showImages" ref="output"/>
+                <div class="box" v-if="!showImages">
+                  <div class="container" >
+                    <div class="title">宣传语</div>
+                    <div class="qrcode" id="qrcode_1"></div>
+                    <div class="content">宣传语宣传语宣传语</div>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
@@ -30,7 +35,9 @@ export default {
             invitationsSum: Number(this.$route.params.invitationsSum),
             showPoster: false,
             qrcode: Object,
-            url: ''
+            url: '',
+            output: null,
+            showImages: false
         }
     },
     watch: {
@@ -54,7 +61,34 @@ export default {
 
     },
     methods: {
-
+        sharePoster () {
+            var that = this
+            that.showPoster = true
+            that.qrcode = new QRCode(document.getElementById('qrcode_1'), {
+                text: that.url,
+                width: 150,
+                height: 150,
+                colorDark: '#000000',
+                colorLight: '#ffffff'
+            })
+            setTimeout(function (){
+                if (that.url) {
+                  that.print()
+                }
+            }, 100)
+        },
+        print() {
+            const el = this.$refs.test;
+            const options = {
+              type: 'dataURL'
+            }
+            console.log(this.output)
+            var that = this
+            that.$html2canvas(el, options).then(function(result) {
+              that.showImages = true
+              that.output = result;
+            });
+        }
     },
 }
 </script>
@@ -141,6 +175,47 @@ export default {
                     left: .62rem;
                 }
             }
+        }
+    }
+    .invite_landing {
+        overflow: hidden;
+        position: relative;
+        top: 0.8rem;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.5);
+        @include wh(80%, 5rem);
+        img {
+          display: block;
+        }
+        .box {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          @include bis('../../../../images/bounty-plan/share_poster.png');
+          .container {
+            position: relative;
+            z-index: 111;
+            margin: 0 auto;
+            padding-top: 1.53rem;
+            width: 80%;
+            text-align: center;
+            .title {
+              @include sc(.18rem, $g3);
+              height: .36rem;
+            }
+            .content {
+              @include sc(.15rem, $g3);
+            }
+            .qrcode {
+              @include wh(1.8rem,1.8rem);
+              border-radius: .05rem;
+              background: #000;
+              margin: 0.12rem 0 .1rem .33rem;
+            }
+          }
         }
     }
 </style>
