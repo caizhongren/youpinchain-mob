@@ -18,7 +18,7 @@
             <p>{{item.remark}}</p>
             <p>{{item.addTime | timeformat}}</p>
           </div>
-          <div>{{item.bookType == 0 ? '+' : '-'}}{{item.actualPrice}}</div>
+          <div :class="{'green': item.bookType === 1}">{{item.bookType == 0 ? '+' : '-'}}{{item.actualPrice}}</div>
         </li>
         <p @click="loadMore" v-show="page < totalPages" class="loadMore">加载更多</p>
         <li v-if="record.length <= 0" class="no_record">暂无记录</li>
@@ -163,6 +163,9 @@
   .record_detail li div:last-child{
     color: #fc4c42;
     font-size: .15rem;
+  }
+  .record_detail li div:last-child.green {
+    color: #26cc41;
   }
   .loadMore{
     width: 35%;

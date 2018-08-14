@@ -19,9 +19,9 @@
                 <img :src="output" width="100%" v-if="showImages" ref="output"/>
                 <div class="box" v-if="!showImages">
                   <div class="container" >
-                    <div class="title">宣传语</div>
+                    <div class="title">品质商城、放心臻品</div>
                     <div class="qrcode" id="qrcode_1"></div>
-                    <div class="content">宣传语宣传语宣传语</div>
+                    <div class="content">区块溯源，链上臻品，为你而来</div>
                   </div>
                 </div>
             </div>
@@ -196,11 +196,13 @@ export default {
             width: 80%;
             text-align: center;
             .title {
-              @include sc(.14rem, $g3);
+              @include sc(.11rem, $g3);
               height: .36rem;
+              transform: scale(0.95) translate(.2rem, .05rem);
             }
             .content {
-              @include sc(.12rem, $g3);
+              @include sc(.11rem, $g3);
+              transform: scale(0.85);
             }
             .qrcode {
               @include wh(1.2rem,1.2rem);
