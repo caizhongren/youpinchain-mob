@@ -53,7 +53,7 @@
     data () {
       return {
         page: 1,
-        size: 2,
+        size: 10,
         goldData: {},
         record: [],
         totalPages: 0
