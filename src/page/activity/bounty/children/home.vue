@@ -64,7 +64,6 @@
                 </ul>
                 <p class="tips">连续登录可领取更多金条哦～</p>
                 <button class="i_know" @click="showMask = !showMask">知道了</button>
-                <img @click="showMask = !showMask" src="../../../../images/bounty-plan/close_model.png" alt="" width="30" class="close_btn">
             </div>
         </div>
     </div>
@@ -168,7 +167,7 @@
             padding: .1rem .15rem 0;
             .task_title {
                 @include sc(.15rem, $g3);
-                border-bottom: 1px solid $gd;
+                border-bottom: 1px solid #eee;
                 padding-bottom: .1rem;
             }
             .task_list {
@@ -178,7 +177,7 @@
                     float: left;
                     width: 36%;
                     text-align: center;
-                    border-right: 1px solid $gd;
+                    border-right: 1px solid #eee;
                     padding: .1rem 0 .1rem;
                     .icon {
                         @include wh(.345rem, .345rem);
@@ -258,7 +257,7 @@
                 @include bis('../../../../images/bounty-plan/sign_in_bg.png');
                 background-size: 100% 100%;
                 margin: 0 auto;
-                margin-top: 1.4rem;
+                margin-top: .8rem;
                 text-align: center;
                 position: relative;
                 padding-bottom: .1rem;

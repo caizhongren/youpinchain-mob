@@ -21,7 +21,7 @@
         <p>(2)将客服加为好友；</p>
         <p>(3)在客服聊天页面输入个人的会员ID；</p>
         <p style="margin-top:.16rem;">温馨提示：</p>
-        <p>个人的会员ID可在赏金计划首页，点击左上方<img src="../../../../images/bounty-plan/user_icon_1.png" alt="" style="width: .2rem;vertical-align: middle;margin: 0 .04rem;">进入个人中心页面，找到个人ID复制即可。</p>
+        <p>个人的会员ID可在赏金计划首页，点击左上方<img src="../../../../images/bounty-plan/user_icon_1.png" alt="" style="width: .2rem;margin: 0 .04rem;">进入个人中心页面，找到个人ID复制即可。</p>
       </div>
     </div>
   </div>
@@ -103,11 +103,11 @@
     background: #fff;
     padding: .315rem .325rem .3rem .21rem;
     text-align: justify;
-    font-size: .13rem;
     color: #666666;
     line-height: 1.38;
   }
   .rule div p{
     margin-bottom: .06rem;
+    font-size: .13rem;
   }
 </style>

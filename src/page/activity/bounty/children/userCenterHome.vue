@@ -3,7 +3,10 @@
     <div class="container">
       <img :src="userInfo.headImgUrl" alt="" class="userImg">
       <p class="user_name">{{userInfo.nickName}}</p>
-      <p class="user_id"><span>会员ID:{{userInfo.vipId}}</span><span class="copy_btn" v-clipboard:copy="userInfo.vipId" v-clipboard:success="onCopy" v-clipboard:error="onError">复制</span></p>
+      <div class="user_id">
+        <div>会员ID:{{userInfo.vipId}}</div>
+        <div class="copy_btn" v-clipboard:copy="userInfo.vipId" v-clipboard:success="onCopy" v-clipboard:error="onError">复制</div>
+      </div>
       <div class="qrcode_box">
         <p>我的邀请二维码</p>
         <div class="qrcode" id="qrcode"></div>
@@ -78,7 +81,7 @@
   .container{
     @include bis('../../../../images/bounty-plan/starry_sky_bg2.png');
     text-align: center;
-    padding: .06rem 0 .36rem;
+    padding: .2rem 0 .36rem;
     .qrcode_box {
       @include wh(2.69rem, 2.32rem);
       margin: 0 auto;
@@ -107,26 +110,32 @@
     .user_id{
       @include sc(.12rem,$fc);
       overflow: hidden;
-      width: 100%;
+      width: 2.4rem;
       margin: 0.14rem auto;
-      span, a {
+      position: relative;
+      height: .18rem;
+      div{
         @include sc(.12rem,$fc);
+        float: right;
+        line-height: .18rem;
+        position: absolute;
+        top: 0;
+        right: 0;
       }
-      span:first-child {
+      div:first-child {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        width: 50%;
-        display: inline-block;
+        text-align: center;
+        width: 100%;
+      }
+      div:last-child{
+        z-index: 10;
       }
       .copy_btn{
         background: rgba(252, 76, 66, .56);
-        margin-left: .24rem;
-        padding: 0.04rem .06rem 0;
+        padding: 0 .06rem;
         border-radius: .02rem;
-        top: -4px;
-        position: relative;
-        display: inline-block;
       }
     }
     .user_name{
