@@ -1,40 +1,19 @@
 <template>
-  <div class="gold_record" v-if="type === '0'">
+  <div class="gold_record">
     <div class="top">
       <p>{{goldData.balancePrice}}</p>
-      <p>我的金钻</p>
+      <p>{{ type === '0' ? '我的金钻' : '我的金条'}}</p>
+      <div class="frozen" v-if="type === '1'">冻结：{{goldData.freezing}}</div>
     </div>
     <div class="description">
-      <p>金钻介绍</p>
-      <p>金钻是基于链上臻品居民参与赏金计划中淘金任务获得奖励产生的。金钻可以用来直接兑换数字资产、京东E卡等产品。</p>
+      <p>金{{ type === '0' ? '钻' : '条'}}介绍</p>
+      <p v-if="type === '0'">金钻是基于链上臻品居民参与赏金计划中淘金任务获得奖励产生的。金钻可以用来直接兑换数字资产、京东E卡等产品。</p>
+      <p v-else>金条是基于链上臻品居民参与体系建设任务获得奖励产生的。帮助居民更好的了解区块链，近距离接触、参与链上臻品活动，享受链上商城带来的品质和福利。后续还将开发更多基于金条的功能。</p>
     </div>
     <div class="record_detail">
-      <p class="title">金钻记录</p>
+      <p class="title">金{{type === '0' ? '钻' : '条'}}记录</p>
       <ul>
-        <li v-for="item in goldData.record">
-          <div>
-            <p>{{item.remark}}</p>
-            <p>{{item.addTime | timeformat}}</p>
-          </div>
-          <div>{{item.bookType == 0 ? '+' : '-'}}{{item.actualPrice}}</div>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="gold_record" v-else-if="type === '1'">
-    <div class="top">
-      <p>{{goldData.balancePrice}}</p>
-      <p>我的金条</p>
-      <div class="frozen">冻结：{{goldData.freezing}}</div>
-    </div>
-    <div class="description">
-      <p>金条介绍</p>
-      <p>金条是基于链上臻品居民参与体系建设任务获得奖励产生的。帮助居民更好的了解区块链，近距离接触、参与链上臻品活动，享受链上商城带来的品质和福利。后续还将开发更多基于金条的功能。</p>
-    </div>
-    <div class="record_detail">
-      <p class="title">金条记录</p>
-      <ul>
-        <li v-for="item in record">
+        <li v-for="(item,index) in record" :key="index" v-if="record.length > 0">
           <div>
             <p>{{item.remark}}</p>
             <p>{{item.addTime | timeformat}}</p>
@@ -42,8 +21,8 @@
           <div>{{item.bookType == 0 ? '+' : '-'}}{{item.actualPrice}}</div>
         </li>
         <p @click="loadMore" v-show="page < totalPages" class="loadMore">加载更多</p>
+        <li v-if="record.length <= 0" class="no_record">暂无记录</li>
       </ul>
-<!--       <p @click="loadMore" v-show="page < totalPages" class="loadMore">加载更多</p> -->
     </div>
   </div>
 </template>
@@ -68,48 +47,35 @@
     created() { 
       var that = this
       that.type = that.$route.params.type
-      if (that.type === '0') {
-        goldDrill(this.page, this.size).then(function (res) {
-          that.goldData = res.data
-          that.totalPages = res.data.totalPages
-          for (var i = 0; i < that.goldData.record.length; i++){
-            that.record.push(that.goldData.record[i])
-          }
-        })
-      } else if (that.type === '1') {
-        bullion(this.page, this.size).then(function (res) {
-          that.goldData = res.data
-          that.totalPages = res.data.totalPages
-          for (var i = 0; i < that.goldData.record.length; i++){
-            that.record.push(that.goldData.record[i])
-          }
-        })
-      }
+      that.getRecord(that.page, that.size, that.type)
     },
     methods: {
-      loadMore () {
+      setRecord (res) {
+        this.goldData = res.data
+        this.totalPages = res.data.totalPages
+        for (var i = 0; i < this.goldData.record.length; i++){
+          this.record.push(this.goldData.record[i])
+        }
+      },
+      getRecord (page, size) {
+        var that = this
+        if (that.type === '0') {
+          goldDrill(page, size).then(function (res) {
+            that.setRecord(res)
+          })
+        } else if (that.type === '1') {
+          bullion(page, size).then(function (res) {
+            that.setRecord(res)
+          })
+        }
+      },
+      loadMore (type) {
         var that = this
         that.page += 1
         if(that.page > that.totalPages){
           return
         }
-        if (that.type === '0') {
-          goldDrill(this.page, this.size).then(function (res) {
-            that.goldData = res.data
-            console.log(that.record)
-            for (var i = 0; i < that.goldData.record.length; i++){
-              that.record.push(that.goldData.record[i])
-            }
-          })
-        } else if (that.type === '1') {
-          bullion(this.page, this.size).then(function (res) {
-            that.goldData = res.data
-            console.log(that.record)
-            for (var i = 0; i < that.goldData.record.length; i++){
-              that.record.push(that.goldData.record[i])
-            }
-          })
-        }
+        that.getRecord(that.page, that.size)
       }
     },
   }
@@ -210,5 +176,10 @@
     display: block;
     text-align: center;
     margin-top: .1rem;
+  }
+  .record_detail li.no_record {
+    justify-content: center;
+    height: 1.6rem;
+    background: #fff;
   }
 </style>
