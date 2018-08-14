@@ -122,10 +122,11 @@
       .copy_btn{
         background: rgba(252, 76, 66, .56);
         margin-left: .24rem;
-        padding: 0 .06rem;
+        padding: 0.04rem .06rem 0;
         border-radius: .02rem;
         top: -4px;
         position: relative;
+        display: inline-block;
       }
     }
     .user_name{

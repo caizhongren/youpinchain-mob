@@ -13,6 +13,8 @@
         </div>
         <div class="invite_btn" @click="sharePoster">立即邀请好友</div>
         <div class="poster" v-show="showPoster">
+            <p>1.长按屏幕保存图片</p>
+            <p>2.将图片分享给好友或朋友圈</p>
             <div class="invite_landing" ref="test">
                 <img :src="output" width="100%" v-if="showImages" ref="output"/>
                 <div class="box" v-if="!showImages">
@@ -23,6 +25,7 @@
                   </div>
                 </div>
             </div>
+            <img @click="showPoster = false" src="../../../../images/bounty-plan/close_model.png" alt="" width="30" class="close_model">
         </div>
     </div>
 </template>
@@ -37,7 +40,8 @@ export default {
             qrcode: Object,
             url: '',
             output: null,
-            showImages: false
+            showImages: false,
+            finishedDraw: false
         }
     },
     watch: {
@@ -64,6 +68,9 @@ export default {
         sharePoster () {
             var that = this
             that.showPoster = true
+            if(that.finishedDraw){
+                return
+            }
             that.qrcode = new QRCode(document.getElementById('qrcode_1'), {
                 text: that.url,
                 width: 150,
@@ -76,13 +83,13 @@ export default {
                   that.print()
                 }
             }, 100)
+            that.finishedDraw = true
         },
         print() {
             const el = this.$refs.test;
             const options = {
               type: 'dataURL'
             }
-            console.log(this.output)
             var that = this
             that.$html2canvas(el, options).then(function(result) {
               that.showImages = true
@@ -146,47 +153,30 @@ export default {
             position: absolute;
             top: 0;
             @include wh(100vw,100vh);
-            background: rgba(0, 0, 0, .5);
-            .share_poster{
-                position: relative;
-                top: 0.8rem;
-                left: 0;
-                @include wh(80%,5rem);
-                margin: 0 auto;
-                @include bis('../../../../images/bounty-plan/share_poster.png');
-                span:first-child{
-                    @include sc(.18rem, #333333);
-                    position: absolute;
-                    top: 1.52rem;
-                    left: 1.2rem;
-                }
-                span:last-child{
-                    position: absolute;
-                    @include sc(.15rem, #333333);
-                    top: 4rem;
-                    width: 100%;
-                    text-align: center;
-                }
-                .qrCode{
-                    @include wh(1.8rem, 1.8rem);
-                    background: #333;
-                    position: absolute;
-                    top: 2.1rem;
-                    left: .62rem;
-                }
+            background: rgba(0, 0, 0, 1);
+            padding-top: .2rem;
+            .close_model {
+                position: absolute;
+                bottom: .3rem;
+                left: 47%;
+            }
+            p{
+                @include sc(.15rem, #fff);
+                text-align: center;
+                font-weight: bold;
             }
         }
     }
     .invite_landing {
         overflow: hidden;
         position: relative;
-        top: 0.8rem;
+        top: 0.3rem;
         bottom: 0;
         left: 0;
         right: 0;
         margin: 0 auto;
-        background: rgba(0, 0, 0, 0.5);
-        @include wh(80%, 5rem);
+        background: rgba(0, 0, 0, 0.8);
+        @include wh(2.16rem, 3.84rem);
         img {
           display: block;
         }
@@ -199,21 +189,21 @@ export default {
             position: relative;
             z-index: 111;
             margin: 0 auto;
-            padding-top: 1.53rem;
+            padding-top: 1.18rem;
             width: 80%;
             text-align: center;
             .title {
-              @include sc(.18rem, $g3);
+              @include sc(.14rem, $g3);
               height: .36rem;
             }
             .content {
-              @include sc(.15rem, $g3);
+              @include sc(.12rem, $g3);
             }
             .qrcode {
-              @include wh(1.8rem,1.8rem);
+              @include wh(1.2rem,1.2rem);
               border-radius: .05rem;
               background: #000;
-              margin: 0.12rem 0 .1rem .33rem;
+              margin: 0.12rem .26rem;
             }
           }
         }

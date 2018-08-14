@@ -23,8 +23,6 @@ const BountyUserCenter = r => require.ensure([], () => r(require('../page/activi
 const userCenterHome = r => require.ensure([], () => r(require('../page/activity/bounty/children/userCenterHome')), 'userCenterHome')
 const GoldRecord = r => require.ensure([], () => r(require('../page/activity/bounty/children/record')), 'goldRecord')
 const Invite = r => require.ensure([], () => r(require('../page/activity/bounty/children/invite')), 'invite')
-const InviteLanding = r => require.ensure([], () => r(require('../page/activity/bounty/children/inviteLanding')), 'inviteLanding')
-const poster = r => require.ensure([], () => r(require('../page/activity/bounty/children/poster')), 'poster')
 const Waiter = r => require.ensure([], () => r(require('../page/activity/bounty/children/waiter')), 'waiter')
 const BountyTask = r => require.ensure([], () => r(require('../page/activity/bounty/children/bountyTask')), 'bountyTask')
 
@@ -142,16 +140,6 @@ export default [{
                     path: 'invite/:invitationsSum',
                     component: Invite,
                     name: 'Invite',
-                    meta: {title: '邀请好友'}
-                }, {
-                    path: 'invite-landing',
-                    component: InviteLanding,
-                    name: 'InviteLanding',
-                    meta: {title: '邀请好友'}
-                },{
-                    path: 'poster',
-                    component: poster,
-                    name: 'poster',
                     meta: {title: '邀请好友'}
                 }, {
                     path: 'waiter',

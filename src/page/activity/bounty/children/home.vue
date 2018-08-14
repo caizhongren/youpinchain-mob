@@ -100,7 +100,9 @@
             bountyHome().then(res => {
                 that.data = res.data
                 that.data.waiter = res.data.waiter
-                that.data.signInNow = {days : 1}
+                that.data.signInNow = {
+                    days: res.data.signInNow ? res.data.signInNow.days : 1
+                }
                 that.data.showMask = false
             })
         },
