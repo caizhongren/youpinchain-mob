@@ -179,6 +179,9 @@ export default {
         @include wh(2.16rem, 3.84rem);
         img {
           display: block;
+          position: relative;
+          right: -1px;
+          bottom: -2px;
         }
         .box {
           position: relative;
