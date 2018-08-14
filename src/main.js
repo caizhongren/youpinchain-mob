@@ -11,7 +11,7 @@ Vue.use(VueHtml2Canvas);
 import VueClipboard from 'vue-clipboard2'
 VueClipboard.config.autoSetContainer = true // add this line
 Vue.use(VueClipboard)
-
+import { domainUrl, appid, redirect } from './config/env'
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function () {
         FastClick.attach(document.body);
