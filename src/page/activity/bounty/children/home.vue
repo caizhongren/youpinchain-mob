@@ -56,7 +56,7 @@
                 <ul>
                     <li v-for="(item,index) in data.dictionarydata_SIR" :class="{ 'margin_left_5' : index === 4 }">
                         <p :class="{ 'font_color' : index >= 4 }">{{item.dictdataName}}</p>
-                        <div :class="{ 'sign_in_success' : index < data.signInNow.days }">
+                        <div :class="{ 'sign_in_success' : index < data.signInNow.day }">
                             <img src="../../../../images/bounty-plan/money_reward_icon2.png" width="30" alt="">
                             <p>金条+{{item.dictdataValue}}</p>
                         </div>
@@ -84,7 +84,7 @@
                     waiter: false,
                     dictionarydata_SIR: {},
                     signInNow: {
-                        days: 1
+                        day: 1
                     }
                 },
                 showMask: false,
@@ -100,7 +100,7 @@
                 that.data = res.data
                 that.data.waiter = res.data.waiter
                 that.data.signInNow = {
-                    days: res.data.signInNow ? res.data.signInNow.days : 1
+                    day: res.data.signInNow ? res.data.signInNow.day : 1
                 }
                 that.data.showMask = false
             })
