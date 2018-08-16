@@ -1,5 +1,5 @@
 <template>
-    <div class="bounty_home">
+    <div class="bounty_home" v-if="showDocument">
         <div class="top_header">
             <div class="clear">
                 <router-link tag="div" class="user_icon left" :to="'/bountyPlan/userCenter'"></router-link>
@@ -73,21 +73,9 @@
     export default {
         data () {
             return {
-                data: {
-                    balance: {
-                        goldDrill: 0,
-                        bullion: 0,
-                    },
-                    taskUser: null,
-                    task: [],
-                    invitationsSum: 0,
-                    waiter: false,
-                    dictionarydata_SIR: {},
-                    signInNow: {
-                        day: 1
-                    }
-                },
+                showDocument: false,
                 showMask: false,
+                data: {}
             }
         },
         watch: {
@@ -102,7 +90,7 @@
                 that.data.signInNow = {
                     day: res.data.signInNow ? res.data.signInNow.day : 1
                 }
-                that.data.showMask = false
+                that.showDocument = true
             })
         },
         created() {
