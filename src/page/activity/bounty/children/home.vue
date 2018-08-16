@@ -16,7 +16,7 @@
                 <li @click="showMask = !showMask">
                     <p class="task_name">每日登录</p>
                     <img src="../../../../images/bounty-plan/login_icon.png" class="icon">
-                    <p class="desr">今日登陆+{{data.dictionarydata_SIR[data.signInNow.day - 1].dictdataValue}}金条</p>
+                    <p class="desr">今日登录+{{data.dictionarydata_SIR[data.signInNow.day - 1].dictdataValue}}金条</p>
                     <p class="status_finish"><img src="../../../../images/bounty-plan/finished.png" width="10%"> 已完成</p>
                 </li>
                 <router-link tag="li" :to="'/bountyPlan/invite/'+ data.invitationsSum">
