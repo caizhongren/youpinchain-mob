@@ -17,14 +17,23 @@ let redirect = 'http://youpinlian.datbc.com/youpin/wx/oa/wxCallBack';
 
 if (process.env.NODE_ENV == 'development') {
 	imgBaseUrl = 'http://cangdu.org:8001/img/';
-	baseUrl = '/youpin/wx'
-	// baseUrl = '/wx'
+	// baseUrl = '/youpin/wx'
+	baseUrl = '/wx'
 
-}else if(process.env.NODE_ENV == 'production'){
-	// baseUrl = 'http://cangdu.org:8001';
+} else if (process.env.NODE_ENV == 'test') {
+
 	imgBaseUrl = 'http://cangdu.org:8001/img/';
 	baseUrl = '/youpin/wx';
 	domainUrl = 'http://youpinlian.datbc.com';
+
+} else if (process.env.NODE_ENV == 'production') {
+
+	imgBaseUrl = 'http://cangdu.org:8001/img/';
+	baseUrl = '/zhenpin/wx';
+	domainUrl = 'http://zhenpin.datbc.com';
+	appid = 'wx14392deaf538dfef';
+	redirect = 'http://zhenpin.datbc.com/zhenpin/wx/oa/wxCallBack';
+	
 }
 
 export {
