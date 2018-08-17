@@ -53,6 +53,7 @@
       setRecord (res) {
         this.goldData = res.data
         this.totalPages = res.data.totalPages
+        if (!this.goldData.record) return
         for (var i = 0; i < this.goldData.record.length; i++){
           this.record.push(this.goldData.record[i])
         }
