@@ -23,14 +23,14 @@
                     <p class="task_name">邀请好友</p>
                     <img src="../../../../images/bounty-plan/invite_icon.png" class="icon">
                     <p class="desr">邀请1位好友+10金条</p>
-                    <p class="reward">最多+150<img src="../../../../images/bounty-plan/money_reward_icon2.png" width="10%"></p>
+                    <p class="reward">最多+500<img src="../../../../images/bounty-plan/money_reward_icon2.png" width="10%"></p>
                 </router-link>
                 <router-link tag="li" :to="{ path:'/bountyPlan/waiter', query:{ 'waiter': data.waiter}}">
                     <p class="task_name">添加客服微信</p>
                     <img src="../../../../images/bounty-plan/wx_icon.png" class="icon">
                     <p class="desr"> 添加成功获得</p>
                     <p class="status_finish" v-if="data.waiter"><img src="../../../../images/bounty-plan/finished.png" width="10%"> 已完成</p>
-                    <p class="reward" v-if="!data.waiter"><img src="../../../../images/bounty-plan/money_reward_icon2.png" width="10%">+500</p>
+                    <p class="reward" v-if="!data.waiter"><img src="../../../../images/bounty-plan/money_reward_icon2.png" width="10%">+20</p>
                 </router-link>
             </ul>
         </div>

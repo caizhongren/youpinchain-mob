@@ -1,7 +1,7 @@
 <template>
     <div class="invite" v-client-height>
         <div class="top_head">
-            <p class="title">品质商城 &nbsp; 放心臻品</p>
+            <p class="title">领金条，拍大奖。拣金钻，兑好物。</p>
             <div class="box">
                 <p>您的邀请二维码</p>
                 <div class="qrcode" id="qrcode"></div>
@@ -19,9 +19,9 @@
                 <img :src="output" width="100%" v-if="showImages" ref="output"/>
                 <div class="box" v-if="!showImages">
                   <div class="container" >
-                    <div class="title">品质商城、放心臻品</div>
+                    <div class="title">领金条，拍大奖。拣金钻，兑好物。</div>
                     <div class="qrcode" id="qrcode_1"></div>
-                    <div class="content">区块溯源，链上臻品，为你而来</div>
+                    <div class="content">争做创世居民，送无门槛竞拍礼包，有实惠，优先享。</div>
                   </div>
                 </div>
             </div>
