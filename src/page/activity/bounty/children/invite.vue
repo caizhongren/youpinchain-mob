@@ -1,7 +1,7 @@
 <template>
     <div class="invite" v-client-height>
         <div class="top_head">
-            <p class="title">领金条，拍大奖。拣金钻，兑好物。</p>
+            <p class="title">领金条&nbsp;|&nbsp;拍大奖&nbsp;|&nbsp;拣金钻&nbsp;|&nbsp;兑好物</p>
             <div class="box">
                 <p>您的邀请二维码</p>
                 <div class="qrcode" id="qrcode"></div>
@@ -20,7 +20,7 @@
                 <div class="box" v-if="!showImages">
                   <img src="../../../../images/bounty-plan/share_poster.png" class="boxImg" alt="" >
                   <div class="container" >
-                    <div class="title">领金条，拍大奖。拣金钻，兑好物。</div>
+                    <div class="title">&nbsp;领金条 &nbsp; 拍大奖 <br>拣金钻 &nbsp; 兑好物</div>
                     <div class="qrcode" id="qrcode_1"></div>
                     <div class="content">争做创世居民，送无门槛竞拍礼包，有实惠，优先享。</div>
                   </div>
@@ -198,7 +198,7 @@ export default {
             position: relative;
             z-index: 111;
             margin: 0 auto;
-            padding-top: 1.18rem;
+            padding-top: 1.12rem;
             width: 80%;
             text-align: center;
             .title {
@@ -208,7 +208,9 @@ export default {
             }
             .content {
               @include sc(.11rem, $g3);
-              transform: scale(0.85);
+                transform: scale(0.8);
+                width: 88%;
+                margin-left: 6%;
             }
             .qrcode {
               @include wh(1.2rem,1.2rem);
