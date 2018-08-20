@@ -1,7 +1,7 @@
 <template>
     <div class="invite" v-client-height>
         <div class="top_head">
-            <p class="title">领金条，拍大奖。拣金钻，兑好物。</p>
+            <p class="title">领金条&nbsp;|&nbsp;拍大奖&nbsp;|&nbsp;拣金钻&nbsp;|&nbsp;兑好物</p>
             <div class="box">
                 <p>您的邀请二维码</p>
                 <div class="qrcode" id="qrcode"></div>
