@@ -18,6 +18,7 @@
             <div class="invite_landing" ref="test">
                 <img :src="output" width="100%" v-if="showImages" ref="output"/>
                 <div class="box" v-if="!showImages">
+                  <img src="../../../../images/bounty-plan/share_poster.png" class="boxImg" alt="" >
                   <div class="container" >
                     <div class="title">领金条，拍大奖。拣金钻，兑好物。</div>
                     <div class="qrcode" id="qrcode_1"></div>
@@ -187,7 +188,12 @@ export default {
           position: relative;
           width: 100%;
           height: 100%;
-          @include bis('../../../../images/bounty-plan/share_poster.png');
+          .boxImg{
+            @include wh(2.16rem, 3.84rem);
+            position: absolute;
+            left: 0;
+            top: 0;
+          }
           .container {
             position: relative;
             z-index: 111;
