@@ -38,7 +38,7 @@ const router = new VueRouter({
 })
 router.beforeEach((to, from, next) => {
     if (to.meta.title === undefined) {
-        document.title = '链上优品'
+        document.title = '链上臻品'
     } else {
         document.title = to.meta.title
     }
