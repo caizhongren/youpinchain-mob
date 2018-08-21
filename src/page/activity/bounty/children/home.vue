@@ -35,6 +35,18 @@
             </ul>
         </div>
         <div class="task_box marg-t-15">
+            <p class="task_title">拣金任务</p>
+            <ul class="task_jian_list">
+                <li :class="{'active': index === activeTab}" v-for="(item, index) in task_jian_list" :key="index" @click="toggleTab(index)">
+                    <p>{{item.time}}</p>
+                    <p>{{item.status === 0 ? '即将开始' : item.status === 1 ? '正在疯抢' : '今日已结束'}}</p>
+                </li>
+            </ul>
+            <div>
+                bbb
+            </div>
+        </div>
+        <div class="task_box marg-t-15">
             <p class="task_title">淘金任务</p>
             <ul class="task_list">
                 <router-link tag="li" :to="'/bountyPlan/task'" v-for="(task,index) in data.task" :key="index" class="position-re">
@@ -54,7 +66,7 @@
             <div class="sign_in">
                 <img src="../../../../images/bounty-plan/sign_in.png" alt="" class="success_img">
                 <ul>
-                    <li v-for="(item,index) in data.dictionarydata_SIR" :class="{ 'margin_left_5' : index === 4 }">
+                    <li v-for="(item,index) in data.dictionarydata_SIR" :class="{ 'margin_left_5' : index === 4 }" :key="index">
                         <p :class="{ 'font_color' : index >= 4 }">{{item.dictdataName}}</p>
                         <div :class="{ 'sign_in_success' : index < data.signInNow.day }">
                             <img src="../../../../images/bounty-plan/money_reward_icon2.png" width="30" alt="">
@@ -75,7 +87,22 @@
             return {
                 showDocument: false,
                 showMask: false,
-                data: {}
+                data: {},
+                activeTab: 0,
+                task_jian_list: [
+                    {
+                        time: '10:00',
+                        status: 0, // 即将开始 0, 正在疯抢 1, 今日已结束 2
+                    },
+                    {
+                        time: '16:00',
+                        status: 1, // 即将开始 0, 正在疯抢 1, 今日已结束 2
+                    },
+                    {
+                        time: '20:00',
+                        status: 2, // 即将开始 0, 正在疯抢 1, 今日已结束 2
+                    }
+                ]
             }
         },
         watch: {
@@ -100,6 +127,9 @@
             calculate: function (val) {
                 val > 10000 ? val = Math.round(val / 10000 * 100) / 100 + '万' : val = val;
                 return val
+            },
+            toggleTab (index) {
+                this.activeTab = index;
             }
         },
         computed: {
@@ -112,10 +142,11 @@
         .marg-t-15 {
            margin-top: .15rem;
         }
-       background: $bc;
+        background: $bc;
         .top_header {
            padding: .22rem .2rem;
-            @include wh(100%, 1.73rem);
+           @include wh(100%, 3.717rem);
+           background-position-y: -1px;
            @include bis('../../../../images/bounty-plan/starry_sky_bg3.png');
            .user_icon {
                @include wh(.27rem, .27rem);
@@ -146,7 +177,7 @@
             .text {
                 text-align: center;
                 @include sc(.3rem, $fc);
-                margin-top: .28rem;
+                margin-top: 1.2rem;
             }
         }
         .task_box {
@@ -300,6 +331,44 @@
                     bottom: -.4rem;
                     left: 45.8%;
                 }
+            }
+        }
+        .task_jian_list {
+            overflow-x: hidden;
+            width: 110%;
+            margin-left: -5%;
+            height: .8rem;
+            li {
+                float: left;
+                @include wh(33.33%, .5rem);
+                padding-top: .03rem;
+                text-align: center;
+                background: #2a2a33;
+                color: rgba(255, 255, 255, 0.4);
+                p:nth-child(1) {
+                    font-size: .18rem;
+                }
+                p:nth-child(2) {
+                    font-size: .12rem;
+                }
+            }
+            .active {
+                background-image: linear-gradient(78deg, #fc5b46, #fa424f);
+                color: $fc;
+                position: relative;
+            }
+            .active:after {
+                display: block;
+                content: "";
+                border-width: .08rem;
+                position: absolute;
+                bottom: -.15rem;
+                z-index: 999;
+                right: 40%;
+                border-style: solid dashed dashed;
+                border-color: #fa454e transparent transparent;
+                font-size: 0;
+                line-height: 0;
             }
         }
    }
