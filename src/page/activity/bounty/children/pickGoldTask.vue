@@ -3,10 +3,11 @@
     <!-- <img src="../../../../images/bounty-plan/jian-bg.png" alt="" width="100%"> -->
     <div class="activity_detail">
       <p>距下轮开始</p>
+      <!-- <p>距本轮结束</p> -->
       <p><span>{{countDown | timeArry(0)}}</span> : <span>{{countDown | timeArry(1)}}</span> : <span>{{countDown | timeArry(2)}}</span></p>
       <p><span>剩余金条</span></p>
       <p>{{remainder}}</p>
-      <div :class="{'snatching' : countDown === 0 && remainder !== 0}" @click="robbingGold()">{{countDown !== 0 ? '未开始' : (remainder === 0 ? '已抢光' : '抢')}}</div>
+      <div :class="{'snatching' : countDown === 0 && remainder !== 0 && !robbed}" @click="robbingGold()">{{countDown !== 0 ? '未开始' : (remainder === 0 ? '已抢光' : (robbed ? '已抢过' : '抢'))}}</div>
     </div>
     <div class="description">
       <p>活动规则</p>
@@ -25,6 +26,13 @@
         <p @click="loadMore" v-show="page < totalPages" class="loadMore">加载更多</p>
         <li v-if="record.length <= 0" class="no_record">暂无记录</li>
       </ul>
+    </div>
+    <div class="mask" v-show="showMask">
+      <div class="tip">
+        <p><img src="../../../../images/bounty-plan/money_reward_icon2.png" alt="" width="23%">恭喜您！</p>
+        <p>成功抢到{{randomNumber}}个金条！</p>
+        <p @click="showMask = false">知道啦</p>
+      </div>
     </div>  
   </div>
 </template>
@@ -38,9 +46,12 @@
         goldData: {},
         record: [],
         totalPages: 0,
-        remainder: 1,
-        countDown: 1001,
+        remainder: 500,
+        countDown: 10000,
         timer: null,
+        showMask: false,
+        randomNumber: 20,
+        robbed: false,
         record: [
           {
             imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
@@ -108,9 +119,10 @@
       },
       robbingGold () {
         var that = this
-        if(that.countDown === 0 && that.remainder !== 0){
-          that.remainder -= 1
-          console.log('抢到了')
+        if(that.countDown === 0 && that.remainder !== 0 && !that.robbed){
+          that.remainder = that.remainder - that.randomNumber
+          that.robbed =true
+          that.showMask = true
         } else {
           return
         }
@@ -121,6 +133,7 @@
 <style lang="scss" scoped>
   @import '../../../../style/mixin';
   .task{
+    position: relative;
     .activity_detail{
       @include wh(100%, 3.4rem);
       @include bis('../../../../images/bounty-plan/jian-bg.png');
@@ -170,6 +183,37 @@
       }
       div.snatching{
         background-color: #ffe236;
+      }
+    }
+    .mask{
+      @include wh(100%,100%);
+      background: rgb(0,0,0);
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding-top: 2.5rem;
+      .tip{
+        background: #fff;
+        width: 2.8rem;
+        margin: 0 auto;
+        padding: .2rem .4rem .15rem;
+        border-radius: .1rem;
+        p{
+          height: .3rem;
+          line-height: 1.67;
+          text-align: center;
+          @include sc(.18rem, #333333);
+          img{
+            vertical-align: middle;
+          }
+        }
+        p:last-child{
+          background: #fc5340;
+          @include sc(.15rem, #fff);
+          line-height: .4rem;
+          height: .4rem;
+          margin-top: .18rem;
+        }
       }
     }
   }
