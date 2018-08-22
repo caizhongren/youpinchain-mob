@@ -97,6 +97,17 @@ let timeformat = number => {
   // 接口返回时间格式含有‘T’ 处理为yy-MM-dd HH:mm
   return number.split('T')[0].split('-').join('.') + ' ' + number.split('T')[1].split(':')[0] + ':' + number.split('T')[1].split(':')[1]
 }
+let timeArry = (number,index) => {
+  var hours = Math.floor(number / 1000 / 60 / 60)
+  var minutes = Math.floor((number - hours * 60 * 60 * 1000) / 1000 / 60)
+  var seconds = Math.floor((number - hours * 60 * 60 * 1000 - minutes * 60 * 1000) / 1000)
+  var arry = []
+  hours < 10 ? hours = '0' + hours : null
+  minutes < 10 ? minutes = '0' + minutes : null
+  seconds < 10 ? seconds = '0' + seconds : null
+  arry.push(hours,minutes,seconds)
+  return arry[index]
+}
 
 export { date }
 export { number }
@@ -105,3 +116,4 @@ export { dateCharacter }
 export { monthDay }
 export { amount }
 export { timeformat }
+export { timeArry }

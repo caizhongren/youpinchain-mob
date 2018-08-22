@@ -1,12 +1,58 @@
 <template>
   <div class="task">
+    <!-- <img src="../../../../images/bounty-plan/jian-bg.png" alt="" width="100%"> -->
+    <div class="activity_detail">
+      <p>距下轮开始</p>
+      <p><span>{{countDown | timeArry(0)}}</span> : <span>{{countDown | timeArry(1)}}</span> : <span>{{countDown | timeArry(2)}}</span></p>
+      <p><span>剩余金条</span></p>
+      <p>{{remainder}}</p>
+      <div :class="{'snatching' : countDown === 0 && remainder !== 0}" @click="robbingGold()">{{countDown !== 0 ? '未开始' : (remainder === 0 ? '已抢光' : '抢')}}</div>
+    </div>
+    <div class="description">
+      <p>活动规则</p>
+      <p>捡金任务是每天10:00—10：30、16:00—16:30、20:00—20:30三个时间段内，分别派送5000个金条奖池，居民在活动时间内随机领取一定数量的金条。若活动中奖池被领空则该段时间活动结束。某段时间活动结束后奖池剩余不计入下场活动奖池中。</p>
+    </div>
+    <div class="record_detail">
+      <p class="title">金条记录</p>
+      <ul>
+        <li v-for="item in record">
+          <div>
+            <img :src="item.imgUrl" alt="">
+            <span>{{item.nickname}}</span>
+          </div>
+          <div>{{item.detail}}</div>
+        </li>
+        <p @click="loadMore" v-show="page < totalPages" class="loadMore">加载更多</p>
+        <li v-if="record.length <= 0" class="no_record">暂无记录</li>
+      </ul>
+    </div>  
   </div>
 </template>
 <script>
+  import { goldDrill, bullion } from '../../../../service/getData'
   export default {
     data () {
       return {
-
+        page: 1,
+        size: 10,
+        goldData: {},
+        record: [],
+        totalPages: 0,
+        remainder: 1,
+        countDown: 1001,
+        timer: null,
+        record: [
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: 'Petite mignonne',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: 'Petite mignonne',
+            detail: '+10'
+          }
+        ]
       }
     },
     watch: {
@@ -16,14 +62,195 @@
       
     },
     created() {
-      
+      this.getActDetail()
     },
     methods: {
-
+      getActDetail () {
+        var that = this
+        // goldDrill(page, size).then(function (res) {
+          
+        // })
+        if(that.countDown){
+          that.timer = setInterval(function () {
+            if(that.countDown >= 1000){
+              that.countDown -= 1000
+              if(that.countDown < 1000){
+                that.countDown = 0
+              }
+            } else {
+              clearInterval(that.timer)
+              return
+            }
+          },1000)
+        }
+      },
+      setRecord (res) {
+        this.goldData = res.data
+        this.totalPages = res.data.totalPages
+        if (!this.goldData.record) return
+        for (var i = 0; i < this.goldData.record.length; i++){
+          this.record.push(this.goldData.record[i])
+        }
+      },
+      getRecord (page, size) {
+        var that = this
+        goldDrill(page, size).then(function (res) {
+          that.setRecord(res)
+        })
+      },
+      loadMore (type) {
+        var that = this
+        that.page += 1
+        if(that.page > that.totalPages){
+          return
+        }
+        that.getRecord(that.page, that.size)
+      },
+      robbingGold () {
+        var that = this
+        if(that.countDown === 0 && that.remainder !== 0){
+          that.remainder -= 1
+          console.log('抢到了')
+        } else {
+          return
+        }
+      }
     },
   }
 </script>
 <style lang="scss" scoped>
   @import '../../../../style/mixin';
-
+  .task{
+    .activity_detail{
+      @include wh(100%, 3.4rem);
+      @include bis('../../../../images/bounty-plan/jian-bg.png');
+      background-size: 100% 2.7rem;
+      background-color: #854eb1;
+      color: #fff;
+      text-align: center;
+      padding-top: .95rem;
+      p:nth-child(1){
+        font-size: .13rem;
+        margin-bottom: .13rem;
+      }
+      p:nth-child(2){
+        font-size: .18rem;
+        line-height: .26rem;
+        margin-bottom: .12rem;
+        font-family: PingFangSC;
+        span{
+          background: #2d1063;
+          padding: 0 .03rem;
+          display: inline-block;
+          width: .24rem;
+        }
+      }
+      p:nth-child(3){
+        line-height: .12rem;
+        span{
+          display: inline-block;
+          background: #9f6cff;
+          border-radius: .025rem;
+          font-size: .12rem;
+          padding: .03rem .06rem;
+        }
+      }
+      p:nth-child(4){
+        font-size: .4rem;
+        line-height: .4rem;
+        margin-bottom: .3rem;
+      }
+      div:last-child{
+        @include sc(.24rem,#2a2a33);
+        @include wh(1.8rem,.5rem);
+        background-color: #efeff4;
+        border-radius: .05rem;
+        line-height: .5rem;
+        margin: 0 auto;
+      }
+      div.snatching{
+        background-color: #ffe236;
+      }
+    }
+  }
+  .description,.record_detail{
+    margin-top: .16rem;
+    border-radius: .1rem;
+    background: #fff;
+    color: #666666;
+  }
+  .description p{
+    font-size: .13rem;
+    padding: .15rem .12rem .2rem .12rem;
+    line-height: 2;
+    text-align: justify;
+  }
+  .description p:first-child{
+    line-height: .45rem;
+    font-size: .15rem;
+    border-bottom: 0.01rem solid #dddddd;
+    padding: 0;
+    padding-left: .12rem;
+  }
+  .record_detail .title{
+    line-height: .45rem;
+    font-size: .15rem;
+    border-bottom: 0.01rem solid #dddddd;
+    padding: 0;
+    padding-left: .12rem;
+  }
+  .record_detail ul{
+    padding-bottom: 1rem;
+    background: #efeff4;
+  }
+  .record_detail li{
+    padding: 0 .12rem;
+    height: .6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    img{
+      @include wh(.3rem, .3rem);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: .3rem;
+    }
+  }
+  .record_detail li:nth-child(even){
+    background: #f6f5f5;
+  }
+  .record_detail li p{
+    margin-bottom: .06rem;
+    font-size: .125rem;
+  }
+  .record_detail li p:last-child{
+    font-size: .12rem;
+    color: #999999;
+  }
+  .record_detail li div:last-child{
+    color: #fc4c42;
+    font-size: .15rem;
+  }
+  .record_detail li div:last-child.green {
+    color: #26cc41;
+  }
+  .loadMore{
+    width: 35%;
+    height: 0.28rem;
+    font-size: 0.14rem;
+    color: #666666;
+    background-color: #efeff4;
+    margin: 0rem auto;
+    text-align: center;
+    line-height: .28rem;
+    display: block;
+    text-align: center;
+    margin-top: .1rem;
+  }
+  .record_detail li.no_record {
+    justify-content: center;
+    height: 1.6rem;
+    background: #fff;
+  }
 </style>
