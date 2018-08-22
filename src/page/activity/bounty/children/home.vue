@@ -8,7 +8,11 @@
                     <router-link tag="p" :to="'/bountyPlan/userCenter/goldRecord/1'"><img src="../../../../images/bounty-plan/money_reward_icon2.png" width="33%">金条 {{calculate(data.balance.bullion)}}</router-link>
                 </div>
             </div>
-            <p class="text">精彩功能 敬请期待</p>
+            <div v-if="canTakeCount <= 0" class="text">精彩功能 敬请期待</div>
+            <div v-else class="circle animate" :id="index" :key="index" v-for="(item, index) in rewardList" v-bind:style="{ top: item.top + '%', left: item.left + '%' }" @click="takeReward(index, item.rewardMoney)">
+                {{item.rewardMoney}}
+                <span :class="'icon' + item.type"></span>
+            </div>
         </div>
         <div class="task_box">
             <p class="task_title">领金任务</p>
@@ -42,8 +46,20 @@
                     <p>{{item.status === 0 ? '即将开始' : item.status === 1 ? '正在疯抢' : '今日已结束'}}</p>
                 </li>
             </ul>
-            <div>
-                bbb
+            <div class="task_jian_content">
+                <div class="left">
+                    <p class="bullion" v-show="activeStatus !== 2">{{task_jian_bullion}}</p>
+                </div>
+                <div class="right">
+                    <p class="reward" v-show="activeStatus !== 2">{{task_jian_bullion}}金条</p>
+                    <p class="btn" @click="toTaskDeatil" :class="{'active': activeStatus === 1, 'marg-t-15': activeStatus === 2}">{{activeStatus === 0 ? '即将开始' : activeStatus === 1 ? '立即参与' : activeStatus === 2 ? '本场已结束' : '已抢光'}}</p>
+                    <div class="time" v-if="activeStatus === 0 || activeStatus === 1">
+                        距{{activeStatus === 0 ? '开始' : '结束'}}
+                        <span>{{task_jian_time.hours}}</span> :
+                        <span>{{task_jian_time.minute}}</span> :
+                        <span>{{task_jian_time.second}}</span> 
+                    </div>
+                </div>
             </div>
         </div>
         <div class="task_box marg-t-15">
@@ -89,6 +105,13 @@
                 showMask: false,
                 data: {},
                 activeTab: 0,
+                activeStatus: 0,
+                task_jian_bullion: 5000,
+                task_jian_time: {
+                    hours: '01',
+                    minute: '10',
+                    second: '00'
+                },
                 task_jian_list: [
                     {
                         time: '10:00',
@@ -102,7 +125,35 @@
                         time: '20:00',
                         status: 2, // 即将开始 0, 正在疯抢 1, 今日已结束 2
                     }
-                ]
+                ],
+                rewardList: [],
+                unTakeRewardsList: [
+                    {
+                        reward: 0.02,
+                        type: 1
+                    },
+                    {
+                        reward: 0.1,
+                        type: 0
+                    },
+                    {
+                        reward: 1,
+                        type: 1
+                    },
+                    {
+                        reward: 6,
+                        type: 1
+                    },
+                    {
+                        reward: 6,
+                        type: 0
+                    },
+                    {
+                        reward: 6,
+                        type: 0
+                    }
+                ],
+                canTakeCount: 0
             }
         },
         watch: {
@@ -121,7 +172,9 @@
             })
         },
         created() {
-            
+            this.canTakeCount = this.unTakeRewardsList.length
+            this.setProportion(this.canTakeCount,this.unTakeRewardsList)
+            this.circleAnimate(this.canTakeCount)
         },
         methods: {
             calculate: function (val) {
@@ -130,6 +183,96 @@
             },
             toggleTab (index) {
                 this.activeTab = index;
+                this.activeStatus = this.task_jian_list[index].status;
+            },
+            toTaskDeatil () {
+                if (this.activeStatus === 0 || this.activeStatus === 2) {
+                    return
+                }
+                this.$router.push({name: 'PickGoldTask'});
+            },
+            circleAnimate (canTakeCount) { // 金币上下跳动动画
+                if (canTakeCount <= 0 || this.canTakeCount <= 0) {
+                return
+                }
+                var a = 0
+                this.timer = setInterval(function () {
+                if (a % 2 === 0) {
+                    for (let i = 0; i < canTakeCount; i++) {
+                    document.getElementById(i) ? document.getElementById(i).style.webkitTransform = 'translateY(' + 0.1 * Math.random(1,5) +'rem)' : null
+                    }
+                } else {
+                    for (let i = 0; i < canTakeCount; i++) {
+                    document.getElementById(i) ? document.getElementById(i).style.webkitTransform = 'translateY(' + -0.1 * Math.random(1,5) + 'rem)' : null
+                    }
+                }
+                a += 1
+                }, 1000)
+            },
+            setProportion (canTakeCount, unTakeRewardsList) {
+                // 初始化布局数组
+                var position = []
+                var treeId = 0
+                for (let i = 0; i < 100; i++) {
+                    position[i] = []
+                    for (let j = 0; j < 100; j++) {
+                        position[i][j] = {radius: 0, isPlanted: 0}
+                    }
+                }
+                // 随机种植树木
+                while (this.rewardList.length < canTakeCount) {
+                    // 随机选择一个位置来种植一棵树
+                    let minTreeX = 3
+                    let minTreeY = 18
+                    let maxTreeX = 86
+                    let maxTreeY = 80
+                    let treeX = Math.floor(Math.random() * (maxTreeX - minTreeX)) + minTreeX
+                    let treeY = Math.floor(Math.random() * (maxTreeY - minTreeY)) + minTreeY
+                    // console.log('(' + treeX + ',' + treeY + ')')
+                    // 不种植的区域排除掉 上半截树斜对角坐标 （vacantStartX, vacantStartY）,(vacantEndX, vacantEndY)
+                    // let vacantStartX = 15
+                    // let vacantEndX = 75
+                    // let vacantStartY = 10
+                    // let vacantEndY = 72
+                    // if ((treeX >= vacantStartX && treeX <= vacantEndX && treeY >= vacantStartY && treeY <= vacantEndY) || (treeX >= 63 && treeY <= 20)) {
+                    //     // 如果在不种植区则跳过后续操作
+                    //     continue
+                    // }
+                    if (position[treeX][treeY].isPlanted === 1) {
+                        // 如果该位置已经植入树木则跳过后续操作
+                        continue
+                    }
+                    // 树木直径随机
+                    // let treeRadius = 7.8
+                    let maxTreeRadius = 10
+                    // 初始设定为可以种植
+                    position[treeX][treeY].isPlanted = 1
+                    // 计算检测框范围
+                    let checkStartX = Math.max(treeX - 2 * maxTreeRadius, minTreeX)
+                    let checkStartY = Math.max(treeY - 2 * maxTreeRadius, minTreeY)
+                    let checkEndX = Math.min(treeX + 2 * maxTreeRadius, maxTreeX)
+                    let checkEndY = Math.min(treeY + 2 * maxTreeRadius, maxTreeX)
+                    for (let x = checkStartX; x <= checkEndX; x++) {
+                        for (let y = checkStartY; y <= checkEndY; y++) {
+                        // 除了当前位置 和框定范围内已经植入的树木比较距离
+                        if (!(treeX === x && treeY === y) && (position[x][y].isPlanted === 1)) {
+                            // 比较两点间距离和两点半径和的大小 判断是否重叠
+                            let treeDistanceSquared = (treeX - x) * (treeX - x) + (treeY - y) * (treeY - y)
+                            let radiusSumSquared = (2 * maxTreeRadius) * (2 * maxTreeRadius)
+                            if (treeDistanceSquared < radiusSumSquared) {
+                            // 发生碰撞则标记不可种
+                            position[treeX][treeY].radius = 0
+                            position[treeX][treeY].isPlanted = 0
+                            }
+                        }
+                        }
+                    }
+                    if (position[treeX][treeY].isPlanted === 1) {
+                        // 显示结果图形
+                        this.rewardList.push({id: treeId, left: treeX, top: treeY, rewardMoney: unTakeRewardsList[treeId].reward, type: unTakeRewardsList[treeId].type})
+                        treeId += 1
+                    }
+                }
             }
         },
         computed: {
@@ -139,6 +282,8 @@
 <style lang="scss" scoped>
   @import '../../../../style/mixin';
    .bounty_home {
+       overflow: hidden;
+       width: 100%;
         .marg-t-15 {
            margin-top: .15rem;
         }
@@ -147,6 +292,7 @@
            padding: .22rem .2rem;
            @include wh(100%, 3.717rem);
            background-position-y: -1px;
+           position: relative;
            @include bis('../../../../images/bounty-plan/starry_sky_bg3.png');
            .user_icon {
                @include wh(.27rem, .27rem);
@@ -178,6 +324,37 @@
                 text-align: center;
                 @include sc(.3rem, $fc);
                 margin-top: 1.2rem;
+            }
+            .animate {
+                -webkit-transition:all 1s ease-in-out;
+                -moz-transition:all 1s ease-in-out;
+                -o-transition:all 1s ease-in-out;
+                -ms-transition:all 1s ease-in-out;    
+                transition:all 1s ease-in-out;
+            }
+            .circle {
+                position: absolute;
+                top: 20%;
+                left: 30%;
+                @include wh(.46rem, .45rem);
+                @include sc(.12rem,$fc);
+                @include bis('../../../../images/bounty-plan/water-drop.png');
+                font-weight: bold;
+                padding-top: .05rem;
+                text-align: center;
+                letter-spacing: -1px;
+                .icon0 {
+                    display: block;
+                    margin: 0 auto;
+                    @include wh(.22rem, .17rem);
+                    @include bis('../../../../images/bounty-plan/icon1.png');
+                }
+                .icon1 {
+                    display: block;
+                    margin: 0 auto;
+                    @include wh(.27rem, .17rem);
+                    @include bis('../../../../images/bounty-plan/icon2.png');
+                }
             }
         }
         .task_box {
@@ -341,7 +518,7 @@
             li {
                 float: left;
                 @include wh(33.33%, .5rem);
-                padding-top: .03rem;
+                padding-top: .06rem;
                 text-align: center;
                 background: #2a2a33;
                 color: rgba(255, 255, 255, 0.4);
@@ -353,7 +530,7 @@
                 }
             }
             .active {
-                background-image: linear-gradient(78deg, #fc5b46, #fa424f);
+                background-image: linear-gradient(to right, #fc5b46, #fa424f);
                 color: $fc;
                 position: relative;
             }
@@ -369,6 +546,58 @@
                 border-color: #fa454e transparent transparent;
                 font-size: 0;
                 line-height: 0;
+            }
+        }
+        .task_jian_content {
+            overflow: hidden;
+            @include wh(100%,1.16rem);
+            background: $fc;
+            padding: 0 .3rem 0 .15rem;
+            .left {
+                @include wh(1.23rem,.97rem);
+                @include bis('../../../../images/bounty-plan/jian-tu.png');
+                .bullion {
+                    @include wh(.74rem,.38rem);
+                    @include sc(.21rem,$fc);
+                    line-height: .35rem;
+                    border-radius: .2rem;
+                    background-color: #2d1063;
+                    border: solid 2px #ffee59;
+                    text-align: center;
+                    margin: 0.5rem auto 0;
+                }
+            }
+            .right {
+                text-align: center;
+                .reward {
+                    @include sc(.18rem,$g3);
+                }
+                .btn {
+                    @include wh(1.22rem,.4rem);
+                    @include sc(.15rem,$fc);
+                    border-radius: .05rem;
+                    font-weight: 600;
+                    text-align: center;
+                    line-height: .4rem;
+                    background: $g9;
+                    margin: .08rem auto .1rem;
+                }
+                .btn.active {
+                    background: #ffe236;
+                    color: #2a2a33;
+                }
+                .btn.marg-t-15 {
+                    margin-top: .35rem;
+                }
+                .time {
+                    @include sc(.12rem,$g3);
+                    span {
+                        border-radius: 2px;
+                        background-color: #2d1063;
+                        padding: 0 .02rem;
+                        @include sc(.12rem,$fc);
+                    }
+                }
             }
         }
    }
