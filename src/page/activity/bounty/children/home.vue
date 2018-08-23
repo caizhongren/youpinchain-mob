@@ -8,8 +8,8 @@
                     <router-link tag="p" :to="'/bountyPlan/userCenter/goldRecord/1'"><img src="../../../../images/bounty-plan/money_reward_icon2.png" width="33%">金条 {{calculate(data.balance.bullion)}}</router-link>
                 </div>
             </div>
-            <div v-if="canTakeCount <= 0" class="text">精彩功能 敬请期待</div>
-            <div v-else class="circle animate" :id="index" :key="index" v-for="(item, index) in rewardList" v-bind:style="{ top: item.top + '%', left: item.left + '%' }" @click="takeReward(index, item.rewardMoney)">
+            <div v-show="canTakeCount <= 0" class="text">精彩功能 敬请期待</div>
+            <div v-show="canTakeCount > 0" class="circle animate" :id="index" :key="index" v-for="(item, index) in rewardList" v-bind:style="{ top: item.top + '%', left: item.left + '%' }" @click="takeReward(index, item.rewardMoney)">
                 {{item.rewardMoney}}
                 <span :class="'icon' + item.type"></span>
             </div>
@@ -41,23 +41,23 @@
         <div class="task_box marg-t-15">
             <p class="task_title">拣金任务</p>
             <ul class="task_jian_list">
-                <li :class="{'active': index === activeTab}" v-for="(item, index) in task_jian_list" :key="index" @click="toggleTab(index)">
-                    <p>{{item.time}}</p>
-                    <p>{{item.status === 0 ? '即将开始' : item.status === 1 ? '正在疯抢' : '今日已结束'}}</p>
+                <li :class="{'active': index === activeTab}" v-for="(item, index) in data.pickGolds" :key="index" @click="toggleTab(index)">
+                    <p>{{item.startTime.substr(-8,5)}}</p>
+                    <p>{{item.state === 1 ? '即将开始' : item.state === 2 ? '正在疯抢' : '今日已结束'}}</p>
                 </li>
             </ul>
             <div class="task_jian_content">
                 <div class="left">
-                    <p class="bullion" v-show="activeStatus !== 2">{{task_jian_bullion}}</p>
+                    <p class="bullion" v-show="pickGolds.state !== 3">{{pickGolds.amount}}</p>
                 </div>
                 <div class="right">
-                    <p class="reward" v-show="activeStatus !== 2">{{task_jian_bullion}}金条</p>
-                    <p class="btn" @click="toTaskDeatil" :class="{'active': activeStatus === 1, 'marg-t-15': activeStatus === 2}">{{activeStatus === 0 ? '即将开始' : activeStatus === 1 ? '立即参与' : activeStatus === 2 ? '本场已结束' : '已抢光'}}</p>
-                    <div class="time" v-if="activeStatus === 0 || activeStatus === 1">
-                        距{{activeStatus === 0 ? '开始' : '结束'}}
-                        <span>{{task_jian_time.hours}}</span> :
-                        <span>{{task_jian_time.minute}}</span> :
-                        <span>{{task_jian_time.second}}</span> 
+                    <p class="reward" v-show="pickGolds.state !== 3">{{pickGolds.amount}}金条</p>
+                    <p class="btn" @click="toTaskDeatil" :class="{'active': pickGolds.state === 2, 'marg-t-15': pickGolds.state === 3}">{{pickGolds.state === 1 ? '即将开始' : pickGolds.state === 2 ? '立即参与' : pickGolds.state === 3 ? '本场已结束' : '已抢光'}}</p>
+                    <div class="time" v-if="pickGolds.state === 1 || pickGolds.state === 2">
+                        距{{pickGolds.state === 1 ? '开始' : '结束'}} &nbsp;&nbsp;
+                        <span>{{pickGolds.countDown | timeArry(0)}}</span> :
+                        <span>{{pickGolds.countDown | timeArry(1)}}</span> :
+                        <span>{{pickGolds.countDown | timeArry(2)}}</span> 
                     </div>
                 </div>
             </div>
@@ -105,27 +105,7 @@
                 showMask: false,
                 data: {},
                 activeTab: 0,
-                activeStatus: 0,
-                task_jian_bullion: 5000,
-                task_jian_time: {
-                    hours: '01',
-                    minute: '10',
-                    second: '00'
-                },
-                task_jian_list: [
-                    {
-                        time: '10:00',
-                        status: 0, // 即将开始 0, 正在疯抢 1, 今日已结束 2
-                    },
-                    {
-                        time: '16:00',
-                        status: 1, // 即将开始 0, 正在疯抢 1, 今日已结束 2
-                    },
-                    {
-                        time: '20:00',
-                        status: 2, // 即将开始 0, 正在疯抢 1, 今日已结束 2
-                    }
-                ],
+                pickGolds: {},
                 rewardList: [],
                 unTakeRewardsList: [
                     {
@@ -153,7 +133,8 @@
                         type: 0
                     }
                 ],
-                canTakeCount: 0
+                canTakeCount: 0,
+                timer: null
             }
         },
         watch: {
@@ -169,6 +150,11 @@
                     day: res.data.signInNow ? res.data.signInNow.day : 1
                 }
                 that.showDocument = true
+                var arr = [];
+                for (var i = 0; i < that.data.pickGold.length; i ++) {
+                    arr.push(that.data.pickGold[i].state)
+                }
+                that.setActiveTab(sarr);
             })
         },
         created() {
@@ -177,16 +163,40 @@
             this.circleAnimate(this.canTakeCount)
         },
         methods: {
+            countDown () {
+                var that = this
+                if(that.pickGolds.countDown){
+                    that.timer = setInterval(function () {
+                        if(that.pickGolds.countDown >= 1000){
+                            that.pickGolds.countDown -= 1000
+                            if(that.pickGolds.countDown < 1000){
+                                that.pickGolds.countDown = 0
+                            }
+                        } else {
+                            clearInterval(that.timer)
+                            return
+                        }
+                    },1000)
+                }
+            },
             calculate: function (val) {
                 val > 10000 ? val = Math.round(val / 10000 * 100) / 100 + '万' : val = val;
                 return val
             },
+            setActiveTab (arr) {
+            },
             toggleTab (index) {
                 this.activeTab = index;
-                this.activeStatus = this.task_jian_list[index].status;
+                clearInterval(this.timer)
+                var that = this
+                bountyHome().then(res => {
+                    that.data = res.data
+                    that.pickGolds = that.data.pickGolds[index];
+                    that.pickGolds.state !== 3 ? that.countDown() : null;
+                })
             },
             toTaskDeatil () {
-                if (this.activeStatus === 0 || this.activeStatus === 2) {
+                if (this.pickGolds.state === 1 || this.pickGolds.state === 3) {
                     return
                 }
                 this.$router.push({name: 'PickGoldTask'});
@@ -209,6 +219,10 @@
                 a += 1
                 }, 1000)
             },
+            takeReward (index, reward) {
+                document.getElementById(index).remove()
+                this.canTakeCount -= 1
+             },
             setProportion (canTakeCount, unTakeRewardsList) {
                 // 初始化布局数组
                 var position = []
@@ -276,6 +290,9 @@
             }
         },
         computed: {
+        },
+        destroyed() {
+            clearInterval(this.timer)
         },
     }
 </script>
@@ -578,7 +595,7 @@
                     border-radius: .05rem;
                     font-weight: 600;
                     text-align: center;
-                    line-height: .4rem;
+                    line-height: .42rem;
                     background: $g9;
                     margin: .08rem auto .1rem;
                 }
@@ -594,7 +611,9 @@
                     span {
                         border-radius: 2px;
                         background-color: #2d1063;
-                        padding: 0 .02rem;
+                        @include wh(.18rem,.175rem);
+                        display: inline-block;
+                        line-height: .18rem;
                         @include sc(.12rem,$fc);
                     }
                 }
