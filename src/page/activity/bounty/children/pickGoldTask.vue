@@ -199,6 +199,7 @@
     destroyed () {
       clearInterval(this.timer)
       clearInterval(this.timer2)
+      ModalHelper.beforeClose()
     }
   }
 </script>

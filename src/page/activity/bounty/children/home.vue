@@ -150,11 +150,13 @@
                     day: res.data.signInNow ? res.data.signInNow.day : 1
                 }
                 that.showDocument = true
-                var arr = [];
-                for (var i = 0; i < that.data.pickGold.length; i ++) {
-                    arr.push(that.data.pickGold[i].state)
+                if (that.data.pickGolds[0].state === 3 && that.data.pickGolds[1].state === 3) {
+                    this.toggleTab(2)
+                } else if (that.data.pickGolds[0].state !== 3) {
+                    this.toggleTab(0)
+                } else {
+                    this.toggleTab(1)
                 }
-                that.setActiveTab(sarr);
             })
         },
         created() {
@@ -182,8 +184,6 @@
             calculate: function (val) {
                 val > 10000 ? val = Math.round(val / 10000 * 100) / 100 + '万' : val = val;
                 return val
-            },
-            setActiveTab (arr) {
             },
             toggleTab (index) {
                 this.activeTab = index;
