@@ -1,12 +1,11 @@
 <template>
   <div class="task">
     <div class="activity_detail">
-      <p>距下轮开始</p>
-      <!-- <p>距本轮结束</p> -->
+      <p>{{inProgress ? '距下轮开始' : '距本轮结束'}}</p>
       <p><span>{{countDown | timeArry(0)}}</span> : <span>{{countDown | timeArry(1)}}</span> : <span>{{countDown | timeArry(2)}}</span></p>
       <p><span>剩余金条</span></p>
       <p>{{remainder}}</p>
-      <div :class="{'snatching' : countDown === 0 && remainder !== 0 && !robbed}" @click="robbingGold()">{{countDown !== 0 ? '未开始' : (remainder === 0 ? '已抢光' : (robbed ? '已抢过' : '抢'))}}</div>
+      <div :class="{'snatching' : countDown > 0 && remainder !== 0 && !robbed}" @click="robbingGold()">{{countDown <= 0 ? '已结束' : (remainder === 0 ? '已抢光' : (robbed ? '已抢过' : '抢'))}}</div>
     </div>
     <div class="description">
       <p>活动规则</p>
@@ -27,11 +26,12 @@
       </div>
     </div>
     <div class="mask" v-show="showMask">
-      <div class="tip">
+      <div class="tip" v-if="!modalEnd">
         <p><img src="../../../../images/bounty-plan/money_reward_icon2.png" alt="" width="23%">恭喜您！</p>
         <p>成功抢到{{randomNumber}}个金条！</p>
         <p @click="showMask = false">知道啦</p>
       </div>
+      <div v-else class="activityEnd">本轮活动已结束</div>
     </div>  
   </div>
 </template>
@@ -51,6 +51,8 @@
         robbed: false,
         timer2: null,
         boxHeight: 3.6, // 滚动区域高度(li高度0.6rem,倍数)
+        modalEnd: false,
+        inProgress: false, //活动进行中但已抢完
         record: [
           {
             imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
@@ -123,6 +125,12 @@
     watch: {
       showMask: function (newVal, oldVal) {
         newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
+      },
+      countDown: function () {
+        if(this.countDown === 0){
+          this.showMask = true
+          this.modalEnd = true
+        }
       }
     },
     mounted() {
@@ -153,7 +161,7 @@
       },
       robbingGold () {
         var that = this
-        if(that.countDown === 0 && that.remainder !== 0 && !that.robbed){
+        if(that.countDown > 0 && that.remainder !== 0 && !that.robbed){
           that.remainder = that.remainder - that.randomNumber
           that.robbed = true
           that.showMask = true
@@ -370,5 +378,9 @@
     justify-content: center;
     height: 1.6rem;
     background: #fff;
+  }
+  .activityEnd{
+    @include sc(.2rem, #fff);
+    text-align: center;
   }
 </style>
