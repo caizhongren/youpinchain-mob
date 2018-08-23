@@ -1,6 +1,5 @@
 <template>
   <div class="task">
-    <!-- <img src="../../../../images/bounty-plan/jian-bg.png" alt="" width="100%"> -->
     <div class="activity_detail">
       <p>距下轮开始</p>
       <!-- <p>距本轮结束</p> -->
@@ -15,17 +14,17 @@
     </div>
     <div class="record_detail">
       <p class="title">金条记录</p>
-      <ul>
-        <li v-for="item in record">
-          <div>
-            <img :src="item.imgUrl" alt="">
-            <span>{{item.nickname}}</span>
-          </div>
-          <div>{{item.detail}}</div>
-        </li>
-        <p @click="loadMore" v-show="page < totalPages" class="loadMore">加载更多</p>
-        <li v-if="record.length <= 0" class="no_record">暂无记录</li>
-      </ul>
+      <div class="lucky_box">
+        <ul class="lucky-users-box">
+          <li v-for="item in record">
+            <div>
+              <img :src="item.imgUrl" alt="">
+              <span>{{item.nickname}}</span>
+            </div>
+            <div>{{item.detail}}</div>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="mask" v-show="showMask">
       <div class="tip">
@@ -38,39 +37,96 @@
 </template>
 <script>
   import { goldDrill, bullion } from '../../../../service/getData'
+  import { ModalHelper } from '../../../../service/Utils'
   export default {
     data () {
       return {
-        page: 1,
-        size: 10,
         goldData: {},
         record: [],
-        totalPages: 0,
         remainder: 500,
         countDown: 10000,
         timer: null,
         showMask: false,
         randomNumber: 20,
         robbed: false,
+        timer2: null,
+        boxHeight: 3.6, // 滚动区域高度(li高度0.6rem,倍数)
         record: [
           {
             imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: 'Petite mignonne',
+            nickname: '1',
             detail: '+10'
           },
           {
             imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: 'Petite mignonne',
+            nickname: '2 ',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '3',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '4 mignonne',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '5',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '6 mignonne',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '7 mignonne',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '8',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '9',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '10',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '11',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '12',
+            detail: '+10'
+          },
+          {
+            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
+            nickname: '13',
             detail: '+10'
           }
         ]
       }
     },
     watch: {
-
+      showMask: function (newVal, oldVal) {
+        newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
+      }
     },
     mounted() {
-      
+      this.luckyTimer(-this.boxHeight)
     },
     created() {
       this.getActDetail()
@@ -79,7 +135,7 @@
       getActDetail () {
         var that = this
         // goldDrill(page, size).then(function (res) {
-          
+          // this.luckyTimer(-this.boxHeight)
         // })
         if(that.countDown){
           that.timer = setInterval(function () {
@@ -95,39 +151,47 @@
           },1000)
         }
       },
-      setRecord (res) {
-        this.goldData = res.data
-        this.totalPages = res.data.totalPages
-        if (!this.goldData.record) return
-        for (var i = 0; i < this.goldData.record.length; i++){
-          this.record.push(this.goldData.record[i])
-        }
-      },
-      getRecord (page, size) {
-        var that = this
-        goldDrill(page, size).then(function (res) {
-          that.setRecord(res)
-        })
-      },
-      loadMore (type) {
-        var that = this
-        that.page += 1
-        if(that.page > that.totalPages){
-          return
-        }
-        that.getRecord(that.page, that.size)
-      },
       robbingGold () {
         var that = this
         if(that.countDown === 0 && that.remainder !== 0 && !that.robbed){
           that.remainder = that.remainder - that.randomNumber
-          that.robbed =true
+          that.robbed = true
           that.showMask = true
         } else {
           return
         }
+      },
+      luckyTimer: function (val) {
+        var that = this
+        var count = 0
+        var $luckyUsersList = document.querySelector('.lucky-users-box')
+        var $ulBox = document.querySelector('.lucky-users-box')
+        var totalHeight = -0.6 * this.record.length
+        if(totalHeight < -that.boxHeight){
+          that.timer2 = setInterval(function () {
+            if (totalHeight >= (count + 1) * -that.boxHeight && val !== 0) {
+              count = 0
+              val = 0
+              $luckyUsersList.classList.remove('animate')
+              $luckyUsersList.style.webkitTransform = 'translateY(0rem)'
+            } else {
+              count += 1
+              $luckyUsersList.className += ' animate'
+              if(totalHeight >= (count + 1) * -that.boxHeight){
+                $luckyUsersList.style.webkitTransform = 'translateY(' + (totalHeight + that.boxHeight) + 'rem)'
+              } else{
+                $luckyUsersList.style.webkitTransform = 'translateY(' + val + 'rem)'
+              }
+            }
+            val -= that.boxHeight
+          }, 5000)
+        }
       }
     },
+    destroyed () {
+      clearInterval(this.timer)
+      clearInterval(this.timer2)
+    }
   }
 </script>
 <style lang="scss" scoped>
@@ -223,6 +287,16 @@
     background: #fff;
     color: #666666;
   }
+  .record_detail{
+    .lucky_box{
+      height: 3.6rem;
+      overflow-y: hidden;
+      position: relative;
+      .lucky-users-box.animate{
+        transition: 1s all ease-in-out;
+      }
+    }
+  }
   .description p{
     font-size: .13rem;
     padding: .15rem .12rem .2rem .12rem;
@@ -244,7 +318,7 @@
     padding-left: .12rem;
   }
   .record_detail ul{
-    padding-bottom: 1rem;
+    //padding-bottom: 1rem;
     background: #efeff4;
   }
   .record_detail li{
