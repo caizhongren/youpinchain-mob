@@ -188,15 +188,16 @@
                         //拿到时间差作为时间标记（行走时间）
                         var diff_time = Math.floor((end_time - start_time));
                         //创建时间减去行走时间
-                        var cut_time= that.pickGolds.countDow - diff_time;
-                        if(cut_time >= 1){
+                        var cut_time= that.pickGolds.countDown - Math.floor(diff_time / 1000);
+                        // alert(cut_time)
+                        if(cut_time >= -1){
                             that.pickGolds.countDown -= 1
                             if(that.pickGolds.countDown < 1){
                                 that.pickGolds.countDown = 0
                             }
                         } else {
-                            clearInterval(that.timer)
                             that.getActInfo()
+                            clearInterval(that.timer)
                             return
                         }
                     },1000)

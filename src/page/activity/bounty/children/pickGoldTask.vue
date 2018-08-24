@@ -51,7 +51,8 @@
         inProgress: false, //活动进行中但已抢完
         actDetail: {},
         showDocument: false,
-        countDown: null
+        countDown: null,
+        busy: false
       }
     },
     watch: {
@@ -102,6 +103,13 @@
       },
       robbingGold () {
         var that = this
+        if (that.busy) {
+          return
+        }
+        that.busy = true
+        setTimeout(function () {
+          that.busy = false
+        }, 2000)
         if(that.actDetail.state === 2 && that.countDown > 0 && that.actDetail.surplus !== 0 && !that.actDetail.partake){
           robGold(that.$route.params.id).then(function(res){
             that.randomNumber = res.data
