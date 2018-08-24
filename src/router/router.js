@@ -139,7 +139,7 @@ export default [{
                     meta: {title: '淘金任务'}
                 }, 
                 {
-                    path: 'PickGoldTask',
+                    path: 'PickGoldTask/:id',
                     component: PickGoldTask,
                     name: 'PickGoldTask',
                     meta: {title: '拣金任务'}

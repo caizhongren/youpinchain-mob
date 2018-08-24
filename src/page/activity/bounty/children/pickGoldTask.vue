@@ -1,11 +1,11 @@
 <template>
-  <div class="task">
+  <div class="task" v-if="showDocument">
     <div class="activity_detail">
-      <p>{{inProgress ? '距下轮开始' : '距本轮结束'}}</p>
+      <p>{{actDetail.state === 2 && actDetail.surplus === 0 ? '距下轮开始' : '距本轮结束'}}</p>
       <p><span>{{countDown | timeArry(0)}}</span> : <span>{{countDown | timeArry(1)}}</span> : <span>{{countDown | timeArry(2)}}</span></p>
       <p><span>剩余金条</span></p>
-      <p>{{remainder}}</p>
-      <div :class="{'snatching' : countDown > 0 && remainder !== 0 && !robbed}" @click="robbingGold()">{{countDown <= 0 ? '已结束' : (remainder === 0 ? '已抢光' : (robbed ? '已抢过' : '抢'))}}</div>
+      <p>{{actDetail.surplus}}</p>
+      <div :class="{'snatching' : countDown > 0 && actDetail.surplus !== 0 && !actDetail.partake}" @click="robbingGold()">{{countDown <= 0 ? '已结束' : (actDetail.surplus === 0 ? '已抢光' : (actDetail.partake ? '已抢过' : '抢'))}}</div>
     </div>
     <div class="description">
       <p>活动规则</p>
@@ -15,12 +15,13 @@
       <p class="title">金条记录</p>
       <div class="lucky_box">
         <ul class="lucky-users-box">
-          <li v-for="item in record">
+          <li style="text-align:center;display:block;line-height:.6rem;" v-if="!actDetail.pickGoldRecord.length">暂无记录</li>
+          <li v-for="item in actDetail.pickGoldRecord">
             <div>
-              <img :src="item.imgUrl" alt="">
-              <span>{{item.nickname}}</span>
+              <img :src="item.headImgUrl" alt="">
+              <span>{{item.nickName}}</span>
             </div>
-            <div>{{item.detail}}</div>
+            <div>+{{item.amount}}</div>
           </li>
         </ul>
       </div>
@@ -28,7 +29,7 @@
     <div class="mask" v-show="showMask">
       <div class="tip" v-if="!modalEnd">
         <p><img src="../../../../images/bounty-plan/money_reward_icon2.png" alt="" width="23%">恭喜您！</p>
-        <p>成功抢到{{randomNumber}}个金条！</p>
+        <p>成功抢到{{randomNumber || 0}}个金条！</p>
         <p @click="showMask = false">知道啦</p>
       </div>
       <div v-else class="activityEnd">本轮活动已结束</div>
@@ -36,90 +37,22 @@
   </div>
 </template>
 <script>
-  import { goldDrill, bullion } from '../../../../service/getData'
+  import { pickGoldDetail, robGold } from '../../../../service/getData'
   import { ModalHelper } from '../../../../service/Utils'
   export default {
     data () {
       return {
-        goldData: {},
-        record: [],
-        remainder: 500,
-        countDown: 10000,
         timer: null,
-        showMask: false,
-        randomNumber: 20,
-        robbed: false,
         timer2: null,
-        boxHeight: 3.6, // 滚动区域高度(li高度0.6rem,倍数)
+        showMask: false,
+        randomNumber: null,
+        robbed: false,
+        boxHeight: 3, // 滚动区域高度(li高度0.6rem,倍数)
         modalEnd: false,
         inProgress: false, //活动进行中但已抢完
-        record: [
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '1',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '2 ',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '3',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '4 mignonne',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '5',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '6 mignonne',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '7 mignonne',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '8',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '9',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '10',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '11',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '12',
-            detail: '+10'
-          },
-          {
-            imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJEKkORcoT4TWW6pYdUU5Dl31FDCGslibmQzqQ4BN2bHRPFXar0ySzduFzGhs1n7CkiaibQsiaia2vNtkA/132',
-            nickname: '13',
-            detail: '+10'
-          }
-        ]
+        actDetail: {},
+        showDocument: false,
+        countDown: null
       }
     },
     watch: {
@@ -134,22 +67,31 @@
       }
     },
     mounted() {
-      this.luckyTimer(-this.boxHeight)
+      this.getActDetail()
     },
     created() {
-      this.getActDetail()
     },
     methods: {
       getActDetail () {
         var that = this
-        // goldDrill(page, size).then(function (res) {
-          // this.luckyTimer(-this.boxHeight)
-        // })
+        pickGoldDetail(1,100,that.$route.params.id).then(function(res){
+          that.showDocument = true
+          that.actDetail = res.data
+          that.countDown = res.data.countDown
+          clearInterval(that.timer)
+          setTimeout(function() {
+            that.luckyTimer(-that.boxHeight)
+          }, 100)
+          that.computeNumber()
+        })
+      },
+      computeNumber () {
+        var that = this
         if(that.countDown){
-          that.timer = setInterval(function () {
-            if(that.countDown >= 1000){
-              that.countDown -= 1000
-              if(that.countDown < 1000){
+          this.timer = setInterval(function () {
+            if(that.countDown >= 1){
+              that.countDown -= 1
+              if(that.countDown < 1){
                 that.countDown = 0
               }
             } else {
@@ -161,8 +103,11 @@
       },
       robbingGold () {
         var that = this
-        if(that.countDown > 0 && that.remainder !== 0 && !that.robbed){
-          that.remainder = that.remainder - that.randomNumber
+        if(that.countDown > 0 && that.actDetail.surplus !== 0 && !actDetail.partake){
+          robGold(that.$route.params.id).then(function(res){
+            that.randomNumber = res.data
+          })
+          that.getActDetail()
           that.robbed = true
           that.showMask = true
         } else {
@@ -174,7 +119,8 @@
         var count = 0
         var $luckyUsersList = document.querySelector('.lucky-users-box')
         var $ulBox = document.querySelector('.lucky-users-box')
-        var totalHeight = -0.6 * this.record.length
+        console.log(document.querySelector('.lucky-users-box'))
+        var totalHeight = -0.6 * that.actDetail.pickGoldRecord.length
         if(totalHeight < -that.boxHeight){
           that.timer2 = setInterval(function () {
             if (totalHeight >= (count + 1) * -that.boxHeight && val !== 0) {
@@ -260,7 +206,7 @@
     }
     .mask{
       @include wh(100%,100%);
-      background: rgb(0,0,0);
+      background: rgba(0, 0, 0, .9);
       position: absolute;
       top: 0;
       left: 0;
@@ -298,7 +244,7 @@
   }
   .record_detail{
     .lucky_box{
-      height: 3.6rem;
+      height: 3rem;
       overflow-y: hidden;
       position: relative;
       .lucky-users-box.animate{
