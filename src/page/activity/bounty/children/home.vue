@@ -43,7 +43,7 @@
             <ul class="task_jian_list">
                 <li :class="{'active': index === activeTab}" v-for="(item, index) in data.pickGolds" :key="index" @click="toggleTab(index)">
                     <p>{{item.startTime.substr(-8,5)}}</p>
-                    <p>{{item.state === 1 ? '即将开始' : item.state === 2 ? '正在疯抢' : '今日已结束'}}</p>
+                    <p>{{item.state === 1 ? '即将开始' : item.state === 2 ? '正在疯抢' : item.state === 3 ? '今日已结束' : ''}}</p>
                 </li>
             </ul>
             <div class="task_jian_content">
@@ -199,10 +199,8 @@
                 }
                 that.activeTab = index;
                 clearInterval(that.timer)
-                bountyHome().then(res => {
-                    that.pickGolds = that.data.pickGolds[index]
-                    that.pickGolds.state !== 3 ? that.countDown() : null
-                })
+                that.pickGolds = that.data.pickGolds[index]
+                that.pickGolds.state !== 3 ? that.countDown() : null
             },
             toTaskDeatil (pickGolds) {
                 if (pickGolds.state === 1 || pickGolds.state === 3) {
