@@ -206,6 +206,7 @@
                 clearInterval(that.timer)
                 update ? 
                 bountyHome().then(res => {
+                    that.data.pickGolds = res.data.pickGolds
                     that.pickGolds = res.data.pickGolds[index]
                     that.pickGolds.state !== 3 ? that.countDown() : null
                 }) : null
