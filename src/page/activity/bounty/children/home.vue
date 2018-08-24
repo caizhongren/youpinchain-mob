@@ -41,9 +41,9 @@
         <div class="task_box marg-t-15">
             <p class="task_title">拣金任务</p>
             <ul class="task_jian_list">
-                <li :class="{'active': index === activeTab}" v-for="(item, index) in data.pickGolds" :key="index" @click="toggleTab(index)">
+                <li :class="{'active': index === activeTab}" v-for="(item, index) in data.pickGolds" :key="index" @click="toggleTab(index, 1)">
                     <p>{{item.startTime.substr(-8,5)}}</p>
-                    <p>{{item.state === 1 ? '即将开始' : item.state === 2 ? '正在疯抢' : '今日已结束'}}</p>
+                    <p>{{item.state === 1 ? '即将开始' : item.state === 2 ? '正在疯抢' : item.state === 3 ? '今日已结束' : ''}}</p>
                 </li>
             </ul>
             <div class="task_jian_content">
@@ -163,13 +163,18 @@
                     }
                     that.showDocument = true
                     if (res.data.pickGolds[0].state === 3 && res.data.pickGolds[1].state === 3) {
-                        that.toggleTab(2)
+                        that.setPickGolds(2, res.data.pickGolds)
                     } else if (res.data.pickGolds[0].state !== 3) {
-                        that.toggleTab(0)
+                        that.setPickGolds(0, res.data.pickGolds)
                     } else {
-                        that.toggleTab(1)
+                        that.setPickGolds(1, res.data.pickGolds)
                     }
                 })
+            },
+            setPickGolds (index, pickGolds) {
+                this.toggleTab(index)
+                this.pickGolds = pickGolds[index]
+                this.pickGolds.state !== 3 ? this.countDown() : null
             },
             countDown () {
                 var that = this
@@ -192,17 +197,18 @@
                 val > 10000 ? val = Math.round(val / 10000 * 100) / 100 + '万' : val = val
                 return val
             },
-            toggleTab (index) {
+            toggleTab (index, update) {
                 var that = this
                 if (that.activeTab === index) {
                     return;
                 }
                 that.activeTab = index;
                 clearInterval(that.timer)
+                update ? 
                 bountyHome().then(res => {
-                    that.pickGolds = that.data.pickGolds[index]
+                    that.pickGolds = res.data.pickGolds[index]
                     that.pickGolds.state !== 3 ? that.countDown() : null
-                })
+                }) : null
             },
             toTaskDeatil (pickGolds) {
                 if (pickGolds.state === 1 || pickGolds.state === 3) {
