@@ -53,7 +53,7 @@
                 <div class="right">
                     <p class="reward" v-show="pickGolds.state !== 3">{{pickGolds.amount}}金条</p>
                     <p class="btn" @click="toTaskDeatil(pickGolds)" :class="{'active': pickGolds.state === 2, 'marg-t-15': pickGolds.state === 3}">{{pickGolds.state === 1 ? '即将开始' : pickGolds.state === 2 ? '立即参与' : pickGolds.state === 3 ? '本场已结束' : '已抢光'}}</p>
-                    <div class="time" v-if="pickGolds.state === 1 || pickGolds.state === 2">
+                    <div class="time" v-show="pickGolds.state === 1 || pickGolds.state === 2">
                         距{{pickGolds.state === 1 ? '开始' : '结束'}} &nbsp;&nbsp;
                         <span>{{pickGolds.countDown | timeArry(0)}}</span> :
                         <span>{{pickGolds.countDown | timeArry(1)}}</span> :
@@ -98,6 +98,7 @@
 </template>
 <script>
     import { bountyHome } from '../../../../service/getData'
+    import { ModalHelper } from '../../../../service/Utils'
     export default {
         data () {
             return {
@@ -138,26 +139,12 @@
             }
         },
         watch: {
-
+            showMask: function (newVal, oldVal) {
+                newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
+            },
         },
         mounted() {
-            //获取首页信息
-            var that = this
-            bountyHome().then(res => {
-                that.data = res.data
-                that.data.waiter = res.data.waiter
-                that.data.signInNow = {
-                    day: res.data.signInNow ? res.data.signInNow.day : 1
-                }
-                that.showDocument = true
-                if (that.data.pickGolds[0].state === 3 && that.data.pickGolds[1].state === 3) {
-                    this.toggleTab(2)
-                } else if (that.data.pickGolds[0].state !== 3) {
-                    this.toggleTab(0)
-                } else {
-                    this.toggleTab(1)
-                }
-            })
+            this.getActInfo()
         },
         created() {
             // this.canTakeCount = this.unTakeRewardsList.length
@@ -165,6 +152,25 @@
             // this.circleAnimate(this.canTakeCount)
         },
         methods: {
+            getActInfo () {
+                //获取首页信息
+                var that = this
+                bountyHome().then(res => {
+                    that.data = res.data
+                    that.data.waiter = res.data.waiter
+                    that.data.signInNow = {
+                        day: res.data.signInNow ? res.data.signInNow.day : 1
+                    }
+                    that.showDocument = true
+                    if (res.data.pickGolds[0].state === 3 && res.data.pickGolds[1].state === 3) {
+                        that.toggleTab(2)
+                    } else if (res.data.pickGolds[0].state !== 3) {
+                        that.toggleTab(0)
+                    } else {
+                        that.toggleTab(1)
+                    }
+                })
+            },
             countDown () {
                 var that = this
                 if(that.pickGolds.countDown){
@@ -176,37 +182,33 @@
                             }
                         } else {
                             clearInterval(that.timer)
-                            bountyHome().then(res => {
-                                that.data = res.data
-                                that.pickGolds = that.data.pickGolds[index];
-                            })
+                            that.getActInfo()
                             return
                         }
                     },1000)
                 }
             },
             calculate: function (val) {
-                val > 10000 ? val = Math.round(val / 10000 * 100) / 100 + '万' : val = val;
+                val > 10000 ? val = Math.round(val / 10000 * 100) / 100 + '万' : val = val
                 return val
             },
             toggleTab (index) {
-                if (this.activeTab === index) {
+                var that = this
+                if (that.activeTab === index) {
                     return;
                 }
-                this.activeTab = index;
-                clearInterval(this.timer)
-                var that = this
+                that.activeTab = index;
+                clearInterval(that.timer)
                 bountyHome().then(res => {
-                    that.data = res.data
-                    that.pickGolds = that.data.pickGolds[index];
-                    that.pickGolds.state !== 3 ? that.countDown() : null;
+                    that.pickGolds = that.data.pickGolds[index]
+                    that.pickGolds.state !== 3 ? that.countDown() : null
                 })
             },
             toTaskDeatil (pickGolds) {
                 if (pickGolds.state === 1 || pickGolds.state === 3) {
                     return
                 }
-                this.$router.push({name: 'PickGoldTask', params: {id: pickGolds.id}});
+                this.$router.push({name: 'PickGoldTask', params: {id: pickGolds.id}})
             },
             circleAnimate (canTakeCount) { // 金币上下跳动动画
                 if (canTakeCount <= 0 || this.canTakeCount <= 0) {
@@ -304,11 +306,11 @@
         background: $bc;
         .top_header {
            padding: .22rem .2rem;
-        //    @include wh(100%, 3.717rem);
+           // @include wh(100%, 3.717rem);
            @include wh(100%, 1.73rem);
            background-position-y: -1px;
            position: relative;
-        //    @include bis('../../../../images/bounty-plan/starry_sky_bg3.png');
+           // @include bis('../../../../images/bounty-plan/starry_sky_bg3.png');
            @include bis('../../../../images/bounty-plan/starry_sky_bg0.png');
            .user_icon {
                @include wh(.27rem, .27rem);
@@ -324,7 +326,7 @@
                @include wh(2.25rem, .325rem);
                background: rgba(255, 255, 255, 0.4);
                color: $fc;
-               p {
+                p {
                    display: inline-block;
                    letter-spacing: 0.1px;
                    font-size: .11rem;
@@ -461,8 +463,9 @@
             }
         }
         .showMask{
-            position: absolute;
+            position: fixed;
             top: 0;
+            bottom: 0;
             @include wh(100%, 100vh);
             background: rgba(0, 0, 0, .8);
             .sign_in{
