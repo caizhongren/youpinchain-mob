@@ -98,9 +98,9 @@ let timeformat = number => {
   return number.split('T')[0].split('-').join('.') + ' ' + number.split('T')[1].split(':')[0] + ':' + number.split('T')[1].split(':')[1]
 }
 let timeArry = (number,index) => {
-  var hours = Math.floor(number / 1000 / 60 / 60)
-  var minutes = Math.floor((number - hours * 60 * 60 * 1000) / 1000 / 60)
-  var seconds = Math.floor((number - hours * 60 * 60 * 1000 - minutes * 60 * 1000) / 1000)
+  var hours = Math.floor(number / 60 / 60)
+  var minutes = Math.floor((number - hours * 60 * 60) / 60)
+  var seconds = Math.floor((number - hours * 60 * 60 - minutes * 60))
   var arry = []
   hours < 10 ? hours = '0' + hours : null
   minutes < 10 ? minutes = '0' + minutes : null

@@ -52,7 +52,7 @@
                 </div>
                 <div class="right">
                     <p class="reward" v-show="pickGolds.state !== 3">{{pickGolds.amount}}金条</p>
-                    <p class="btn" @click="toTaskDeatil" :class="{'active': pickGolds.state === 2, 'marg-t-15': pickGolds.state === 3}">{{pickGolds.state === 1 ? '即将开始' : pickGolds.state === 2 ? '立即参与' : pickGolds.state === 3 ? '本场已结束' : '已抢光'}}</p>
+                    <p class="btn" @click="toTaskDeatil(pickGolds)" :class="{'active': pickGolds.state === 2, 'marg-t-15': pickGolds.state === 3}">{{pickGolds.state === 1 ? '即将开始' : pickGolds.state === 2 ? '立即参与' : pickGolds.state === 3 ? '本场已结束' : '已抢光'}}</p>
                     <div class="time" v-if="pickGolds.state === 1 || pickGolds.state === 2">
                         距{{pickGolds.state === 1 ? '开始' : '结束'}} &nbsp;&nbsp;
                         <span>{{pickGolds.countDown | timeArry(0)}}</span> :
@@ -104,34 +104,34 @@
                 showDocument: false,
                 showMask: false,
                 data: {},
-                activeTab: 0,
+                activeTab: -1,
                 pickGolds: {},
                 rewardList: [],
                 unTakeRewardsList: [
-                    {
-                        reward: 0.02,
-                        type: 1
-                    },
-                    {
-                        reward: 0.1,
-                        type: 0
-                    },
-                    {
-                        reward: 1,
-                        type: 1
-                    },
-                    {
-                        reward: 6,
-                        type: 1
-                    },
-                    {
-                        reward: 6,
-                        type: 0
-                    },
-                    {
-                        reward: 6,
-                        type: 0
-                    }
+                    // {
+                    //     reward: 0.02,
+                    //     type: 1
+                    // },
+                    // {
+                    //     reward: 0.1,
+                    //     type: 0
+                    // },
+                    // {
+                    //     reward: 1,
+                    //     type: 1
+                    // },
+                    // {
+                    //     reward: 6,
+                    //     type: 1
+                    // },
+                    // {
+                    //     reward: 6,
+                    //     type: 0
+                    // },
+                    // {
+                    //     reward: 6,
+                    //     type: 0
+                    // }
                 ],
                 canTakeCount: 0,
                 timer: null
@@ -160,22 +160,26 @@
             })
         },
         created() {
-            this.canTakeCount = this.unTakeRewardsList.length
-            this.setProportion(this.canTakeCount,this.unTakeRewardsList)
-            this.circleAnimate(this.canTakeCount)
+            // this.canTakeCount = this.unTakeRewardsList.length
+            // this.setProportion(this.canTakeCount,this.unTakeRewardsList)
+            // this.circleAnimate(this.canTakeCount)
         },
         methods: {
             countDown () {
                 var that = this
                 if(that.pickGolds.countDown){
                     that.timer = setInterval(function () {
-                        if(that.pickGolds.countDown >= 1000){
-                            that.pickGolds.countDown -= 1000
-                            if(that.pickGolds.countDown < 1000){
+                        if(that.pickGolds.countDown >= 1){
+                            that.pickGolds.countDown -= 1
+                            if(that.pickGolds.countDown < 1){
                                 that.pickGolds.countDown = 0
                             }
                         } else {
                             clearInterval(that.timer)
+                            bountyHome().then(res => {
+                                that.data = res.data
+                                that.pickGolds = that.data.pickGolds[index];
+                            })
                             return
                         }
                     },1000)
@@ -186,6 +190,9 @@
                 return val
             },
             toggleTab (index) {
+                if (this.activeTab === index) {
+                    return;
+                }
                 this.activeTab = index;
                 clearInterval(this.timer)
                 var that = this
@@ -195,11 +202,11 @@
                     that.pickGolds.state !== 3 ? that.countDown() : null;
                 })
             },
-            toTaskDeatil () {
-                if (this.pickGolds.state === 1 || this.pickGolds.state === 3) {
+            toTaskDeatil (pickGolds) {
+                if (pickGolds.state === 1 || pickGolds.state === 3) {
                     return
                 }
-                this.$router.push({name: 'PickGoldTask'});
+                this.$router.push({name: 'PickGoldTask', params: {id: pickGolds.id}});
             },
             circleAnimate (canTakeCount) { // 金币上下跳动动画
                 if (canTakeCount <= 0 || this.canTakeCount <= 0) {
@@ -242,16 +249,6 @@
                     let maxTreeY = 80
                     let treeX = Math.floor(Math.random() * (maxTreeX - minTreeX)) + minTreeX
                     let treeY = Math.floor(Math.random() * (maxTreeY - minTreeY)) + minTreeY
-                    // console.log('(' + treeX + ',' + treeY + ')')
-                    // 不种植的区域排除掉 上半截树斜对角坐标 （vacantStartX, vacantStartY）,(vacantEndX, vacantEndY)
-                    // let vacantStartX = 15
-                    // let vacantEndX = 75
-                    // let vacantStartY = 10
-                    // let vacantEndY = 72
-                    // if ((treeX >= vacantStartX && treeX <= vacantEndX && treeY >= vacantStartY && treeY <= vacantEndY) || (treeX >= 63 && treeY <= 20)) {
-                    //     // 如果在不种植区则跳过后续操作
-                    //     continue
-                    // }
                     if (position[treeX][treeY].isPlanted === 1) {
                         // 如果该位置已经植入树木则跳过后续操作
                         continue
@@ -307,10 +304,12 @@
         background: $bc;
         .top_header {
            padding: .22rem .2rem;
-           @include wh(100%, 3.717rem);
+        //    @include wh(100%, 3.717rem);
+           @include wh(100%, 1.73rem);
            background-position-y: -1px;
            position: relative;
-           @include bis('../../../../images/bounty-plan/starry_sky_bg3.png');
+        //    @include bis('../../../../images/bounty-plan/starry_sky_bg3.png');
+           @include bis('../../../../images/bounty-plan/starry_sky_bg0.png');
            .user_icon {
                @include wh(.27rem, .27rem);
                @include bis('../../../../images/bounty-plan/user_icon.png');
@@ -340,7 +339,8 @@
             .text {
                 text-align: center;
                 @include sc(.3rem, $fc);
-                margin-top: 1.2rem;
+                margin-top: .25rem;
+                // margin-top: 1.2rem;
             }
             .animate {
                 -webkit-transition:all 1s ease-in-out;
