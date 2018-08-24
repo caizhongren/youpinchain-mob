@@ -470,6 +470,7 @@
         }
         .showMask{
             position: fixed;
+            z-index: 999;
             top: 0;
             bottom: 0;
             @include wh(100%, 100vh);
