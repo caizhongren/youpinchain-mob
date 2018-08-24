@@ -46,7 +46,6 @@
         timer2: null,
         showMask: false,
         randomNumber: null,
-        robbed: false,
         boxHeight: 3, // 滚动区域高度(li高度0.6rem,倍数)
         modalEnd: false,
         inProgress: false, //活动进行中但已抢完
@@ -103,7 +102,7 @@
       },
       robbingGold () {
         var that = this
-        if(that.countDown > 0 && that.actDetail.surplus !== 0 && !actDetail.partake){
+        if(that.countDown > 0 && that.actDetail.surplus !== 0 && !that.actDetail.partake){
           robGold(that.$route.params.id).then(function(res){
             that.randomNumber = res.data
           })
@@ -119,7 +118,7 @@
         var count = 0
         var $luckyUsersList = document.querySelector('.lucky-users-box')
         var $ulBox = document.querySelector('.lucky-users-box')
-        console.log(document.querySelector('.lucky-users-box'))
+        // console.log(document.querySelector('.lucky-users-box'))
         var totalHeight = -0.6 * that.actDetail.pickGoldRecord.length
         if(totalHeight < -that.boxHeight){
           that.timer2 = setInterval(function () {
