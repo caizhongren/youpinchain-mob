@@ -9,7 +9,7 @@
     </div>
     <div class="description">
       <p>活动规则</p>
-      <p>捡金任务是每天10:00—10：30、16:00—16:30、20:00—20:30三个时间段内，分别派送5000个金条奖池，居民在活动时间内随机领取一定数量的金条。若活动中奖池被领空则该段时间活动结束。某段时间活动结束后奖池剩余不计入下场活动奖池中。</p>
+      <p>捡金任务是每天10:00—10:30、16:00—16:30、20:00—20:30三个时间段内，分别派送5000个金条奖池，居民在活动时间内随机领取一定数量的金条。若活动中奖池被领空则该段时间活动结束。某段时间活动结束后奖池剩余不计入下场活动奖池中。</p>
     </div>
     <div class="record_detail">
       <p class="title">金条记录</p>
@@ -115,12 +115,12 @@
         }, 2000)
         if(that.actDetail.state === 2 && that.countDown > 0 && that.actDetail.surplus !== 0 && !that.actDetail.partake){
           robGold(that.$route.params.id).then(function(res){
-            if (res && res.ret !== -1) {
+            if (res && res.errno === 0) {
               that.randomNumber = res.data
               that.getActDetail()
               that.showMask = true
             } else {
-              alert(res.msg)
+              alert(res.errmsg)
             }
           })
         } else {
