@@ -52,7 +52,7 @@
                 </div>
                 <div class="right">
                     <p class="reward" v-show="pickGolds.state !== 3">{{pickGolds.amount}}金条</p>
-                    <p class="btn" @click="toTaskDeatil(pickGolds)" :class="{'active': pickGolds.state === 2, 'marg-t-15': pickGolds.state === 3}">{{pickGolds.state === 1 ? '即将开始' : pickGolds.state === 2 ? '立即参与' : pickGolds.state === 3 ? '本场已结束' : '已抢光'}}</p>
+                    <p class="btn" @click="toTaskDeatil(pickGolds)" :class="{'active': pickGolds.state === 2, 'marg-t-15': pickGolds.state === 3}">{{pickGolds.state === 1 ? '即将开始' : pickGolds.state === 2 && pickGolds.amount > 0 ? '立即参与' : pickGolds.state === 3 ? '本场已结束' : pickGolds.state === 2 && pickGolds.amount <= 0 ? '已抢光' : ''}}</p>
                     <div class="time" v-show="pickGolds.state === 1 || pickGolds.state === 2">
                         距{{pickGolds.state === 1 ? '开始' : '结束'}} &nbsp;&nbsp;
                         <span>{{pickGolds.countDown | timeArry(0)}}</span> :

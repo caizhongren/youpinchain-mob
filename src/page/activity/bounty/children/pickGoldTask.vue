@@ -26,10 +26,10 @@
         </ul>
       </div>
     </div>
-    <div class="mask" v-show="showMask">
+    <div class="mask" v-show="showMask" v-client-height>
       <div class="tip" v-if="!modalEnd">
         <p><img src="../../../../images/bounty-plan/money_reward_icon2.png" alt="" width="23%">恭喜您！</p>
-        <p v-if="randomNumber">成功抢到{{randomNumber}}个金条！</p>
+        <p>成功抢到{{randomNumber}}个金条！</p>
         <p @click="showMask = false">知道啦</p>
       </div>
       <div v-else class="activityEnd">本轮活动已结束</div>
@@ -48,7 +48,6 @@
         randomNumber: null,
         boxHeight: 3, // 滚动区域高度(li高度0.6rem,倍数)
         modalEnd: false,
-        inProgress: false, //活动进行中但已抢完
         actDetail: {},
         showDocument: false,
         countDown: null,
@@ -217,7 +216,7 @@
       }
     }
     .mask{
-      @include wh(100%,100%);
+      @include wh(100%,auto);
       background: rgba(0, 0, 0, .9);
       position: absolute;
       top: 0;
