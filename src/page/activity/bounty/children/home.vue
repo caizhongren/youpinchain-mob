@@ -178,6 +178,7 @@
             },
             countDown () {
                 var that = this
+                var time = that.pickGolds.countDown
                 var start_time = new Date();
                 var start_time = start_time.getTime(); //获取开始时间的毫秒数
                 if(that.pickGolds.countDown){
@@ -185,16 +186,16 @@
                         //倒计时实时结束时间
                         var end_time = new Date();
                         end_time = end_time.getTime();
+                        var diff_time = Math.floor((end_time - start_time) / 1000);
                         //拿到时间差作为时间标记（行走时间）
-                        var diff_time = Math.floor((end_time - start_time));
-                        //创建时间减去行走时间
-                        var cut_time= that.pickGolds.countDown - Math.floor(diff_time / 1000);
-                        // alert(cut_time)
-                        if(cut_time >= -1){
-                            that.pickGolds.countDown -= 1
-                            if(that.pickGolds.countDown < 1){
-                                that.pickGolds.countDown = 0
+                        document.addEventListener('visibilitychange',function() {
+                            if(document.visibilityState=='visible') {
+                                that.pickGolds.countDown = time - diff_time
+                            } else {
                             }
+                        })
+                        if(that.pickGolds.countDown > 0){
+                            that.pickGolds.countDown -= 1
                         } else {
                             that.getActInfo()
                             clearInterval(that.timer)
