@@ -295,3 +295,18 @@ export const goldDrill = (page, size) => fetch('/act/bounty/home/goldDrill', {
 	page: page,
 	size: size
 });
+
+/**
+ * 捡金任务详情
+ */
+ export const pickGoldDetail = (page, size, id) => fetch('/act/bounty/home/pick/' + id, {
+ 	page: page,
+ 	size: size
+ });
+
+ /**
+ * 抢
+ */
+ export const robGold = (id) => fetch('/act/bounty/home/pick/rob', {
+ 	pickGoldRecordId: id
+ } , 'POST');

@@ -31,7 +31,8 @@ module.exports = merge(baseWebpackConfig, {
             filename: 'index.html',
             template: 'index.html',
             favicon: 'favicon.ico',
-            inject: true
+            inject: true,
+            baidutongji: '47d44c4172044de6b3c92956cfbbb5a3'
         })
     ]
 })

@@ -25,6 +25,7 @@ const GoldRecord = r => require.ensure([], () => r(require('../page/activity/bou
 const Invite = r => require.ensure([], () => r(require('../page/activity/bounty/children/invite')), 'invite')
 const Waiter = r => require.ensure([], () => r(require('../page/activity/bounty/children/waiter')), 'waiter')
 const BountyTask = r => require.ensure([], () => r(require('../page/activity/bounty/children/bountyTask')), 'bountyTask')
+const PickGoldTask = r => require.ensure([], () => r(require('../page/activity/bounty/children/pickGoldTask')), 'pickGoldTask')
 
 
 export default [{
@@ -136,7 +137,14 @@ export default [{
                     component: BountyTask,
                     name: 'BountyTask',
                     meta: {title: '淘金任务'}
-                }, {
+                }, 
+                {
+                    path: 'PickGoldTask/:id',
+                    component: PickGoldTask,
+                    name: 'PickGoldTask',
+                    meta: {title: '拣金任务'}
+                },
+                {
                     path: 'invite/:invitationsSum',
                     component: Invite,
                     name: 'Invite',

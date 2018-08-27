@@ -53,7 +53,8 @@ var webpackConfig = merge(baseWebpackConfig, {
       //   // https://github.com/kangax/html-minifier#options-quick-reference
       // },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
+      chunksSortMode: 'dependency',
+      baidutongji: '47d44c4172044de6b3c92956cfbbb5a3'
     }),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
