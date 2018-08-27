@@ -29,7 +29,7 @@
     <div class="mask" v-show="showMask">
       <div class="tip" v-if="!modalEnd">
         <p><img src="../../../../images/bounty-plan/money_reward_icon2.png" alt="" width="23%">恭喜您！</p>
-        <p>成功抢到{{randomNumber || 0}}个金条！</p>
+        <p v-if="randomNumber">成功抢到{{randomNumber}}个金条！</p>
         <p @click="showMask = false">知道啦</p>
       </div>
       <div v-else class="activityEnd">本轮活动已结束</div>
@@ -60,9 +60,12 @@
         newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
       },
       countDown: function () {
-        if(this.countDown === 0){
-          this.showMask = true
-          this.modalEnd = true
+        var that = this
+        if(that.countDown === 0 && that.actDetail.state === 2){
+          that.showMask = true
+          that.modalEnd = true
+        } else if(that.countDown === 0 && that.actDetail.state === 1){
+          that.getActDetail()
         }
       }
     },
@@ -112,11 +115,14 @@
         }, 2000)
         if(that.actDetail.state === 2 && that.countDown > 0 && that.actDetail.surplus !== 0 && !that.actDetail.partake){
           robGold(that.$route.params.id).then(function(res){
-            that.randomNumber = res.data
+            if (res && res.ret !== -1) {
+              that.randomNumber = res.data
+              that.getActDetail()
+              that.showMask = true
+            } else {
+              alert(res.msg)
+            }
           })
-          that.getActDetail()
-          that.robbed = true
-          that.showMask = true
         } else {
           return
         }
