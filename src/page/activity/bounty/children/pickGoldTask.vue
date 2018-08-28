@@ -1,8 +1,9 @@
 <template>
   <div class="task" v-if="showDocument">
     <div class="activity_detail">
-      <p>{{actDetail.state === 2 && actDetail.surplus === 0 || actDetail.state === 1 ? '距下轮开始' : '距本轮结束'}}</p>
-      <p><span>{{countDown | timeArry(0)}}</span> : <span>{{countDown | timeArry(1)}}</span> : <span>{{countDown | timeArry(2)}}</span></p>
+      <p v-if="lastScene === 'true' && actDetail.surplus === 0">今日已结束</p>
+      <p v-else>{{actDetail.state === 2 && actDetail.surplus === 0 || actDetail.state === 1 ? '距下轮开始' : '距本轮结束'}}</p>
+      <p :class="{'opacity_zero' : lastScene === 'true' && actDetail.surplus === 0}"><span>{{countDown | timeArry(0)}}</span> : <span>{{countDown | timeArry(1)}}</span> : <span>{{countDown | timeArry(2)}}</span></p>
       <p><span>剩余金条</span></p>
       <p>{{actDetail.surplus}}</p>
       <div :class="{'snatching' : countDown > 0 && actDetail.surplus !== 0 && !actDetail.partake && actDetail.state === 2}" @click="robbingGold()">{{actDetail.state === 1 ? '未开始' : (actDetail.state === 3 ? '已结束' : (actDetail.partake ? '已抢过' : (actDetail.surplus === 0 ? '已抢光' : '抢')))}}</div>
@@ -51,7 +52,8 @@
         actDetail: {},
         showDocument: false,
         countDown: null,
-        busy: false
+        busy: false,
+        lastScene: this.$route.query.lastScene.toString()
       }
     },
     watch: {
@@ -340,5 +342,8 @@
   .activityEnd{
     @include sc(.2rem, #fff);
     text-align: center;
+  }
+  .opacity_zero{
+    opacity: 0;
   }
 </style>

@@ -226,7 +226,7 @@
                 if (pickGolds.state === 1 || pickGolds.state === 3) {
                     return
                 }
-                this.$router.push({name: 'PickGoldTask', params: {id: pickGolds.id}})
+                this.$router.push({name: 'PickGoldTask', params: {id: pickGolds.id}, query: {lastScene: this.activeTab === 2 ? true : false}})
             },
             circleAnimate (canTakeCount) { // 金币上下跳动动画
                 if (canTakeCount <= 0 || this.canTakeCount <= 0) {
