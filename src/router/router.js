@@ -26,6 +26,14 @@ const Invite = r => require.ensure([], () => r(require('../page/activity/bounty/
 const Waiter = r => require.ensure([], () => r(require('../page/activity/bounty/children/waiter')), 'waiter')
 const BountyTask = r => require.ensure([], () => r(require('../page/activity/bounty/children/bountyTask')), 'bountyTask')
 const PickGoldTask = r => require.ensure([], () => r(require('../page/activity/bounty/children/pickGoldTask')), 'pickGoldTask')
+const Auction = r => require.ensure([], () => r(require('../page/activity/auction/auction')), 'auction')
+const AuctionHome = r => require.ensure([], () => r(require('../page/activity/auction/children/home')), 'auctionHome')
+const BidRecord = r => require.ensure([], () => r(require('../page/activity/auction/children/bidRecord')), 'bidRecord')
+const MyAuction = r => require.ensure([], () => r(require('../page/activity/auction/children/myAuction')), 'myAuction')
+const Sharing = r => require.ensure([], () => r(require('../page/activity/auction/children/sharing')), 'sharing')
+const SharingLanding = r => require.ensure([], () => r(require('../page/activity/auction/children/sharingLanding')), 'sharingLanding')
+const RewardExchange = r => require.ensure([], () => r(require('../page/activity/auction/children/rewardExchange')), 'rewardExchange')
+const Lottery = r => require.ensure([], () => r(require('../page/activity/auction/children/lottery')), 'lottery')
 
 
 export default [{
@@ -170,6 +178,47 @@ export default [{
                             name: 'GoldRecord'
                         }
                     ]
+                }
+            ]
+        },
+        {
+            path: '/auction',
+            component: Auction,
+            children: [
+                {
+                    path: '',
+                    component: AuctionHome,
+                    meta: {title: '限时拍卖'}
+                },
+                {
+                    path: 'bidRecord',
+                    component: BidRecord,
+                    meta: {title: '出价记录'}
+                },
+                {
+                    path: 'myAuction',
+                    component: MyAuction,
+                    meta: {title: '我的竞拍'}
+                },
+                {
+                    path: 'sharing',
+                    component: Sharing,
+                    meta: {title: '分享助力'}
+                },
+                {
+                    path: 'sharingLanding',
+                    component: SharingLanding,
+                    meta: {title: '分享落地页'}
+                },
+                {
+                    path: 'rewardExchange',
+                    component: RewardExchange,
+                    meta: {title: '奖励兑换'}
+                },
+                {
+                    path: 'lottery',
+                    component: Lottery,
+                    meta: {title: '限时抽奖'}
                 }
             ]
         }
