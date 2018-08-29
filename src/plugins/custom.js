@@ -10,6 +10,14 @@ let dateTime = (value, format) => {
   (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()) + ':' +
   (now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds())
 }
+let time = value => {
+  // 时间格式 ‘HH:mm:ss’
+  if (!value) { return }
+  var now = new Date(value)
+  return (now.getHours() < 10 ? '0' + now.getHours() : now.getHours()) + ':' +
+  (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()) + ':' +
+  (now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds())
+}
 
 let date = (value, format) => {
   // 时间格式 ‘yyyy-MM-dd’
@@ -117,3 +125,4 @@ export { monthDay }
 export { amount }
 export { timeformat }
 export { timeArry }
+export {time}
