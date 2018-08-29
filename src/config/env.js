@@ -14,11 +14,10 @@ let imgBaseUrl;
 let appid = 'wx39e1a9f3d6c8cdc5';
 let redirect = 'http://youpinlian.datbc.com/youpin/wx/oa/wxCallBack';
 
-
 if (process.env.NODE_ENV == 'development') {
 	imgBaseUrl = 'http://cangdu.org:8001/img/';
-	// baseUrl = '/youpin/wx'
-	baseUrl = '/wx'
+	baseUrl = '/youpin/wx'
+	// baseUrl = '/wx'
 
 } else if (process.env.NODE_ENV == 'test') {
 
