@@ -276,6 +276,7 @@
     @import '../../../../style/mixin';
     .lottery {
         background: $bc;
+        overflow-x: hidden;
         .lucky-wheel {
             @include wh(100%,4.45rem);
             background: url('../../../../images/bounty-plan/starry_sky_bg1.png') no-repeat;
@@ -402,7 +403,7 @@
             }
         }
         .description {
-            margin-top: -.1rem;
+            margin-top: -.2rem;
             .content {
                 padding: .15rem .12rem .2rem .12rem;
                 line-height: 1.54;

@@ -28,7 +28,7 @@ const BountyTask = r => require.ensure([], () => r(require('../page/activity/bou
 const PickGoldTask = r => require.ensure([], () => r(require('../page/activity/bounty/children/pickGoldTask')), 'pickGoldTask')
 const Auction = r => require.ensure([], () => r(require('../page/activity/auction/auction')), 'auction')
 const AuctionHome = r => require.ensure([], () => r(require('../page/activity/auction/children/home')), 'auctionHome')
-const BidRecord = r => require.ensure([], () => r(require('../page/activity/auction/children/bidRecord')), 'bidRecord')
+const Record = r => require.ensure([], () => r(require('../page/activity/auction/children/record')), 'Record')
 const MyAuction = r => require.ensure([], () => r(require('../page/activity/auction/children/myAuction')), 'myAuction')
 const Sharing = r => require.ensure([], () => r(require('../page/activity/auction/children/sharing')), 'sharing')
 const SharingLanding = r => require.ensure([], () => r(require('../page/activity/auction/children/sharingLanding')), 'sharingLanding')
@@ -191,14 +191,8 @@ export default [{
                     meta: {title: '限时拍卖'}
                 },
                 {
-                    path: 'bidRecord',
-                    component: BidRecord,
-                    meta: {title: '出价记录'}
-                },
-                {
-                    path: 'myAuction',
-                    component: MyAuction,
-                    meta: {title: '我的竞拍'}
+                    path: 'record/:type',
+                    component: Record
                 },
                 {
                     path: 'sharing',

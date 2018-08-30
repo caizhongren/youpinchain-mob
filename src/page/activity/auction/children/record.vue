@@ -1,6 +1,6 @@
 <template>
     <div class="bid_record" v-client-height>
-        <div class="box">
+        <div class="box" v-if="pageType === 'bid'">
             <ul class="header">
                 <li>状态</li>
                 <li>出价金条</li>
@@ -12,6 +12,21 @@
                     <p>{{item.amount}}</p>
                     <p>{{item.time | time}}</p>
                 </li>
+            </ul>
+            <div class="no_record" v-if="recordList.length <= 0">暂无记录</div>
+        </div>
+        <div class="box my" v-if="pageType === 'my'">
+            <ul class="header">
+                <li>竞拍场次</li>
+                <li>竞拍结果</li>
+                <li>操作</li>
+            </ul>
+            <ul class="body">
+                <li v-for="(item, index) in recordList" :key="index" v-if="recordList.length > 0">
+                    <p>{{item.time | date('.')}}</p>
+                    <p>{{item.result === 0 ? '出局' : '成功'}}</p>
+                    <p :class="{'red': item.state === 0}">{{item.state === 1 ? '奖励已领取' : item.state === 0 ? '领取奖励' : '——'}}</p>
+                </li>
                 <div class="load_more">查看更多</div>
             </ul>
             <div class="no_record" v-if="recordList.length <= 0">暂无记录</div>
@@ -22,6 +37,7 @@
     export default {
         data () {
             return {
+                pageType: this.$route.params.type,
                 recordList: [
                     {
                         state: 0,
@@ -76,6 +92,8 @@
         mounted() {
         },
         created() {
+            this.pageType === 'bid' ? document.title = '出价记录' : document.title = '我的竞拍'
+            console.log(this.pageType)
         },
         methods: {
         },
@@ -148,16 +166,45 @@
                     }
                 }
             }
-            .load_more {
-                @include sc(.13rem,$g6);
-                text-align: center;
-                margin-top: .15rem;
-            }
             .no_record {
                 @include sc(.13rem,$g6);
                 text-align: center;
                 margin-top: 1.5rem;
             }
+        }
+        .box.my {
+            .header {
+                li:first-child {
+                    width: 33%;
+                    padding-left: 0.05rem;
+                }
+                li:last-child {
+                    text-align: center;
+                }
+            }
+            .body {
+                li {
+                    p {
+                        letter-spacing: 0.1px;
+                    }
+                    p:first-child {
+                        width: 33%;
+                        padding-left: 0;
+                    }
+                    p:last-child {
+                        text-align: center;
+                        @include sc(.13rem,$g9);
+                    }
+                    p.red {
+                        color: #fa444e;
+                    }
+                }
+            }
+        }
+        .load_more {
+            @include sc(.13rem,$g6);
+            text-align: center;
+            margin-top: .15rem;
         }
     }
 </style>
