@@ -1,27 +1,30 @@
 <template>
-  <div class="auction_home">
-    <div class="add_count"></div>
-    <div class="lottery_entry"></div>
+  <div class="auction_home" v-if="showDocument">
+    <router-link tag="div" class="add_count" to="/auction/sharing" v-if="(auctionInfo.auctionState === 0 || auctionInfo.auctionState === 1) && auctionInfo.assist_count < 3"></router-link>
+    <router-link class="lottery_entry" :class="{'lottery_entry_count' : auctionInfo.lottery_status === 1}" tag="div" to="/auction/lottery" v-if="auctionInfo.auctionState === 1">
+      <p v-if="auctionInfo.lottery_status === 1">剩余<span>{{luckDrawTime | timeArry(1)}}:{{luckDrawTime | timeArry(2)}}</span></p>
+    </router-link>
     <div class="top_main">
-      <div class="head_tip">
-          <p>预告</p>
-          <p>距离拍卖开始：hh:mm:ss</p>
+      <div class="head_tip" :class="{'ending' : auctionInfo.auctionState === 2}">
+          <p>{{auctionInfo.auctionState === 0 ? '预告' : (auctionInfo.auctionState === 1 ? '进行中' : '已结束')}}</p>
+          <p v-if="auctionInfo.auctionState !== 2">距离拍卖开始：{{countDown | timeArry(0)}}:{{countDown | timeArry(1)}}:{{countDown | timeArry(2)}}</p>
       </div>
       <carousel class="banner_box" :loop="true" :autoplay="true" :minSwipeDistance="6" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="5" :paginationSize="8" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color">
-        <slide v-for="item in goods.headPic" :key="item.id">
-          <img :src="item" alt="" width="100%" class="show">
-        </slide>
+        <!-- <slide v-for="item in auctionInfo.goodsPic" :key="item.id"> -->
+          <img :src="auctionInfo.goodsPic" alt="" width="100%" class="show">
+        <!-- </slide> -->
       </carousel>
       <div class="title">
-        <p>EOS虚拟币</p>
-        <p>当前最高出价：<span>800</span><img src="../../../../images/auction/bullion.png"></p>
-        <p>起拍价：500<img src="../../../../images/auction/bullion.png"></p>
+        <p>{{auctionInfo.goods}}</p>
+        <p v-if="auctionInfo.rankingList.length">当前最高出价：<span>{{auctionInfo.rankingList.bidPrice}}</span><img src="../../../../images/auction/bullion.png"></p>
+        <p>起拍价：{{auctionInfo.startingPrice}}<img src="../../../../images/auction/bullion.png"></p>
       </div>
     </div>
     <div class="bidders_info">
       <div class="bid_list">
-        <p>出价榜</p>
-        <table border="0" cellspacing="0">
+        <p class="text-center" v-if="auctionInfo.auctionState === 2">恭喜以下{{auctionInfo.rankingList.length}}位用户竞拍成功！</p>
+        <p v-else>出价榜<span v-if="auctionInfo.rankingList.length === 0">暂无</span></p>
+        <table border="0" cellspacing="0" v-if="auctionInfo.rankingList.length">
           <thead>
             <tr>
               <th>当前排名</th>
@@ -31,35 +34,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><span class="list_1">1</span></td>
-              <td>钢炮</td>
-              <td>800</td>
-              <td>2018.7.21 11:18</td>
-            </tr>
-            <tr>
-              <td><span class="list_2">2</span></td>
-              <td>钢炮</td>
-              <td>800</td>
-              <td>2018.7.21 11:18</td>
-            </tr>
-            <tr>
-              <td><span class="list_3">3</span></td>
-              <td>钢炮</td>
-              <td>800</td>
-              <td>2018.7.21 11:18</td>
-            </tr>
-            <tr>
-              <td><span class="list_4">04</span></td>
-              <td>钢炮</td>
-              <td>800</td>
-              <td>2018.7.21 11:18</td>
-            </tr>
-            <tr>
-              <td><span class="list_5">05</span></td>
-              <td>钢炮</td>
-              <td>800</td>
-              <td>2018.7.21 11:18</td>
+            <tr v-for="(item,index) in auctionInfo.rankingList">
+              <td><span :class="['list_' + (index + 1)]">{{index < 3 ? (index + 1) : '0' + (index + 1)}}</span></td>
+              <td>{{item.userName}}</td>
+              <td>{{item.bidPrice}}</td>
+              <td>{{item.addTime}}</td>
             </tr>
           </tbody>
         </table>
@@ -100,55 +79,246 @@
       </div>
     </div>
     <div class="bidders_status">
-      <div>
-        <p>10次</p>
-        <p>剩余出价</p>
+      <div class="two_part">
+        <router-link to="/auction/bidRecord" tag="div">
+          <p>10次</p>
+          <p>剩余出价</p>
+        </router-link>
+        <div @click="showMask = true" class="grey">
+          <p>立即出价</p>
+          <p>剩余金条：10000</p>
+        </div>
       </div>
-      <div>
-        <p>540金条</p>
-        <p>我的当前出价</p>
+      <div class="two_part">
+        <router-link to="/auction/bidRecord" tag="div">
+          <p>10次</p>
+          <p>剩余出价</p>
+        </router-link>
+        <div @click="showMask = true" class="only_line green">竞拍已结束</div>
       </div>
-      <div>
-        <p>立即出价</p>
-        <p>剩余金条：10000</p>
+      <div class="one_part grey">
+        <!-- <div class="two_line">
+          <p>金条不足不能出价</p>
+          <p>剩余金条：100</p>
+        </div> -->
+        <div class="only_line">竞拍已结束</div>
+      </div>
+      <div class="three_part">
+        <router-link to="/auction/bidRecord" tag="div">
+          <p>10次</p>
+          <p>剩余出价</p>
+        </router-link>
+        <div>
+          <p>540金条</p>
+          <p>我的当前出价</p>
+        </div>
+        <div @click="showMask = true" class="red-linear-gradient">
+          <p>立即出价</p>
+          <p>剩余金条：10000</p>
+        </div>
+      </div>
+      <div class="three_part">
+        <router-link to="/auction/bidRecord" tag="div">
+          <p>10次</p>
+          <p>剩余出价</p>
+        </router-link>
+        <div>
+          <p>540金条</p>
+          <p>我的当前出价</p>
+        </div>
+        <div @click="showMask = true" class="red-linear-gradient">
+          <p>出价次数不足不能出价</p>
+          <!-- <p>剩余金条：10000</p> -->
+        </div>
+      </div>
+      <div class="one_part grey">
+        <div class="two_line">
+          <p>金条不足不能出价</p>
+          <p>剩余金条：100</p>
+        </div>
+        <!-- <div class="only_line">竞拍已结束</div> -->
+      </div>
+    </div>
+    <div class="bid_mask" v-client-height v-if="showMask">
+      <div class="bid_offer">
+        <div class="title"><img src="../../../../images/auction/bullion.png" alt="">确认出价</div>
+        <div class="detail">
+          <p>
+            <span>{{(auctionInfo.rankingList.length < 2) ? '当前领先出价金额' : '当前领先出价区间'}}</span>
+            <span v-if="auctionInfo.rankingList.length > 1">{{auctionInfo.rankingList[0].bidPrice}}-{{auctionInfo.rankingList[1].bidPrice}}金条</span>
+            <span v-if="!auctionInfo.rankingList.length">{{auctionInfo.startingPrice}}金条</span>
+            <span v-else>{{auctionInfo.rankingList[0].bidPrice}}</span>
+          </p>
+          <p>
+            <span>我的上次出价</span>
+            <span>{{auctionInfo.lastPrice || 0}}金条</span>
+          </p>
+          <p>
+            <span>我的剩余金条</span>
+            <span>{{auctionInfo.surplusBullion}}金条</span>
+          </p>
+        </div>
+        <div class="number">
+          <span @click="changeNumber(0)">-</span>
+          <input v-model="offerNumber">
+          <span @click="changeNumber(1)">+</span>
+        </div>
+        <p class="tip">*本次出价范围{{offerRange[0]}}-{{offerRange[1]}}金条，加价单位为5金条</p>
+        <div class="confirm grey" @click="showMask = false" :class="{'red' : auctionInfo.surplusBullion > offerNumber}">{{auctionInfo.surplusBullion < offerNumber ? '金条不足' : '确认出价'}}</div>
       </div>
     </div>
   </div>
 </template>
 <script>
+  import { ModalHelper } from '../../../../service/Utils'
   import { Carousel, Slide } from 'vue-carousel';
+  import { auction } from '../../../../service/getData'
   export default {
     data () {
       return {
+        showDocument: false,
+        showMask: false,
+        countDown: 61,
+        timer: null,
+        timer2: null,
+        offerNumber: null,
+        offerRange: [],
         pagination: {
           activeColor: '#e4372e',
           color: '#fff'
         },
-        goods: {
-          headPic: [
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531924901590&di=c68d3de5f9fdf610cab70c58eeb43a6e&imgtype=0&src=http%3A%2F%2Fimg03.tooopen.com%2Fimages%2F20120807%2Fsy_201208071618090810.jpg',
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531924901590&di=c68d3de5f9fdf610cab70c58eeb43a6e&imgtype=0&src=http%3A%2F%2Fimg03.tooopen.com%2Fimages%2F20120807%2Fsy_201208071618090810.jpg'
-          ]
-        },
+        list: [
+          {
+            userName: '124',
+            bidPrice: 200,
+            addTime: 1000000
+          },
+          {
+            userName: '124',
+            bidPrice: 200,
+            addTime: 1000000
+          },
+          {
+            userName: '124',
+            bidPrice: 200,
+            addTime: 1000000
+          },
+          {
+            userName: '124',
+            bidPrice: 200,
+            addTime: 1000000
+          },
+          {
+            userName: '124',
+            bidPrice: 200,
+            addTime: 1000000
+          },
+        ],
+        auctionInfo:{
+          auctionState: 1,
+          lottery_status: 0,
+          assist_count: 0,
+          highest_bid: 800,
+          start_price: 500,
+          goods: {
+            headPic: [
+              'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531924901590&di=c68d3de5f9fdf610cab70c58eeb43a6e&imgtype=0&src=http%3A%2F%2Fimg03.tooopen.com%2Fimages%2F20120807%2Fsy_201208071618090810.jpg',
+              'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531924901590&di=c68d3de5f9fdf610cab70c58eeb43a6e&imgtype=0&src=http%3A%2F%2Fimg03.tooopen.com%2Fimages%2F20120807%2Fsy_201208071618090810.jpg'
+            ]
+          },
+        }
       }
     },  
     watch: {
+      showMask: function (newVal, oldVal) {
+        newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
+      },
+      countDown: function () {
+
+      },
+      luckDrawTime: function () {
+
+      }
     },
     mounted() {
+      this.computeNumber()
+      this.getAuctionInfo()
     },
     created() {
     },
     methods: {
+      getAuctionInfo() {
+        var that = this 
+        auction().then(function (res) {
+          that.auctionInfo = res.data
+          that.showDocument = true
+          that.countDown = res.data.countDown
+          that.luckDrawTime = res.data.luckDrawTime
+          that.offerRange = that.calculateRange(res.data.rankingList,res.data.startingPrice)
+          that.offerNumber = that.offerRange[0]
+        })
+      },
+      computeNumber () {
+        var that = this
+        if(that.countDown){
+          this.timer = setInterval(function () {
+            if(that.countDown >= 1){
+              that.countDown -= 1
+              if(that.countDown < 1){
+                that.countDown = 0
+              }
+              // console.log(that.countDown)
+            } else {
+              clearInterval(that.timer)
+              return
+            }
+          },1000)
+        }
+      },
+      calculateRange (Arry,startingPrice) {
+        var range = []
+        if (!Arry.length) {
+          range.push(startingPrice + 20, startingPrice + 40)
+        } else if (Arry.length === 1) {
+          range.push(Arry[0].bidPrice + 20, Arry[0].bidPrice + 40)
+        } else {
+          range.push(Arry[0].bidPrice + 20, Arry[Arry.length - 1].bidPrice + 40)
+        }
+        return range
+      },
+      changeNumber (number) {
+        var that = this
+        if(number){
+          if(that.offerNumber + 5 > that.offerRange[1]){
+            return
+          } else {
+            that.offerNumber += 5
+          }
+        } else {
+          console.log(number)
+          if(that.offerNumber - 5 < that.offerRange[0]){
+            return
+          } else {
+            that.offerNumber -= 5
+          }
+        }
+      }
     },
     components: {
       Carousel,
       Slide,
+    },
+    destroyed () {
+      ModalHelper.beforeClose()
+      clearInterval(this.timer)
+      clearInterval(this.timer2)
     }
   }
 </script>
 <style scoped lang="scss">
   @import '../../../../style/mixin';
   .auction_home{
+    position: relative;
     .add_count,.lottery_entry{
       @include bis('../../../../images/auction/add_count.png');
       @include wh(.935rem, .42rem);
@@ -163,26 +333,51 @@
       @include wh(.78rem, .78rem);
       @include bis('../../../../images/auction/lottery_entrance_01.png');
     }
-    .top_main {
-      margin-bottom: .15rem;
-      .head_tip{
-        @include wh(100%, .5rem);
-        background: #fff;
-        display: flex;
-        p{
-          text-align: center;
-          flex: 2.75;
-          line-height: .5rem;
-          @include sc(.15rem, #333333);
-        }
-        p:first-child{
-          @include wh(0.86rem, 100%);
-          padding-right: 0.16rem;
-          @include bis('../../../../images/auction/state_bg.png');
-          flex: 1;
-          @include sc(.18rem, #fff);
+    .lottery_entry.lottery_entry_count{
+      @include bis('../../../../images/auction/lottery_entrance_02.png');
+      p{
+        @include sc(.093rem, #fff);
+        position: absolute;
+        bottom: 0.02rem;
+        width: 100%;
+        text-align: center;
+        span{
+          display: inline-block;
+          width: .3rem;
+          @include sc(.093rem, #fff);
         }
       }
+    }
+    .head_tip{
+      position: fixed;
+      top: 0;
+      z-index: 50;
+      @include wh(100%, .5rem);
+      display: flex;
+      p{
+        text-align: center;
+        flex: 2.75;
+        line-height: .5rem;
+        @include sc(.15rem, #333333);
+        background: #fff;
+      }
+      p:first-child{
+        @include wh(0.86rem, 100%);
+        padding-right: 0.16rem;
+        @include bis('../../../../images/auction/state_bg.png');
+        flex: 1;
+        @include sc(.18rem, #fff);
+      }
+    }
+    .head_tip.ending{
+      display: block;
+      p:first-child{
+        @include bis('../../../../images/auction/state_end_bg.png');
+        background-color: transparent;
+      }
+    }
+    .top_main {
+      margin-bottom: .15rem;
       .banner_box{
         height: 3.275rem;
         overflow: hidden;
@@ -228,6 +423,11 @@
           @include sc(.15rem, #666666);
           line-height: .45rem;
           padding-left: .13rem;
+          span{
+            @include sc(.15rem, #999999);
+            margin-left: .15rem;
+          }
+          border-bottom: 1px solid #f6f5f5;
         }
         table{
           text-align: center;
@@ -366,55 +566,213 @@
     .bidders_status{
       @include wh(100%, .5rem);
       text-align: center;
-      display: flex;
-      div{
-        padding: .05rem 0;
-      }
-      div:first-child,div:nth-child(2){
-        width: 1rem;
-        background: #fff;
-        p:first-child{
-          @include sc(.15rem ,#666666);
+      .one_part{
+        text-align: center;
+        .two_line{
+          padding: .05rem 0;
+          p:first-child{
+            @include sc(.15rem ,#fff);
+          }
+          p:last-child{
+            @include sc(.12rem ,rgba(255, 255, 255, 0.6));
+          }
         }
-        p:last-child{
-          @include sc(.12rem ,#999999);
-        }
-      }
-      div:first-child{
-        position: relative;
-        &:after{
-          content: '';
-          border-style: solid;
-          border-width: .08rem 0 .0725rem .0725rem;
-          border-color:transparent transparent transparent #666666;
-          opacity: .2;
-          display: block;
-          position: absolute;
-          top: 30%;
-          right: 0.1rem;
+        .only_line{
+          @include sc(.15rem, #fff);
+          line-height: .5rem;
         }
       }
-      div:last-child{
-        background-image: linear-gradient(133deg, #fc5b46, #fa424f);
-        width: 1.75rem;
-        p:first-child{
-          @include sc(.15rem ,#fff);
+      .two_part{
+        display: flex;
+        div{
+          padding: .05rem 0;
         }
-        p:last-child{
-          @include sc(.12rem ,rgba(255, 255, 255, 0.6));
+        div:first-child{
+          width: 1rem;
+          background: #fff;
+          p:first-child{
+            @include sc(.15rem ,#666666);
+          }
+          p:last-child{
+            @include sc(.12rem ,#999999);
+          }
+        }
+        div:first-child{
+          position: relative;
+          &:after{
+            content: '';
+            border-style: solid;
+            border-width: .08rem 0 .0725rem .0725rem;
+            border-color:transparent transparent transparent #666666;
+            opacity: .2;
+            display: block;
+            position: absolute;
+            top: 30%;
+            right: 0.1rem;
+          }
+        }
+        div:last-child{
+          width: 2.75rem;
+          p:first-child{
+            @include sc(.15rem ,#fff);
+          }
+          p:last-child{
+            @include sc(.12rem ,rgba(255, 255, 255, 0.6));
+          }
+        }
+        .only_line{
+          padding: 0;
+          @include sc(.15rem, #fff);
+          line-height: .5rem;
         }
       }
-      div:nth-child(2){
-        position: relative;
-        &:before{
-          content: '';
-          @include wh(.01rem, .3rem);
-          position: absolute;
-          background: #e3dfdf;
-          left: 0;
-          top: 18%;
+      .three_part{
+        display: flex;
+        div{
+          padding: .05rem 0;
+        }
+        div:first-child,div:nth-child(2){
+          width: 1rem;
+          background: #fff;
+          p:first-child{
+            @include sc(.15rem ,#666666);
+          }
+          p:last-child{
+            @include sc(.12rem ,#999999);
+          }
+        }
+        div:first-child{
+          position: relative;
+          &:after{
+            content: '';
+            border-style: solid;
+            border-width: .08rem 0 .0725rem .0725rem;
+            border-color:transparent transparent transparent #666666;
+            opacity: .2;
+            display: block;
+            position: absolute;
+            top: 30%;
+            right: 0.1rem;
+          }
+        }
+        div:last-child{
+          width: 1.75rem;
+          p:first-child{
+            @include sc(.15rem ,#fff);
+            width: 1rem;
+            margin: 0 auto;
+          }
+          p:nth-child(2){
+            @include sc(.12rem ,rgba(255, 255, 255, 0.6));
+          }
+        }
+        div:nth-child(2){
+          position: relative;
+          &:before{
+            content: '';
+            @include wh(.01rem, .3rem);
+            position: absolute;
+            background: #e3dfdf;
+            left: 0;
+            top: 18%;
+          }
+        }
+      }  
+    }
+    .bid_mask{
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(0,0,0,.5);
+      padding-top: 1.6rem;
+      .bid_offer{
+        padding-bottom: .2rem;
+        background: #fffefe;
+        text-align: center;
+        @include wh(2.8rem, auto);
+        margin: 0 auto;
+        border-radius: .1rem;
+        overflow: hidden;
+        .title{
+          @include sc(.18rem, #333333);
+          line-height: .55rem;
+          background-color: #f9f9f9;
+          height: .55rem;
+          margin-bottom: .1rem;
+          img{
+            width: .32rem;
+            vertical-align: middle;
+            padding-bottom: 0.06rem;
+            margin-right: .05rem;
+          }
+        }
+        .detail{
+          padding: 0 .1rem 0rem .25rem;
+          text-align: left;
+          p{
+            display: flex;
+            margin-bottom: .12rem;
+            //justify-content: space-between;
+            span:first-child{
+              @include sc(.13rem, rgba(51, 51, 51, 0.7));
+              width: 1.2rem;
+            }
+            span:last-child{
+              @include sc(.15rem, #333333);
+            }
+          }
+        }
+        .number{
+          display: flex;
+          justify-content: space-between;
+          height: .4rem;
+          padding: 0 .25rem;
+          margin-bottom: .12rem;
+          span{
+            background: #ececee;
+            border-radius: .05rem;
+            @include sc(.3rem, #fc5340);
+            width: .42rem;
+            line-height: .34rem;
+          }
+          input{
+            width: 1.23rem;
+            font-size: .24rem;
+            @include sc(.24rem, #fc5340);
+            border-radius: .05rem;
+            line-height: .4rem;
+            text-align: center;
+            background: #ececee;
+          }
+        }
+        .tip{
+          @include sc(.11rem, #fc5340);
+          margin-bottom: .2rem;
+        }
+        .confirm{
+          @include sc(.15rem, #fff);
+          @include wh(1.93rem, .4rem);
+          line-height: .4rem;
+          margin: 0 auto;
+          border-radius: .05rem;
         }
       }
     }
+    .grey{
+      background-color: #999999;
+    }
+    .red{
+      background-color: #fc5340;
+    }
+    .green{
+      background-color: #3edaa1;
+    }
+    .red-linear-gradient{
+      background-image: linear-gradient(133deg, #fc5b46, #fa424f);
+    }
+  }
+  .text-center{
+    text-align: center;
   } 
 </style>
