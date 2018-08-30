@@ -311,10 +311,13 @@ export const goldDrill = (page, size) => fetch('/act/bounty/home/goldDrill', {
  	pickGoldRecordId: id
  } , 'POST');
 
-
  /**
  * 分享助力
  */
 
 export const helpDetail = (id) => fetch('/auction/home/helpDetail/' + id);
  
+ /**
+ * 竞拍首页
+ */
+export const auction = () => fetch('/auction/home', {});
