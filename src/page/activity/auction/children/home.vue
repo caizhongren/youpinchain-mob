@@ -1,7 +1,7 @@
 <template>
   <div class="auction_home" v-if="showDocument">
-    <router-link tag="div" class="add_count" to="/auction/sharing" v-if="(auctionInfo.auctionState === 0 || auctionInfo.auctionState === 1) && auctionInfo.helpState && auctionInfo.helpNum <= 3 "></router-link>
-    <router-link class="lottery_entry" :class="{'lottery_entry_count' : auctionInfo.luckDrawState === 1}" tag="div" to="/auction/lottery" v-if="auctionInfo.auctionState === 1">
+    <router-link tag="div" class="add_count" :to="'/auction/sharing/' + auctionInfo.auctionId" v-if="(auctionInfo.auctionState === 0 || auctionInfo.auctionState === 1) && auctionInfo.helpState && auctionInfo.helpNum <= 3 "></router-link>
+    <router-link class="lottery_entry" :class="{'lottery_entry_count' : auctionInfo.luckDrawState === 1}" tag="div" :to="'/auction/lottery/' + auctionInfo.auctionId + '/' + auctionInfo.luckDrawId" v-if="auctionInfo.auctionState === 1">
       <p v-if="auctionInfo.luckDrawState === 1">剩余<span>{{luckDrawTime | timeArry(1)}}:{{luckDrawTime | timeArry(2)}}</span></p>
     </router-link>
     <div class="top_main">
@@ -257,7 +257,6 @@
       },
       // 返回出价范围数组
       calculateRange (Arry,startingPrice) {
-        console.log(Arry)
         var range = []
         if (!Arry.length) {
           range.push(startingPrice + 20, startingPrice + 40)
