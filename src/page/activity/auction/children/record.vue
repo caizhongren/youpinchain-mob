@@ -7,13 +7,13 @@
                 <li>出价时间</li>
             </ul>
             <ul class="body">
-                <li v-for="(item, index) in recordList" :key="index" v-if="recordList.length > 0">
-                    <p>{{item.state === 0 ? '出局' : item.state === 1 ? '成交' : '领先'}}</p>
-                    <p>{{item.amount}}</p>
-                    <p>{{item.time | time}}</p>
+                <div class="no_record" v-if="recordList.length <= 0">暂无记录</div>
+                <li v-for="(item, index) in recordList" :key="index" v-else>
+                    <p>{{item.bidState === 0 ? '出局' : item.state === 1 ? '领先' : '成交'}}</p>
+                    <p>{{item.bidPrice}}</p>
+                    <p>{{item.addTime | time}}</p>
                 </li>
             </ul>
-            <div class="no_record" v-if="recordList.length <= 0">暂无记录</div>
         </div>
         <div class="box my" v-if="pageType === 'my'">
             <ul class="header">
@@ -23,8 +23,8 @@
             </ul>
             <ul class="body">
                 <li v-for="(item, index) in recordList" :key="index" v-if="recordList.length > 0">
-                    <p>{{item.time | date('.')}}</p>
-                    <p>{{item.result === 0 ? '出局' : '成功'}}</p>
+                    <p>{{item.addTime | date('.')}}</p>
+                    <p>{{item.bidState === 0 ? '出局' : '成功'}}</p>
                     <p :class="{'red': item.state === 0}">{{item.state === 1 ? '奖励已领取' : item.state === 0 ? '领取奖励' : '——'}}</p>
                 </li>
                 <div class="load_more">查看更多</div>
@@ -34,6 +34,7 @@
     </div>
 </template>
 <script>
+    import { bidRecord, myBidRecords } from '../../../../service/getData'
     export default {
         data () {
             return {
@@ -93,9 +94,26 @@
         },
         created() {
             this.pageType === 'bid' ? document.title = '出价记录' : document.title = '我的竞拍'
-            console.log(this.pageType)
+            this.pageType === 'bid' ? this.getBidRecord(this.$route.params.auctionId) : this.getMyBidRecords(this.$route.params.auctionId)
         },
         methods: {
+            getBidRecord (auctionId) {
+                var that = this
+                bidRecord(auctionId).then(function(response) {
+                    if (response && response.errno === 0) {
+                        that.recordList = response.data
+                    } else {
+                    }
+                })
+            },
+            getMyBidRecords (auctionId) {
+                myBidRecords(auctionId).then(function(response) {
+                    if (response && response.errno === 0) {
+                        that.recordList = response.data
+                    } else {
+                    }
+                })
+            }
         },
         components: {
         }

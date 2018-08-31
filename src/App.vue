@@ -41,7 +41,7 @@ export default {
             event.stopPropagation()
             vue.showErr ? vue.showErr = false : null
         }, false)
-        this.getCartNum();
+        // this.getCartNum();
     },
     methods: {
         addCartFn(youpinCart, productId, number) { // 添加购物车
@@ -49,24 +49,12 @@ export default {
                 console.log(res)
             })
         },
-
         getCartNum() {
             cartProductCount().then(res => {
                 if (res.errno == 0) {
                     this.$store.state.cart_num = res.data;
                 }
             })
-        },
-
-        login_oa() {
-            var that = this
-            login_oa().then(res => {
-                console.log(res);
-                that.userInfo = res.data;
-            })
-            if (!that.$route.query.code) {
-                Utils.redirectToWechatAuth(window.location.href)
-            }
         },
         showErrMsg(msg, setErrStyle) {
             var that = this
