@@ -4,8 +4,7 @@
             <div class="wheel-main">
                 <div class="wheel-arraw"></div>
                 <div class="wheel-pointer-box">
-                    <div class="wheel-pointer" @click="rotate_handle()"></div>
-                    <!-- <div class="wheel-grey-pointer" @click="rotate_handle()"></div> -->
+                    <div class="wheel-pointer" :class="{'wheel-grey-pointer': data.partake}" @click="rotate_handle()"></div>
                 </div>               
                 <div class="wheel-bg" :style="{transform:rotate_angle,transition:rotate_transition}">                   
                     <div class="prize-list">
@@ -24,9 +23,9 @@
             <div class="luck-time-box">
                 <div class="lucky-time">
                     距本轮结束 &nbsp; &nbsp; &nbsp;
-                    <span>{{countDown | timeArry(0)}}</span> ：
-                    <span>{{countDown | timeArry(1)}}</span> ：
-                    <span>{{countDown | timeArry(2)}}</span>
+                    <span>{{data.luckDrawTime | timeArry(0)}}</span> ：
+                    <span>{{data.luckDrawTime | timeArry(1)}}</span> ：
+                    <span>{{data.luckDrawTime | timeArry(2)}}</span>
                 </div>
             </div>
         </div>
@@ -42,9 +41,9 @@
             <p class="title">获奖用户</p>
             <div class="lucky_box">
                 <ul class="lucky-users-box">
-                    <li class="no_record" v-if="!luckUserRecord.length">暂无记录</li>
-                    <li v-for="(item,index) in luckUserRecord" :key="index">
-                        <div><span>{{item.nickName}}</span>
+                    <li class="no_record" v-if="data.luckDrawRecords && data.luckDrawRecords.length <= 0">暂无记录</li>
+                    <li v-for="(item,index) in data.luckDrawRecords" :key="index">
+                        <div><span>{{item.userName}}</span>
                         </div>
                         <div>+{{item.amount}}</div>
                     </li>
@@ -58,208 +57,184 @@
                 <p @click="showMask = false">知道啦</p>
             </div>
             <div v-else class="activityEnd">本轮已结束
-                <p v-if="countDown > 0">距离下轮开始： 
-                    {{countDown | timeArry(0)}}:{{countDown | timeArry(1)}}:{{countDown | timeArry(2)}}
+                <p v-if="data.luckDrawTime > 0">距离下轮开始： 
+                    <span>{{data.luckDrawTime | timeArry(0)}}:{{data.luckDrawTime | timeArry(1)}}:{{data.luckDrawTime | timeArry(2)}}</span>
                 </p>
             </div>
-        </div>  
-        <div class="toast" v-show="toast_control">
-            <div class="toast-title">
-                {{toast_title}}
-            </div>
-            <div class="toast-btn">
-                <div class="toast-cancel"  @click="close_toast">知道啦</div>
-            </div>
         </div>
-        <div class="toast-mask" v-show="toast_control"></div>
     </div>
 </template>
 <script>
     import { ModalHelper } from '../../../../service/Utils'
+    import { luckDrawDetail, luckDraw } from '../../../../service/getData'
     export default {
         data() {
             return {
                 timer: null,
-                countDown: 11111,
+                timer2: null,
                 boxHeight: 2.7, // 滚动区域高度(li高度0.45rem,倍数)
                 showMask: false,
                 modalEnd: false,
-                randomNumber: 1,
-                luckUserRecord: [
-                    {
-                        nickName: 'dddddd',
-                        amount: 10
-                    },
-                    {
-                        nickName: 'dddddd',
-                        amount: 10
-                    },
-                    {
-                        nickName: 'dddddd',
-                        amount: 10
-                    },
-                    {
-                        nickName: 'dddddd',
-                        amount: 10
-                    },
-                    {
-                        nickName: 'dddddd',
-                        amount: 10
-                    },
-                    {
-                        nickName: 'dddddd',
-                        amount: 10
-                    },
-                    {
-                        nickName: 'dddddd',
-                        amount: 10
-                    }
-                ],
+                randomNumber: 0,
+                data: {},
                 prize_list: [
                     {
                         count: '1-20', // 奖品数量
-                        name: '金条', // 奖品名称
-                        isPrize: 1 // 该奖项是否为奖品
+                        name: '金条' // 奖品名称
                     },
                     {
                         count: '21-40',
-                        name: '金条',
-                        isPrize: 1
+                        name: '金条'
                     },
                     {
                         count: '41-60',
-                        name: '金条',
-                        isPrize: 1
+                        name: '金条'
                     },
                     {
                         count: '61-80',
-                        name: '金条',
-                        isPrize: 1
+                        name: '金条'
                     },
                     {
                         count: '81-100',
-                        name: '金条',
-                        isPrize: 1
+                        name: '金条'
                     },
                     {
                         count: 0,
-                        name: '谢谢',
-                        isPrize: 0
+                        name: '谢谢'
                     }
                 ], //奖品列表
                 toast_control: false, //抽奖结果弹出框控制器
-                hasPrize: false, //是否中奖
                 start_rotating_degree: 0, //初始旋转角度
                 rotate_angle: 0, //将要旋转的角度
                 rotate_transition: "transform 6s ease-out", //初始化选中的过度属性控制
                 click_flag: true, //是否可以旋转抽奖
-                i: 0 //测试使用
+                auctionId: Number(this.$route.params.auctionId),
+                luckDrawId: Number(this.$route.params.luckDrawId)
             }
         },
         watch: {
-        showMask: function (newVal, oldVal) {
-            newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
-        }
-        },
-        mounted() {
-            this.computeNumber()
-            this.luckyTimer(-this.boxHeight)
-        },
-        created() {
-            this.init_prize_list();
-        },
-        computed: {
-            toast_title() {
-            return this.hasPrize
-                ? "恭喜您！抽中" + Math.random(10) + '个金条'
-                : "未中奖";
+            showMask: function (newVal, oldVal) {
+                newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
+            },
+            'data.luckDrawState': function (newVal) {
+                // newVal !== 1 ?  (this.showMask = true, this.modalEnd = true) : null
             }
         },
+        mounted() {
+        },
+        created() {
+            this.getLuckDrawDetail()
+        },
+        computed: {
+        },
         methods: {
-            //此方法为处理奖品数据
-            init_prize_list(list) {},
+            getLuckDrawDetail () {
+                var that = this
+                if (that.data.luckDrawTime < 0) {
+                    clearInterval(that.timer)
+                    return
+                }
+                luckDrawDetail(that.auctionId, that.luckDrawId).then(function(response) {
+                    if (response && response.errno === 0) {
+                        that.data = response.data
+                        that.data.luckDrawRecords.length > 6 ? that.luckyTimer(-that.boxHeight) : null
+                        that.countDown()
+                    } else {
+                        // alert(response.errmsg)
+                    }
+                })
+            },
             rotate_handle() {
-                this.rotating(5);
-                //   this.i = this.i + 2;
+                var that = this
+                if (that.data.partake || !that.click_flag) {
+                    return
+                }
+                that.click_flag = false
+                luckDraw(that.auctionId,that.luckDrawId).then(function(response) {
+                    if (response && response.errno === 0) {
+                        that.randomNumber = response.data
+                        that.rotating(that.computeIndex(that.randomNumber))
+                    } else {
+                        alert(response.errmsg)
+                    }
+                })
+            },
+            computeIndex (randomNumber) {
+                if (randomNumber >= 1 && randomNumber <= 20) {
+                    return 0
+                } else if (randomNumber >= 21 && randomNumber <= 40) {
+                    return 1
+                } else if (randomNumber >= 41 && randomNumber <= 60) {
+                    return 2
+                } else if (randomNumber >= 61 && randomNumber <= 80) {
+                    return 3
+                } else if (randomNumber >= 81 && randomNumber <= 100) {
+                    return 4
+                } else {
+                    return 5
+                }
             },
             rotating(index) {
-                if (!this.click_flag) return;
                 var type = 0; // 默认为 0  转盘转动 1 箭头和转盘都转动(暂且遗留)
                 var during_time = 5; // 默认为1s
                 var random = Math.floor(Math.random() * 7);
-                var result_index = index; // 最终要旋转到哪一块，对应prize_list的下标
-                this.i = result_index;
+                this.result_index = index; // 最终要旋转到哪一块，对应prize_list的下标
                 var result_angle = [0, -60, -120, -180, 120, 60]; //最终会旋转到下标的位置所需要的度数
                 var rand_circle = 6; // 附加多转几圈，2-3
-                this.click_flag = false; // 旋转结束前，不允许再次触发
+                // this.click_flag = false; // 旋转结束前，不允许再次触发
                 if (type == 0) {
                     // 转动盘子
                     var rotate_angle =
                     this.start_rotating_degree +
                     rand_circle * 360 +
-                    result_angle[result_index] -
+                    result_angle[this.result_index] -
                     this.start_rotating_degree % 360;
                     this.start_rotating_degree = rotate_angle;
                     this.rotate_angle = "rotate(" + rotate_angle + "deg)";
                     var that = this;
                     // 旋转结束后，允许再次触发
                     setTimeout(function() {
-                    that.click_flag = true;
-                    that.game_over(this.i);
+                        that.click_flag = true;
+                        that.data.partake = true;
+                        that.showMask = true;
                     }, during_time * 1000 + 1500); // 延时，保证转盘转完
                 } else {
-                    //
                 }
             },
-            game_over() {
-                this.showMask = true;
-                this.hasPrize = this.prize_list[this.i].isPrize
-            },
-            //关闭弹窗
-            close_toast() {
-                this.showMask = false;
-            },
-            computeNumber () {
+            countDown () {
                 var that = this
-                if(that.countDown){
                 this.timer = setInterval(function () {
-                    if(that.countDown >= 1){
-                    that.countDown -= 1
-                    if(that.countDown < 1){
-                        that.countDown = 0
+                    if (that.data.luckDrawTime <= 0) {
                         that.showMask = true
                         that.modalEnd = true
-                        that.countDown = 120
-                        that.computeNumber()
-                    }
+                        clearInterval(that.timer2)
+                        clearInterval(that.timer)
+                        that.getLuckDrawDetail()
                     } else {
-                    clearInterval(that.timer)
-                    return
+                        that.data.luckDrawTime -= 1
                     }
                 },1000)
-                }
             },
             luckyTimer: function (val) {
                 var that = this
                 var count = 0
                 var $luckyUsersList = document.querySelector('.lucky-users-box')
-                var $ulBox = document.querySelector('.lucky-users-box')
-                var totalHeight = -0.45 * that.luckUserRecord.length
+                var totalHeight = -0.45 * that.data.luckDrawRecords.length
                 if(totalHeight < -that.boxHeight){
                     that.timer2 = setInterval(function () {
                         if (totalHeight >= (count + 1) * -that.boxHeight && val !== 0) {
-                        count = 0
-                        val = 0
-                        $luckyUsersList.classList.remove('animate')
-                        $luckyUsersList.style.webkitTransform = 'translateY(0rem)'
-                        } else {
-                        count += 1
-                        $luckyUsersList.className += ' animate'
-                        if(totalHeight >= (count + 1) * -that.boxHeight){
-                            $luckyUsersList.style.webkitTransform = 'translateY(' + (totalHeight + that.boxHeight) + 'rem)'
-                        } else{
-                            $luckyUsersList.style.webkitTransform = 'translateY(' + val + 'rem)'
-                        }
+                            count = 0
+                            val = 0
+                            $luckyUsersList.classList.remove('animate')
+                            $luckyUsersList.style.webkitTransform = 'translateY(0rem)'
+                            } else {
+                            count += 1
+                            $luckyUsersList.className += ' animate'
+                            if(totalHeight >= (count + 1) * -that.boxHeight){
+                                $luckyUsersList.style.webkitTransform = 'translateY(' + (totalHeight + that.boxHeight) + 'rem)'
+                            } else{
+                                $luckyUsersList.style.webkitTransform = 'translateY(' + val + 'rem)'
+                            }
                         }
                         val -= that.boxHeight
                     }, 5000)
@@ -268,6 +243,7 @@
         },
         destroyed () {
             clearInterval(this.timer)
+            clearInterval(this.timer2)
             ModalHelper.beforeClose()
         }
     }
@@ -518,5 +494,10 @@
         @include sc(.15rem, #fff);
         line-height: 1.6;
         text-align: center;
+        span {
+            display: inline-block;
+            width: .5rem;
+            text-align: left;
+        }
     }
 </style>
