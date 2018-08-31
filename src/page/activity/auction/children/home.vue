@@ -1,13 +1,13 @@
 <template>
   <div class="auction_home" v-if="showDocument">
-    <router-link tag="div" class="add_count" to="/auction/sharing" v-if="(auctionInfo.auctionState === 0 || auctionInfo.auctionState === 1) && auctionInfo.assist_count < 3"></router-link>
-    <router-link class="lottery_entry" :class="{'lottery_entry_count' : auctionInfo.lottery_status === 1}" tag="div" to="/auction/lottery" v-if="auctionInfo.auctionState === 1">
-      <p v-if="auctionInfo.lottery_status === 1">剩余<span>{{luckDrawTime | timeArry(1)}}:{{luckDrawTime | timeArry(2)}}</span></p>
+    <router-link tag="div" class="add_count" to="/auction/sharing" v-if="(auctionInfo.auctionState === 0 || auctionInfo.auctionState === 1) && auctionInfo.helpState && auctionInfo.helpNum <= 3 "></router-link>
+    <router-link class="lottery_entry" :class="{'lottery_entry_count' : auctionInfo.luckDrawState === 1}" tag="div" to="/auction/lottery" v-if="auctionInfo.auctionState === 1">
+      <p v-if="auctionInfo.luckDrawState === 1">剩余<span>{{luckDrawTime | timeArry(1)}}:{{luckDrawTime | timeArry(2)}}</span></p>
     </router-link>
     <div class="top_main">
       <div class="head_tip" :class="{'ending' : auctionInfo.auctionState === 2}">
           <p>{{auctionInfo.auctionState === 0 ? '预告' : (auctionInfo.auctionState === 1 ? '进行中' : '已结束')}}</p>
-          <p v-if="auctionInfo.auctionState !== 2">距离拍卖开始：{{countDown | timeArry(0)}}:{{countDown | timeArry(1)}}:{{countDown | timeArry(2)}}</p>
+          <p v-if="auctionInfo.auctionState !== 2">{{auctionInfo.auctionState === 0 ? '距离拍卖开始' : '本场剩余'}}：{{countDown | timeArry(0)}}:{{countDown | timeArry(1)}}:{{countDown | timeArry(2)}}</p>
       </div>
       <carousel class="banner_box" :loop="true" :autoplay="true" :minSwipeDistance="6" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="5" :paginationSize="8" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color">
         <!-- <slide v-for="item in auctionInfo.goodsPic" :key="item.id"> -->
@@ -16,7 +16,7 @@
       </carousel>
       <div class="title">
         <p>{{auctionInfo.goods}}</p>
-        <p v-if="auctionInfo.rankingList.length">当前最高出价：<span>{{auctionInfo.rankingList.bidPrice}}</span><img src="../../../../images/auction/bullion.png"></p>
+        <p v-if="auctionInfo.rankingList.length">当前最高出价：<span>{{auctionInfo.highest}}</span><img src="../../../../images/auction/bullion.png"></p>
         <p>起拍价：{{auctionInfo.startingPrice}}<img src="../../../../images/auction/bullion.png"></p>
       </div>
     </div>
@@ -38,7 +38,7 @@
               <td><span :class="['list_' + (index + 1)]">{{index < 3 ? (index + 1) : '0' + (index + 1)}}</span></td>
               <td>{{item.userName}}</td>
               <td>{{item.bidPrice}}</td>
-              <td>{{item.addTime}}</td>
+              <td>{{item.addTime | timeformat}}</td>
             </tr>
           </tbody>
         </table>
@@ -78,65 +78,65 @@
         <p><span>6.</span>竞拍成功后，竞拍获胜者需在公众号回复“兑奖”获取领奖页面，如实准确填写领奖所需信息。如30日内未提交则视为自动放弃。竞拍所得者参与出价的金条不予退还。</p>
       </div>
     </div>
+    <!-- 底部悬浮状态条 -->
     <div class="bidders_status">
-      <div class="two_part">
+      <!-- 竞拍预告状态 -->
+      <div class="two_part" v-if="auctionInfo.auctionState === 0">
         <router-link to="/auction/bidRecord" tag="div">
-          <p>10次</p>
+          <p>{{auctionInfo.bidNum}}次</p>
           <p>剩余出价</p>
         </router-link>
-        <div @click="showMask = true" class="grey">
-          <p>立即出价</p>
-          <p>剩余金条：10000</p>
+        <div class="grey">
+          <p>起拍价：{{auctionInfo.startingPrice}}金条</p>
+          <p>请提前确认金条充足</p>
         </div>
       </div>
-      <div class="two_part">
-        <router-link to="/auction/bidRecord" tag="div">
-          <p>10次</p>
-          <p>剩余出价</p>
-        </router-link>
-        <div @click="showMask = true" class="only_line green">竞拍已结束</div>
-      </div>
-      <div class="one_part grey">
-        <!-- <div class="two_line">
-          <p>金条不足不能出价</p>
-          <p>剩余金条：100</p>
-        </div> -->
-        <div class="only_line">竞拍已结束</div>
-      </div>
-      <div class="three_part">
-        <router-link to="/auction/bidRecord" tag="div">
-          <p>10次</p>
-          <p>剩余出价</p>
-        </router-link>
-        <div>
-          <p>540金条</p>
-          <p>我的当前出价</p>
+      <div v-if="auctionInfo.auctionState === 1">
+        <!-- 竞拍进行中未出过价金条不足 -->
+        <div class="one_part grey" v-if="!auctionInfo.lastPrice">
+          <div class="two_line" v-if="auctionInfo.surplusBullion < offerRange[0]">
+            <p>金条不足不能出价</p>
+            <p>剩余金条：{{auctionInfo.surplusBullion}}</p>
+          </div>
+          <div class="two_part" v-else>
+            <router-link to="/auction/bidRecord" tag="div">
+              <p>{{auctionInfo.bidNum}}次</p>
+              <p>剩余出价</p>
+            </router-link>
+            <div class="red-linear-gradient" @click="showOffer()">
+              <p>立即出价</p>
+              <p>剩余金条：{{auctionInfo.surplusBullion}}</p>
+            </div>
+          </div>
         </div>
-        <div @click="showMask = true" class="red-linear-gradient">
-          <p>立即出价</p>
-          <p>剩余金条：10000</p>
-        </div>
-      </div>
-      <div class="three_part">
-        <router-link to="/auction/bidRecord" tag="div">
-          <p>10次</p>
-          <p>剩余出价</p>
-        </router-link>
-        <div>
-          <p>540金条</p>
-          <p>我的当前出价</p>
-        </div>
-        <div @click="showMask = true" class="red-linear-gradient">
-          <p>出价次数不足不能出价</p>
-          <!-- <p>剩余金条：10000</p> -->
+        <!-- 竞拍进行中未出过价可以出价 -->
+        <div class="three_part" v-if="auctionInfo.lastPrice">
+          <router-link to="/auction/bidRecord" tag="div">
+            <p>{{auctionInfo.bidNum}}次</p>
+            <p>剩余出价</p>
+          </router-link>
+          <div>
+            <p>{{auctionInfo.lastPrice}}金条</p>
+            <p>我的当前出价</p>
+          </div>
+          <div @click="showOffer()" class="grey" :class="{'red-linear-gradient' : auctionInfo.auctionState === 1 && auctionInfo.lastPrice && auctionInfo.bidNum && auctionInfo.surplusBullion >= offerRange[0]}">
+            <p v-if="auctionInfo.bidNum <=0">出价次数不足不能出价</p>
+            <p v-if="auctionInfo.bidNum >0">{{auctionInfo.surplusBullion < offerRange[0] ? '金条不足' : '立即出价'}}</p>
+            <p v-if="auctionInfo.bidNum >0">剩余金条：{{auctionInfo.surplusBullion}}</p>
+          </div>
         </div>
       </div>
-      <div class="one_part grey">
-        <div class="two_line">
-          <p>金条不足不能出价</p>
-          <p>剩余金条：100</p>
+      <div v-if="auctionInfo.auctionState === 2">
+        <div v-if="!auctionInfo.lastPrice" class="one_part grey">
+          <div class="only_line">竞拍已结束</div>
         </div>
-        <!-- <div class="only_line">竞拍已结束</div> -->
+        <div class="two_part">
+          <router-link to="/auction/bidRecord" tag="div">
+            <p>{{auctionInfo.bidNum}}次</p>
+            <p>剩余出价</p>
+          </router-link>
+          <div class="only_line" :class="{'green' : auctionInfo.bidSuccess, 'grey' : !auctionInfo.bidSuccess}">{{auctionInfo.bidSuccess ? '恭喜您，竞拍成功！' : '竞拍已结束'}}</div>
+        </div>
       </div>
     </div>
     <div class="bid_mask" v-client-height v-if="showMask">
@@ -145,8 +145,8 @@
         <div class="detail">
           <p>
             <span>{{(auctionInfo.rankingList.length < 2) ? '当前领先出价金额' : '当前领先出价区间'}}</span>
-            <span v-if="auctionInfo.rankingList.length > 1">{{auctionInfo.rankingList[0].bidPrice}}-{{auctionInfo.rankingList[1].bidPrice}}金条</span>
-            <span v-if="!auctionInfo.rankingList.length">{{auctionInfo.startingPrice}}金条</span>
+            <span v-if="auctionInfo.rankingList.length > 1">{{auctionInfo.rankingList[auctionInfo.rankingList.length - 1].bidPrice}}-{{auctionInfo.rankingList[0].bidPrice}}金条</span>
+            <span v-else-if="!auctionInfo.rankingList.length">{{auctionInfo.startingPrice}}金条</span>
             <span v-else>{{auctionInfo.rankingList[0].bidPrice}}</span>
           </p>
           <p>
@@ -160,11 +160,11 @@
         </div>
         <div class="number">
           <span @click="changeNumber(0)">-</span>
-          <input v-model="offerNumber">
+          <input v-model="offerNumber" :change="inputNum(offerNumber)" @blur.prevent="changeCount(offerNumber)" type="tel">
           <span @click="changeNumber(1)">+</span>
         </div>
         <p class="tip">*本次出价范围{{offerRange[0]}}-{{offerRange[1]}}金条，加价单位为5金条</p>
-        <div class="confirm grey" @click="showMask = false" :class="{'red' : auctionInfo.surplusBullion > offerNumber}">{{auctionInfo.surplusBullion < offerNumber ? '金条不足' : '确认出价'}}</div>
+        <div class="confirm grey" @click="confirmOffer()" :class="{'red' : auctionInfo.surplusBullion > offerNumber}">{{auctionInfo.surplusBullion < offerNumber ? '金条不足' : '确认出价'}}</div>
       </div>
     </div>
   </div>
@@ -172,13 +172,14 @@
 <script>
   import { ModalHelper } from '../../../../service/Utils'
   import { Carousel, Slide } from 'vue-carousel';
-  import { auction } from '../../../../service/getData'
+  import { auction, offer } from '../../../../service/getData'
   export default {
     data () {
       return {
         showDocument: false,
         showMask: false,
-        countDown: 61,
+        countDown: null,
+        luckDrawTime: null,
         timer: null,
         timer2: null,
         offerNumber: null,
@@ -187,66 +188,27 @@
           activeColor: '#e4372e',
           color: '#fff'
         },
-        list: [
-          {
-            userName: '124',
-            bidPrice: 200,
-            addTime: 1000000
-          },
-          {
-            userName: '124',
-            bidPrice: 200,
-            addTime: 1000000
-          },
-          {
-            userName: '124',
-            bidPrice: 200,
-            addTime: 1000000
-          },
-          {
-            userName: '124',
-            bidPrice: 200,
-            addTime: 1000000
-          },
-          {
-            userName: '124',
-            bidPrice: 200,
-            addTime: 1000000
-          },
-        ],
-        auctionInfo:{
-          auctionState: 1,
-          lottery_status: 0,
-          assist_count: 0,
-          highest_bid: 800,
-          start_price: 500,
-          goods: {
-            headPic: [
-              'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531924901590&di=c68d3de5f9fdf610cab70c58eeb43a6e&imgtype=0&src=http%3A%2F%2Fimg03.tooopen.com%2Fimages%2F20120807%2Fsy_201208071618090810.jpg',
-              'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531924901590&di=c68d3de5f9fdf610cab70c58eeb43a6e&imgtype=0&src=http%3A%2F%2Fimg03.tooopen.com%2Fimages%2F20120807%2Fsy_201208071618090810.jpg'
-            ]
-          },
-        }
+        auctionInfo: {}
       }
     },  
     watch: {
       showMask: function (newVal, oldVal) {
         newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
       },
-      countDown: function () {
-
+      countDown: function (val) {
+        val ? null : this.getAuctionInfo()
       },
-      luckDrawTime: function () {
-
+      luckDrawTime: function (val) {
+        val ? null : this.getAuctionInfo()
       }
     },
     mounted() {
-      this.computeNumber()
       this.getAuctionInfo()
     },
     created() {
     },
     methods: {
+      // 获取首页数据
       getAuctionInfo() {
         var that = this 
         auction().then(function (res) {
@@ -255,19 +217,37 @@
           that.countDown = res.data.countDown
           that.luckDrawTime = res.data.luckDrawTime
           that.offerRange = that.calculateRange(res.data.rankingList,res.data.startingPrice)
-          that.offerNumber = that.offerRange[0]
+          clearInterval(that.timer)
+          clearInterval(that.timer2)
+          if (res.data.auctionState === 1) {
+            that.timer2 = setTimeout(function () {
+              that.getAuctionInfo()
+            },5000)
+          }
+          //----- 假数据
+          // that.auctionInfo.auctionState = 0
+          // that.auctionInfo.surplusBullion = 10
+          // that.auctionInfo.lastPrice = 20
+          // that.auctionInfo.bidNum = 1
+          // that.auctionInfo.bidSuccess = false
+          // that.luckDrawTime = 100
+          that.computeNumber()
         })
       },
+      // 倒计时
       computeNumber () {
         var that = this
         if(that.countDown){
           this.timer = setInterval(function () {
             if(that.countDown >= 1){
               that.countDown -= 1
+              that.luckDrawTime -= 1
               if(that.countDown < 1){
                 that.countDown = 0
               }
-              // console.log(that.countDown)
+              if(that.luckDrawTime < 1){
+                that.luckDrawTime = 0
+              }
             } else {
               clearInterval(that.timer)
               return
@@ -275,33 +255,68 @@
           },1000)
         }
       },
+      // 返回出价范围数组
       calculateRange (Arry,startingPrice) {
+        console.log(Arry)
         var range = []
         if (!Arry.length) {
           range.push(startingPrice + 20, startingPrice + 40)
         } else if (Arry.length === 1) {
           range.push(Arry[0].bidPrice + 20, Arry[0].bidPrice + 40)
         } else {
-          range.push(Arry[0].bidPrice + 20, Arry[Arry.length - 1].bidPrice + 40)
+          range.push(Arry[Arry.length - 1].bidPrice + 20, Arry[0].bidPrice + 40)
         }
         return range
       },
+      // 点击出价
+      showOffer () {
+        if (this.auctionInfo.auctionState === 1 && ((this.auctionInfo.lastPrice && this.auctionInfo.bidNum) || !this.auctionInfo.lastPrice) && this.auctionInfo.surplusBullion >= this.offerRange[0]) {
+          this.showMask = true
+          this.offerNumber = this.offerRange[0]
+        } else {
+          return
+        }
+      },
+      // 加减按钮
       changeNumber (number) {
         var that = this
         if(number){
-          if(that.offerNumber + 5 > that.offerRange[1]){
-            return
-          } else {
-            that.offerNumber += 5
+          that.offerNumber += 5
+          if(that.offerNumber > that.offerRange[1]){
+            that.offerNumber = that.offerRange[1]
           }
         } else {
-          console.log(number)
-          if(that.offerNumber - 5 < that.offerRange[0]){
-            return
-          } else {
-            that.offerNumber -= 5
+          that.offerNumber -= 5
+          if(that.offerNumber < that.offerRange[0]){
+            that.offerNumber = that.offerRange[0]
           }
         }
+      },
+      // 输入出价数
+      inputNum (value) {
+        this.offerNumber = Math.floor(this.offerNumber)
+        if (value > this.offerRange[1]) {
+          this.offerNumber = this.offerRange[1]
+        }
+      },
+      // 失去焦点
+      changeCount (value) {
+        this.offerNumber = this.offerNumber * 1
+        if (value < this.offerRange[0]) {
+          this.offerNumber = this.offerRange[0] * 1
+        }
+      },
+      // 确认出价
+      confirmOffer () {
+        var that = this
+        offer(that.auctionInfo.auctionId,that.offerNumber * 100).then(function (res) {
+          if(res.errno) {
+            alert(res.errmsg)
+          } else {
+            that.showMask = false
+            alert(res.errmsg)
+          }
+        })
       }
     },
     components: {
@@ -318,6 +333,7 @@
 <style scoped lang="scss">
   @import '../../../../style/mixin';
   .auction_home{
+    padding-bottom: .5rem;
     position: relative;
     .add_count,.lottery_entry{
       @include bis('../../../../images/auction/add_count.png');
@@ -566,7 +582,10 @@
     .bidders_status{
       @include wh(100%, .5rem);
       text-align: center;
+      position: fixed;
+      bottom: 0;
       .one_part{
+        height: .5rem;
         text-align: center;
         .two_line{
           padding: .05rem 0;
@@ -584,6 +603,7 @@
       }
       .two_part{
         display: flex;
+        height: .5rem;
         div{
           padding: .05rem 0;
         }
@@ -628,6 +648,7 @@
       }
       .three_part{
         display: flex;
+        height: .5rem;
         div{
           padding: .05rem 0;
         }
