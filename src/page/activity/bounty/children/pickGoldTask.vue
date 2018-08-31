@@ -220,10 +220,10 @@
     .mask{
       @include wh(100%,auto);
       background: rgba(0, 0, 0, .9);
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
-      padding-top: 2.5rem;
+      padding-top: 2.2rem;
       .tip{
         background: #fff;
         width: 2.8rem;
