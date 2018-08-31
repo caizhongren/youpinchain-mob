@@ -321,3 +321,7 @@ export const helpDetail = (id) => fetch('/auction/home/helpDetail/' + id);
  * 竞拍首页
  */
 export const auction = () => fetch('/auction/home', {});
+
+export const congigJsApi = (requestUrl) => fetch('/hongcai/rest/wechat/jsApiConfig', {
+	requestUrl: requestUrl
+})

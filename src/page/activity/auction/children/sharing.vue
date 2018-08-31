@@ -27,7 +27,7 @@
                 </ul>
                 <div class="progress_box">
                     <div class="progress_bar" :style="{width:data.helpNum >= 9 ? '100%' : (data.helpNum/9*100) +'%'}"></div>
-                    <div class="invite_count"></div>
+                    <!-- <div class="invite_count"></div> -->
                 </div>
                 <ul class="gift_count">
                     <li>3人</li>
@@ -35,7 +35,7 @@
                     <li>9人</li>
                 </ul>
             </div>
-            <div class="aid_friend">
+            <div class="aid_friend" v-if="data.helpList.length > 0">
                 <div class="title">助力好友</div>
                 <ul class="friend_list">
                     <li v-for="item in data.helpList"><img :src="item.headImgUrl" alt=""></li>
@@ -50,37 +50,42 @@
             </div>
         </div>
         <div class="invite_btn">邀请好友助力</div>
+        <share-mask v-if="showShare" :showShare="showShare"></share-mask>
     </div>
 </template>
 <script>
+    import shareMask from 'src/components/common/shareMask'
     import { helpDetail } from '../../../../service/getData'
+    import {WechatShareUtils} from '../../../../service/WechatShareUtils'
+    import wx from 'weixin-js-sdk'
     export default {
         data () {
             return {
+                showShare: true,
                 data: {
                     helpBullion: 0,
                     helpNum: 1,
                     helpBidNum: 1,
                     helpList: [
-                        {
-                            headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        },{
-                            headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        },{
-                            headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        },{
-                            headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        },{
-                            headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        },{
-                            headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        },{
-                            headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        },{
-                            headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        },{
-                            headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        }
+                        // {
+                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
+                        // },{
+                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
+                        // },{
+                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
+                        // },{
+                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
+                        // },{
+                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
+                        // },{
+                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
+                        // },{
+                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
+                        // },{
+                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
+                        // },{
+                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
+                        // }
                     ]
                 }
             }
@@ -88,6 +93,13 @@
         watch: {
         },
         mounted() {
+            // WechatShareUtils.configJsApi()
+            var that = this
+            wx.ready(function () {
+                console.log(111)
+                var shareLink = process.env.vue_domain + '/auction/sharingLanding'
+                WechatShareUtils.onMenuShareAppMessage('你看得出我在说谎吗？', '认识了那么久，你有把握我说的每句话都是真心话吗？', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/8MZDOEkib8AnEm8IKUChDJ7X50kEO9u4GxRe5kwWibuAEq0mOHqmyZnsAk27P9lMk2NjCM0VOFBXPf4nByXcFI5g/0?wx_fmt=png')
+            })
         },
         created() {
             this.getHelpDetail(11)
@@ -105,6 +117,7 @@
             }
         },
         components: {
+            shareMask
         }
     }
 </script>
@@ -151,8 +164,8 @@
             }
         }
         .content {
-            border-top-left-radius: .1rem;
-            border-top-right-radius: .1rem;
+            border-top-left-radius: .12rem;
+            border-top-right-radius: .12rem;
             margin-top: -.4rem;
             padding: .45rem 0rem .2rem;
             z-index: 0;
@@ -163,6 +176,7 @@
                 margin: .25rem 0 .15rem .15rem;
             }
             .aid_progress {
+                border-bottom: 1px solid #eee;
                 padding-bottom: .18rem;
                 .gift_icon, .gift_count {
                     width: 85%;
@@ -209,7 +223,6 @@
                 }
             }
             .aid_friend {
-                border-top: 1px solid #eee;
                 border-bottom: 1px solid #eee;
                 .friend_list {
                     overflow: hidden;
