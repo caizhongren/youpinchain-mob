@@ -4,15 +4,15 @@
             <img src="../../../../images/bounty-plan/starry_sky_bg0.png" alt="" width="100%">
             <ul class="statistics">
                 <li>
-                    <p>{{data.helpBullion}}</p>
+                    <p>{{data.helpBullion || 0}}</p>
                     <p>金条奖励</p>
                 </li>
                 <li>
-                    <p>{{data.helpNum}}</p>
+                    <p>{{data.helpNum || 0}}</p>
                     <p>好友助力人数</p>
                 </li>
                 <li>
-                    <p>{{data.helpBidNum}}</p>
+                    <p>{{data.helpBidNum || 0}}</p>
                     <p>出价次数奖励</p>
                 </li>
             </ul>
@@ -35,10 +35,10 @@
                     <li>9人</li>
                 </ul>
             </div>
-            <div class="aid_friend" v-if="data.helpList.length > 0">
+            <div class="aid_friend" v-if="data.helpList && data.helpList.length > 0">
                 <div class="title">助力好友</div>
                 <ul class="friend_list">
-                    <li v-for="item in data.helpList"><img :src="item.headImgUrl" alt=""></li>
+                    <li v-for="(item,index) in data.helpList" :key="index"><img :src="item"></li>
                 </ul>
             </div>
             <div class="rules">
@@ -49,51 +49,37 @@
                 </div>
             </div>
         </div>
-        <div class="invite_btn">邀请好友助力</div>
+        <div class="invite_btn" @click="showShare = true;">邀请好友助力</div>
+        <div class="mask" v-if="showEnd" v-client-height>
+            本场助力已结束，下次早点来哦～
+        </div>
         <share-mask v-if="showShare" :showShare="showShare"></share-mask>
     </div>
 </template>
 <script>
     import shareMask from 'src/components/common/shareMask'
+    import { ModalHelper } from '../../../../service/Utils'
     import { helpDetail } from '../../../../service/getData'
-    import {WechatShareUtils} from '../../../../service/WechatShareUtils'
+    import { WechatShareUtils } from '../../../../service/WechatShareUtils'
     import wx from 'weixin-js-sdk'
     export default {
         data () {
             return {
-                showShare: true,
-                data: {
-                    helpBullion: 0,
-                    helpNum: 1,
-                    helpBidNum: 1,
-                    helpList: [
-                        // {
-                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        // },{
-                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        // },{
-                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        // },{
-                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        // },{
-                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        // },{
-                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        // },{
-                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        // },{
-                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        // },{
-                        //     headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIaY0B8q5Z9bQOXNJEEXBuI5Dl6hGH5FDOAbQPicxpibpbebMr5HuzfsJkzHfaTCVGfSQzP0DKiaLLEA/132'
-                        // }
-                    ]
-                }
+                showShare: false,
+                showEnd: false,
+                data: {}
             }
         },  
         watch: {
+            showShare (val) {
+                val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
+            },
+            showEnd (val) {
+                val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
+            }
         },
         mounted() {
-            // WechatShareUtils.configJsApi()
+            WechatShareUtils.configJsApi()
             var that = this
             wx.ready(function () {
                 console.log(111)
@@ -102,14 +88,14 @@
             })
         },
         created() {
-            this.getHelpDetail(11)
+            this.getHelpDetail(this.$route.params.auctionId)
         },
         methods: {
             getHelpDetail (auctionId) {
                 var that = this
-                helpDetail(auctionId).then(function (respones) {
-                    if (respones && respones.errno === 0) {
-                        // that.data = respones.data
+                helpDetail(auctionId).then(function (response) {
+                    if (response && response.errno === 0) {
+                        that.data = response.data
                     } else {
 
                     }
@@ -265,6 +251,19 @@
             text-align: center;
             line-height: .5rem;
             background-image: linear-gradient(133deg, #fc5b46, #fa424f);
+        }
+        .mask {
+            @include wh(100%,auto);
+            background: rgba(0, 0, 0, .9);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9;
+            @include sc(.18rem,$fc);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 </style>

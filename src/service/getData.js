@@ -316,12 +316,39 @@ export const goldDrill = (page, size) => fetch('/act/bounty/home/goldDrill', {
  */
 
 export const helpDetail = (id) => fetch('/auction/home/helpDetail/' + id);
+
+ /**
+ * 出价记录
+ */
+
+export const bidRecord = (id) => fetch('/auction/home/bidRecord/' + id);
+
+ /**
+ * 我的出价记录
+ */
+
+export const myBidRecords = (id) => fetch('/auction/home/myBidRecords/' + id);
+
  
  /**
  * 竞拍首页
  */
-export const auction = () => fetch('/auction/home', {});
+export const auction = () => fetch('/auction/home', {}); 
 
-export const congigJsApi = (requestUrl) => fetch('/hongcai/rest/wechat/jsApiConfig', {
-	requestUrl: requestUrl
+/**
+* 抽奖详情
+*/
+export const luckDrawDetail = (auctionId, luckDrawId) => fetch('/auction/home/luckDrawDetail/' + auctionId + '/' + luckDrawId, {});
+
+/**
+* 抽奖GO
+*/
+export const luckDraw = (auctionId, luckDrawId) => fetch('/auction/home/luckDraw', {
+	auctionId: auctionId,
+	luckDrawId: luckDrawId
+}, 'POST');
+
+
+export const congigJsApi = (url) => fetch('/oa/jsapiSignature', {
+	url: url
 })

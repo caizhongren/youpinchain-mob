@@ -191,11 +191,11 @@ export default [{
                     meta: {title: '限时拍卖'}
                 },
                 {
-                    path: 'record/:type',
+                    path: 'record/:type/:auctionId',
                     component: Record
                 },
                 {
-                    path: 'sharing',
+                    path: 'sharing/:auctionId',
                     component: Sharing,
                     meta: {title: '分享助力'}
                 },
@@ -210,7 +210,7 @@ export default [{
                     meta: {title: '奖励兑换'}
                 },
                 {
-                    path: 'lottery',
+                    path: 'lottery/:auctionId/:luckDrawId',
                     component: Lottery,
                     meta: {title: '限时抽奖'}
                 }
