@@ -9,7 +9,7 @@
             <ul class="body">
                 <div class="no_record" v-if="recordList.length <= 0">暂无记录</div>
                 <li v-for="(item, index) in recordList" :key="index" v-else>
-                    <p>{{item.bidState === 0 ? '出局' : item.state === 1 ? '领先' : '成交'}}</p>
+                    <p>{{item.bidState === 0 ? '出局' : item.bidState === 1 ? '领先' : item.bidState === 2 ? '成交' : ''}}</p>
                     <p>{{item.bidPrice}}</p>
                     <p>{{item.addTime | time}}</p>
                 </li>
@@ -22,14 +22,14 @@
                 <li>操作</li>
             </ul>
             <ul class="body">
-                <li v-for="(item, index) in recordList" :key="index" v-if="recordList.length > 0">
+                <div class="no_record" v-if="recordList.length <= 0">暂无记录</div>
+                <li v-for="(item, index) in recordList" :key="index" v-else>
                     <p>{{item.addTime | date('.')}}</p>
-                    <p>{{item.bidState === 0 ? '出局' : '成功'}}</p>
-                    <p :class="{'red': item.state === 0}">{{item.state === 1 ? '奖励已领取' : item.state === 0 ? '领取奖励' : '——'}}</p>
+                    <p>{{item.bidState === 0 ? '出局' : item.bidState === 0 ?  '成功' : ''}}</p>
+                    <p :class="{'red': item.bidState === 2}">{{item.bidState === 3 ? '奖励已领取' : item.bidState === 2 ? '领取奖励' : '——'}}</p>
                 </li>
-                <div class="load_more">查看更多</div>
+                <div class="load_more" v-if="page < totalPage">查看更多</div>
             </ul>
-            <div class="no_record" v-if="recordList.length <= 0">暂无记录</div>
         </div>
     </div>
 </template>
@@ -41,7 +41,8 @@
                 pageType: this.$route.params.type,
                 recordList: [],
                 page: 1,
-                pageSize: 10
+                pageSize: 10,
+                totalPage: 1
             }
         },  
         watch: {
@@ -67,11 +68,18 @@
                 var that = this
                 myBidRecords(page,pageSize).then(function(response) {
                     if (response && response.errno === 0) {
-                        that.recordList = response.data
+                        that.recordList = response.data.auctionBids
+                        that.totalPage = Math.ceil(response.data.count / response.data.pageSize)
+                        that.page = response.data.page
+                        that.pageSize = response.data.pageSize
                     } else {
                         alert(response.errmsg)
                     }
                 })
+            },
+            loadMore () {
+                this.page += 1 
+                this.getMyBidRecords(this.page,this.pageSize)
             }
         },
         components: {
