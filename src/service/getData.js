@@ -335,8 +335,9 @@ export const bidRecord = (id) => fetch('/auction/home/bidRecord/' + id);
  * 我的出价记录
  */
 
-export const myBidRecords = (id) => fetch('/auction/home/myBidRecords',{
-	id: id
+export const myBidRecords = (page,pageSize) => fetch('/auction/home/myBidRecords',{
+	page: page,
+	pageSize: pageSize
 });
 
  

@@ -39,7 +39,9 @@
         data () {
             return {
                 pageType: this.$route.params.type,
-                recordList: []
+                recordList: [],
+                page: 1,
+                pageSize: 10
             }
         },  
         watch: {
@@ -48,7 +50,7 @@
         },
         created() {
             this.pageType === 'bid' ? document.title = '出价记录' : document.title = '我的竞拍'
-            this.pageType === 'bid' ? this.getBidRecord(this.$route.params.auctionId) : this.getMyBidRecords(this.$route.params.auctionId)
+            this.pageType === 'bid' ? this.getBidRecord(this.$route.query.auctionId) : this.getMyBidRecords(this.page, this.pageSize)
         },
         methods: {
             getBidRecord (auctionId) {
@@ -61,8 +63,9 @@
                     }
                 })
             },
-            getMyBidRecords (auctionId) {
-                myBidRecords(auctionId).then(function(response) {
+            getMyBidRecords (page,pageSize) {
+                var that = this
+                myBidRecords(page,pageSize).then(function(response) {
                     if (response && response.errno === 0) {
                         that.recordList = response.data
                     } else {

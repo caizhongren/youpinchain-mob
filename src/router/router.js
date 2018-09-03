@@ -191,7 +191,7 @@ export default [{
                     meta: {title: '限时拍卖'}
                 },
                 {
-                    path: 'record/:type/:auctionId',
+                    path: 'record/:type',
                     component: Record
                 },
                 {
