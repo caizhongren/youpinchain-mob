@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="invite_btn" @click="showShare = true;">邀请好友助力</div>
-        <div class="mask" v-if="showEnd" v-client-height>
+        <div class="mask" v-if="data.helpState" v-client-height>
             本场助力已结束，下次早点来哦～
         </div>
         <share-mask v-if="showShare" :showShare="showShare"></share-mask>
@@ -74,7 +74,7 @@
             showShare (val) {
                 val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
             },
-            showEnd (val) {
+            'that.data.helpState': function (val) {
                 val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
             }
         },
@@ -83,7 +83,7 @@
             var that = this
             wx.ready(function () {
                 var shareLink = process.env.DOMAIN + '/auction/sharingLanding'
-                WechatShareUtils.onMenuShareAppMessage('分享标题', '分享副标题', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/8MZDOEkib8AnEm8IKUChDJ7X50kEO9u4GxRe5kwWibuAEq0mOHqmyZnsAk27P9lMk2NjCM0VOFBXPf4nByXcFI5g/0?wx_fmt=png')
+                WechatShareUtils.onMenuShareAppMessage('我在链上臻品抢到x,快来一起抢！', '上链上臻品参与赏金计划赢取“金条”，免费竞拍大奖！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/8MZDOEkib8AnEm8IKUChDJ7X50kEO9u4GxRe5kwWibuAEq0mOHqmyZnsAk27P9lMk2NjCM0VOFBXPf4nByXcFI5g/0?wx_fmt=png')
             })
         },
         created() {
