@@ -66,7 +66,10 @@
         data () {
             return {
                 showShare: false,
-                data: {}
+                data: {
+                    helpState: true,
+                },
+                auctionId: this.$route.params.auctionId
             }
         },  
         watch: {
@@ -79,14 +82,9 @@
         },
         mounted() {
             WechatShareUtils.configJsApi()
-            var that = this
-            wx.ready(function () {
-                var shareLink = process.env.DOMAIN + '/auction/sharingLanding'
-                WechatShareUtils.onMenuShareAppMessage('我在链上臻品抢到x,快来一起抢！', '上链上臻品参与赏金计划赢取“金条”，免费竞拍大奖！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/8MZDOEkib8AnEm8IKUChDJ7X50kEO9u4GxRe5kwWibuAEq0mOHqmyZnsAk27P9lMk2NjCM0VOFBXPf4nByXcFI5g/0?wx_fmt=png')
-            })
         },
         created() {
-            this.getHelpDetail(this.$route.params.auctionId)
+            this.getHelpDetail(this.auctionId)
         },
         methods: {
             getHelpDetail (auctionId) {
@@ -94,6 +92,10 @@
                 helpDetail(auctionId).then(function (response) {
                     if (response && response.errno === 0) {
                         that.data = response.data
+                        wx.ready(function () {
+                            var shareLink = process.env.DOMAIN + '/auction/sharingLanding/' + that.auctionId + '/' + that.data.vipId
+                            WechatShareUtils.onMenuShareAppMessage('我在链上臻品抢到x,快来一起抢！', '上链上臻品参与赏金计划赢取“金条”，免费竞拍大奖！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/8MZDOEkib8AnEm8IKUChDJ7X50kEO9u4GxRe5kwWibuAEq0mOHqmyZnsAk27P9lMk2NjCM0VOFBXPf4nByXcFI5g/0?wx_fmt=png')
+                        })
                     } else {
                         alert(response.errmsg)
                     }

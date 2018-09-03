@@ -200,7 +200,7 @@ export default [{
                     meta: {title: '分享助力'}
                 },
                 {
-                    path: 'sharingLanding',
+                    path: 'sharingLanding/:auctionId/:vipId',
                     component: SharingLanding,
                     meta: {title: '分享落地页'}
                 },

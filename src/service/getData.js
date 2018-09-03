@@ -325,6 +325,13 @@ export const offer = (auctionId,bidPrice) => fetch('/auction/home/bid', {
  */
 export const helpDetail = (id) => fetch('/auction/home/helpDetail/' + id);
 
+/** 
+ * 分享后用户助力
+*/
+export const help = (auctionId,vipId) => fetch('/auction/home/' + auctionId + '/help', {
+	vipId: vipId
+}, 'POST')
+
  /**
  * 出价记录
  */

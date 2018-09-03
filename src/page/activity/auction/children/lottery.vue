@@ -209,7 +209,7 @@
                         that.modalEnd = true
                         clearInterval(that.timer2)
                         clearInterval(that.timer)
-                        that.getLuckDrawDetail()
+                        // that.getLuckDrawDetail()
                     } else {
                         that.data.luckDrawTime -= 1
                     }
