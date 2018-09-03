@@ -6,8 +6,8 @@
         <div class="content">
             <div class="form_box">
                 <form>
-                    <input type="text" placeholder="请输入微信号" v-model="user.wechatNum" maxlength="50" required focus>
-                    <input type="tel" placeholder="请输入手机号" maxlength="11" v-model="user.mobile" v-on:input="user.mobile = user.mobile.replace(/\D/g, '')" autocomplete="off" required>
+                    <input type="text" placeholder="请输入微信号" v-model="user.wxNum" maxlength="50" required focus>
+                    <input type="tel" placeholder="请输入手机号" maxlength="11" v-model="user.phoneNum" v-on:input="user.phoneNum = user.phoneNum.replace(/\D/g, '')" autocomplete="off" required>
                     <div class="warning_tip">*涉及奖励发放领取，请务必认真填写</div>
                     <div class="submit_btn" @click="submitForm(user)">提交</div>
                 </form>
@@ -30,9 +30,10 @@
         data () {
             return {
                 showShare: true,
+                bidId: this.$route.params.bidId * 1,
                 user: {
-                    mobile: '',
-                    wechatNum: ''
+                    phoneNum: '',
+                    wxNum: ''
                 }
             }
         },  
@@ -44,15 +45,19 @@
         },
         methods: {
             submitForm (user) {
-                if (!user.mobile || !user.wechatNum) {
+                if (!user.phoneNum || !user.wxNum) {
                     return
                 }
                 var that = this
-                exchange(user).then(function (respones) {
+                exchange(that.bidId, user.wxNum, user.phoneNum).then(function (respones) {
                     if (respones && respones.errno === 0) {
-                        // that.data = respones.data
+                        alert('兑换成功')
+                        that.user = {
+                            phoneNum: '',
+                            wxNum: ''
+                        }
                     } else {
-
+                        alert(respones.errmsg)
                     }
                 })
             }

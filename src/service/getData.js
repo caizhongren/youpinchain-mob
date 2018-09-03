@@ -363,3 +363,12 @@ export const luckDraw = (auctionId, luckDrawId) => fetch('/auction/home/luckDraw
 export const congigJsApi = (url) => fetch('/oa/jsapiSignature', {
 	url: url
 })
+
+ /**
+ * 兑换奖励
+ */
+ export const exchange = (bidId, wxNum, phoneNum) => fetch('/auction/home/myBidRecords/' + bidId, {
+ 	bidId: bidId,
+ 	wxNum: wxNum,
+ 	phoneNum: phoneNum
+ } , 'PUT');

@@ -42,7 +42,8 @@
                 recordList: [],
                 page: 1,
                 pageSize: 10,
-                totalPage: 1
+                totalPage: 1,
+                auctionId: this.$route.query.auctionId
             }
         },  
         watch: {
@@ -51,7 +52,7 @@
         },
         created() {
             this.pageType === 'bid' ? document.title = '出价记录' : document.title = '我的竞拍'
-            this.pageType === 'bid' ? this.getBidRecord(this.$route.query.auctionId) : this.getMyBidRecords(this.page, this.pageSize)
+            this.pageType === 'bid' ? this.getBidRecord(this.auctionId) : this.getMyBidRecords(this.page, this.pageSize)
         },
         methods: {
             getBidRecord (auctionId) {

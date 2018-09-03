@@ -165,6 +165,7 @@
         <p class="tip">*本次出价范围{{offerRange[0]}}-{{offerRange[1]}}金条，加价单位为5金条</p>
         <div class="confirm grey" @click="confirmOffer()" :class="{'red' : auctionInfo.surplusBullion >= offerNumber}">{{auctionInfo.surplusBullion < offerNumber ? '金条不足' : '确认出价'}}</div>
       </div>
+      <img style="margin:0 auto;margin-top:.3rem;display:block;" @click="showMask = false" src="../../../../images/bounty-plan/close_model.png" alt="" width="30" class="close_model">
     </div>
   </div>
 </template>
@@ -223,15 +224,6 @@
               that.getAuctionInfo()
             },5000)
           }
-          //----- 假数据
-          // that.auctionInfo.auctionState = 1
-          // that.auctionInfo.surplusBullion = 30
-          // that.auctionInfo.lastPrice = 20
-          // that.auctionInfo.bidNum = 1
-          // that.auctionInfo.bidSuccess = false
-          // that.luckDrawTime = 100
-          // that.auctionInfo.helpState = true
-          // that.auctionInfo.helpNum = 3
           that.computeNumber()
         })
       },
@@ -710,7 +702,7 @@
       width: 100%;
       z-index: 100;
       background: rgba(0,0,0,.5);
-      padding-top: 1.6rem;
+      padding-top: 1.2rem;
       .bid_offer{
         padding-bottom: .2rem;
         background: #fffefe;
