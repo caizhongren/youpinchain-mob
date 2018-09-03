@@ -1,6 +1,6 @@
 <template>
   <div class="auction_home" v-if="showDocument">
-    <router-link tag="div" class="add_count" :to="'/auction/sharing/' + auctionInfo.auctionId" v-if="(auctionInfo.auctionState === 0 || auctionInfo.auctionState === 1) && auctionInfo.helpState && auctionInfo.helpNum <= 3 "></router-link>
+    <router-link tag="div" class="add_count" :to="'/auction/sharing/' + auctionInfo.auctionId" v-if="(auctionInfo.auctionState === 0 || auctionInfo.auctionState === 1) && auctionInfo.helpState && auctionInfo.helpNum < 3 "></router-link>
     <router-link class="lottery_entry" :class="{'lottery_entry_count' : auctionInfo.luckDrawState === 1}" tag="div" :to="'/auction/lottery/' + auctionInfo.auctionId + '/' + auctionInfo.luckDrawId" v-if="auctionInfo.auctionState === 1">
       <p v-if="auctionInfo.luckDrawState === 1">剩余<span>{{luckDrawTime | timeArry(1)}}:{{luckDrawTime | timeArry(2)}}</span></p>
     </router-link>
@@ -22,7 +22,7 @@
     </div>
     <div class="bidders_info">
       <div class="bid_list">
-        <p class="text-center" v-if="auctionInfo.auctionState === 2">恭喜以下{{auctionInfo.rankingList.length}}位用户竞拍成功！</p>
+        <p class="text-center" v-if="auctionInfo.auctionState === 2">恭喜以下{{auctionInfo.rankingList.length | numToChinese}}位用户竞拍成功！</p>
         <p v-else>出价榜<span v-if="auctionInfo.rankingList.length === 0">暂无</span></p>
         <table border="0" cellspacing="0" v-if="auctionInfo.rankingList.length">
           <thead>
@@ -42,6 +42,7 @@
             </tr>
           </tbody>
         </table>
+        <p style="color:#fa424f;font-size:.15rem;" class="text-center" v-if="auctionInfo.auctionState === 2">*请以上用户在公众号发送“兑奖”领取奖励</p>
       </div>
       <div class="bid_process">
         <p class="process_title">竞拍流程</p>
@@ -82,7 +83,7 @@
     <div class="bidders_status">
       <!-- 竞拍预告状态 -->
       <div class="two_part" v-if="auctionInfo.auctionState === 0">
-        <router-link to="/auction/bidRecord" tag="div">
+        <router-link :to="{ path: '/auction/record/bid', query: {auctionId : auctionInfo.auctionId}}" tag="div">
           <p>{{auctionInfo.bidNum}}次</p>
           <p>剩余出价</p>
         </router-link>
@@ -92,14 +93,13 @@
         </div>
       </div>
       <div v-if="auctionInfo.auctionState === 1">
-        <!-- 竞拍进行中未出过价金条不足 -->
         <div class="one_part grey" v-if="!auctionInfo.lastPrice">
           <div class="two_line" v-if="auctionInfo.surplusBullion < offerRange[0]">
             <p>金条不足不能出价</p>
             <p>剩余金条：{{auctionInfo.surplusBullion}}</p>
           </div>
           <div class="two_part" v-else>
-            <router-link to="/auction/bidRecord" tag="div">
+            <router-link :to="{ path: '/auction/record/bid', query: {auctionId : auctionInfo.auctionId}}" tag="div">
               <p>{{auctionInfo.bidNum}}次</p>
               <p>剩余出价</p>
             </router-link>
@@ -109,9 +109,8 @@
             </div>
           </div>
         </div>
-        <!-- 竞拍进行中未出过价可以出价 -->
         <div class="three_part" v-if="auctionInfo.lastPrice">
-          <router-link to="/auction/bidRecord" tag="div">
+          <router-link :to="{ path: '/auction/record/bid', query: {auctionId : auctionInfo.auctionId}}" tag="div">
             <p>{{auctionInfo.bidNum}}次</p>
             <p>剩余出价</p>
           </router-link>
@@ -131,7 +130,7 @@
           <div class="only_line">竞拍已结束</div>
         </div>
         <div class="two_part">
-          <router-link to="/auction/bidRecord" tag="div">
+          <router-link :to="{ path: '/auction/record/bid', query: {auctionId : auctionInfo.auctionId}}" tag="div">
             <p>{{auctionInfo.bidNum}}次</p>
             <p>剩余出价</p>
           </router-link>
@@ -225,12 +224,14 @@
             },5000)
           }
           //----- 假数据
-          // that.auctionInfo.auctionState = 0
+          // that.auctionInfo.auctionState = 2
           // that.auctionInfo.surplusBullion = 10
           // that.auctionInfo.lastPrice = 20
           // that.auctionInfo.bidNum = 1
           // that.auctionInfo.bidSuccess = false
           // that.luckDrawTime = 100
+          // that.auctionInfo.helpState = true
+          // that.auctionInfo.helpNum = 3
           that.computeNumber()
         })
       },
