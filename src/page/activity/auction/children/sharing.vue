@@ -26,7 +26,7 @@
                     <li><img src="../../../../images/auction/step_04.png" width="22%"></li>
                 </ul>
                 <div class="progress_box">
-                    <div class="progress_bar" :style="{width:data.helpNum >= 9 ? '100%' : (data.helpNum/9*100) +'%'}"></div>
+                    <div class="progress_bar" :style="{width:data.helpNum !== null && data.helpNum >= 9 ? '100%' : (data.helpNum/9*100) +'%'}"></div>
                     <!-- <div class="invite_count"></div> -->
                 </div>
                 <ul class="gift_count">
@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="invite_btn" @click="showShare = true;">邀请好友助力</div>
-        <div class="mask" v-if="data.helpState" v-client-height>
+        <div class="mask" v-if="!data.helpState" v-client-height>
             本场助力已结束，下次早点来哦～
         </div>
         <share-mask v-if="showShare" :showShare="showShare"></share-mask>
@@ -66,7 +66,6 @@
         data () {
             return {
                 showShare: false,
-                showEnd: false,
                 data: {}
             }
         },  
@@ -75,7 +74,7 @@
                 val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
             },
             'that.data.helpState': function (val) {
-                val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
+                !val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
             }
         },
         mounted() {

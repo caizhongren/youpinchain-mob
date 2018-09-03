@@ -205,7 +205,7 @@ export default [{
                     meta: {title: '分享落地页'}
                 },
                 {
-                    path: 'rewardExchange',
+                    path: 'rewardExchange/:bidId',
                     component: RewardExchange,
                     meta: {title: '奖励兑换'}
                 },

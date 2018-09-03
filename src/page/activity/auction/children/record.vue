@@ -26,7 +26,7 @@
                 <li v-for="(item, index) in recordList" :key="index" v-else>
                     <p>{{item.addTime | date('.')}}</p>
                     <p>{{item.bidState === 0 ? '出局' : item.bidState === 0 ?  '成功' : ''}}</p>
-                    <p :class="{'red': item.bidState === 2}">{{item.bidState === 3 ? '奖励已领取' : item.bidState === 2 ? '领取奖励' : '——'}}</p>
+                    <p :class="{'red': item.bidState === 2}" @click="takeReward(item)">{{item.bidState === 3 ? '奖励已领取' : item.bidState === 2 ? '领取奖励' : '——'}}</p>
                 </li>
                 <div class="load_more" v-if="page < totalPage">查看更多</div>
             </ul>
@@ -80,6 +80,13 @@
             loadMore () {
                 this.page += 1 
                 this.getMyBidRecords(this.page,this.pageSize)
+            },
+            takeReward (bid) {
+                if (bid.bidState !== 2) {
+                    return
+                } else {
+                    this.$router.push('/auction/rewardExchange/' + bid.id)
+                }
             }
         },
         components: {
