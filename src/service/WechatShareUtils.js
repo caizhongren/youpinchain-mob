@@ -3,7 +3,6 @@ import { congigJsApi } from './getData'
 let WechatShareUtils = {
   configJsApi: function () {
     var url = location.href.split('#')[0];
-    // var url = 'https://youpinlian.datbc.com/bountyPlan?T=45923D1A6DF0A9FB7CFF861FCE393E55';
     congigJsApi(encodeURIComponent(url)).then(function(apiConfig) {
       console.log('apiConfig: ' + apiConfig.appId)
       wx.config({
@@ -12,7 +11,6 @@ let WechatShareUtils = {
         timestamp: apiConfig.timestamp, // 必填，生成签名的时间戳
         nonceStr: apiConfig.nonceStr, // 必填，生成签名的随机串
         signature: apiConfig.signature, // 必填，签名，见附录1
-        jsapi: apiConfig.jsapi,
         jsApiList: [
           'onMenuShareAppMessage',
           'hideMenuItems',

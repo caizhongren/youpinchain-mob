@@ -82,9 +82,8 @@
             WechatShareUtils.configJsApi()
             var that = this
             wx.ready(function () {
-                console.log(111)
-                var shareLink = process.env.vue_domain + '/auction/sharingLanding'
-                WechatShareUtils.onMenuShareAppMessage('你看得出我在说谎吗？', '认识了那么久，你有把握我说的每句话都是真心话吗？', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/8MZDOEkib8AnEm8IKUChDJ7X50kEO9u4GxRe5kwWibuAEq0mOHqmyZnsAk27P9lMk2NjCM0VOFBXPf4nByXcFI5g/0?wx_fmt=png')
+                var shareLink = process.env.DOMAIN + '/auction/sharingLanding'
+                WechatShareUtils.onMenuShareAppMessage('分享标题', '分享副标题', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/8MZDOEkib8AnEm8IKUChDJ7X50kEO9u4GxRe5kwWibuAEq0mOHqmyZnsAk27P9lMk2NjCM0VOFBXPf4nByXcFI5g/0?wx_fmt=png')
             })
         },
         created() {
@@ -97,7 +96,7 @@
                     if (response && response.errno === 0) {
                         that.data = response.data
                     } else {
-
+                        alert(response.errmsg)
                     }
                 })
             }

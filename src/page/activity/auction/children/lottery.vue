@@ -117,7 +117,7 @@
                 newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
             },
             'data.luckDrawState': function (newVal) {
-                // newVal !== 1 ?  (this.showMask = true, this.modalEnd = true) : null
+                newVal !== 1 ?  (this.showMask = true, this.modalEnd = true) : null
             }
         },
         mounted() {
@@ -140,7 +140,7 @@
                         that.data.luckDrawRecords.length > 6 ? that.luckyTimer(-that.boxHeight) : null
                         that.countDown()
                     } else {
-                        // alert(response.errmsg)
+                        alert(response.errmsg)
                     }
                 })
             },

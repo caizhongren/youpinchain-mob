@@ -39,53 +39,7 @@
         data () {
             return {
                 pageType: this.$route.params.type,
-                recordList: [
-                    {
-                        state: 0,
-                        amount: 800,
-                        time: 1111111
-                    },
-                    {
-                        state: 2,
-                        amount: 800,
-                        time: 22222
-                    },
-                    {
-                        state: 1,
-                        amount: 800,
-                        time: 33333
-                    },
-                    {
-                        state: 0,
-                        amount: 800,
-                        time: 1111111
-                    },
-                    {
-                        state: 2,
-                        amount: 800,
-                        time: 22222
-                    },
-                    {
-                        state: 1,
-                        amount: 800,
-                        time: 33333
-                    },
-                    {
-                        state: 0,
-                        amount: 800,
-                        time: 1111111
-                    },
-                    {
-                        state: 2,
-                        amount: 800,
-                        time: 22222
-                    },
-                    {
-                        state: 1,
-                        amount: 800,
-                        time: 33333
-                    }
-                ]
+                recordList: []
             }
         },  
         watch: {
@@ -103,6 +57,7 @@
                     if (response && response.errno === 0) {
                         that.recordList = response.data
                     } else {
+                        alert(response.errmsg)
                     }
                 })
             },
@@ -111,6 +66,7 @@
                     if (response && response.errno === 0) {
                         that.recordList = response.data
                     } else {
+                        alert(response.errmsg)
                     }
                 })
             }
