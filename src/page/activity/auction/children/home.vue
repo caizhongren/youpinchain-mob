@@ -159,11 +159,11 @@
         </div>
         <div class="number">
           <span @click="changeNumber(0)">-</span>
-          <input v-model="offerNumber" :change="inputNum(offerNumber)" @blur.prevent="changeCount(offerNumber)" type="tel">
+          <input v-model="offerNumber" :change="inputNum(offerNumber)" :max="offerRange[1]" :min="offerRange[0]" @blur.prevent="changeCount(offerNumber)" v-on:input="offerNumber = offerNumber.replace(/\D/g, '')" type="tel">
           <span @click="changeNumber(1)">+</span>
         </div>
         <p class="tip">*本次出价范围{{offerRange[0]}}-{{offerRange[1]}}金条，加价单位为5金条</p>
-        <div class="confirm grey" @click="confirmOffer()" :class="{'red' : auctionInfo.surplusBullion > offerNumber}">{{auctionInfo.surplusBullion < offerNumber ? '金条不足' : '确认出价'}}</div>
+        <div class="confirm grey" @click="confirmOffer()" :class="{'red' : auctionInfo.surplusBullion >= offerNumber}">{{auctionInfo.surplusBullion < offerNumber ? '金条不足' : '确认出价'}}</div>
       </div>
     </div>
   </div>
@@ -224,8 +224,8 @@
             },5000)
           }
           //----- 假数据
-          // that.auctionInfo.auctionState = 2
-          // that.auctionInfo.surplusBullion = 10
+          // that.auctionInfo.auctionState = 1
+          // that.auctionInfo.surplusBullion = 30
           // that.auctionInfo.lastPrice = 20
           // that.auctionInfo.bidNum = 1
           // that.auctionInfo.bidSuccess = false
@@ -297,6 +297,10 @@
         this.offerNumber = Math.floor(this.offerNumber)
         if (value > this.offerRange[1]) {
           this.offerNumber = this.offerRange[1]
+        } else if (value < this.offerRange[0] && value >= 10) {
+          this.offerNumber = this.offerRange[0]
+        } else if (value < 10) {
+          return
         }
       },
       // 失去焦点
