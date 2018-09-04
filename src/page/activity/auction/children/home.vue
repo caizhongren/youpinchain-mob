@@ -308,6 +308,8 @@
         offer(that.auctionInfo.auctionId,that.offerNumber * 100).then(function (res) {
           if(res.errno) {
             alert(res.errmsg)
+            that.showMask = false
+            that.getAuctionInfo()
           } else {
             that.showMask = false
             alert(res.errmsg)
