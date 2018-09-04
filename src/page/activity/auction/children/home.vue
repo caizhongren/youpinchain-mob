@@ -82,11 +82,11 @@
     <!-- 底部悬浮状态条 -->
     <div class="bidders_status">
       <!-- 竞拍预告状态 -->
-      <div class="two_part" v-if="auctionInfo.auctionState === 0">
-        <router-link :to="{ path: '/auction/record/bid', query: {auctionId : auctionInfo.auctionId}}" tag="div">
+      <div class="two_part auctionState" v-if="auctionInfo.auctionState === 0">
+        <div>
           <p>{{auctionInfo.bidNum}}次</p>
           <p>剩余出价</p>
-        </router-link>
+        </div>
         <div class="grey">
           <p>起拍价：{{auctionInfo.startingPrice}}金条</p>
           <p>请提前确认金条充足</p>
@@ -642,6 +642,13 @@
           padding: 0;
           @include sc(.15rem, #fff);
           line-height: .5rem;
+        }
+      }
+      .two_part.auctionState {
+        div:first-child {
+          &:after{
+            content: none;
+          }
         }
       }
       .three_part{
