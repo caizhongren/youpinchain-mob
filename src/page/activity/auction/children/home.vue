@@ -182,6 +182,7 @@
         luckDrawTime: null,
         timer: null,
         timer2: null,
+        timer3: null,
         offerNumber: null,
         offerRange: [],
         pagination: {
@@ -196,7 +197,12 @@
         newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
       },
       countDown: function (val) {
-        val ? null : this.getAuctionInfo()
+        if (!val) {
+          clearInterval(this.timer3)
+          this.timer3 = setTimeout(function () {
+            this.getAuctionInfo()
+          },200)
+        }
       },
       luckDrawTime: function (val) {
         val ? null : this.getAuctionInfo()
@@ -219,6 +225,7 @@
           that.offerRange = that.calculateRange(res.data.rankingList,res.data.startingPrice)
           clearInterval(that.timer)
           clearInterval(that.timer2)
+          clearInterval(this.timer3)
           if (res.data.auctionState === 1) {
             that.timer2 = setTimeout(function () {
               that.getAuctionInfo()
@@ -325,6 +332,7 @@
       ModalHelper.beforeClose()
       clearInterval(this.timer)
       clearInterval(this.timer2)
+      clearInterval(this.timer3)
     }
   }
 </script>
