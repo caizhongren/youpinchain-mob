@@ -42,7 +42,7 @@ router.beforeEach((to, from, next) => {
     } else {
         document.title = to.meta.title
     }
-    localStorage.setItem("X-youpinchain-Token", "D06EAEA76CC5B0C96769A0E8FB2CA2FD");
+    // localStorage.setItem("X-youpinchain-Token", "D06EAEA76CC5B0C96769A0E8FB2CA2FD");
     if (localStorage.getItem('X-youpinchain-Token') == undefined) {
         let token = to.query.T;
         if (token) {
