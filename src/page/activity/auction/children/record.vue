@@ -25,7 +25,7 @@
                 <div class="no_record" v-if="recordList.length <= 0">暂无记录</div>
                 <li v-for="(item, index) in recordList" :key="index" v-else>
                     <p>{{item.addTime | date('.')}}</p>
-                    <p>{{item.bidState === 0 ? '出局' : item.bidState === 2 ?  '成功' : ''}}</p>
+                    <p>{{item.bidState === 0 ? '出局' : '成功'}}</p>
                     <p :class="{'red': item.bidState === 2}" @click="takeReward(item)">{{item.bidState === 3 ? '奖励已领取' : item.bidState === 2 ? '领取奖励' : '——'}}</p>
                 </li>
                 <div class="load_more" v-if="page < totalPage" @click="loadMore">查看更多</div>
