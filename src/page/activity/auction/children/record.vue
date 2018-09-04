@@ -28,7 +28,7 @@
                     <p>{{item.bidState === 0 ? '出局' : item.bidState === 0 ?  '成功' : ''}}</p>
                     <p :class="{'red': item.bidState === 2}" @click="takeReward(item)">{{item.bidState === 3 ? '奖励已领取' : item.bidState === 2 ? '领取奖励' : '——'}}</p>
                 </li>
-                <div class="load_more" v-if="page < totalPage">查看更多</div>
+                <div class="load_more" v-if="page < totalPage" @click="loadMore">查看更多</div>
             </ul>
         </div>
     </div>
@@ -69,7 +69,10 @@
                 var that = this
                 myBidRecords(page,pageSize).then(function(response) {
                     if (response && response.errno === 0) {
-                        that.recordList = response.data.auctionBids
+                        var recordList = response.data.auctionBids
+                        for (var i = 0; i < recordList.length; i++) {
+                            that.recordList.push(recordList[i])
+                        }
                         that.totalPage = Math.ceil(response.data.count / response.data.pageSize)
                         that.page = response.data.page
                         that.pageSize = response.data.pageSize

@@ -195,8 +195,8 @@
                     // 旋转结束后，允许再次触发
                     setTimeout(function() {
                         that.click_flag = true;
-                        that.data.partake = true;
                         that.showMask = true;
+                        that.getLuckDrawDetail()
                     }, during_time * 1000 + 1500); // 延时，保证转盘转完
                 } else {
                 }
