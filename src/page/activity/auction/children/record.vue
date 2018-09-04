@@ -9,7 +9,7 @@
             <ul class="body">
                 <div class="no_record" v-if="recordList.length <= 0">暂无记录</div>
                 <li v-for="(item, index) in recordList" :key="index" v-else>
-                    <p>{{item.bidState === 0 ? '出局' : item.bidState === 1 ? '领先' : item.bidState === 2 ? '成交' : ''}}</p>
+                    <p>{{item.bidState === 0 ? '出局' : item.bidState === 1 ? '领先' : '成交'}}</p>
                     <p>{{item.bidPrice}}</p>
                     <p>{{item.addTime | time}}</p>
                 </li>
