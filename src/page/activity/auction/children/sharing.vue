@@ -84,7 +84,7 @@
         mounted() {
         },
         created() {
-            WechatShareUtils.configJsApi()
+            WechatShareUtils.configJsApi(window.location.href)
             this.getHelpDetail(this.auctionId)
         },
         methods: {

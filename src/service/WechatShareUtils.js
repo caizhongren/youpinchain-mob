@@ -1,9 +1,13 @@
 import wx from 'weixin-js-sdk'
+import {Utils} from './Utils.js'
 import { congigJsApi } from './getData'
 let WechatShareUtils = {
-  configJsApi: function () {
-    var url = location.href.split('#')[0];
-    congigJsApi(encodeURIComponent(url)).then(function(apiConfig) {
+  configJsApi: function (url) {
+    var currentUrl = location.href.split('#')[0]
+    if (Utils.isIos()) {
+      currentUrl = url
+    }
+    congigJsApi(encodeURIComponent(currentUrl)).then(function(apiConfig) {
       console.log('apiConfig: ' + apiConfig.appId)
       wx.config({
         debug: true,
@@ -28,6 +32,7 @@ let WechatShareUtils = {
       trigger: function (res) {
       },
       success: function (res) {
+        window.location.reload()
       },
       cancel: function (res) {
       },
