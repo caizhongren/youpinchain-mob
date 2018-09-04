@@ -225,7 +225,7 @@
           that.offerRange = that.calculateRange(res.data.rankingList,res.data.startingPrice)
           clearInterval(that.timer)
           clearInterval(that.timer2)
-          clearInterval(this.timer3)
+          clearInterval(that.timer3)
           if (res.data.auctionState === 1) {
             that.timer2 = setTimeout(function () {
               that.getAuctionInfo()
