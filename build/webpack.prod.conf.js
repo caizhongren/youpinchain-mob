@@ -18,8 +18,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     //devtool: config.build.productionSourceMap ? '#source-map' : false,
     output: {
         path: config.build.assetsRoot,
-        filename: utils.assetsPath('js/[name].js'),
-        chunkFilename: utils.assetsPath('js/[name].[chunkhash].min.js')
+        filename: utils.assetsPath('js/[name].[chunkhash:8].js'),
+        chunkFilename: utils.assetsPath('js/[name].[chunkhash:8].min.js')
     },
     vue: {
         loaders: utils.cssLoaders({
@@ -35,7 +35,8 @@ var webpackConfig = merge(baseWebpackConfig, {
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
-            }
+            },
+            sourceMap: true
         }),
         new webpack.optimize.OccurrenceOrderPlugin(),
         // extract css into its own file
