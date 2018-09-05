@@ -1,7 +1,7 @@
 <template>
     <div class="reward_exchange">
         <div class="header">
-            <img src="../../../../images/bounty-plan/starry_sky_bg0.png" alt="" width="100%">
+            <img src="../../../../images/auction/bg.png" alt="" width="100%">
         </div>
         <div class="content">
             <div class="form_box">

@@ -1,7 +1,9 @@
 <template>
     <div class="sharing">
         <div class="header">
-            <img src="../../../../images/bounty-plan/starry_sky_bg0.png" alt="" width="100%">
+            <img src="../../../../images/auction/bg.png" alt="" width="100%">
+        </div>
+        <div class="content">
             <ul class="statistics">
                 <li>
                     <p>{{data.helpBullion || 0}}</p>
@@ -16,8 +18,6 @@
                     <p>出价次数奖励</p>
                 </li>
             </ul>
-        </div>
-        <div class="content">
             <div class="aid_progress">
                 <div class="title">助力进度</div>
                 <ul class="gift_icon">
@@ -117,9 +117,11 @@
         margin-bottom: .35rem;
         .header {
             background: $fc;
+        }
+        .content {
             .statistics {
                 @include wh(3.45rem,.745rem);
-                margin: -.5rem auto 0;
+                margin: -.8rem auto 0;
                 padding: .1rem 0;
                 line-height: 1.7;
                 position: relative;
@@ -150,8 +152,6 @@
                     }
                 }
             }
-        }
-        .content {
             border-top-left-radius: .12rem;
             border-top-right-radius: .12rem;
             margin-top: -.4rem;
