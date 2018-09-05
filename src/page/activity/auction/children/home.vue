@@ -338,7 +338,7 @@
         })
       },
       toShare () {
-        window.location.href = process.env.DOMAIN + '/auction/sharing/' + this.auctionInfo.auctionId
+        window.location.href = process.env.DOMAIN + '/auction/sharing/' + this.auctionInfo.auctionId + '?T=' + localStorage.getItem('X-youpinchain-Token')
       }
     },
     components: {
