@@ -1,6 +1,6 @@
 <template>
   <div class="auction_home" v-if="showDocument">
-    <router-link tag="div" class="add_count" :to="'/auction/sharing/' + auctionInfo.auctionId" v-if="(auctionInfo.auctionState === 0 || auctionInfo.auctionState === 1) && auctionInfo.helpState && auctionInfo.helpNum < 3 "></router-link>
+    <div class="add_count" @click="toShare" v-if="(auctionInfo.auctionState === 0 || auctionInfo.auctionState === 1) && auctionInfo.helpState && auctionInfo.helpNum < 3 "></div>
     <router-link class="lottery_entry" :class="{'lottery_entry_count' : auctionInfo.luckDrawState === 1}" tag="div" :to="'/auction/lottery/' + auctionInfo.auctionId + '/' + auctionInfo.luckDrawId" v-if="auctionInfo.auctionState === 1">
       <p v-if="auctionInfo.luckDrawState === 1">剩余<span>{{luckDrawTime | timeArry(1)}}:{{luckDrawTime | timeArry(2)}}</span></p>
     </router-link>
@@ -237,9 +237,22 @@
       // 倒计时
       computeNumber () {
         var that = this
+        var time = that.countDown
+        var luckDrawTime = that.luckDrawTime
+        var start_time = new Date().getTime(); //获取开始时间的毫秒数
         if(that.countDown){
           this.timer = setInterval(function () {
             if(that.countDown >= 1){
+              var end_time = new Date().getTime();
+              var diff_time = Math.floor((end_time - start_time) / 1000);
+              //拿到时间差作为时间标记（行走时间）
+              document.addEventListener('visibilitychange',function() {
+                  if(document.visibilityState=='visible') {
+                      that.countDown = time - diff_time
+                      that.luckDrawTime = luckDrawTime - diff_time
+                  } else {
+                  }
+              })
               that.countDown -= 1
               that.luckDrawTime -= 1
               if(that.countDown < 1){
@@ -315,6 +328,9 @@
         } else {
           alert('不符合出价规则')
         }
+      },
+      toShare () {
+        window.location.href = process.env.DOMAIN + '/auction/sharing/' + this.auctionInfo.auctionId + '?T=' + localStorage.getItem('X-youpinchain-Token')
       }
     },
     components: {
