@@ -159,7 +159,7 @@
         </div>
         <div class="number">
           <span @click="changeNumber(0)">-</span>
-          <input v-model="offerNumber" :change="inputNum(offerNumber)" :max="offerRange[1]" :min="offerRange[0]" @blur.prevent="changeCount(offerNumber)" v-on:input="offerNumber = offerNumber.replace(/\D/g, '')" type="tel">
+          <input v-model="offerNumber" :change="inputNum(offerNumber)" v-on:input="offerNumber = offerNumber.replace(/\D/g, '')" type="tel">
           <span @click="changeNumber(1)">+</span>
         </div>
         <p class="tip">*本次出价范围{{offerRange[0]}}-{{offerRange[1]}}金条，加价单位为5金条</p>
@@ -293,35 +293,28 @@
       },
       // 输入出价数
       inputNum (value) {
-        this.offerNumber = Math.floor(this.offerNumber)
+        this.offerNumber = this.offerNumber * 1
         if (value > this.offerRange[1]) {
           this.offerNumber = this.offerRange[1]
-        } else if (value < this.offerRange[0] && value >= 10) {
-          this.offerNumber = this.offerRange[0]
-        } else if (value < 10) {
-          return
-        }
-      },
-      // 失去焦点
-      changeCount (value) {
-        this.offerNumber = this.offerNumber * 1
-        if (value < this.offerRange[0]) {
-          this.offerNumber = this.offerRange[0] * 1
         }
       },
       // 确认出价
       confirmOffer () {
         var that = this
-        offer(that.auctionInfo.auctionId,that.offerNumber * 100).then(function (res) {
-          if(res.errno) {
-            that.showMask = false
-            alert(res.errmsg)
-          } else {
-            that.showMask = false
-            that.getAuctionInfo()
-            alert(res.errmsg)
-          }
-        })
+        if (that.offerRange[0] <= that.offerNumber && that.offerNumber <= that.offerRange[1]) {
+          offer(that.auctionInfo.auctionId,that.offerNumber * 100).then(function (res) {
+            if(res.errno) {
+              that.showMask = false
+              alert(res.errmsg)
+            } else {
+              that.showMask = false
+              that.getAuctionInfo()
+              alert(res.errmsg)
+            }
+          })
+        } else {
+          alert('不符合出价规则')
+        }
       }
     },
     components: {
@@ -360,7 +353,7 @@
       p{
         @include sc(.093rem, #fff);
         position: absolute;
-        bottom: 0.02rem;
+        bottom: 0.04rem;
         width: 100%;
         text-align: center;
         span{
