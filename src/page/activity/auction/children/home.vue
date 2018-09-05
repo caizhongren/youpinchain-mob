@@ -238,9 +238,22 @@
       // 倒计时
       computeNumber () {
         var that = this
+        var time = that.countDown
+        var luckDrawTime = that.luckDrawTime
+        var start_time = new Date().getTime(); //获取开始时间的毫秒数
         if(that.countDown){
           this.timer = setInterval(function () {
             if(that.countDown >= 1){
+              var end_time = new Date().getTime();
+              var diff_time = Math.floor((end_time - start_time) / 1000);
+              //拿到时间差作为时间标记（行走时间）
+              document.addEventListener('visibilitychange',function() {
+                  if(document.visibilityState=='visible') {
+                      that.countDown = time - diff_time
+                      that.luckDrawTime = luckDrawTime - diff_time
+                  } else {
+                  }
+              })
               that.countDown -= 1
               that.luckDrawTime -= 1
               if(that.countDown < 1){
