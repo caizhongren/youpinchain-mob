@@ -10,7 +10,7 @@
       <div class="presell_box" v-if="goods.preSale">
         <div class="left_price left">
           <p class="price"><span>￥</span>{{goods.presentPrice}} <s>￥{{goods.originalPrice}}</s></p>
-          <!--<p class="tip">商品预售预计{{goods.presellTime | dateCharacter}}发货</p>-->
+          <p class="tip">商品预售预计{{goods.presellTime | dateCharacter}}发货</p>
         </div>
         <div class="right_tip right">预售</div>
       </div>
@@ -56,7 +56,8 @@
         showShare: false,
         headTitle: '',
         goodsid:'',
-        goods: {},
+        goods: {
+        },
         cart_num: 0,
         number: [1, 2, 3, 4, 5],
         pagination: {
@@ -91,6 +92,8 @@
                   return;
               }
               that.goods = res.data;
+              that.goods.presellTime = 1537286400000;
+              that.goods.preSale = true;
           })
 
         //开始监听scrollTop的值，达到一定程度后显示返回顶部按钮

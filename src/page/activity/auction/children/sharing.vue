@@ -77,7 +77,7 @@
             showShare (val) {
                 val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
             },
-            'that.data.helpState': function (val) {
+            'data.helpState': function (val) {
                 !val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
             }
         },
@@ -98,6 +98,7 @@
                             WechatShareUtils.onMenuShareAppMessage('我在链上臻品抢到x,快来一起抢！', '上链上臻品参与赏金计划赢取“金条”，免费竞拍大奖！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/8MZDOEkib8AnEm8IKUChDJ7X50kEO9u4GxRe5kwWibuAEq0mOHqmyZnsAk27P9lMk2NjCM0VOFBXPf4nByXcFI5g/0?wx_fmt=png')
                         })
                     } else {
+                        that.data.helpState = false
                         alert(response.errmsg)
                     }
                 })
