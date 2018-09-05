@@ -2,6 +2,7 @@ import App from '../App'
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
 const growingEnvironment = r => require.ensure([], () => r(require('../page/home/growingEnvironment')), 'growingEnvironment')
 const goods = r => require.ensure([], () => r(require('../page/goods/goods')), 'goods')
+const credentials = r => require.ensure([], () => r(require('../page/goods/credentials')), 'credentials')
 const cart = r => require.ensure([], () => r(require('../page/cart/cart')), 'cart')
 const profile = r => require.ensure([], () => r(require('../page/profile/profile')), 'profile')
 const order = r => require.ensure([], () => r(require('../page/order/order')), 'order')
@@ -61,6 +62,12 @@ export default [{
         {
             path: '/goods/:goodsid',
             component: goods
+        },
+        // 证件资质
+        {
+            path: '/credentials',
+            component: credentials,
+            meta: {title: '证件资质'}
         },
         //购物车
         {
