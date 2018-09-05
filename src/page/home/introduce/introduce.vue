@@ -56,6 +56,7 @@
             @include wh(100%,.45rem);
             @include sc(.15rem,$g6);
             overflow: hidden;
+            background-color: #fff;
             line-height: .45rem;
             border-bottom: 1px solid #eee;
             li {
