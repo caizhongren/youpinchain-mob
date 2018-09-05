@@ -95,7 +95,7 @@
                         that.data = response.data
                         wx.ready(function () {
                             var shareLink = process.env.DOMAIN + '/auction/sharingLanding/' + that.auctionId + '/' + that.data.vipId
-                            WechatShareUtils.onMenuShareAppMessage('我在链上臻品抢到免费大礼，快来一起参与！', '上链上臻品参与赏金计划赢取“金条”，免费竞拍大奖！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/8MZDOEkib8AnEm8IKUChDJ7X50kEO9u4GxRe5kwWibuAEq0mOHqmyZnsAk27P9lMk2NjCM0VOFBXPf4nByXcFI5g/0?wx_fmt=png')
+                            WechatShareUtils.onMenuShareAppMessage('我在链上臻品抢到免费大礼，快来一起参与！', '上链上臻品参与赏金计划赢取“金条”，免费竞拍大奖！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/P5PlqicODGc5PTbhYZ4tgynfAY5p2VTSfcysiblc28iaU3l7hibTdQt7tZ781IA3CeiaXPs2O5Vs7y9yeHeS1yqpnkg/0?wx_fmt=png')
                         })
                     } else {
                         that.data.helpState = false
