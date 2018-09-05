@@ -60,22 +60,24 @@ export default [{
             path: '/introduce',
             component: introduce,
             name: 'introduce',
-            meta: {title: '黑猪界的贵族，舌尖上的美味！'},
             children: [
                 {
                     path: '',
                     name: 'introduceHome',
-                    component: introduceHome
+                    component: introduceHome,
+                    meta: {title: '黑猪界的贵族，舌尖上的美味！'}
                 },
                 {
                     path: 'growth',
                     name: 'growth',
-                    component: growth
+                    component: growth,
+                    meta: {title: '黑猪界的贵族，舌尖上的美味！'}
                 },
                 {
                     path: 'feeding',
                     name: 'feeding',
-                    component: feeding
+                    component: feeding,
+                    meta: {title: '黑猪界的贵族，舌尖上的美味！'}
                 }
             ]
         },

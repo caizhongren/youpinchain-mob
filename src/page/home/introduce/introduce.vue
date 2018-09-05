@@ -36,6 +36,7 @@
     mounted() {
     },
     created() {
+        location.pathname.indexOf('growth') !== -1 ? this.activeTab = 1 : location.pathname.indexOf('feeding') !== -1 ? this.activeTab = 2 : this.activeTab = 0;
     },
     methods: {
         switchTab: function (index) {
@@ -52,15 +53,19 @@
 <style scoped lang="scss">
     @import '../../../style/mixin';
     .introduce {
+        padding-top: .45rem;
         .tabs {
             @include wh(100%,.45rem);
             @include sc(.15rem,$g6);
-            overflow: hidden;
             line-height: .45rem;
-            border-bottom: 1px solid #eee;
+            background: $fc;
+            position: fixed;
+            top: 0;
+            z-index: 9;
             li {
                 float: left;
-                width: 33.33%;
+                @include wh(33.33%,.45rem);
+                border-bottom: 1px solid #eee;
                 text-align: center;
             }
             li.active {
@@ -74,7 +79,7 @@
                     border-radius: 1.5px;
                     background-color: #e73525;
                     position: absolute;
-                    bottom: 1px;
+                    bottom: -2px;
                     left: 33%;
                 }
             }
