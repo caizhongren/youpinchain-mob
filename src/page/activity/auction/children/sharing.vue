@@ -82,10 +82,10 @@
             }
         },
         mounted() {
+            this.getHelpDetail(this.auctionId)
         },
         created() {
             WechatShareUtils.configJsApi(window.location.href)
-            this.getHelpDetail(this.auctionId)
         },
         methods: {
             getHelpDetail (auctionId) {

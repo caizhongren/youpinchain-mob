@@ -16,13 +16,16 @@
         },
         created() {
             this.help(this.$route.params.auctionId, this.$route.params.vipId)
-            this.partIn()
         },
         methods: {
             help (auctionId,vipId) {
+                var that = this
                 help(auctionId,vipId).then(function (res) {
                     if (res && res.errno === 0) {
-
+                        alert(res.errmsg)
+                        that.partIn()
+                    } else {
+                        alert(res.errmsg)
                     }
                 })
             },
