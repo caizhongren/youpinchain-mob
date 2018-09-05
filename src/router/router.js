@@ -1,6 +1,9 @@
 import App from '../App'
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
-const growingEnvironment = r => require.ensure([], () => r(require('../page/home/growingEnvironment')), 'growingEnvironment')
+const introduce = r => require.ensure([], () => r(require('../page/home/introduce/introduce')), 'introduce')
+const introduceHome = r => require.ensure([], () => r(require('../page/home/introduce/introduceHome')), 'introduceHome')
+const growth = r => require.ensure([], () => r(require('../page/home/introduce/growth')), 'growth')
+const feeding = r => require.ensure([], () => r(require('../page/home/introduce/feeding')), 'feeding')
 const goods = r => require.ensure([], () => r(require('../page/goods/goods')), 'goods')
 const credentials = r => require.ensure([], () => r(require('../page/goods/credentials')), 'credentials')
 const cart = r => require.ensure([], () => r(require('../page/cart/cart')), 'cart')
@@ -54,9 +57,27 @@ export default [{
         },
         //生产环境、饲养情况、健康指标、商品介绍
         {
-            path: '/growing-environment',
-            component: growingEnvironment,
-            name: 'growingEnvironment'
+            path: '/introduce',
+            component: introduce,
+            name: 'introduce',
+            meta: {title: '黑猪界的贵族，舌尖上的美味！'},
+            children: [
+                {
+                    path: '',
+                    name: 'introduceHome',
+                    component: introduceHome
+                },
+                {
+                    path: 'growth',
+                    name: 'growth',
+                    component: growth
+                },
+                {
+                    path: 'feeding',
+                    name: 'feeding',
+                    component: feeding
+                }
+            ]
         },
         //商品详情
         {
