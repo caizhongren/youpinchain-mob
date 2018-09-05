@@ -2,19 +2,19 @@
   <div class="credentials">
     <div id="anchor0">
       <div class="title"><span></span>检疫证</div>
-      <div class="content">
+      <div class="content" style="height:2.46rem;">
         <img src="../../images/store/certificates_01.png" width="100%">
       </div>
     </div>
     <div id="anchor1">
       <div class="title"><span></span>合格证</div>
-      <div class="content">
+      <div class="content" style="height:2.43rem;">
         <img src="../../images/store/certificates_02.png" width="65%">
       </div>
     </div>
     <div id="anchor2">
       <div class="title"><span></span>经营许可证</div>
-      <div class="content">
+      <div class="content" style="height:4.29rem;">
         <img src="../../images/store/certificates_03.png" width="80%">
       </div>
     </div>
@@ -55,11 +55,12 @@
       */
       animationToAnchor(startNum, stopNum){
         var that = this
-        var nowNum = startNum + 10; // 步进为10
+        var nowNum = startNum + 30; // 步进为30
 
         if(nowNum > stopNum){
           nowNum = stopNum;
         }
+        // window.scrollTo(0,stopNum)
         // 缓动方法
         window.requestAnimationFrame(function(){
           window.scrollTo(0,nowNum)
