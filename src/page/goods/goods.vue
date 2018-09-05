@@ -41,9 +41,9 @@
     <div class="certificates">
       <p class="abstract">证件资质</p>
       <ul>
-        <router-link tag="li" to="/credentials/#anchor0"><img src="../../images/store/credentials_1.png" alt=""><p>检疫证</p></router-link>
-        <router-link tag="li" to="/credentials/#anchor1"><img src="../../images/store/credentials_2.png" alt=""><p>合格证</p></router-link>
-        <router-link tag="li" to="/credentials/#anchor2"><img src="../../images/store/credentials_3.png" alt=""><p>经营许可证</p></router-link>
+        <li @click="toCredential(0)"><img src="../../images/store/credentials_1.png" alt=""><p>检疫证</p></li>
+        <li @click="toCredential(1)"><img src="../../images/store/credentials_2.png" alt=""><p>合格证</p></li>
+        <li @click="toCredential(2)"><img src="../../images/store/credentials_3.png" alt=""><p>经营许可证</p></li>
       </ul>
     </div>
     <div class="description_detail">
@@ -117,6 +117,9 @@
     computed:{
     },
     methods:{
+      toCredential (index) {
+        this.$router.push('/credentials/#w_anchor' + index);
+      },
       initData () {
         var that = this;
           getProductDetail(that.goodsid).then(res =>{

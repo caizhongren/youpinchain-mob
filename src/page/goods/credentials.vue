@@ -27,13 +27,9 @@
       }
     },
     watch: {
-      '$route': 'scrollToAnchor'
     },
     mounted() {
-      var that = this
-      window.onload = function(){
-        that.scrollToAnchor();
-      };
+      this.scrollToAnchor();
     },
     created() {
     },
@@ -78,11 +74,11 @@
       },
       // 获取锚点id
       getAnchor(str){
-        return this.checkAnchor(str) ? str.split("#")[1] : "";
+        return this.checkAnchor(str) ? str.split("w_")[1] : "";
       },
       // 判断是否为特殊的hash值，也即是否为伪锚点
       checkAnchor(str){
-        return str.indexOf("#") == 0 ? true : false;
+        return str.indexOf("w_") == 0 ? true : false;
       }
     },
     components: {
