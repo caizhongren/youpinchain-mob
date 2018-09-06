@@ -197,15 +197,22 @@
         newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
       },
       countDown: function (val) {
+        var that = this
         if (!val) {
-          clearInterval(this.timer3)
-          this.timer3 = setTimeout(function () {
-            this.getAuctionInfo()
-          },200)
+          clearInterval(that.timer3)
+          that.timer3 = setTimeout(function () {
+            that.getAuctionInfo()
+          },1000)
         }
       },
       luckDrawTime: function (val) {
-        val ? null : this.getAuctionInfo()
+        var that = this
+        if (!val) {
+          clearInterval(that.timer3)
+          that.timer3 = setTimeout(function () {
+            that.getAuctionInfo()
+          },1000)
+        }
       }
     },
     mounted() {
