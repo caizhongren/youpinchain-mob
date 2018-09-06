@@ -42,7 +42,7 @@
             </tr>
           </tbody>
         </table>
-        <p style="color:#fa424f;font-size:.15rem;" class="text-center" v-if="auctionInfo.auctionState === 2">*请以上用户在公众号发送“兑奖”领取奖励</p>
+        <!-- <p style="color:#fa424f;font-size:.15rem;" class="text-center" v-if="auctionInfo.auctionState === 2">*请以上用户在公众号发送“兑奖”领取奖励</p> -->
       </div>
       <div class="bid_process">
         <p class="process_title">竞拍流程</p>
@@ -331,7 +331,7 @@
             } else {
               that.showMask = false
               that.getAuctionInfo()
-              that.$parent.showErrMsg(res.errmsg,true)
+              that.$parent.showErrMsg('出价成功',true)
             }
           })
         } else {
