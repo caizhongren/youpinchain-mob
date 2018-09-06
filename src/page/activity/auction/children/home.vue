@@ -11,7 +11,7 @@
       </div>
       <carousel class="banner_box" :loop="true" :autoplay="true" :minSwipeDistance="6" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="5" :paginationSize="8" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color">
         <!-- <slide v-for="item in auctionInfo.goodsPic" :key="item.id"> -->
-          <img :src="auctionInfo.goodsPic" alt="" width="100%" class="show">
+          <img :src="auctionInfo.goodsPic" alt="" class="show">
         <!-- </slide> -->
       </carousel>
       <div class="title">
@@ -77,6 +77,7 @@
         <p><span>4.</span>出价数额不能超过自己持有金条总数。</p>
         <p><span>5.</span>竞拍中，每30分钟可参与一次抽奖活动，随机抽取1—100金条，每场抽奖活动持续5分钟。</p>
         <p><span>6.</span>竞拍成功后，竞拍获胜者需在公众号"限时竞拍"菜单栏选择“我的竞拍”查看参与过的竞拍活动及竞拍结果，并进入“领取奖励”页面如实填写领奖所需信息。如30日内未提交则视为自动放弃。竞拍获胜者参与出价的金条不予退还。</p>
+        <p><span>7.</span>前五名获胜者分别获得200元、100元、50元、20元、10元话费（三网通用）。话费以线上充值的方式充值到用户指定的手机号码中。</p>
       </div>
     </div>
     <!-- 底部悬浮状态条 -->
@@ -191,7 +192,8 @@
         },
         auctionInfo: {}
       }
-    },  
+    },
+    props: ['showErrMsg'],
     watch: {
       showMask: function (newVal, oldVal) {
         newVal ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
@@ -325,15 +327,15 @@
           offer(that.auctionInfo.auctionId,that.offerNumber * 100).then(function (res) {
             if(res.errno) {
               that.showMask = false
-              alert(res.errmsg)
+              that.$parent.showErrMsg(res.errmsg)
             } else {
               that.showMask = false
               that.getAuctionInfo()
-              alert(res.errmsg)
+              that.$parent.showErrMsg(res.errmsg,true)
             }
           })
         } else {
-          alert('不符合出价规则')
+          that.$parent.showErrMsg('不符合出价规则')
         }
       },
       toShare () {
@@ -417,8 +419,11 @@
     .top_main {
       margin-bottom: .15rem;
       .banner_box{
-        height: 3.275rem;
+        height: 3.75rem;
         overflow: hidden;
+        img {
+          @include wh(100%,3.75rem);
+        }
       }
       .title{
         //@include wh(100%, .7rem);

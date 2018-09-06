@@ -141,7 +141,7 @@
                         that.data.luckDrawRecords.length > 6 ? that.luckyTimer(-that.boxHeight) : null
                         that.countDown()
                     } else {
-                        alert(response.errmsg)
+                        console.log(response.errmsg)
                     }
                 })
             },
@@ -156,7 +156,7 @@
                         that.randomNumber = response.data
                         that.rotating(that.computeIndex(that.randomNumber))
                     } else {
-                        alert(response.errmsg)
+                        console.log(response.errmsg)
                     }
                 })
             },

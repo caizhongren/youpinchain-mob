@@ -9,6 +9,7 @@
             return {
             }
         },
+        props: ['showErrMsg'],
         watch: {
         },
         mounted() {

@@ -99,7 +99,7 @@
                         })
                     } else {
                         that.data.helpState = false
-                        alert(response.errmsg)
+                        console.log(response.errmsg)
                     }
                 })
             }

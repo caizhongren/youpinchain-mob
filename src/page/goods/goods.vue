@@ -4,7 +4,7 @@
     <div class="top_main">
       <carousel :loop="true" :autoplay="true" :minSwipeDistance="6" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="5" :paginationSize="8" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color">
         <slide v-for="item in goods.headPic" :key="item.id">
-          <img :src="item" alt="" width="100%" class="show">
+          <img :src="item" alt="" class="show">
         </slide>
       </carousel>
       <div class="presell_box" v-if="goods.preSale">
@@ -159,6 +159,11 @@
   @import 'src/style/mixin';
   .goods {
     padding: .45rem 0 .5rem;
+    .top_main {
+      .show {
+        @include wh(100%,3.75rem);
+      }
+    }
     .presell_box {
       overflow: hidden;
       padding: .08rem .12rem .12rem .12rem;
