@@ -45,7 +45,8 @@
                 totalPage: 1,
                 auctionId: this.$route.query.auctionId
             }
-        },  
+        },
+        props: ['showErrMsg'],
         watch: {
         },
         mounted() {
@@ -61,7 +62,7 @@
                     if (response && response.errno === 0) {
                         that.recordList = response.data
                     } else {
-                        console.log(response.errmsg)
+                        that.$parent.showErrMsg(response.errmsg)
                     }
                 })
             },
@@ -77,7 +78,7 @@
                         that.page = response.data.page
                         that.pageSize = response.data.pageSize
                     } else {
-                        console.log(response.errmsg)
+                        that.$parent.showErrMsg(response.errmsg)
                     }
                 })
             },

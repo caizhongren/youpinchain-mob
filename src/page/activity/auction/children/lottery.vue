@@ -121,6 +121,7 @@
                 newVal !== 1 ?  (this.showMask = true, this.modalEnd = true) : null
             }
         },
+        props: ['showErrMsg'],
         mounted() {
         },
         created() {
@@ -156,7 +157,8 @@
                         that.randomNumber = response.data
                         that.rotating(that.computeIndex(that.randomNumber))
                     } else {
-                        console.log(response.errmsg)
+                        that.$parent.showErrMsg(response.errmsg)
+                        that.click_flag = true;
                     }
                 })
             },
