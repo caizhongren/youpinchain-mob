@@ -11,7 +11,7 @@
       </div>
       <carousel class="banner_box" :loop="true" :autoplay="true" :minSwipeDistance="6" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="5" :paginationSize="8" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color">
         <!-- <slide v-for="item in auctionInfo.goodsPic" :key="item.id"> -->
-          <img :src="auctionInfo.goodsPic" alt="" width="100%" class="show">
+          <img :src="auctionInfo.goodsPic" alt="" class="show">
         <!-- </slide> -->
       </carousel>
       <div class="title">
@@ -410,8 +410,11 @@
     .top_main {
       margin-bottom: .15rem;
       .banner_box{
-        height: 3.275rem;
+        height: 3.75rem;
         overflow: hidden;
+        img {
+          @include wh(100%,3.75rem);
+        }
       }
       .title{
         //@include wh(100%, .7rem);
