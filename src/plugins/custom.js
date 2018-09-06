@@ -13,10 +13,7 @@ let dateTime = (value, format) => {
 let time = value => {
   // 时间格式 ‘HH:mm:ss’
   if (!value) { return }
-  var now = new Date(value)
-  return (now.getHours() < 10 ? '0' + now.getHours() : now.getHours()) + ':' +
-  (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()) + ':' +
-  (now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds())
+  return value.split('T')[1]
 }
 
 let date = (value, format) => {
