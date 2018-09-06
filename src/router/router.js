@@ -231,8 +231,7 @@ export default [{
                 },
                 {
                     path: 'sharingLanding/:auctionId/:vipId',
-                    component: SharingLanding,
-                    meta: {title: '分享落地页'}
+                    component: SharingLanding
                 },
                 {
                     path: 'rewardExchange/:bidId',

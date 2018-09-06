@@ -61,7 +61,7 @@
                     if (response && response.errno === 0) {
                         that.recordList = response.data
                     } else {
-                        alert(response.errmsg)
+                        console.log(response.errmsg)
                     }
                 })
             },
@@ -77,7 +77,7 @@
                         that.page = response.data.page
                         that.pageSize = response.data.pageSize
                     } else {
-                        alert(response.errmsg)
+                        console.log(response.errmsg)
                     }
                 })
             },

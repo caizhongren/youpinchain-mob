@@ -4,6 +4,16 @@
         <router-view :addCartFn="addCartFn" :showErrMsg="showErrMsg"></router-view>
     </transition>
     <div id="err" v-show="showErr" v-bind:style="styleObject">{{errMsg}}</div>
+    <div class="mask-common mask1" v-show="showLongErr">
+      <div class="alert-wrap" v-show="showLongErr">
+        <div class="text">
+          {{errMsg}}
+        </div>
+        <div class="i-know" @click="showLongErr = false">
+          确定
+        </div>
+      </div>
+    </div>
     <svg-icon></svg-icon>
 </div>
 </template>
@@ -24,6 +34,7 @@ export default {
         return {
             showErr: false,
             errMsg: '',
+            showLongErr: false,
             timer: null,
             styleObject: {},
             userInfo: {}
@@ -56,16 +67,23 @@ export default {
                 }
             })
         },
-        showErrMsg(msg, setErrStyle) {
+        showErrMsg (msg, isLong, setErrStyle) {
+            clearTimeout(this.timer)
+            this.showErr = false
             var that = this
-            setErrStyle ? that.styleObject = setErrStyle : null
-            that.showErr = true
-            that.errMsg = msg
-            that.timer = setTimeout(function () {
-                that.showErr = false
-                that.errMsg = ''
-            }, 2000)
-        }
+            setErrStyle ? this.styleObject = setErrStyle : null
+            if (isLong) {
+                that.showLongErr = true
+                that.errMsg = msg
+            } else {
+                that.showErr = true
+                that.errMsg = msg
+                that.timer = setTimeout(function () {
+                    that.showErr = false
+                    that.errMsg = ''
+                }, 2000)
+            }
+            }
     }
 }
 Object.keys(custom).forEach(key => {
@@ -101,7 +119,46 @@ body {
 }
 
 /* 错误提示 */
-
+.mask-common {
+  position: fixed;
+  top: 0;
+  z-index: 999999;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  /* max-width: 7.2rem; */
+  margin: 0 auto;
+  background-color: rgba(0,0,0,0.9);
+  -webkit-overflow-scrolling: touch;
+  overflow-y: hidden !important;
+}
+.mask-common.mask1 {
+    background-color: rgba(0,0,0, .8);
+}
+.mask1 .alert-wrap {
+    width: 52%;
+    background-color: transparent;
+    color: $g6;
+    margin: 2rem auto;
+    z-index: 999;
+}
+.mask1 .alert-wrap .text {
+    height: .65rem;
+    line-height: .65rem;
+    font-size: .14rem;
+    border-bottom: 1px solid $gd;
+    border-radius: .1rem .1rem 0 0;
+    background-color: $fc;
+    text-align: center;
+}
+.mask1 .alert-wrap .i-know {
+    font-size: .12rem;
+    height: .45rem;
+    line-height: .45rem;
+    background-color: $fc;
+    text-align: center;
+    border-radius: 0 0 .1rem .1rem;
+}
 #err {
     position: fixed;
     top: 2.8rem;

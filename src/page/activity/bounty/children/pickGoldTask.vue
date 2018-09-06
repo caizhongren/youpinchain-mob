@@ -121,7 +121,7 @@
               that.getActDetail()
               that.showMask = true
             } else {
-              alert(res.errmsg)
+              console.log(res.errmsg)
             }
           })
         } else {

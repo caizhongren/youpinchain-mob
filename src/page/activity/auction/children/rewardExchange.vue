@@ -39,6 +39,7 @@
         },  
         watch: {
         },
+        props: ['showErrMsg'],
         mounted() {
         },
         created() {
@@ -51,13 +52,13 @@
                 var that = this
                 exchange(that.bidId, user.wxNum, user.phoneNum).then(function (respones) {
                     if (respones && respones.errno === 0) {
-                        alert('兑换成功')
+                        that.showErrMsg('兑换成功',true)
                         that.user = {
                             phoneNum: '',
                             wxNum: ''
                         }
                     } else {
-                        alert(respones.errmsg)
+                        console.log(respones.errmsg)
                     }
                 })
             }
