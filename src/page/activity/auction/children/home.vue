@@ -331,7 +331,7 @@
             } else {
               that.showMask = false
               that.getAuctionInfo()
-              that.$parent.showErrMsg(res.errmsg,true)
+              that.$parent.showErrMsg('出价成功',true)
             }
           })
         } else {

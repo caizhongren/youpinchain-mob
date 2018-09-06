@@ -10,7 +10,7 @@
           {{errMsg}}
         </div>
         <div class="i-know" @click="showLongErr = false">
-          确定
+          知道啦
         </div>
       </div>
     </div>
@@ -22,6 +22,7 @@
 import Vue from 'vue'
 import * as custom from './plugins/custom'
 import svgIcon from './components/common/svg';
+import { ModalHelper } from './service/Utils'
 import {
     login_oa,
     cartProductCount
@@ -42,6 +43,9 @@ export default {
     },
     watch: {
         // '$route': 'login_oa'
+        showLongErr: function(val) {
+            val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
+        }
     },
     components: {
         svgIcon,
@@ -136,28 +140,28 @@ body {
     background-color: rgba(0,0,0, .8);
 }
 .mask1 .alert-wrap {
-    width: 52%;
-    background-color: transparent;
-    color: $g6;
-    margin: 2rem auto;
-    z-index: 999;
+    background: #fff;
+    width: 2.8rem;
+    margin: 0 auto;
+    padding: .2rem .4rem .15rem;
+    border-radius: .1rem;
+    margin-top: 2rem;
+    text-align: center;
 }
 .mask1 .alert-wrap .text {
-    height: .65rem;
-    line-height: .65rem;
-    font-size: .14rem;
-    border-bottom: 1px solid $gd;
-    border-radius: .1rem .1rem 0 0;
-    background-color: $fc;
-    text-align: center;
+    height: .35rem;
+    line-height: 1.67;
+    font-size: 0.18rem;
+    color: #333333;
 }
 .mask1 .alert-wrap .i-know {
-    font-size: .12rem;
-    height: .45rem;
-    line-height: .45rem;
-    background-color: $fc;
-    text-align: center;
-    border-radius: 0 0 .1rem .1rem;
+    background: #fc5340;
+    font-size: 0.15rem;
+    color: #fff;
+    line-height: .4rem;
+    height: .4rem;
+    margin-top: .18rem;
+    border-radius: .05rem;
 }
 #err {
     position: fixed;
