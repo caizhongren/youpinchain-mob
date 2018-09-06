@@ -17,16 +17,13 @@
         },
         created() {
             this.help(this.$route.params.auctionId, this.$route.params.vipId)
+            document.title = '百元话费速来抢'
         },
         methods: {
             help (auctionId,vipId) {
                 var that = this
                 help(auctionId,vipId).then(function (res) {
-                    if (res && res.errno === 0) {
-                        alert(res.errmsg)
-                    } else {
-                        alert(res.errmsg)
-                    }
+                    console.log(res.errmsg)
                 })
             },
             partIn () {
