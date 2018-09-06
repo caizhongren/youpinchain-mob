@@ -1,8 +1,9 @@
 <template>
   <div class="task" v-if="showDocument">
     <div class="activity_detail">
-      <p>{{actDetail.state === 2 && actDetail.surplus === 0 || actDetail.state === 1 ? '距下轮开始' : '距本轮结束'}}</p>
-      <p><span>{{countDown | timeArry(0)}}</span> : <span>{{countDown | timeArry(1)}}</span> : <span>{{countDown | timeArry(2)}}</span></p>
+      <p v-if="lastScene === 'true' && actDetail.surplus === 0">今日已结束</p>
+      <p v-else>{{actDetail.state === 2 && actDetail.surplus === 0 || actDetail.state === 1 ? '距下轮开始' : '距本轮结束'}}</p>
+      <p :class="{'opacity_zero' : lastScene === 'true' && actDetail.surplus === 0}"><span>{{countDown | timeArry(0)}}</span> : <span>{{countDown | timeArry(1)}}</span> : <span>{{countDown | timeArry(2)}}</span></p>
       <p><span>剩余金条</span></p>
       <p>{{actDetail.surplus}}</p>
       <div :class="{'snatching' : countDown > 0 && actDetail.surplus !== 0 && !actDetail.partake && actDetail.state === 2}" @click="robbingGold()">{{actDetail.state === 1 ? '未开始' : (actDetail.state === 3 ? '已结束' : (actDetail.partake ? '已抢过' : (actDetail.surplus === 0 ? '已抢光' : '抢')))}}</div>
@@ -15,7 +16,7 @@
       <p class="title">金条记录</p>
       <div class="lucky_box">
         <ul class="lucky-users-box">
-          <li style="text-align:center;display:block;line-height:.6rem;" v-if="!actDetail.pickGoldRecord.length">暂无记录</li>
+          <li class="no_record" v-if="!actDetail.pickGoldRecord.length">暂无记录</li>
           <li v-for="item in actDetail.pickGoldRecord">
             <div>
               <img :src="item.headImgUrl" alt="">
@@ -51,7 +52,8 @@
         actDetail: {},
         showDocument: false,
         countDown: null,
-        busy: false
+        busy: false,
+        lastScene: this.$route.query.lastScene.toString()
       }
     },
     watch: {
@@ -119,7 +121,7 @@
               that.getActDetail()
               that.showMask = true
             } else {
-              alert(res.errmsg)
+              console.log(res.errmsg)
             }
           })
         } else {
@@ -254,10 +256,57 @@
     color: #666666;
   }
   .record_detail{
+    .title{
+      line-height: .45rem;
+      font-size: .15rem;
+      border-bottom: 0.01rem solid #dddddd;
+      padding: 0;
+      padding-left: .12rem;
+    }
     .lucky_box{
       height: 3rem;
       overflow-y: hidden;
       position: relative;
+      .lucky-users-box {
+        background: #efeff4;
+        li {
+          padding: 0 .12rem;
+          height: .6rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background: #fff;
+          img{
+            @include wh(.3rem, .3rem);
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: .3rem;
+          }
+          p{
+            margin-bottom: .06rem;
+            font-size: .125rem;
+          }
+          p:last-child{
+            font-size: .12rem;
+            color: #999999;
+          }
+          div:last-child{
+            color: #fc4c42;
+            font-size: .15rem;
+          }
+          div:last-child.green {
+            color: #26cc41;
+          }
+        }
+        li:nth-child(even){
+          background: #f6f5f5;
+        }
+        li.no_record {
+          justify-content: center;
+          height: 1.6rem;
+          background: #fff;
+        }
+      }
       .lucky-users-box.animate{
         transition: 1s all ease-in-out;
       }
@@ -276,49 +325,6 @@
     padding: 0;
     padding-left: .12rem;
   }
-  .record_detail .title{
-    line-height: .45rem;
-    font-size: .15rem;
-    border-bottom: 0.01rem solid #dddddd;
-    padding: 0;
-    padding-left: .12rem;
-  }
-  .record_detail ul{
-    //padding-bottom: 1rem;
-    background: #efeff4;
-  }
-  .record_detail li{
-    padding: 0 .12rem;
-    height: .6rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #fff;
-    img{
-      @include wh(.3rem, .3rem);
-      border-radius: 50%;
-      vertical-align: middle;
-      margin-right: .3rem;
-    }
-  }
-  .record_detail li:nth-child(even){
-    background: #f6f5f5;
-  }
-  .record_detail li p{
-    margin-bottom: .06rem;
-    font-size: .125rem;
-  }
-  .record_detail li p:last-child{
-    font-size: .12rem;
-    color: #999999;
-  }
-  .record_detail li div:last-child{
-    color: #fc4c42;
-    font-size: .15rem;
-  }
-  .record_detail li div:last-child.green {
-    color: #26cc41;
-  }
   .loadMore{
     width: 35%;
     height: 0.28rem;
@@ -332,13 +338,11 @@
     text-align: center;
     margin-top: .1rem;
   }
-  .record_detail li.no_record {
-    justify-content: center;
-    height: 1.6rem;
-    background: #fff;
-  }
   .activityEnd{
     @include sc(.2rem, #fff);
     text-align: center;
+  }
+  .opacity_zero{
+    opacity: 0;
   }
 </style>

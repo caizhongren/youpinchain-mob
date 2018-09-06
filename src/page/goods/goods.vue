@@ -4,15 +4,18 @@
     <div class="top_main">
       <carousel :loop="true" :autoplay="true" :minSwipeDistance="6" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="5" :paginationSize="8" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color">
         <slide v-for="item in goods.headPic" :key="item.id">
-          <img :src="item" alt="" width="100%" class="show">
+          <img :src="item" alt="" class="show">
         </slide>
       </carousel>
       <div class="presell_box" v-if="goods.preSale">
         <div class="left_price left">
           <p class="price"><span>￥</span>{{goods.presentPrice}} <s>￥{{goods.originalPrice}}</s></p>
-          <!--<p class="tip">商品预售预计{{goods.presellTime | dateCharacter}}发货</p>-->
+          <p class="tip">商品预售预计{{goods.presellTime | dateCharacter}}发货</p>
         </div>
-        <div class="right_tip right">预售</div>
+        <div class="right_tip right">
+          <p>预售</p>
+          <p>北京地区专供</p>
+        </div>
       </div>
       <div class="title">
         <p class="price" v-if="!goods.preSale"><span>￥</span>{{goods.presentPrice}} <s>￥{{goods.originalPrice}}</s></p>
@@ -24,14 +27,43 @@
       <div class="info_title">商品详情</div>
       <!--<div class="info_content" v-html="goods.Desc"></div>-->
       <div class="info_content">
-        净含量：{{goods.netContent}} <br>
-        包装：{{goods.packing}} <br>
-        保质期：{{goods.qualityGuaranteePeriod}} <br>
-        储存方法：{{goods.storage}} <br>
+        <p>品名：{{goods.name}}</p>
+        <p>净含量：{{goods.netContent}}</p>
+        <p>包装形式：{{goods.packing}}</p>
+        <p>保存状态：{{goods.storage}}</p>
+        <p>保存期限：{{goods.qualityGuaranteePeriod}}</p>
+        <p>温馨提示：打开包装后尽快食用，未使用部分冷冻保存。</p>
       </div>
-      <div>
+      <!-- <div>
         <img v-for="item in goods.footPic" :src="item" alt="" width="100%" class="show">
-      </div>
+      </div> -->
+    </div>
+    <div class="certificates">
+      <p class="abstract">证件资质</p>
+      <ul>
+        <li @click="toCredential(0)"><img src="../../images/store/credentials_1.png" alt=""><p>检疫证</p></li>
+        <li @click="toCredential(1)"><img src="../../images/store/credentials_2.png" alt=""><p>合格证</p></li>
+        <li @click="toCredential(2)"><img src="../../images/store/credentials_3.png" alt=""><p>经营许可证</p></li>
+      </ul>
+    </div>
+    <div class="description_detail">
+      <img class="abstractImg" src="../../images/store/Impression_bg.png" alt="">
+      <ul>
+        <li><p>腿肉</p><p>柔滑有胶质感，肥瘦适中，肥而不腻，瘦而不柴</p></li>
+        <li v-if="goods.preSale">
+          <p class="abstract">预售说明</p>
+          <p>为保证新鲜，苏淮猪现杀发货，用户即日起可下单购买，9月19日开始发货。本批数量有限，售完为止。</p>
+        </li>
+        <li>
+          <p class="abstract">物流说明</p>
+          <div class="tip">（以下时效是以快递发出后计算）</div>
+          <p>江浙沪全程顺丰冷链包邮，正常时效48小时内送达；北京地区用户下单后，物流先从淮安以冷链车运送到京，到京后同城快递次日达。<br>(快递高峰期会有所延误)</p>
+        </li>
+        <li>
+          <p class="abstract">售后说明</p>
+          <p>商品无质量问题不支持无理由退货及拒收。为保障您的权益，请您签收时务必配送人员当面签收验货，确认无误再进行签收。如出现商品配送有误、包装破损、商品腐烂、数量不对等问题，请在收到商品之时48小时内联系客服，并提交商品完整照片并说明问题，我们将及时为您售后处理</p>
+        </li>
+      </ul>
     </div>
     <div class="add_cart_container">
       <router-link class="cart_icon_num left" :to="'/cart'">
@@ -56,7 +88,8 @@
         showShare: false,
         headTitle: '',
         goodsid:'',
-        goods: {},
+        goods: {
+        },
         cart_num: 0,
         number: [1, 2, 3, 4, 5],
         pagination: {
@@ -84,6 +117,9 @@
     computed:{
     },
     methods:{
+      toCredential (index) {
+        this.$router.push('/credentials/#w_anchor' + index);
+      },
       initData () {
         var that = this;
           getProductDetail(that.goodsid).then(res =>{
@@ -91,6 +127,8 @@
                   return;
               }
               that.goods = res.data;
+              that.goods.presellTime = 1537286400000;
+              // that.goods.preSale = true;
           })
 
         //开始监听scrollTop的值，达到一定程度后显示返回顶部按钮
@@ -121,9 +159,14 @@
   @import 'src/style/mixin';
   .goods {
     padding: .45rem 0 .5rem;
+    .top_main {
+      .show {
+        @include wh(100%,3.75rem);
+      }
+    }
     .presell_box {
       overflow: hidden;
-      padding: .08rem .25rem .12rem .12rem;
+      padding: .08rem .12rem .12rem .12rem;
       background-image: linear-gradient(133deg, #fc5b46, #fa424f);
       @include wh(100%, .64rem);
       .left_price {
@@ -145,10 +188,24 @@
         }
       }
       .right_tip {
-        @include sc(.18rem, $fc);
-        padding: .04rem 0 .04rem .3rem;
-        margin-top: .08rem;
-        border-left: 1px solid $fc;
+        position: relative;
+        width: 1rem;
+        text-align: center;
+        p:first-child{
+          @include sc(.18rem, $fc);
+          padding-top: .04rem;
+        }
+        p:last-child{
+          @include sc(.13rem, rgba(255, 255, 255, 0.6));
+        }
+        &:before{
+          content: '';
+          position: absolute;
+          top: .1rem;
+          left: 0;
+          @include wh(.01rem, .33rem);
+          background-color: #fff;
+        }
       }
     }
     .title {
@@ -192,7 +249,82 @@
         @include sc(.15rem, $g6);
       }
       .info_content {
-        padding: .1rem .21rem;
+        p{
+          @include sc(.13rem, #666666);
+          line-height: .35rem;
+          border-bottom: 1px solid #f7f7fa;
+          padding: 0rem .21rem;
+        }
+      }
+    }
+    .certificates{
+      text-align: center;
+      background-color: #efeff4;
+      padding: .3rem .08rem;
+      .abstract{
+        @include sc(.2rem, #333333);
+        margin-bottom: .27rem;
+      }
+      ul{
+        display: flex;
+        li{
+          flex: 1;
+          background-color: #fcfbfc;
+          margin: 0 .04rem;
+          padding: .1rem 0;
+          border-radius: .05rem;
+          img{
+            width: .34rem;
+          }
+          p{
+            @include sc(.13rem, #666666);
+          }
+        }
+      }
+    }
+    .description_detail{
+      .abstractImg{
+        width: 100%;
+        display: block;
+      }
+      ul{
+        li{
+          padding: .3rem;
+          background-color: #fcfbfc;
+          .abstract{
+            @include sc(.2rem, #333333);
+            text-align: center;
+          }
+          p{
+            @include sc(.13rem, #666666);
+            text-align: justify;
+          }
+          p:last-child{
+            margin-top: .25rem;
+          }
+          .tip{
+            @include sc(.13rem, #666666);
+            text-align: center;
+          }
+        }
+        li:nth-child(even){
+          background-color: #efeff4;
+        }
+        li:first-child{
+          position: relative;
+          p:first-child{
+            padding: 0 .06rem;
+            line-height: .205rem;
+            height: .205rem;
+            background-color: #c51215;
+            @include sc(.15rem, #fff);
+            position: absolute;
+            border-radius: .05rem;
+          }
+          p:last-child{
+            @include sc(.15rem, #333333);
+          }
+        }
       }
     }
     .add_cart_container {
@@ -203,7 +335,7 @@
       @include wh(100%, .49rem);
       .cart_icon_num {
         @include wh(1.06rem, .49rem);
-        background-color: $bc;
+        background-color: #fff;
         .icon {
           position: relative;
           margin: 0.13rem auto;

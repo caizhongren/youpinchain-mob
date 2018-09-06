@@ -4,13 +4,13 @@
       <loading v-show="showLoading"></loading>
     </transition>
     <div v-show="!showLoading">
-      <router-link tag="div" class="header_image" :to="{path:'/growing-environment',query:{dataId:datasBrandId}}">
+      <router-link tag="div" class="header_image" :to="{path:'/introduce'}">
         <img :src="brand.pictureUrl" alt="" width="100%" class="show">
       </router-link>
-      <ul class="product_nav">
+      <!-- <ul class="product_nav">
         <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" v-if="tab.name !== 'brand'"
             @click="toggleTab(tab.id,index)">{{tab.name}}</li>
-      </ul>
+      </ul> -->
       <section id="hot_goods">
         <h4 class="goods_title">热卖商品</h4>
         <ul class="goodslistul clear">
@@ -171,7 +171,7 @@ export default {
   }
   #hot_goods {
     background-color: $fc;
-    margin-top: .15rem;
+    // margin-top: .15rem;
     padding: .2rem 0;
     .load_more {
 			@include wh(35%, .28rem);

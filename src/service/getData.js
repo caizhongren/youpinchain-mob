@@ -310,3 +310,72 @@ export const goldDrill = (page, size) => fetch('/act/bounty/home/goldDrill', {
  export const robGold = (id) => fetch('/act/bounty/home/pick/rob', {
  	pickGoldRecordId: id
  } , 'POST');
+
+
+ /**
+ * 出价
+ */
+export const offer = (auctionId,bidPrice) => fetch('/auction/home/bid', {
+	auctionId: auctionId,
+	bidPrice: bidPrice
+} ,'POST');
+
+ /**
+ * 分享助力
+ */
+export const helpDetail = (id) => fetch('/auction/home/helpDetail/' + id);
+
+/** 
+ * 分享后用户助力
+*/
+export const help = (auctionId,vipId) => fetch('/auction/home/' + auctionId + '/help', {
+	vipId: vipId
+}, 'POST')
+
+ /**
+ * 出价记录
+ */
+
+export const bidRecord = (id) => fetch('/auction/home/bidRecord/' + id);
+
+ /**
+ * 我的出价记录
+ */
+
+export const myBidRecords = (page,pageSize) => fetch('/auction/home/myBidRecords',{
+	page: page,
+	pageSize: pageSize
+});
+
+ 
+ /**
+ * 竞拍首页
+ */
+export const auction = () => fetch('/auction/home', {}); 
+
+/**
+* 抽奖详情
+*/
+export const luckDrawDetail = (auctionId, luckDrawId) => fetch('/auction/home/luckDrawDetail/' + auctionId + '/' + luckDrawId, {});
+
+/**
+* 抽奖GO
+*/
+export const luckDraw = (auctionId, luckDrawId) => fetch('/auction/home/luckDraw', {
+	auctionId: auctionId,
+	luckDrawId: luckDrawId
+}, 'POST');
+
+
+export const congigJsApi = (url) => fetch('/oa/jsapiSignature', {
+	url: url
+})
+
+ /**
+ * 兑换奖励
+ */
+ export const exchange = (bidId, wxNum, phoneNum) => fetch('/auction/home/myBidRecords/' + bidId, {
+ 	bidId: bidId,
+ 	wxNum: wxNum,
+ 	phoneNum: phoneNum
+ } , 'PUT');

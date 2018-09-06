@@ -1,7 +1,11 @@
 import App from '../App'
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
-const growingEnvironment = r => require.ensure([], () => r(require('../page/home/growingEnvironment')), 'growingEnvironment')
+const introduce = r => require.ensure([], () => r(require('../page/home/introduce/introduce')), 'introduce')
+const introduceHome = r => require.ensure([], () => r(require('../page/home/introduce/introduceHome')), 'introduceHome')
+const growth = r => require.ensure([], () => r(require('../page/home/introduce/growth')), 'growth')
+const feeding = r => require.ensure([], () => r(require('../page/home/introduce/feeding')), 'feeding')
 const goods = r => require.ensure([], () => r(require('../page/goods/goods')), 'goods')
+const credentials = r => require.ensure([], () => r(require('../page/goods/credentials')), 'credentials')
 const cart = r => require.ensure([], () => r(require('../page/cart/cart')), 'cart')
 const profile = r => require.ensure([], () => r(require('../page/profile/profile')), 'profile')
 const order = r => require.ensure([], () => r(require('../page/order/order')), 'order')
@@ -26,6 +30,14 @@ const Invite = r => require.ensure([], () => r(require('../page/activity/bounty/
 const Waiter = r => require.ensure([], () => r(require('../page/activity/bounty/children/waiter')), 'waiter')
 const BountyTask = r => require.ensure([], () => r(require('../page/activity/bounty/children/bountyTask')), 'bountyTask')
 const PickGoldTask = r => require.ensure([], () => r(require('../page/activity/bounty/children/pickGoldTask')), 'pickGoldTask')
+const Auction = r => require.ensure([], () => r(require('../page/activity/auction/auction')), 'auction')
+const AuctionHome = r => require.ensure([], () => r(require('../page/activity/auction/children/home')), 'auctionHome')
+const Record = r => require.ensure([], () => r(require('../page/activity/auction/children/record')), 'Record')
+const MyAuction = r => require.ensure([], () => r(require('../page/activity/auction/children/myAuction')), 'myAuction')
+const Sharing = r => require.ensure([], () => r(require('../page/activity/auction/children/sharing')), 'sharing')
+const SharingLanding = r => require.ensure([], () => r(require('../page/activity/auction/children/sharingLanding')), 'sharingLanding')
+const RewardExchange = r => require.ensure([], () => r(require('../page/activity/auction/children/rewardExchange')), 'rewardExchange')
+const Lottery = r => require.ensure([], () => r(require('../page/activity/auction/children/lottery')), 'lottery')
 
 
 export default [{
@@ -45,14 +57,40 @@ export default [{
         },
         //生产环境、饲养情况、健康指标、商品介绍
         {
-            path: '/growing-environment',
-            component: growingEnvironment,
-            name: 'growingEnvironment'
+            path: '/introduce',
+            component: introduce,
+            name: 'introduce',
+            children: [
+                {
+                    path: '',
+                    name: 'introduceHome',
+                    component: introduceHome,
+                    meta: {title: '黑猪界的贵族，舌尖上的美味！'}
+                },
+                {
+                    path: 'growth',
+                    name: 'growth',
+                    component: growth,
+                    meta: {title: '黑猪界的贵族，舌尖上的美味！'}
+                },
+                {
+                    path: 'feeding',
+                    name: 'feeding',
+                    component: feeding,
+                    meta: {title: '黑猪界的贵族，舌尖上的美味！'}
+                }
+            ]
         },
         //商品详情
         {
             path: '/goods/:goodsid',
             component: goods
+        },
+        // 证件资质
+        {
+            path: '/credentials',
+            component: credentials,
+            meta: {title: '证件资质'}
         },
         //购物车
         {
@@ -170,6 +208,40 @@ export default [{
                             name: 'GoldRecord'
                         }
                     ]
+                }
+            ]
+        },
+        {
+            path: '/auction',
+            component: Auction,
+            children: [
+                {
+                    path: '',
+                    component: AuctionHome,
+                    meta: {title: '限时拍卖'}
+                },
+                {
+                    path: 'record/:type',
+                    component: Record
+                },
+                {
+                    path: 'sharing/:auctionId',
+                    component: Sharing,
+                    meta: {title: '分享助力'}
+                },
+                {
+                    path: 'sharingLanding/:auctionId/:vipId',
+                    component: SharingLanding
+                },
+                {
+                    path: 'rewardExchange/:bidId',
+                    component: RewardExchange,
+                    meta: {title: '奖励兑换'}
+                },
+                {
+                    path: 'lottery/:auctionId/:luckDrawId',
+                    component: Lottery,
+                    meta: {title: '限时抽奖'}
                 }
             ]
         }

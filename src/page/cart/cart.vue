@@ -53,14 +53,14 @@
     <div class="recommend_nav">
         <div class="recommend_header">推荐商品</div>
         <ul class="recommend_list">
-            <li v-for="item in hotgoodslist" :key="item.id">
+            <router-link tag="li" :to="'/goods/' + item.id" v-for="item in hotgoodslist" :key="item.id">
                 <img :src="item.thumbnailPic" alt="" class="img">
                 <div class="left">
                     <p class="name">{{item.name}}*1{{item.packing}}</p>
                     <p class="price"><span class="RMB">￥</span>{{item.presentPrice}} <s class="RMB">￥{{item.originalPrice}}</s></p>
                 </div>
                 <div class="right add_cart" @touchstart="addToCart(item.id, $event)"></div>
-            </li>
+            </router-link>
         </ul>
         <router-link :to="'/home'" class="load_more" v-if="hasMore">查看更多商品</router-link>
     </div>
