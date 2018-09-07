@@ -13,8 +13,8 @@
                             <p class="price"><span class="RMB">￥</span>{{item.presentPrice}}</p>
                         </div>
                         <div class="cart_btns">
-                            <p style="color: #e4372e" v-if="!item.isShow">已下架</p>
-                            <p style="color: #e4372e" v-else-if="!item.available">库存不足</p>
+                            <p class="red" v-if="!item.isShow">已下架</p>
+                            <p class="red" v-else-if="!item.available">库存不足</p>
                             <span class="subduction" :class="{'disabled': item.number <= 1}" @click="item.number > 1 ? addNumber(item, -1) : deleteCart(item)"></span>
                             <span class="num">{{item.number}}</span>
                             <span class="add" @click="addNumber(item, 1)"></span>

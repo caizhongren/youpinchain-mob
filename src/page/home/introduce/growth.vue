@@ -71,7 +71,7 @@
         background: $bc;
       }
       .header {
-        padding: .35rem 0 .25rem;
+        padding: .3rem 0 .25rem;
         position: relative;
         .text {
           width: 85%;
@@ -87,7 +87,7 @@
           display: block;
           border-width: 5px;
           position: absolute;
-          top: .25rem;
+          top: .2rem;
           right: 48%;
           border-style: solid dashed dashed;
           border-color: transparent transparent $gd;
@@ -98,7 +98,7 @@
           display: block;
           border-width: 5px;
           position: absolute;
-          top: .26rem;
+          top: .21rem;
           right: 48%;
           border-style: solid dashed dashed;
           border-color: transparent transparent $fc;

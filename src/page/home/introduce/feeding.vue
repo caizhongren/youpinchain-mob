@@ -78,7 +78,7 @@
         margin: 0.2rem auto;
       }
        .header {
-         padding-top: .25rem;
+         padding-top: .3rem;
          background: $fc;
          .text {
            line-height: 1.54;
@@ -87,7 +87,7 @@
            width: 75%;
            margin: 0 auto;
            position: relative;
-           border: solid 1px #dddddd;
+           border-top: solid 1px $gd;
            &:before {
             content: '';
             display: block;
@@ -104,7 +104,7 @@
             display: block;
             border-width: 5px;
             position: absolute;
-            top: -.08rem;
+            top: -.09rem;
             right: 48%;
             border-style: solid dashed dashed;
             border-color: transparent transparent $fc;

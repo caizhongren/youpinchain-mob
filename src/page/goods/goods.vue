@@ -204,7 +204,7 @@
           top: .1rem;
           left: 0;
           @include wh(.01rem, .33rem);
-          background-color: #fff;
+          background-color: $fc;
         }
       }
     }
@@ -250,7 +250,7 @@
       }
       .info_content {
         p{
-          @include sc(.13rem, #666666);
+          @include sc(.13rem, $g6);
           line-height: .35rem;
           border-bottom: 1px solid #f7f7fa;
           padding: 0rem .21rem;
@@ -259,10 +259,10 @@
     }
     .certificates{
       text-align: center;
-      background-color: #efeff4;
+      background-color: $bc;
       padding: .3rem .08rem;
       .abstract{
-        @include sc(.2rem, #333333);
+        @include sc(.2rem, $g3);
         margin-bottom: .27rem;
       }
       ul{
@@ -277,7 +277,7 @@
             width: .34rem;
           }
           p{
-            @include sc(.13rem, #666666);
+            @include sc(.13rem, $g6);
           }
         }
       }
@@ -292,23 +292,23 @@
           padding: .3rem;
           background-color: #fcfbfc;
           .abstract{
-            @include sc(.2rem, #333333);
+            @include sc(.2rem, $g3);
             text-align: center;
           }
           p{
-            @include sc(.13rem, #666666);
+            @include sc(.13rem, $g6);
             text-align: justify;
           }
           p:last-child{
             margin-top: .25rem;
           }
           .tip{
-            @include sc(.13rem, #666666);
+            @include sc(.13rem, $g6);
             text-align: center;
           }
         }
         li:nth-child(even){
-          background-color: #efeff4;
+          background-color: $bc;
         }
         li:first-child{
           position: relative;
@@ -317,12 +317,12 @@
             line-height: .205rem;
             height: .205rem;
             background-color: #c51215;
-            @include sc(.15rem, #fff);
+            @include sc(.15rem, $fc);
             position: absolute;
             border-radius: .05rem;
           }
           p:last-child{
-            @include sc(.15rem, #333333);
+            @include sc(.15rem, $g3);
           }
         }
       }
@@ -335,7 +335,7 @@
       @include wh(100%, .49rem);
       .cart_icon_num {
         @include wh(1.06rem, .49rem);
-        background-color: #fff;
+        background-color: $fc;
         .icon {
           position: relative;
           margin: 0.13rem auto;

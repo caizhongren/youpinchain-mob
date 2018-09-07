@@ -251,7 +251,7 @@ export default {
 .adddetail {
     margin-top: 0.05rem;
     @include borderRadius(10px);
-    background: #fff;
+    background: $fc;
     height: 98%;
 }
 
@@ -263,8 +263,8 @@ export default {
         @include wh(100%, 0.45rem);
         padding: 0 0 0 0.12rem;
         display: flex;
-        @include sc(0.15rem, #666666);
-        border-bottom: 1px solid #efeff4;
+        @include sc(0.15rem, $g6);
+        border-bottom: 1px solid $bc;
         span {
             width: 0.7rem;
             line-height: 0.45rem;
@@ -296,7 +296,7 @@ export default {
         display: flex;
         justify-content: space-between;
         p{
-            @include sc(.15rem,#666666);
+            @include sc(.15rem,$g6);
             line-height: .45rem;
             margin: 0;
             padding: 0;
@@ -309,9 +309,9 @@ export default {
     width: 3.5rem;
     button {
         width: 100%;
-        @include sc(0.15rem, #fff);
+        @include sc(0.15rem, $fc);
         line-height: 0.45rem;
-        background: #e4372e;
+        background: $red;
         font-weight: 700;
         @include borderRadius(0.23rem);
     }

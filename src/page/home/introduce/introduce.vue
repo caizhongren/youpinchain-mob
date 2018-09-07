@@ -65,7 +65,7 @@
             li {
                 float: left;
                 @include wh(33.33%,.45rem);
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid $ge;
                 text-align: center;
             }
             li.active {

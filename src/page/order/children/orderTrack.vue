@@ -120,14 +120,14 @@
         box-shadow: 0px 1px 13.9px 0.6px rgba(181, 184, 188, 0.51);
         border-radius: .1rem;
         @include wh(3.5rem, auto);
-        background-color: #fff;
+        background-color: $fc;
         margin: 0 auto;
         margin-bottom: .16rem;
     }
     .order_track_detail{
     	padding: .2rem .15rem;
     	margin-top: -.4rem;
-    	@include sc(.15rem,#666666);
+    	@include sc(.15rem,$g6);
     	line-height: .24rem;
     	min-height: 5.5rem;
     	.order_track_step {
@@ -135,7 +135,7 @@
     		@include fj;
     		margin-bottom: .3rem;
     		.phone_number{
-    			color: #e4372e;
+    			color: $red;
     		}
     		span{
 	    		@include wh(.25rem,.25rem);
@@ -143,7 +143,7 @@
 	    		text-align: center;
 	    		line-height: .25rem;
 	    		background: #ccc;
-	    		color: #fff;
+	    		color: $fc;
 	    		margin-top: .1rem;
 	    		position: relative;
 	    	}
@@ -178,10 +178,10 @@
 	    	}
 	    	div:nth-of-type(1){
 	    		p:nth-of-type(1){
-	    			@include sc(.18rem,#666666);
+	    			@include sc(.18rem,$g6);
 	    		}
 	    		p:nth-of-type(2){
-	    			@include sc(.13rem,#999999);
+	    			@include sc(.13rem,$g9);
 	    			text-indent: .04rem;
 	    		}
 	    	}

@@ -62,15 +62,15 @@
 <style scoped lang="scss">
   @import '../../../style/mixin';
   .introduceHome {
-    background: #fff;
+    background: $fc;
     .part_1{
       ul{
         padding: .3rem .47rem .35rem;
         li{
           margin-top: .3rem;
-          border-top: 1px solid #dddddd;
+          border-top: 1px solid $gd;
           padding-top: .1rem;
-          @include sc(.13rem, #666666);
+          @include sc(.13rem, $g6);
           text-align: justify;
         }
         li:first-child{
@@ -82,7 +82,7 @@
       .goods{
         @include wh(100%, 5.8rem);
         @include bis('../../../images/store/introduce_01.png');
-        background-color: #ddd;
+        background-color: $bc;
         background-position: 0 .4rem;
         background-size: 100% auto;
         text-align: center;
@@ -91,13 +91,13 @@
         }
         p:first-child{
           padding-top: 4.2rem;
-          @include sc(.2rem, #333333);
+          @include sc(.2rem, $g3);
         }
         p:nth-child(2){
-          @include sc(.15rem, #999999);
+          @include sc(.15rem, $g9);
         }
         p:nth-child(3){
-          @include sc(.17rem, #333333);
+          @include sc(.17rem, $g3);
           span{
             font-size: .25rem;
           }
@@ -109,7 +109,7 @@
           height: .325rem;
           width: 1rem;
           margin: 0 auto;
-          @include sc(.15rem, #fff);
+          @include sc(.15rem, $fc);
           margin-top: .12rem;
         }
       }
@@ -120,11 +120,11 @@
       }
     }
     .part_3{
-      background: #fff;
+      background: $fc;
       padding-bottom: .3rem;
       ul{
         li:nth-child(even){
-          background: #efeff4;
+          background: $bc;
         }
         li:nth-child(2){
           img{
@@ -137,9 +137,9 @@
           }
         }
         li{
-          background: #fff;
+          background: $fc;
           p{
-            @include sc(.13rem, #666666);
+            @include sc(.13rem, $g6);
             padding: 0 .29rem;
             margin-bottom: .1rem;
             text-align: justify;
@@ -150,7 +150,7 @@
         }
       }
       .title{
-        @include sc(.2rem, #333333);
+        @include sc(.2rem, $g3);
         text-align: center;
         padding: .3rem 0;
       }
@@ -162,13 +162,13 @@
       content: '';
       @include wh(.06rem, .06rem);
       position: absolute;
-      border-top: 1px solid #dddddd;
-      border-left: 1px solid #dddddd;
-      background: #fff;
+      border-top: 1px solid $gd;
+      border-left: 1px solid $gd;
+      background: $fc;
       transform:rotate(45deg);
       left: 50%;
       top: -.04rem;
-      z-index: 10;
+      z-index: 1;
     }
   }
 </style>

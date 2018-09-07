@@ -400,7 +400,7 @@
             padding: .1rem .15rem 0;
             .task_title {
                 @include sc(.15rem, $g3);
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid $ge;
                 padding-bottom: .1rem;
             }
             .task_list {
@@ -410,7 +410,7 @@
                     float: left;
                     width: 36%;
                     text-align: center;
-                    border-right: 1px solid #eee;
+                    border-right: 1px solid $ge;
                     padding: .1rem 0 .1rem;
                     .icon {
                         @include wh(.345rem, .345rem);
@@ -507,7 +507,7 @@
                     }
                     li{
                         width: .7rem;
-                        @include sc(.15rem, #ffffff);
+                        @include sc(.15rem, $fc);
                         margin: .1rem .06rem .1rem .064rem;;
                         float: left;
                         div{
@@ -517,7 +517,7 @@
                             margin-top: .08rem;
                             background: #f1eef4;
                             p{
-                                @include sc(.13rem, #666666);
+                                @include sc(.13rem, $g6);
                             }
                         }
                         .sign_in_success{
@@ -533,7 +533,7 @@
                     margin-bottom: .1rem;
                 }
                 .i_know{
-                    @include sc(.15rem, #fff);
+                    @include sc(.15rem, $fc);
                     background: #fc5340;
                     line-height: .4rem;
                     display: block;

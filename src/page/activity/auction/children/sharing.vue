@@ -164,7 +164,7 @@
                 margin: .25rem 0 .15rem .15rem;
             }
             .aid_progress {
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid $ge;
                 padding-bottom: .18rem;
                 .gift_icon, .gift_count {
                     width: 85%;
@@ -211,7 +211,7 @@
                 }
             }
             .aid_friend {
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid $ge;
                 .friend_list {
                     overflow: hidden;
                     width: 96%;
