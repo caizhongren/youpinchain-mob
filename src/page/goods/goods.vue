@@ -49,7 +49,7 @@
     <div class="description_detail">
       <img class="abstractImg" src="../../images/store/Impression_bg.png" alt="">
       <ul>
-        <li><p>腿肉</p><p>柔滑有胶质感，肥瘦适中，肥而不腻，瘦而不柴</p></li>
+        <li><p>{{goods.name}}</p><p>{{goods.describe}}</p></li>
         <li v-if="goods.preSale">
           <p class="abstract">预售说明</p>
           <p>为保证新鲜，苏淮猪现杀发货，用户即日起可下单购买，9月19日开始发货。本批数量有限，售完为止。</p>
