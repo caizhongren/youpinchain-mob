@@ -10,7 +10,7 @@
       <div class="presell_box" v-if="goods.preSale">
         <div class="left_price left">
           <p class="price"><span>￥</span>{{goods.presentPrice}} <s>￥{{goods.originalPrice}}</s></p>
-          <p class="tip">商品预售预计{{(goods.preSaleDelivery.split('T')[0]) | dateCharacter}}发货</p>
+          <p class="tip">商品预计{{(goods.preSaleDelivery.split('T')[0]) | dateCharacter}}发货</p>
         </div>
         <div class="right_tip right">
           <p>预售</p>

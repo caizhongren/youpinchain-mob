@@ -56,7 +56,7 @@
             <li v-for="item in hotgoodslist" :key="item.id">
                 <router-link tag="div" :to="'/goods/' + item.id"><img :src="item.thumbnailPic" alt="" class="img"></router-link>
                 <router-link tag="div" :to="'/goods/' + item.id" class="left">
-                    <p class="name">{{item.name}}*1{{item.packing}}</p>
+                    <p class="name">{{item.name + ' ' + item.netContent}}*1{{item.packing}}</p>
                     <p class="price"><span class="RMB">￥</span>{{item.presentPrice}} <s class="RMB">￥{{item.originalPrice}}</s></p>
                 </router-link>
                 <div class="right add_cart" @touchstart="addToCart(item.id, $event)"></div>
