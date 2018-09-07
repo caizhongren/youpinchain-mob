@@ -11,7 +11,7 @@
                 <div class="add-detail">
                     <div class="input-new">
                         <span>联系电话</span>
-                        <input type="text" placeholder="请填写收货人手机号" @input="" v-model="address.mobile" />
+                        <input type="tel" maxlength="11" placeholder="请填写收货人手机号" @input="address.mobile = address.mobile.replace(/\D/g, '')" v-model="address.mobile" />
                     </div>
                 </div>
                 <div class="input-new">
