@@ -171,7 +171,7 @@
       @include bis('../../../../images/bounty-plan/jian-bg.png');
       background-size: 100% 2.7rem;
       background-color: #854eb1;
-      color: #fff;
+      color: $fc;
       text-align: center;
       padding-top: .95rem;
       p:nth-child(1){
@@ -208,7 +208,7 @@
       div:last-child{
         @include sc(.24rem,#2a2a33);
         @include wh(1.8rem,.5rem);
-        background-color: #efeff4;
+        background-color: $bc;
         border-radius: .05rem;
         line-height: .5rem;
         margin: 0 auto;
@@ -225,7 +225,7 @@
       left: 0;
       padding-top: 2.2rem;
       .tip{
-        background: #fff;
+        background: $fc;
         width: 2.8rem;
         margin: 0 auto;
         padding: .2rem .4rem .15rem;
@@ -234,14 +234,14 @@
           height: .3rem;
           line-height: 1.67;
           text-align: center;
-          @include sc(.18rem, #333333);
+          @include sc(.18rem, $g3);
           img{
             vertical-align: middle;
           }
         }
         p:last-child{
           background: #fc5340;
-          @include sc(.15rem, #fff);
+          @include sc(.15rem, $fc);
           line-height: .4rem;
           height: .4rem;
           margin-top: .18rem;
@@ -252,14 +252,14 @@
   .description,.record_detail{
     margin-top: .16rem;
     border-radius: .1rem;
-    background: #fff;
-    color: #666666;
+    background: $fc;
+    color: $g6;
   }
   .record_detail{
     .title{
       line-height: .45rem;
       font-size: .15rem;
-      border-bottom: 0.01rem solid #dddddd;
+      border-bottom: 0.01rem solid $gd;
       padding: 0;
       padding-left: .12rem;
     }
@@ -268,14 +268,14 @@
       overflow-y: hidden;
       position: relative;
       .lucky-users-box {
-        background: #efeff4;
+        background: $bc;
         li {
           padding: 0 .12rem;
           height: .6rem;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          background: #fff;
+          background: $fc;
           img{
             @include wh(.3rem, .3rem);
             border-radius: 50%;
@@ -288,7 +288,7 @@
           }
           p:last-child{
             font-size: .12rem;
-            color: #999999;
+            color: $g9;
           }
           div:last-child{
             color: #fc4c42;
@@ -299,12 +299,12 @@
           }
         }
         li:nth-child(even){
-          background: #f6f5f5;
+          background: $f5;
         }
         li.no_record {
           justify-content: center;
           height: 1.6rem;
-          background: #fff;
+          background: $fc;
         }
       }
       .lucky-users-box.animate{
@@ -321,7 +321,7 @@
   .description p:first-child{
     line-height: .45rem;
     font-size: .15rem;
-    border-bottom: 0.01rem solid #dddddd;
+    border-bottom: 0.01rem solid $gd;
     padding: 0;
     padding-left: .12rem;
   }
@@ -329,8 +329,8 @@
     width: 35%;
     height: 0.28rem;
     font-size: 0.14rem;
-    color: #666666;
-    background-color: #efeff4;
+    color: $g6;
+    background-color: $bc;
     margin: 0rem auto;
     text-align: center;
     line-height: .28rem;
@@ -339,7 +339,7 @@
     margin-top: .1rem;
   }
   .activityEnd{
-    @include sc(.2rem, #fff);
+    @include sc(.2rem, $fc);
     text-align: center;
   }
   .opacity_zero{

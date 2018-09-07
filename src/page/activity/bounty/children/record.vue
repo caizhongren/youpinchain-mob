@@ -81,12 +81,13 @@
     },
   }
 </script>
-<style scoped>
+<style scoped lang="scss">
+  @import '../../../../style/mixin';
   .gold_record{
-    background: #efeff4;
+    background: $bc;
   }
   .gold_record .top{
-    color: #fff;
+    color: $fc;
     height: 1.55rem;
     background-image: linear-gradient(74deg, #836252, #383052);
     padding-top: .24rem;
@@ -115,8 +116,8 @@
   .description,.record_detail{
     margin-top: .16rem;
     border-radius: .1rem;
-    background: #fff;
-    color: #666666;
+    background: $fc;
+    color: $g6;
   }
   .description p{
     font-size: .13rem;
@@ -127,20 +128,20 @@
   .description p:first-child{
     line-height: .45rem;
     font-size: .15rem;
-    border-bottom: 0.01rem solid #dddddd;
+    border-bottom: 0.01rem solid $gd;
     padding: 0;
     padding-left: .12rem;
   }
   .record_detail .title{
     line-height: .45rem;
     font-size: .15rem;
-    border-bottom: 0.01rem solid #dddddd;
+    border-bottom: 0.01rem solid $gd;
     padding: 0;
     padding-left: .12rem;
   }
   .record_detail ul{
     padding-bottom: 1rem;
-    background: #efeff4;
+    background: $bc;
   }
   .record_detail li{
     padding: 0 .12rem;
@@ -148,10 +149,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fff;
+    background: $fc;
   }
   .record_detail li:nth-child(even){
-    background: #f6f5f5;
+    background: $f5;
   }
   .record_detail li p{
     margin-bottom: .06rem;
@@ -159,7 +160,7 @@
   }
   .record_detail li p:last-child{
     font-size: .12rem;
-    color: #999999;
+    color: $g9;
   }
   .record_detail li div:last-child{
     color: #fc4c42;
@@ -172,8 +173,8 @@
     width: 35%;
     height: 0.28rem;
     font-size: 0.14rem;
-    color: #666666;
-    background-color: #efeff4;
+    color: $g6;
+    background-color: $bc;
     margin: 0rem auto;
     text-align: center;
     line-height: .28rem;
@@ -184,6 +185,6 @@
   .record_detail li.no_record {
     justify-content: center;
     height: 1.6rem;
-    background: #fff;
+    background: $fc;
   }
 </style>

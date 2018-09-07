@@ -179,7 +179,7 @@
         }
       }
       li:first-child{
-        border-bottom: 1px solid #efeff4; 
+        border-bottom: 1px solid $bc; 
       }
     }
   }
