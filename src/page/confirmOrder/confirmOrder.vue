@@ -86,14 +86,14 @@
                 </ul>
                 <div class="right totalPrice">
                     实际支付
-                    <p><span class="RMB">￥</span>{{totalPrice}}</p>
+                    <p><span class="RMB">￥</span>{{totalPrice + fare}}</p>
                 </div>
             </div>
         </div>
     </nav>
     <ul class="settlement">
         <li @click="paymentCall()">去付款</li>
-        <li>付款 &nbsp;<span class="red"><span class="RMB">￥</span>{{totalPrice}}</span></li>
+        <li>付款 &nbsp;<span class="red"><span class="RMB">￥</span>{{totalPrice + fare}}</span></li>
     </ul>
 </div>
 </template>
@@ -154,6 +154,7 @@ export default {
         this.productList.forEach(product => {
             this.totalPrice += product.presentPrice * product.number;
             this.goodsPrice += product.presentPrice * product.number;
+            this.goodsPrice > 199 ? this.fare = 0 : this.fare = 15;
         });
     },
     methods: {
@@ -191,7 +192,7 @@ export default {
             prepayOrder(orderId).then(resp => {
                 var that = this;
                 if (resp.errno === 403) {
-                    alert("订单不可支付")
+                    this.showErrMsg("订单不可支付")
                 } else {
                     WeixinJSBridge.invoke(
                         'getBrandWCPayRequest', {

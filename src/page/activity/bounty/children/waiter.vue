@@ -48,6 +48,7 @@
   }
 </script>
 <style lang="scss" scoped>
+  @import '../../../../style/mixin';
   .waiter{
     background-color: #06020a;
     min-height: 100vh;
@@ -66,7 +67,7 @@
     padding-top: .4rem;
   }
   .container div{
-    background: #fff;
+    background: $fc;
     border-radius: .1rem;
     padding: .05rem 0 .3rem 0;
   }
@@ -76,14 +77,14 @@
   }
   .container div p:first-child{
     font-size: .15rem;
-    color: #333333;
+    color: $g3;
     line-height: .4rem;
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid $gd;
     margin-bottom: .14rem;
   }
   .container div p{
     font-size: .15rem;
-    color: #333333;
+    color: $g3;
     line-height: 1.6;
   }
   .container div p span{
@@ -100,10 +101,10 @@
   }
   .rule div{
     border-radius: .1rem;
-    background: #fff;
+    background: $fc;
     padding: .315rem .325rem .3rem .21rem;
     text-align: justify;
-    color: #666666;
+    color: $g6;
     line-height: 1.38;
   }
   .rule div p{

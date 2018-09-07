@@ -23,12 +23,12 @@
                         </router-link>
                     </section>
                     <div class="order_item_bottom">
-                        <span class="order_text">实际支付<b style="color:#e4372e;"><span class="RMB">￥</span><strong style="font-size:.2rem;font-weight:bold;">{{item.actualPrice}}</strong></b></span>
+                        <span class="order_text">实际支付<b class="red"><span class="RMB">￥</span><strong style="font-size:.2rem;font-weight:bold;">{{item.actualPrice}}</strong></b></span>
                         <div class="order_button_border_grey" @click="showAlertTip = !showAlertTip">联系客服</div>
                         <div class="order_again">
                             <compute-time v-if="item.handleOption.pay" :time="item.expiryTime"></compute-time>
                             <!--<span class="order_button_border_red" @click="cancelOrder(item.id)" v-if="item.handleOption.cancel">取消订单</span>-->
-                            <router-link :to="{path:'/orderTrack',query:{expNo:item.expNo}}" tag="span" class="order_button_border_red"
+                            <router-link :to="{path:'/orderTrack/'+item.expNo + '/' + item.expCode}" tag="span" class="order_button_border_red"
                                          v-if="item.handleOption.confirm" >查看物流</router-link>
                             <span class="order_button_border_red" @click="confirmOrder(item.id)" v-if="item.handleOption.confirm">确认收货</span>
                             <span class="order_button_border_red" @click="rebuy(item.id)" v-if="item.handleOption.rebuy">再次购买</span>
@@ -37,7 +37,7 @@
                 </section>
             </li>
         </ul>
-        <alert-tip :showAlertTip="showAlertTip" :type="2" :alertText='`<p>确定拨打客服电话 <br> 400-990-7626</p>`' v-show="showAlertTip"></alert-tip>
+        <alert-tip :showAlertTip="showAlertTip" :type="2" v-show="showAlertTip" :alertText="`<p>请添加客服微信 <br> Lsyp-123</p>`"></alert-tip>
         <transition name="loading">
             <loading v-show="showLoading"></loading>
         </transition>
@@ -61,7 +61,7 @@
                 orderList: []
             }
         },
-        props:['sendData'],
+        props:['sendData', 'showErrMsg'],
         mounted(){
             getOrderList(this.page, this.pageSize, 4).then(res => {
                 if (res.errno !== 0){
@@ -86,27 +86,27 @@
             cancelOrder(orderId){
                 cancelOrder(orderId).then(res =>{
                     if(res.errno !== 0) {
-                        alert("失败");
+                        this.$parent.showErrMsg("失败");
                         return;
                     }
-                    alert("成功");
+                    this.$parent.showErrMsg("成功");
                 })
             },
             // 确认收货
             confirmOrder(orderId){
                 confirmOrder(orderId).then(res =>{
                     if(res.errno !== 0) {
-                        alert("失败");
+                        this.$parent.showErrMsg("失败");
                         return;
                     }
-                    alert("成功");
+                    this.$parent.showErrMsg("成功");
                 })
             },
             rebuy(orderId){
                 rebuy(orderId).then(res => {
                     console.info(res)
                     if(res.errno !== 0) {
-                        alert("失败");
+                        this.$parent.showErrMsg("失败");
                         return;
                     }
                     var arr = [];

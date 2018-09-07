@@ -44,9 +44,10 @@
             <div class="rules">
                 <div class="title">规则说明</div>
                 <div class="text">
-                    <p>1.<span>每场竞拍活动开始前1天至拍卖结束，用户可将活动信息分享到朋友圈、微信群邀请好友助力。</span></p>
+                    <p>1.<span>每场竞拍活动开始前1天至拍卖结束，用户可邀请好友为活动助力。</span></p>
                     <p>2.<span>每位好友可助力一次，每获得三次助力增加一次出价机会。每人最多可增加三次出价机会。</span></p>
-                    <p>3.<span>每一位好友助力，邀请用户可获得金条8个。</span></p>
+                    <p>3.<span>每邀请一位好友助力，邀请者可获得金条8个，每人最多可获得金条72个。</span></p>
+                    <p>4.<span>最终解释权归链上臻品所有。</span></p>
                 </div>
             </div>
         </div>
@@ -164,7 +165,7 @@
                 margin: .25rem 0 .15rem .15rem;
             }
             .aid_progress {
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid $ge;
                 padding-bottom: .18rem;
                 .gift_icon, .gift_count {
                     width: 85%;
@@ -211,7 +212,7 @@
                 }
             }
             .aid_friend {
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid $ge;
                 .friend_list {
                     overflow: hidden;
                     width: 96%;

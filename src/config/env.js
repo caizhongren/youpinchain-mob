@@ -23,7 +23,7 @@ if (process.env.NODE_ENV == 'development') {
 
 	imgBaseUrl = 'http://cangdu.org:8001/img/';
 	baseUrl = '/youpin/wx';
-	domainUrl = 'https://youpinlian.datbc.com';
+	domainUrl = 'http://youpinlian.datbc.com';
 
 } else if (process.env.NODE_ENV == 'production') {
 

@@ -12,7 +12,6 @@
 </template>
 
 <script>
-    import computeTime from 'src/components/common/computeTime'
     import {loadMore} from 'src/components/common/mixin'
     import headTop from 'src/components/header/head'
     import footGuide from 'src/components/footer/footGuide'
@@ -46,6 +45,7 @@
                 routerPath: ''
             }
         },
+        props: ['showErrMsg'],
         created () {
             this.routerPath = window.location.href.toString().split('order/')[1]
             for(var i = 0; i <= this.tabList.length - 1; i++){
@@ -58,7 +58,6 @@
         },
         mixins: [loadMore],
         components: {
-            computeTime,
             headTop,
             footGuide
         },
