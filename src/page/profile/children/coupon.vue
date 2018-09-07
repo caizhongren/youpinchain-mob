@@ -1,7 +1,7 @@
 <template>
   <div class="coupon" v-client-height>
     <head-top head-title="我的优惠券" go-back='true'></head-top>
-    <span class="use_rule" @click="showRule()">使用说明</span>
+    <!-- <span class="use_rule" @click="showRule()">使用说明</span> -->
     <div class="no_coupon">暂无可使用的优惠券哦～</div>
     <foot-guide></foot-guide>
   </div>
@@ -24,9 +24,9 @@
       
     },
     methods: {
-      showRule () {
-        alert('暂无优惠信息');
-      }
+      // showRule () {
+      //   alert('暂无优惠信息');
+      // }
     },
     components: {
       headTop,

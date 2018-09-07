@@ -67,7 +67,7 @@
     </div>
     <div class="add_cart_container">
       <router-link class="cart_icon_num left" :to="'/cart'">
-        <div class="icon"><span class="red-points">{{cart_num}}</span></div>
+        <div class="icon"><span class="red-points" v-if="cart_num">{{cart_num}}</span></div>
       </router-link>
       <div class="cart_btn right" @click="addCartList(goods)">加入购物车</div>
     </div>
