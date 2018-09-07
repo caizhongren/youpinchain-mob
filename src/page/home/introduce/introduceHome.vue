@@ -9,17 +9,13 @@
       </ul>
     </div>
     <div class="part_2">
-      <div class="goods">
-        <p>腿肉500g*1份</p>
-        <p>原价：￥58.00</p>
-        <p>预售价：￥<span>40</span>.00/500g</p>
-        <p>立即购买</p>
-      </div>
-      <div class="goods goods_2">
-        <p>五花500g*1份</p>
-        <p>原价：￥58.00</p>
-        <p>预售价：￥<span>40</span>.00/500g</p>
-        <p>立即购买</p>
+      <div class="goods" v-for="item in productList">
+        <div class="abstract"><strong>·</strong>&nbsp;&nbsp;&nbsp;{{item.name}}&nbsp;&nbsp;&nbsp;<strong>·</strong></div>
+        <img :src="item.thumbnailPic" alt="" class="" :class="{'noImage': !item.thumbnailPic}">
+        <p>{{item.name}}{{item.netContent}}*1{{item.packing}}</p>
+        <p>原价：￥{{item.originalPrice | number}}</p>
+        <p>预售价：￥<span>{{item.presentPrice | number}}</span>/{{item.netContent}}</p>
+        <router-link tag="p" :to="'/goods/' + item.id">立即购买</router-link>
       </div>
     </div>
     <div class="part_3">
@@ -41,15 +37,21 @@
   </div>
 </template>
 <script>
+  import { productHotList } from '../../../service/getData'
   export default {
     data () {
       return {
+        productList: null,
       }
     },
     watch: {
 
     },
     mounted() {
+      var that = this
+      productHotList(1,2).then(function (res) {
+        that.productList = res.data.productList
+      })
     },
     created() {
     },
@@ -79,24 +81,43 @@
       }
     }
     .part_2{
+      padding-bottom: .5rem;
+      background-color: #efeff4;
       .goods{
         @include wh(100%, 5.8rem);
-        @include bis('../../../images/store/introduce_01.png');
+        @include bis('../../../images/store/introduce_bg.png');
         background-color: $bc;
         background-position: 0 .4rem;
         background-size: 100% auto;
         text-align: center;
+        img{
+          @include wh(2.2rem, 2.2rem);
+          display: block;
+          margin: 0 auto;
+          padding-top: .9rem;
+        }
+        .abstract{
+          @include sc(.2rem ,#fcfbfc);
+          padding-top: .4rem;
+          font-weight: bold;
+          line-height: .5rem;
+          strong{
+            font-size: .4rem;
+            vertical-align: middle;
+            line-height: 0.5rem;
+          }
+        }
         p{
           margin-bottom: .04rem;
         }
-        p:first-child{
-          padding-top: 4.2rem;
+        p:nth-child(3){
+          padding-top: .2rem;
           @include sc(.2rem, $g3);
         }
-        p:nth-child(2){
+        p:nth-child(4){
           @include sc(.15rem, $g9);
         }
-        p:nth-child(3){
+        p:nth-child(5){
           @include sc(.17rem, $g3);
           span{
             font-size: .25rem;
@@ -113,11 +134,7 @@
           margin-top: .12rem;
         }
       }
-      .goods_2{
-        @include bis('../../../images/store/introduce_02.png');
-        background-size: 100% auto;
-        @include wh(100%, 6.3rem);
-      }
+      
     }
     .part_3{
       background: $fc;
