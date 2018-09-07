@@ -237,11 +237,11 @@
             padding:.1rem .08rem;
             @include fj(space-between);
             align-items:center;
-            border-top:1px solid #ddd;
-            background:#fff;
+            border-top:1px solid $gd;
+            background:$fc;
 
             h2{
-                @include sc(.12rem,#333);
+                @include sc(.12rem,$g3);
                 font-weight:500;
                 display:flex;
                 align-items:center;
@@ -270,11 +270,11 @@
             margin-top:0;
             padding:.06rem .08rem;
             .headportrait-div{
-                @include fj(left)
+                @include fj(left);
                 p{
                     text-align:left;
                     line-height:.278rem;
-                    @include sc(.14rem,#999);
+                    @include sc(.14rem,$g9);
                     margin-right:.04rem;
                     font-weight:100;
                     font-family:Arial;
@@ -285,11 +285,11 @@
             }
         }
         .headportraithree{
-            border-bottom:1px solid #ddd;
+            border-bottom:1px solid $gd;
         }
         .bind-phone{
             padding:.08rem .08rem;
-            @include sc(.1rem,#666);
+            @include sc(.1rem,$g6);
         }
         .exitlogin{
             width:96%;
@@ -298,7 +298,7 @@
             @include borderRadius(5px);
             text-align:center;
             background:#d8584a;
-            @include sc(.12rem,#fff);
+            @include sc(.12rem,$fc);
 
         }
         .exitlogin:active{

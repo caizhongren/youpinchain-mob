@@ -13,8 +13,8 @@
                             <p class="price"><span class="RMB">￥</span>{{item.presentPrice}}</p>
                         </div>
                         <div class="cart_btns">
-                            <p style="color: #e4372e" v-if="!item.isShow">已下架</p>
-                            <p style="color: #e4372e" v-else-if="!item.available">库存不足</p>
+                            <p class="red" v-if="!item.isShow">已下架</p>
+                            <p class="red" v-else-if="!item.available">库存不足</p>
                             <span class="subduction" :class="{'disabled': item.number <= 1}" @click="item.number > 1 ? addNumber(item, -1) : deleteCart(item)"></span>
                             <span class="num">{{item.number}}</span>
                             <span class="add" @click="addNumber(item, 1)"></span>
@@ -53,14 +53,14 @@
     <div class="recommend_nav">
         <div class="recommend_header">推荐商品</div>
         <ul class="recommend_list">
-            <router-link tag="li" :to="'/goods/' + item.id" v-for="item in hotgoodslist" :key="item.id">
-                <img :src="item.thumbnailPic" alt="" class="img">
-                <div class="left">
-                    <p class="name">{{item.name}}*1{{item.packing}}</p>
+            <li v-for="item in hotgoodslist" :key="item.id">
+                <router-link tag="div" :to="'/goods/' + item.id"><img :src="item.thumbnailPic" alt="" class="img"></router-link>
+                <router-link tag="div" :to="'/goods/' + item.id" class="left">
+                    <p class="name">{{item.name + ' ' + item.netContent}}*1{{item.packing}}</p>
                     <p class="price"><span class="RMB">￥</span>{{item.presentPrice}} <s class="RMB">￥{{item.originalPrice}}</s></p>
-                </div>
+                </router-link>
                 <div class="right add_cart" @touchstart="addToCart(item.id, $event)"></div>
-            </router-link>
+            </li>
         </ul>
         <router-link :to="'/home'" class="load_more" v-if="hasMore">查看更多商品</router-link>
     </div>
@@ -194,6 +194,7 @@ export default {
       if (cart.choose && cart.available) {
           this.goodsPrice += cart.presentPrice * cart.number;
           this.payment += cart.presentPrice * cart.number;
+          this.goodsPrice > 199 ? this.fare = 0 : this.fare = 15;
       }
       });
       this.totalPrice = this.fare + this.payment;

@@ -1,5 +1,6 @@
 import App from '../App'
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
+const traceability = r => require.ensure([], () => r(require('../page/home/traceability')), 'traceability')
 const introduce = r => require.ensure([], () => r(require('../page/home/introduce/introduce')), 'introduce')
 const introduceHome = r => require.ensure([], () => r(require('../page/home/introduce/introduceHome')), 'introduceHome')
 const growth = r => require.ensure([], () => r(require('../page/home/introduce/growth')), 'growth')
@@ -54,6 +55,11 @@ export default [{
         {
             path: '/home',
             component: home
+        },
+        //黑猪溯源
+        {
+            path: '/traceability',
+            component: traceability
         },
         //生产环境、饲养情况、健康指标、商品介绍
         {
@@ -124,7 +130,7 @@ export default [{
         },
         //订单列表页
         {
-            path: 'orderTrack',
+            path: 'orderTrack/:expNo/:expCode',
             component: orderTrack
         },
         {

@@ -10,11 +10,11 @@
       <div class="presell_box" v-if="goods.preSale">
         <div class="left_price left">
           <p class="price"><span>￥</span>{{goods.presentPrice}} <s>￥{{goods.originalPrice}}</s></p>
-          <p class="tip">商品预售预计{{goods.presellTime | dateCharacter}}发货</p>
+          <p class="tip">商品预计{{(goods.preSaleDelivery.split('T')[0]) | dateCharacter}}发货</p>
         </div>
         <div class="right_tip right">
           <p>预售</p>
-          <p>北京地区专供</p>
+          <p>江浙沪北京地区专供</p>
         </div>
       </div>
       <div class="title">
@@ -49,10 +49,10 @@
     <div class="description_detail">
       <img class="abstractImg" src="../../images/store/Impression_bg.png" alt="">
       <ul>
-        <li><p>腿肉</p><p>柔滑有胶质感，肥瘦适中，肥而不腻，瘦而不柴</p></li>
+        <li><p>{{goods.name}}</p><p>{{goods.describe}}</p></li>
         <li v-if="goods.preSale">
           <p class="abstract">预售说明</p>
-          <p>为保证新鲜，苏淮猪现杀发货，用户即日起可下单购买，9月19日开始发货。本批数量有限，售完为止。</p>
+          <p>为保证新鲜，苏淮猪现杀发货，用户即日起可下单购买，{{goods.preSaleDelivery.split('-')[1]}}月{{goods.preSaleDelivery.split('-')[2].split('T')[0]}}日开始发货。本批数量有限，售完为止。</p>
         </li>
         <li>
           <p class="abstract">物流说明</p>
@@ -67,7 +67,7 @@
     </div>
     <div class="add_cart_container">
       <router-link class="cart_icon_num left" :to="'/cart'">
-        <div class="icon"><span class="red-points">{{cart_num}}</span></div>
+        <div class="icon"><span class="red-points" v-if="cart_num">{{cart_num}}</span></div>
       </router-link>
       <div class="cart_btn right" @click="addCartList(goods)">加入购物车</div>
     </div>
@@ -127,8 +127,7 @@
                   return;
               }
               that.goods = res.data;
-              that.goods.presellTime = 1537286400000;
-              // that.goods.preSale = true;
+              !res.data.preSaleDelivery ? that.goods.preSaleDelivery = "2018-09-18T00:58:28" : null;
           })
 
         //开始监听scrollTop的值，达到一定程度后显示返回顶部按钮
@@ -166,7 +165,7 @@
     }
     .presell_box {
       overflow: hidden;
-      padding: .08rem .12rem .12rem .12rem;
+      padding: .08rem 0 .12rem .12rem;
       background-image: linear-gradient(133deg, #fc5b46, #fa424f);
       @include wh(100%, .64rem);
       .left_price {
@@ -189,7 +188,7 @@
       }
       .right_tip {
         position: relative;
-        width: 1rem;
+        width: 1.35rem;
         text-align: center;
         p:first-child{
           @include sc(.18rem, $fc);
@@ -204,7 +203,7 @@
           top: .1rem;
           left: 0;
           @include wh(.01rem, .33rem);
-          background-color: #fff;
+          background-color: $fc;
         }
       }
     }
@@ -250,7 +249,7 @@
       }
       .info_content {
         p{
-          @include sc(.13rem, #666666);
+          @include sc(.13rem, $g6);
           line-height: .35rem;
           border-bottom: 1px solid #f7f7fa;
           padding: 0rem .21rem;
@@ -259,10 +258,10 @@
     }
     .certificates{
       text-align: center;
-      background-color: #efeff4;
+      background-color: $bc;
       padding: .3rem .08rem;
       .abstract{
-        @include sc(.2rem, #333333);
+        @include sc(.2rem, $g3);
         margin-bottom: .27rem;
       }
       ul{
@@ -277,7 +276,7 @@
             width: .34rem;
           }
           p{
-            @include sc(.13rem, #666666);
+            @include sc(.13rem, $g6);
           }
         }
       }
@@ -292,23 +291,23 @@
           padding: .3rem;
           background-color: #fcfbfc;
           .abstract{
-            @include sc(.2rem, #333333);
+            @include sc(.2rem, $g3);
             text-align: center;
           }
           p{
-            @include sc(.13rem, #666666);
+            @include sc(.13rem, $g6);
             text-align: justify;
           }
           p:last-child{
             margin-top: .25rem;
           }
           .tip{
-            @include sc(.13rem, #666666);
+            @include sc(.13rem, $g6);
             text-align: center;
           }
         }
         li:nth-child(even){
-          background-color: #efeff4;
+          background-color: $bc;
         }
         li:first-child{
           position: relative;
@@ -317,12 +316,12 @@
             line-height: .205rem;
             height: .205rem;
             background-color: #c51215;
-            @include sc(.15rem, #fff);
+            @include sc(.15rem, $fc);
             position: absolute;
             border-radius: .05rem;
           }
           p:last-child{
-            @include sc(.15rem, #333333);
+            @include sc(.15rem, $g3);
           }
         }
       }
@@ -335,7 +334,7 @@
       @include wh(100%, .49rem);
       .cart_icon_num {
         @include wh(1.06rem, .49rem);
-        background-color: #fff;
+        background-color: $fc;
         .icon {
           position: relative;
           margin: 0.13rem auto;

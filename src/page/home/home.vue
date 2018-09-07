@@ -18,7 +18,7 @@
             <router-link  tag="div" :to="'/goods/' + item.id">
               <img :src="item.thumbnailPic" alt="" class="left" :class="{'noImage': !item.thumbnailPic}">
               <div class="left goods_info">
-                <p class="name">{{item.name}}*1{{item.packing}}</p>
+                <p class="name">{{item.name + ' ' + item.netContent}}*1{{item.packing}}</p>
                 <p class="desr">{{item.describe}}</p>
                 <!--<p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>-->
                 <p class="price"><span class="RMB">￥</span>{{item.presentPrice}} <s>￥{{item.originalPrice}}</s></p>
@@ -90,7 +90,10 @@ export default {
       }
       this.page++;
       productList(this.page, this.pageSize).then(res => {
-        this.hotgoodslist = res.data.productList
+        var hotgoodslist = res.data.productList
+        for (var i = 0; i < hotgoodslist.length; i++) {
+          this.hotgoodslist.push(hotgoodslist[i])
+        }
         this.hasMore = res.data.totalPages > this.page
       })
     },
@@ -115,7 +118,7 @@ export default {
     },
     beforeEnter(el){
       console.log(this.elBottom)
-      el.style.transform = `translate3d(${this.elLeft - 200}px,${20 +this.elBottom - window.innerHeight}px,0px)`;
+      el.style.transform = `translate3d(${this.elLeft - 230}px,${20 +this.elBottom - window.innerHeight}px,0px)`;
       el.style.opacity = 0;
     },
     afterEnter(el){
@@ -138,7 +141,7 @@ export default {
 <style lang="scss" scoped>
   @import '../../style/mixin';
   .header_image {
-    height: 3.61rem;
+    height: 4.2rem;
   }
   .move_dot {
     position: fixed;
@@ -215,12 +218,14 @@ export default {
         padding-bottom: .15rem;
       }
       .goods_info {
+        width: 55.8%;
         .name {
           @include sc(.15rem, $g3);
           padding: .05rem 0 .03rem;
         }
         .desr {
           @include sc(.12rem, $g6);
+          height: .75rem;
         }
         .coupon {
           border-radius: 10px;
@@ -238,7 +243,7 @@ export default {
           border: 1px solid $g9;
         }
         .price {
-          margin-top: .6rem;
+          // margin-top: .6rem;
           @include sc(.18rem, $red);
           font-weight: bold;
           s { 

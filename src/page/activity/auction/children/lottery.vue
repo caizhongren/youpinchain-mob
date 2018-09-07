@@ -399,7 +399,7 @@
             .title {
                 line-height: .45rem;
                 font-size: .15rem;
-                border-bottom: 0.01rem solid #eee;
+                border-bottom: 0.01rem solid $ge;
                 padding: 0;
                 padding-left: .12rem;
             }
@@ -407,14 +407,14 @@
         .description,.record_detail {
             border-radius: .1rem;
             background: $fc;
-            color: #666666;
+            color: $g6;
         }
         .record_detail {
             margin-top: .16rem;
             .title {
                 line-height: .45rem;
                 @include sc(.15rem, $g6);
-                border-bottom: 0.01rem solid #eee;
+                border-bottom: 0.01rem solid $ge;
                 padding: 0;
                 padding-left: .12rem;
             }
@@ -423,7 +423,7 @@
                 overflow-y: hidden;
                 position: relative;
                 .lucky-users-box {
-                    background: #efeff4;
+                    background: $bc;
                     li {
                         padding: 0 .12rem;
                         height: .45rem;
@@ -445,7 +445,7 @@
                         }
                     }
                     li:nth-child(even){
-                        background: #f6f5f5;
+                        background: $f5;
                     }
                     li.no_record {
                         justify-content: center;
@@ -468,7 +468,7 @@
             padding-top: 2rem;
             z-index: 999;
             .tip{
-                background: #fff;
+                background: $fc;
                 width: 2.8rem;
                 margin: 0 auto;
                 padding: .2rem .4rem .15rem;
@@ -477,14 +477,14 @@
                     height: .3rem;
                     line-height: 1.67;
                     text-align: center;
-                    @include sc(.18rem, #333333);
+                    @include sc(.18rem, $g3);
                     img{
                         vertical-align: middle;
                     }
                 }
                 p:last-child{
                     background: #fc5340;
-                    @include sc(.15rem, #fff);
+                    @include sc(.15rem, $fc);
                     line-height: .4rem;
                     height: .4rem;
                     margin-top: .18rem;
@@ -494,7 +494,7 @@
         }
     }
     .activityEnd{
-        @include sc(.15rem, #fff);
+        @include sc(.15rem, $fc);
         line-height: 1.6;
         text-align: center;
         span {

@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <!-- 关于我们 -->
-                <router-link to='/aboutUs' class="myorder">
+                <!-- <router-link to='/aboutUs' class="myorder">
                     <aside></aside>
                     <div class="myorder-div">
                         <span>关于我们</span>
@@ -86,11 +86,11 @@
                             </svg>
                         </span>
                     </div>
-                </router-link>
+                </router-link> -->
             </section>
             
         </section>
-        <alert-tip :showAlertTip="showAlertTip" :type="2" :alertText='`<p>确定拨打客服电话 <br> 400-990-7626</p>`' v-show="showAlertTip"></alert-tip>
+        <alert-tip :showAlertTip="showAlertTip" :type="2" :alertText='`<p>请添加客服微信 <br> Lsyp-123</p>`' v-show="showAlertTip"></alert-tip>
         <foot-guide></foot-guide>
         <transition name="router-slid" mode="out-in">
             <router-view></router-view>
@@ -204,7 +204,7 @@ export default {
     .user-name {
       font-size: 0.15rem;
       font-weight: bold;
-      color: #333333;
+      color: $g3;
       text-align: center;
     }
   }
@@ -220,13 +220,13 @@ export default {
     border-bottom: 1px solid #f1f1f1;
     span {
       line-height: 0.44rem;
-      color: #333333;
+      color: $g3;
       font-size: 0.15rem;
       padding-left: 0.12rem;
       float: left;
     }
     .to-all-order {
-      color: #999999;
+      color: $g9;
       font-size: 0.13rem;
       float: right;
       svg {
@@ -253,7 +253,7 @@ export default {
         @include bis("../../images/mine-icon-dzf.png");
       }
       .info-data-bottom {
-        @include sc(0.114rem, #666);
+        @include sc(0.114rem, $g6);
         font-weight: 400;
         padding-bottom: 0.09rem;
       }
@@ -287,7 +287,7 @@ export default {
     .myorder-div {
       width: 100%;
       padding: 0.086rem 0.053rem 0.086rem 0;
-      @include sc(0.028rem, #333);
+      @include sc(0.028rem, $g3);
       display: flex;
       justify-content: space-between;
       span {

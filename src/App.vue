@@ -4,7 +4,7 @@
         <router-view :addCartFn="addCartFn" :showErrMsg="showErrMsg"></router-view>
     </transition>
     <div id="err" v-show="showErr" v-bind:style="styleObject">{{errMsg}}</div>
-    <div class="mask-common mask1" v-show="showLongErr">
+    <div class="mask-common errMask" v-show="showLongErr">
       <div class="alert-wrap" v-show="showLongErr">
         <div class="text">
           {{errMsg}}
@@ -136,11 +136,11 @@ body {
   -webkit-overflow-scrolling: touch;
   overflow-y: hidden !important;
 }
-.mask-common.mask1 {
-    background-color: rgba(0,0,0, .8);
+.mask-common.errMask {
+    // background-color: rgba(0,0,0, .8);
 }
-.mask1 .alert-wrap {
-    background: #fff;
+.errMask .alert-wrap {
+    background: $fc;
     width: 2.8rem;
     margin: 0 auto;
     padding: .2rem .4rem .15rem;
@@ -148,16 +148,16 @@ body {
     margin-top: 2rem;
     text-align: center;
 }
-.mask1 .alert-wrap .text {
+.errMask .alert-wrap .text {
     height: .35rem;
     line-height: 1.67;
     font-size: 0.18rem;
-    color: #333333;
+    color: $g3;
 }
-.mask1 .alert-wrap .i-know {
+.errMask .alert-wrap .i-know {
     background: #fc5340;
     font-size: 0.15rem;
-    color: #fff;
+    color: $fc;
     line-height: .4rem;
     height: .4rem;
     margin-top: .18rem;

@@ -92,7 +92,7 @@
             }
             .form_box {
                 padding-bottom: .35rem;
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid $ge;
                 form {
                     margin: 0 auto;
                     text-align: center;

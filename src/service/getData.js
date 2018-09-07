@@ -130,13 +130,14 @@ export const getAddressDetail = (addressId) => fetch('/addresses/' + addressId);
  * 添加收货地址
  */
 
-export const addAddress = (name, provinceId, cityId, areaId, mobile, address) => fetch('/addresses', {
+export const addAddress = (name, provinceId, cityId, areaId, mobile, address, Default) => fetch('/addresses', {
 	name,
 	provinceId,
 	cityId,
 	areaId,
 	mobile,
-	address
+	address,
+	isDefault: Default
 }, 'POST');
 
 /**
@@ -251,7 +252,7 @@ export const userInfo = () => fetch('/oa/users/info', {
  * @param expNo
  * @returns {Promise<*>}
  */
-export const expresses = (expNo) => fetch('/expresses/'+expNo);
+export const expresses = (expCode,expNo) => fetch('/expresses/'+ expCode + '/' + expNo);
 
 /**
  * 查询品牌资料详情

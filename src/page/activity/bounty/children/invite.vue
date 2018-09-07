@@ -162,7 +162,7 @@ export default {
                 left: 47%;
             }
             p{
-                @include sc(.15rem, #fff);
+                @include sc(.15rem, $fc);
                 text-align: center;
                 font-weight: bold;
             }
