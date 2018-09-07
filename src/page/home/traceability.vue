@@ -308,7 +308,7 @@
           margin: 0 auto;
         }
         p{
-          @include (.13rem, #666666);
+          @include sc(.13rem, #666666);
         }
       }
       .part:first-child{
