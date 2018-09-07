@@ -44,11 +44,12 @@ export default {
     methods: {
         confirmAlertTip(type) {
             this.$parent.showAlertTip = false
-            if (type == 2) {
-                window.location.href = "tel:10086"
-            } else {
-                this.$emit('fn')
-            }
+            // if (type == 2) {
+            //     window.location.href = "tel:10086"
+            // } else {
+            //     this.$emit('fn')
+            // }
+            this.$emit('fn')
         },
         cancelAlertTip(type) {
           this.$parent.showAlertTip = false;

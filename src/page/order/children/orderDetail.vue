@@ -122,7 +122,7 @@
                 </section>
             </section>
         </section>
-        <alert-tip :showAlertTip="showAlertTip" :type="2" :alertText='`<p>确定拨打客服电话 <br> 400-990-7626</p>`' v-show="showAlertTip"></alert-tip>
+        <alert-tip :showAlertTip="showAlertTip" :type="2" v-show="showAlertTip" :alertText="`<p>请添加客服微信 <br> Lsyp-123</p>`"></alert-tip>
         <foot-guide></foot-guide>
         <transition name="loading">
             <loading v-if="showLoading"></loading>

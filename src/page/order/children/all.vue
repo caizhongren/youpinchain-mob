@@ -37,7 +37,7 @@
                 </section>
             </li>
         </ul>
-        <alert-tip :showAlertTip="showAlertTip" :type="2" :alertText='`<p>确定拨打客服电话 <br> 400-990-7626</p>`' v-show="showAlertTip"></alert-tip>       
+        <alert-tip :showAlertTip="showAlertTip" :type="2" :alertText='`<p>请添加客服微信 <br> Lsyp-123</p>`' v-show="showAlertTip"></alert-tip>       
         <transition name="loading">
             <loading v-show="showLoading"></loading>
         </transition>
