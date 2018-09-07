@@ -121,9 +121,9 @@
             <p>{{auctionInfo.lastPrice}}金条</p>
             <p>我的当前出价</p>
           </div>
-          <div @click="showOffer()" class="grey" :class="{'red-linear-gradient' : auctionInfo.auctionState === 1 && auctionInfo.lastPrice && auctionInfo.bidNum && auctionInfo.surplusBullion >= offerRange[0]}">
+          <div @click="showOffer()" class="grey" :class="{'red-linear-gradient' : auctionInfo.auctionState === 1 && auctionInfo.lastPrice && auctionInfo.bidNum && auctionInfo.surplusBullion + auctionInfo.lastPrice >= offerRange[0]}">
             <p v-if="auctionInfo.bidNum <=0">出价次数不足不能出价</p>
-            <p v-if="auctionInfo.bidNum >0">{{auctionInfo.surplusBullion < offerRange[0] ? '金条不足' : '立即出价'}}</p>
+            <p v-if="auctionInfo.bidNum >0">{{auctionInfo.surplusBullion + auctionInfo.lastPrice < offerRange[0] ? '金条不足' : '立即出价'}}</p>
             <p v-if="auctionInfo.bidNum >0">剩余金条：{{auctionInfo.surplusBullion}}</p>
           </div>
         </div>
@@ -166,7 +166,7 @@
           <span @click="changeNumber(1)">+</span>
         </div>
         <p class="tip">*本次出价范围{{offerRange[0]}}-{{offerRange[1]}}金条，加价单位为5金条</p>
-        <div class="confirm grey" @click="confirmOffer()" :class="{'red' : auctionInfo.surplusBullion >= offerNumber}">{{auctionInfo.surplusBullion < offerNumber ? '金条不足' : '确认出价'}}</div>
+        <div class="confirm grey" @click="confirmOffer()" :class="{'red' : auctionInfo.surplusBullion + auctionInfo.lastPrice >= offerNumber}">{{auctionInfo.surplusBullion + auctionInfo.lastPrice < offerNumber ? '金条不足' : '确认出价'}}</div>
       </div>
       <img style="margin:0 auto;margin-top:.3rem;display:block;" @click="showMask = false" src="../../../../images/bounty-plan/close_model.png" alt="" width="30" class="close_model">
     </div>
@@ -293,7 +293,7 @@
       },
       // 点击出价
       showOffer () {
-        if (this.auctionInfo.auctionState === 1 && ((this.auctionInfo.lastPrice && this.auctionInfo.bidNum) || !this.auctionInfo.lastPrice) && this.auctionInfo.surplusBullion >= this.offerRange[0]) {
+        if (this.auctionInfo.auctionState === 1 && ((this.auctionInfo.lastPrice && this.auctionInfo.bidNum) || !this.auctionInfo.lastPrice) && this.auctionInfo.surplusBullion + this.auctionInfo.lastPrice >= this.offerRange[0]) {
           this.showMask = true
           this.offerNumber = this.offerRange[0]
         } else {
