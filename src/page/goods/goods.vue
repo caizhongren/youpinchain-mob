@@ -127,8 +127,7 @@
                   return;
               }
               that.goods = res.data;
-              that.goods.presellTime = 1537286400000;
-              // that.goods.preSale = true;
+              !res.data.preSaleDelivery ? that.goods.preSaleDelivery = "2018-09-18T00:58:28" : null;
           })
 
         //开始监听scrollTop的值，达到一定程度后显示返回顶部按钮
