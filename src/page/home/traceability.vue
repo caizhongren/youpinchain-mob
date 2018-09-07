@@ -193,54 +193,6 @@
           margin-bottom: .34rem;
         }
       }
-      .part2{
-        position: relative;
-        padding: .25rem 0 .5rem;
-        .title {
-          @include sc(.2rem,$g3);
-          text-align: center;
-          padding-bottom: .25rem;
-        }
-        .text {
-          width: 85%;
-        }
-        img {
-          position: absolute;
-          bottom: -.9rem;
-          right: .2rem;
-        }
-      }
-      .part3 {
-        padding: .2rem 0.25rem .35rem;
-        overflow: hidden;
-        .text {
-          width: 60%;
-        }
-      }
-      .part4, .part5 {
-        overflow: hidden;
-        padding: .35rem .25rem 0.2rem;
-        .text {
-          width: 45%;
-        }
-      }
-      .part4 {
-        img {
-          margin: -.1rem 0 0 -.12rem;
-        }
-        .text {
-          margin: .05rem 0 0 .15rem;
-          width: 38%;
-        }
-      }
-      .part5 {
-        img {
-          margin: -.2rem .1rem 0 -.12rem;
-        }
-        .text {
-          margin: .05rem 0 0 .15rem;
-        }
-      }
       .part6, .part7, .part8 {
         overflow: hidden;
         background: #f7f7f7 !important;
@@ -306,9 +258,12 @@
         img{
           width: 3.06rem;
           margin: 0 auto;
+          display: block;
+          margin-bottom: .255rem;
         }
         p{
           @include sc(.13rem, #666666);
+          padding: 0 .35rem;
         }
       }
       .part:first-child{
