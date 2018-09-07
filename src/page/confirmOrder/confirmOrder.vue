@@ -154,6 +154,7 @@ export default {
         this.productList.forEach(product => {
             this.totalPrice += product.presentPrice * product.number;
             this.goodsPrice += product.presentPrice * product.number;
+            this.goodsPrice > 199 ? this.fare = 0 : this.fare = 15;
         });
     },
     methods: {
