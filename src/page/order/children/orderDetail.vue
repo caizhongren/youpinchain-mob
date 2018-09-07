@@ -3,13 +3,13 @@
         <section v-if="!showLoading" id="scroll_section" class="scroll_container">
             <section class="scroll_insert">
                 <div class="page-top-red"></div>
-                <section class="order_titel border_radius">
+                <section class="order_titel border_radius" @click="goTrack">
                     <div class="status-img" :class="'status_0'"></div>
                     <div>{{orderData.orderStatusText}}</div>
-                    <router-link :to="{path:'/orderTrack',query:{expNo:orderData.expNo}}" tag="svg" fill="#333" class="arrow_right" v-show="orderData.handleOption.confirm">
+                    <svg fill="#333" class="arrow_right" v-show="orderData.handleOption.confirm">
                         <!--v-show="orderData.handleOption.confirm"-->
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-                    </router-link>
+                    </svg>
                 </section>
                 <section class="distribution-information border_radius" v-if="orderData.handleOption.confirm">
                     <img src="../../../images/ddxq-ps.png" alt="">
@@ -115,7 +115,7 @@
                     <span class="red" @click="showAlertTip = !showAlertTip">联系客服</span>
                     <compute-time v-if="orderData.handleOption.pay" :time="orderData.expiryTime" @click.native="toPay(orderData.id)"></compute-time>
                     <span class="grey" @click="cancelOrder(orderData.id)" v-if="orderData.handleOption.cancel">取消订单</span>
-                    <router-link :to="{path:'/orderTrack',query:{expNo:orderData.expNo}}" tag="span" class="grey"
+                    <router-link :to="{path:'/orderTrack/' + orderData.expNo + '/' + orderData.expCode}" tag="span" class="grey"
                                  v-if="orderData.handleOption.confirm" >查看物流</router-link>
                     <span class="grey" @click="confirmOrder(orderData.id)" v-if="orderData.handleOption.confirm">确认收货</span>
                     <!--<router-link tag="span" to="/home" class="order_button_red" v-if="orderData.handleOption.rebuy" >再次购买</router-link>-->
@@ -181,7 +181,7 @@
                     this.orderData.expNo="821721174311"
                 }
                 if (this.orderData.handleOption.confirm && this.orderData.expNo){
-                    expresses(this.orderData.expNo).then(res => {
+                    expresses(this.orderData.expCode, this.orderData.expNo).then(res => {
                         if (res.errno !== 0){
                             return;
                         }
@@ -201,6 +201,12 @@
         computed: {
         },
         methods: {
+            goTrack () {
+                if (!this.orderData.handleOption.confirm) {
+                    return
+                }
+                this.$router.push({path:'/orderTrack/' + this.orderData.expNo + '/' + this.orderData.expCode})
+            },
             // 取消订单
             cancelOrder(orderId){
                 var that = this;

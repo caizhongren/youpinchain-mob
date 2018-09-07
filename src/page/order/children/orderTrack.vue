@@ -13,7 +13,7 @@
 							<span v-if="item.context.indexOf('已收取快件') !== -1" class="circle_only"><b></b></span>
 							<span v-else-if="item.context.indexOf('正在派送') !== -1" class="have_after distributing"><b></b></span>
 							<span v-else-if="item.context.indexOf('已签收') !== -1" class="have_after">收</span>
-							<span v-else class="have_after circle_only"><b></b></span>
+							<span v-else class="have_after circle_only" :class="{'no_line': index == trackData.data.length-1}"><b></b></span>
 							<div class="align_center">
 								<p>{{item.context}}</p>
 							</div>
@@ -40,19 +40,21 @@
       data(){
             return{
                 showLoading: true, //显示加载动画
-                expNo:"",
+				expNo:"",
+				expCode: "",
 				trackData:{}
             }
         },
         created () {
-            this.expNo = this.$route.query.expNo
+            this.expNo = this.$route.params.expNo
+            this.expCode = this.$route.params.expCode
 			//TODO 测试使用单号
 			if(!this.expNo){
                 this.expNo="821721174311"
 			}
         },
         mounted(){
-            expresses(this.expNo).then(res => {
+            expresses(this.expCode, this.expNo).then(res => {
                 if (res.errno !== 0){
                     return;
                 }
@@ -77,9 +79,11 @@
         },
         filters: {
         	date_md: function(time) {
+				time = time.replace(/-/g,'/')
         		return (addzero(new Date(time).getMonth() + 1)) + '-' + addzero(new Date(time).getDate()); 
         	},
         	date_hm: function(time) {
+				time = time.replace(/-/g,'/')
         		return (addzero(new Date(time).getHours()) + ':' + addzero(new Date(time).getMinutes()));
         	}
         }
@@ -125,7 +129,7 @@
         margin-bottom: .16rem;
     }
     .order_track_detail{
-    	padding: .2rem .15rem;
+    	padding: .25rem .15rem 0.01rem;
     	margin-top: -.4rem;
     	@include sc(.15rem,$g6);
     	line-height: .24rem;
@@ -146,7 +150,10 @@
 	    		color: $fc;
 	    		margin-top: .1rem;
 	    		position: relative;
-	    	}
+			}
+			.no_line.have_after:after{
+				content: none;
+			}
 	    	.have_after:after{
 	    		content:'';
 	    		height: .9rem;
