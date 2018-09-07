@@ -194,6 +194,7 @@ export default {
       if (cart.choose && cart.available) {
           this.goodsPrice += cart.presentPrice * cart.number;
           this.payment += cart.presentPrice * cart.number;
+          this.goodsPrice > 199 ? this.fare = 0 : this.fare = 15;
       }
       });
       this.totalPrice = this.fare + this.payment;
