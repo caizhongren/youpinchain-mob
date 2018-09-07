@@ -45,6 +45,7 @@
                 routerPath: ''
             }
         },
+        props: ['showErrMsg'],
         created () {
             this.routerPath = window.location.href.toString().split('order/')[1]
             for(var i = 0; i <= this.tabList.length - 1; i++){

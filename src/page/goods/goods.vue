@@ -116,6 +116,7 @@
     },
     computed:{
     },
+    props: ['showErrMsg'],
     methods:{
       toCredential (index) {
         this.$router.push('/credentials/#w_anchor' + index);
@@ -145,7 +146,7 @@
       addCartList (goods) {
           addToCart(this.goodsid, 1).then(res => {
             if (res.errno === 0){
-                alert("添加成功")
+                this.showErrMsg("添加成功")
                 this.initCartCount();
             }
           })

@@ -61,7 +61,7 @@
                 orderList: []
             }
         },
-        props:['sendData'],
+        props:['sendData', 'showErrMsg'],
         mounted(){
             getOrderList(this.page, this.pageSize, 4).then(res => {
                 if (res.errno !== 0){
@@ -86,27 +86,27 @@
             cancelOrder(orderId){
                 cancelOrder(orderId).then(res =>{
                     if(res.errno !== 0) {
-                        alert("失败");
+                        this.$parent.showErrMsg("失败");
                         return;
                     }
-                    alert("成功");
+                    this.$parent.showErrMsg("成功");
                 })
             },
             // 确认收货
             confirmOrder(orderId){
                 confirmOrder(orderId).then(res =>{
                     if(res.errno !== 0) {
-                        alert("失败");
+                        this.$parent.showErrMsg("失败");
                         return;
                     }
-                    alert("成功");
+                    this.$parent.showErrMsg("成功");
                 })
             },
             rebuy(orderId){
                 rebuy(orderId).then(res => {
                     console.info(res)
                     if(res.errno !== 0) {
-                        alert("失败");
+                        this.$parent.showErrMsg("失败");
                         return;
                     }
                     var arr = [];

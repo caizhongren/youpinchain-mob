@@ -62,7 +62,7 @@ export default {
       orderList: []
     };
   },
-  props: ["sendData"],
+  props: ["sendData", "showErrMsg"],
   mounted() {
       getOrderList(this.page, this.pageSize).then(res => {
           if (res.errno !== 0){
@@ -86,27 +86,27 @@ export default {
       cancelOrder(orderId){
           cancelOrder(orderId).then(res =>{
               if(res.errno !== 0) {
-                  alert("失败");
+                  this.$parent.showErrMsg("失败");
                   return;
               }
-              alert("成功");
+              this.$parent.showErrMsg("成功");
           })
       },
       // 确认收货
       confirmOrder(orderId){
           confirmOrder(orderId).then(res =>{
               if(res.errno !== 0) {
-                  alert("失败");
+                  this.$parent.showErrMsg("失败");
                   return;
               }
-              alert("成功");
+              this.$parent.showErrMsg("成功");
           })
       },
       toPay(orderId) {
           var that = this;
           prepayOrder(orderId).then(resp => {
               if (resp.errno === 403) {
-                  alert("订单不可支付")
+                  this.$parent.showErrMsg("订单不可支付")
               } else {
                   WeixinJSBridge.invoke(
                       'getBrandWCPayRequest', {
@@ -131,7 +131,7 @@ export default {
           rebuy(orderId).then(res => {
               console.info(res)
               if(res.errno !== 0) {
-                  alert("失败");
+                  this.$parent.showErrMsg("失败");
                   return;
               }
               var arr = [];
