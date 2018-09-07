@@ -252,7 +252,7 @@ export const userInfo = () => fetch('/oa/users/info', {
  * @param expNo
  * @returns {Promise<*>}
  */
-export const expresses = (expNo) => fetch('/expresses/'+expNo);
+export const expresses = (expCode,expNo) => fetch('/expresses/'+ expCode + '/' + expNo);
 
 /**
  * 查询品牌资料详情

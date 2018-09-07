@@ -130,7 +130,7 @@ export default [{
         },
         //订单列表页
         {
-            path: 'orderTrack',
+            path: 'orderTrack/:expNo/:expCode',
             component: orderTrack
         },
         {
