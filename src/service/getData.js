@@ -130,13 +130,14 @@ export const getAddressDetail = (addressId) => fetch('/addresses/' + addressId);
  * 添加收货地址
  */
 
-export const addAddress = (name, provinceId, cityId, areaId, mobile, address) => fetch('/addresses', {
+export const addAddress = (name, provinceId, cityId, areaId, mobile, address, Default) => fetch('/addresses', {
 	name,
 	provinceId,
 	cityId,
 	areaId,
 	mobile,
-	address
+	address,
+	isDefault: Default
 }, 'POST');
 
 /**

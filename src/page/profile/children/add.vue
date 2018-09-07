@@ -75,7 +75,7 @@ export default {
             provinces: [],
             submitText: '保存',
             showDelete: true,
-            toggle: true
+            toggle: false
         };
     },
     mounted() {
@@ -182,7 +182,8 @@ export default {
                     address.cityId,
                     address.areaId,
                     address.mobile,
-                    address.address
+                    address.address,
+                    this.toggle
                 ).then(res => {
                     address.id = res.data;
                     if (res.errno == 0) {
