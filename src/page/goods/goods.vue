@@ -10,11 +10,11 @@
       <div class="presell_box" v-if="goods.preSale">
         <div class="left_price left">
           <p class="price"><span>￥</span>{{goods.presentPrice}} <s>￥{{goods.originalPrice}}</s></p>
-          <p class="tip">商品预售预计{{goods.presellTime | dateCharacter}}发货</p>
+          <p class="tip">商品预售预计{{(goods.preSaleDelivery.split('T')[0]) | dateCharacter}}发货</p>
         </div>
         <div class="right_tip right">
           <p>预售</p>
-          <p>北京地区专供</p>
+          <p>江浙沪北京地区专供</p>
         </div>
       </div>
       <div class="title">
@@ -52,7 +52,7 @@
         <li><p>{{goods.name}}</p><p>{{goods.describe}}</p></li>
         <li v-if="goods.preSale">
           <p class="abstract">预售说明</p>
-          <p>为保证新鲜，苏淮猪现杀发货，用户即日起可下单购买，9月19日开始发货。本批数量有限，售完为止。</p>
+          <p>为保证新鲜，苏淮猪现杀发货，用户即日起可下单购买，{{goods.preSaleDelivery.split('-')[1]}}月{{goods.preSaleDelivery.split('-')[2].split('T')[0]}}日开始发货。本批数量有限，售完为止。</p>
         </li>
         <li>
           <p class="abstract">物流说明</p>
@@ -166,7 +166,7 @@
     }
     .presell_box {
       overflow: hidden;
-      padding: .08rem .12rem .12rem .12rem;
+      padding: .08rem 0 .12rem .12rem;
       background-image: linear-gradient(133deg, #fc5b46, #fa424f);
       @include wh(100%, .64rem);
       .left_price {
@@ -189,7 +189,7 @@
       }
       .right_tip {
         position: relative;
-        width: 1rem;
+        width: 1.35rem;
         text-align: center;
         p:first-child{
           @include sc(.18rem, $fc);
