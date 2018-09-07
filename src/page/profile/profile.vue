@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <!-- 关于我们 -->
-                <router-link to='/aboutUs' class="myorder">
+                <!-- <router-link to='/aboutUs' class="myorder">
                     <aside></aside>
                     <div class="myorder-div">
                         <span>关于我们</span>
@@ -86,7 +86,7 @@
                             </svg>
                         </span>
                     </div>
-                </router-link>
+                </router-link> -->
             </section>
             
         </section>
