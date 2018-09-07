@@ -86,14 +86,14 @@
                 </ul>
                 <div class="right totalPrice">
                     实际支付
-                    <p><span class="RMB">￥</span>{{totalPrice}}</p>
+                    <p><span class="RMB">￥</span>{{totalPrice + fare}}</p>
                 </div>
             </div>
         </div>
     </nav>
     <ul class="settlement">
         <li @click="paymentCall()">去付款</li>
-        <li>付款 &nbsp;<span class="red"><span class="RMB">￥</span>{{totalPrice}}</span></li>
+        <li>付款 &nbsp;<span class="red"><span class="RMB">￥</span>{{totalPrice + fare}}</span></li>
     </ul>
 </div>
 </template>

@@ -190,6 +190,7 @@ export default {
       this.goodsPrice = 0;
       this.payment = 0;
       this.totalPrice = 0;
+      this.fare = 0;
       this.carts.forEach(cart => {
       if (cart.choose && cart.available) {
           this.goodsPrice += cart.presentPrice * cart.number;
