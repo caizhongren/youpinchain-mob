@@ -9,11 +9,14 @@
           <p>{{auctionInfo.auctionState === 0 ? '预告' : (auctionInfo.auctionState === 1 ? '进行中' : '已结束')}}</p>
           <p v-if="auctionInfo.auctionState !== 2">{{auctionInfo.auctionState === 0 ? '距离拍卖开始' : '本场剩余'}}：{{countDown | timeArry(0)}}:{{countDown | timeArry(1)}}:{{countDown | timeArry(2)}}</p>
       </div>
-      <carousel class="banner_box" :loop="true" :autoplay="true" :minSwipeDistance="6" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="5" :paginationSize="8" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color">
+      <!-- <carousel class="banner_box" :loop="true" :autoplay="true" :minSwipeDistance="6" :scrollPerPage="true" :speed="500" :perPage="1" :paginationPadding="5" :paginationSize="8" :paginationActiveColor="pagination.activeColor" :paginationColor="pagination.color"> -->
         <!-- <slide v-for="item in auctionInfo.goodsPic" :key="item.id"> -->
-          <img :src="auctionInfo.goodsPic" alt="" class="show">
+          <!-- <img :src="auctionInfo.goodsPic" alt="" class="show"> -->
         <!-- </slide> -->
-      </carousel>
+      <!-- </carousel> -->
+      <div class="banner_box">
+        <img :src="auctionInfo.goodsPic" alt="" class="show">
+      </div>
       <div class="title">
         <p>{{auctionInfo.goods}}</p>
         <p v-if="auctionInfo.rankingList.length">当前最高出价：<span>{{auctionInfo.highest}}</span><img src="../../../../images/auction/bullion.png"></p>
