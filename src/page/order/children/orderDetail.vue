@@ -164,6 +164,7 @@
                 exp:{}
             }
         },
+        props: ['showErrMsg'],
         created () {
             this.orderId = this.$route.params.orderId
         },
@@ -212,7 +213,7 @@
                 var that = this;
                 cancelOrder(orderId).then(res =>{
                     if(res.errno !== 0) {
-                        alert("失败");
+                        that.showErrMsg("失败");
                         return;
                     }
                     that.$router.push('/order/undelivery');
@@ -223,10 +224,9 @@
                 var that = this;
                 confirmOrder(orderId).then(res =>{
                     if(res.errno !== 0) {
-                        alert("失败");
+                        that.showErrMsg("失败");
                         return;
                     }
-                    var that = this;
                     that.$router.push('/order/completed');
                 })
             },
@@ -234,7 +234,7 @@
                 var that = this;
                 prepayOrder(orderId).then(resp => {
                     if (resp.errno === 403) {
-                        alert("订单不可支付")
+                        that.showErrMsg("订单不可支付")
                     } else {
                         WeixinJSBridge.invoke(
                             'getBrandWCPayRequest', {

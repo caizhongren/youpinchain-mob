@@ -192,7 +192,7 @@ export default {
             prepayOrder(orderId).then(resp => {
                 var that = this;
                 if (resp.errno === 403) {
-                    alert("订单不可支付")
+                    this.showErrMsg("订单不可支付")
                 } else {
                     WeixinJSBridge.invoke(
                         'getBrandWCPayRequest', {
