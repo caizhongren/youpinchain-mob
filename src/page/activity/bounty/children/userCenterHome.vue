@@ -37,6 +37,7 @@
     watch: {
 
     },
+    props: ['showErrMsg'],
     mounted() {
       var that = this
       userInfo().then(function(res){
@@ -58,10 +59,10 @@
     },
     methods: {
       onCopy () {
-        alert('复制成功')
+        this.$parent.$parent.showErrMsg('复制成功')
       },
       onError () {
-        alert('复制失败，请手动选择复制')
+        this.$parent.$parent.showErrMsg('复制失败，请手动选择复制')
       }
     },
   }

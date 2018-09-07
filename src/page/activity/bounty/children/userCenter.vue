@@ -13,6 +13,7 @@
     watch: {
 
     },
+    props: ['showErrMsg'],
     mounted() {
       
     },
