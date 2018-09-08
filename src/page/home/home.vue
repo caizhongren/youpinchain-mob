@@ -44,6 +44,9 @@ import {
     addToCart,
     productList
 } from '../../service/getData'
+import {
+    WechatShareUtils
+} from '../../service/WechatShareUtils'
 import loading from "../../components/common/loading";
 import wx from 'weixin-js-sdk'
 export default {

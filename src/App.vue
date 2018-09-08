@@ -50,9 +50,6 @@ export default {
         // '$route': 'login_oa'
         showLongErr: function (val) {
             val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
-        },
-        '$route': function (from, to) {
-            WechatShareUtils.configJsApi(window.location.href)
         }
     },
     components: {
