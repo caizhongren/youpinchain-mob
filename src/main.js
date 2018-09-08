@@ -42,7 +42,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     WechatShareUtils.configJsApi(window.location.href)
     wx.error(function() {
-        window.location.href = window.location.href
+        // window.location.href = window.location.href
+        alert('error')
     })
     if (to.meta.title === undefined) {
         document.title = '链上臻品'
