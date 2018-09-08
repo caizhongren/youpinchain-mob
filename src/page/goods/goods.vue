@@ -162,7 +162,7 @@ export default {
                     null;
                 wx.ready(function () {
                     var shareLink = window.location.href
-                    WechatShareUtils.onMenuShareAppMessage('区块苏淮猪 ' + that.goods.name + that.goods.netContent + '*1' + that.goods.packing, that.goods.describe, shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/puDuBHDXJkwPdHoIeZJneedu9tqjA7cVVbZpCOfEtor98FNCibhzZBqE0fbY9IVMLepDaxnVM3q3RvZ8apibiaFicA/0?wx_fmt=png')
+                    WechatShareUtils.onMenuShareAppMessage('区块苏淮猪 ' + that.goods.name + that.goods.netContent + '*1' + that.goods.packing, that.goods.describe, shareLink, that.goods.thumbnailPic)
                 })
             });
 
