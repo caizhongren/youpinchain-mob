@@ -38,8 +38,8 @@ module.exports = {
             '/youpin/wx',
             '/wx'
         ],
-        proxypath: 'http://youpinlian.datbc.com',
-        // proxypath: 'http://127.0.0.1:8082',
+        // proxypath: 'http://youpinlian.datbc.com',
+        proxypath: 'http://127.0.0.1:8082',
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README
         // (https://github.com/webpack/css-loader#sourcemaps)
