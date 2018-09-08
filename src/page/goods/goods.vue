@@ -109,6 +109,9 @@ import {
     getProductDetail,
     cartProductCount
 } from "../../service/getData";
+import {
+    WechatShareUtils
+} from '../../service/WechatShareUtils'
 import wx from 'weixin-js-sdk'
 export default {
     data() {
