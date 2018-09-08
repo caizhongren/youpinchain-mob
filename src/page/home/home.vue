@@ -84,7 +84,7 @@ export default {
 
         wx.ready(function () {
             var shareLink = window.location.href
-            WechatShareUtils.onMenuShareAppMessage('区块苏淮猪，不含抗生素，农业大学的优质猪肉，手慢无！', '上链上臻品参与赏金计划赢取“金条”，免费竞拍大奖！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/puDuBHDXJkwPdHoIeZJneedu9tqjA7cVVbZpCOfEtor98FNCibhzZBqE0fbY9IVMLepDaxnVM3q3RvZ8apibiaFicA/0?wx_fmt=png')
+            WechatShareUtils.onMenuShareAppMessage('区块苏淮猪，不含抗生素，农业大学的优质猪肉，手慢无！', '仲秋活动，钜惠，全场6.8折！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/puDuBHDXJkwPdHoIeZJneedu9tqjA7cVVbZpCOfEtor98FNCibhzZBqE0fbY9IVMLepDaxnVM3q3RvZ8apibiaFicA/0?wx_fmt=png')
         })
 
     },
