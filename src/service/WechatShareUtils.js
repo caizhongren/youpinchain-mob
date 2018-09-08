@@ -10,7 +10,7 @@ let WechatShareUtils = {
     congigJsApi(encodeURIComponent(currentUrl)).then(function(apiConfig) {
       console.log('apiConfig: ' + apiConfig.appId)
       wx.config({
-        debug: false,
+        debug: true,
         appId: apiConfig.appId, // 必填，公众号的唯一标识
         timestamp: apiConfig.timestamp, // 必填，生成签名的时间戳
         nonceStr: apiConfig.nonceStr, // 必填，生成签名的随机串
