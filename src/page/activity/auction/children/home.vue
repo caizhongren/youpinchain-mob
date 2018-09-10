@@ -14,9 +14,12 @@
           <!-- <img :src="auctionInfo.goodsPic" alt="" class="show"> -->
         <!-- </slide> -->
       <!-- </carousel> -->
-      <div class="banner_box" :to="{path:'/home'}">
+      <!--<div class="banner_box" :to="{path:'/home'}">-->
+        <!--<img :src="auctionInfo.goodsPic" alt="" class="show">-->
+      <!--</div>-->
+      <router-link tag="div" class="banner_box" :to="{path:'/home'}">
         <img :src="auctionInfo.goodsPic" alt="" class="show">
-      </div>
+      </router-link>
       <div class="title">
         <p>{{auctionInfo.goods}}</p>
         <p v-if="auctionInfo.rankingList.length">当前最高出价：<span>{{auctionInfo.highest}}</span><img src="../../../../images/auction/bullion.png"></p>
