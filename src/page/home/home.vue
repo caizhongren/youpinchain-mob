@@ -49,7 +49,6 @@ import {
 import loading from "../../components/common/loading";
 import wx from 'weixin-js-sdk'
 import MeScroll from '../../static/mescroll/mescroll.min.js'
-import '../../static/mescroll/mescroll.min.css'
 export default {
     data() {
         return {
@@ -157,6 +156,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../static/mescroll/mescroll.min.css';
 @import '../../style/mixin';
 .header_image {
     height: 4.2rem;
