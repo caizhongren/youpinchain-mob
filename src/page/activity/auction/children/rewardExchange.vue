@@ -1,7 +1,7 @@
 <template>
     <div class="reward_exchange">
         <div class="header">
-            <img src="../../../../images/auction/bg.png" alt="" width="100%">
+            <img src="https://heizhu360.datbc.com/pic/storage/storage/fetch?key=yy9opvdv0hxgqwgxi6v7" alt="" width="100%">
         </div>
         <div class="content">
             <div class="form_box">

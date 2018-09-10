@@ -1,7 +1,7 @@
 <template>
     <div class="sharing">
         <div class="header">
-            <img src="../../../../images/auction/bg.png" alt="" width="100%">
+            <img src="https://heizhu360.datbc.com/pic/storage/storage/fetch?key=yy9opvdv0hxgqwgxi6v7" alt="" width="100%">
         </div>
         <div class="content">
             <ul class="statistics">
@@ -95,7 +95,7 @@
                         that.data = response.data
                         wx.ready(function () {
                             var shareLink = process.env.DOMAIN + '/auction/sharingLanding/' + that.auctionId + '/' + that.data.vipId
-                            WechatShareUtils.onMenuShareAppMessage('我在链上臻品抢到免费大礼，快来一起参与！', '上链上臻品参与赏金计划赢取“金条”，免费竞拍大奖！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/P5PlqicODGc5PTbhYZ4tgynfAY5p2VTSfcysiblc28iaU3l7hibTdQt7tZ781IA3CeiaXPs2O5Vs7y9yeHeS1yqpnkg/0?wx_fmt=png')
+                            WechatShareUtils.onMenuShareAppMessage('我在链上臻品抢到免费大礼，快来一起参与！', '上链上臻品参与赏金计划赢取“金条”，免费竞拍大奖！', shareLink, 'https://heizhu360.datbc.com/pic/storage/storage/fetch?key=ekhy5kmwgvi27o7w1oiu')
                         })
                     } else {
                         that.data.helpState = false
