@@ -35,7 +35,7 @@
                         <p><span class="RMB">￥</span>{{payment | number}}</p>
                     </li>
                     <li>
-                        <p>运费</p>
+                        <p>运费（满199包邮）</p>
                         <p><span class="RMB">￥</span>{{fare}}</p>
                     </li>
                 </ul>
