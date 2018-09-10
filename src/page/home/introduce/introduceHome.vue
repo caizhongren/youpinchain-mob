@@ -17,6 +17,7 @@
         <p>预售价：￥<span>{{item.presentPrice | number}}</span>/{{item.netContent}}</p>
         <router-link tag="p" :to="'/goods/' + item.id">立即购买</router-link>
       </div>
+      <div class="load_more"><router-link tag="button" to="/">查看更多商品</router-link></div>
     </div>
     <div class="part_3">
       <ul>
@@ -83,6 +84,24 @@
     .part_2{
       padding-bottom: .5rem;
       background-color: #efeff4;
+      .load_more{
+        border-top: 1px solid #f8f8f8;
+        padding: .2rem 0;
+        background: $fc;
+        button{
+          width: 35%;
+          height: 0.28rem;
+          font-size: 0.14rem;
+          color: #e4372e;
+          background-color: #fff;
+          margin: 0rem auto;
+          text-align: center;
+          line-height: .28rem;
+          border-radius: 15px;
+          border: 1px solid #e4372e;
+          display: block;
+        }
+      }
       .goods{
         @include wh(100%, 5.8rem);
         @include bis('../../../images/store/introduce_bg.png');
