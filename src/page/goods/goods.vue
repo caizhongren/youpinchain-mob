@@ -109,6 +109,10 @@ import {
     getProductDetail,
     cartProductCount
 } from "../../service/getData";
+import {
+    WechatShareUtils
+} from '../../service/WechatShareUtils'
+import wx from 'weixin-js-sdk'
 export default {
     data() {
         return {
@@ -156,6 +160,10 @@ export default {
                 !res.data.preSaleDelivery ?
                     (that.goods.preSaleDelivery = "2018-09-18T00:58:28") :
                     null;
+                wx.ready(function () {
+                    var shareLink = window.location.href
+                    WechatShareUtils.onMenuShareAppMessage('区块苏淮猪 ' + that.goods.name + that.goods.netContent + '*1' + that.goods.packing, that.goods.describe + ' 仲秋钜惠，全场6.8折!', shareLink, that.goods.thumbnailPic)
+                })
             });
 
             //开始监听scrollTop的值，达到一定程度后显示返回顶部按钮
