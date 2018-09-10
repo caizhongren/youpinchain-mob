@@ -48,8 +48,7 @@ import {
 } from '../../service/WechatShareUtils'
 import loading from "../../components/common/loading";
 import wx from 'weixin-js-sdk'
-import MeScroll from '../../plugins/mescroll.js/mescroll.min.js'
-import '../../plugins/mescroll.js/mescroll.min.css'
+import MeScroll from '../../static/mescroll/mescroll.min.js'
 export default {
     data() {
         return {
@@ -157,6 +156,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../static/mescroll/mescroll.min.css';
 @import '../../style/mixin';
 .header_image {
     height: 4.2rem;
@@ -233,7 +233,7 @@ export default {
           margin-bottom: 0;
         }
         .goods_info {
-            width: 55.8%;
+            width: 55%;
             .name {
                 @include sc(.15rem, $g3);
                 padding: .05rem 0 .03rem;
