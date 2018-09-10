@@ -11,7 +11,7 @@
                             <section class="ui-padding-block">
                                 <div class="input-new">
                                     <span>姓名</span>
-                                    <input type="text" placeholder="请填写你的姓名" v-model="address.name">
+                                    <input type="text" placeholder="请填写收件人姓名" v-model="address.name">
                                 </div>
                                 <div class="add-detail">
                                     <div class="input-new">
@@ -164,11 +164,21 @@ export default {
 
         },
         async paymentCall() {
-            if (!this.choosedAddress) {
-                this.showErrMsg('请填写正确收货地址！')
-                return
+            var that = this;
+            if (!that.choosedAddress) {
+                if (!that.checkAddress(that.address)) {
+                    return;
+                }
+                that.submitAddress(that.address, function(){
+                    that.doPayCall();
+                })
+            } else {
+                that.doPayCall();
             }
-            if (this.orderId != 0) {
+        },
+
+        doPayCall() {
+             if (this.orderId != 0) {
                 this.doPay(this.orderId);
                 return;
             }
@@ -188,6 +198,9 @@ export default {
             })
         },
         
+        /**
+         * 去支付，调起微信支付
+         */
         doPay(orderId) {
             prepayOrder(orderId).then(resp => {
                 var that = this;
@@ -213,28 +226,39 @@ export default {
                 }
             })
         },
-        //保存地址
-        async submitAddress(address) {
+
+        /**
+         * 校验用户输入的地址
+         */
+        checkAddress(address) {
             if (!address.name) {
-               this.showErrMsg('请填写你的姓名')
-               return
+               this.showErrMsg('请填写收件人姓名')
+               return false;
 		    }
 		    if (!address.mobile) {
                this.showErrMsg('请填写收货人手机号')
-               return
+               return false;
 			}
 			if (address.mobile.length < 11) {
                this.showErrMsg('请填写正确的收货人手机号')
-               return
+               return false;
             }
 			if (!address.tipText) {
 				this.showErrMsg('请选择您的所在地区')
-            	return
+            	return false;
 			}
 			if (!address.address) {
 				this.showErrMsg('请填写详细地址')
-            	return
+            	return false;
 			}
+
+            return true;
+        },
+        //保存地址
+        async submitAddress(address, successFun) {
+            if (!this.checkAddress(address)) {
+                return;
+            }
             addAddress(
                 address.name,
                 address.provinceId,
@@ -248,6 +272,7 @@ export default {
 					localStorage.setItem('choosedAddress', JSON.stringify(address));
 					this.choosedAddress = JSON.parse(localStorage.getItem('choosedAddress'));
                 }
+                successFun();
             });
 		},
 		// 设置地址插件
