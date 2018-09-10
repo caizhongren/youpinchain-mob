@@ -111,7 +111,7 @@ export default {
   },
   async beforeMount() {},
   mounted() {
-    productHotList(1, 4).then(res => {
+    productHotList().then(res => {
         this.hotgoodslist = res.data.productList
         this.hasMore = res.data.totalPages > this.page
     })
