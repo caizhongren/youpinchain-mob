@@ -1,5 +1,5 @@
 <template>
-<div class="home">
+<div class="home mescroll" ref="mescroll">
     <transition name="loading">
         <loading v-show="showLoading"></loading>
     </transition>
@@ -27,7 +27,6 @@
                     <div class="shopping_cart" @touchstart="addToCart(item.id, $event)"></div>
                 </li>
             </ul>
-            <div @click="loadMore()" class="load_more" v-if="hasMore">查看更多商品</div>
             <transition appear @after-appear='afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot" :key="index">
                 <span class="move_dot" v-if="item"></span>
             </transition>
@@ -49,6 +48,8 @@ import {
 } from '../../service/WechatShareUtils'
 import loading from "../../components/common/loading";
 import wx from 'weixin-js-sdk'
+import MeScroll from '../../plugins/mescroll.js/mescroll.min.js'
+import '../../plugins/mescroll.js/mescroll.min.css'
 export default {
     data() {
         return {
@@ -61,10 +62,10 @@ export default {
             showMoveDot: [], //控制下落的小圆点显示隐藏
             elLeft: 0, //当前点击加按钮在网页中的绝对top值
             elBottom: 0, //当前点击加按钮在网页中的绝对left值
-            hasMore: false, // 是否有更多商品，是否可以点击加载更多
             page: 1,
             pageSize: 4,
-            datasBrandId: ""
+            datasBrandId: "",
+            mescroll: null
         }
     },
     mounted() {
@@ -75,13 +76,17 @@ export default {
             this.showLoading = false;
             this.getDatasBrandId(res.data.brandDatas)
         })
-
-        productList(this.page, this.pageSize).then(res => {
-            this.hotgoodslist = res.data.productList
-            this.hasMore = res.data.totalPages > this.page
-            this.showLoading = false;
-        })
-
+        var that = this
+        that.mescroll = new MeScroll(that.$refs.mescroll, { 
+            up: {
+              callback: that.upCallback,
+              page: {
+                num: 0, 
+                size: 4,
+              },
+            noMoreSize: 5
+          }
+        });
         wx.ready(function () {
             var shareLink = window.location.href
             WechatShareUtils.onMenuShareAppMessage('区块苏淮猪，不含抗生素，农业大学的优质猪肉，限量预售！', '仲秋钜惠，全场6.8折！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/puDuBHDXJkwPdHoIeZJneedu9tqjA7cVVbZpCOfEtor98FNCibhzZBqE0fbY9IVMLepDaxnVM3q3RvZ8apibiaFicA/0?wx_fmt=png')
@@ -94,19 +99,6 @@ export default {
     },
     computed: {},
     methods: {
-        loadMore() {
-            if (!this.hasMore) {
-                return;
-            }
-            this.page++;
-            productList(this.page, this.pageSize).then(res => {
-                var hotgoodslist = res.data.productList
-                for (var i = 0; i < hotgoodslist.length; i++) {
-                    this.hotgoodslist.push(hotgoodslist[i])
-                }
-                this.hasMore = res.data.totalPages > this.page
-            })
-        },
         toggleTab(dataId, index) {
             this.$router.push("/growing-environment?dataId=" + dataId);
             this.activeTab = index
@@ -143,6 +135,22 @@ export default {
                     this.datasBrandId = key.id
                 }
             })
+        },
+        upCallback(page) {
+          productList(page.num, page.size).then(res => {
+            this.showLoading = false;
+            let arr = res.data.productList;
+            if (page.num == 1) this.hotgoodslist = [];
+            var that = this
+            setTimeout(function () {
+              that.hotgoodslist = that.hotgoodslist.concat(arr);
+              that.$nextTick(() => {
+                that.mescroll.endSuccess(arr.length);
+              })
+            },300)
+          }).catch((e)=> {
+            this.mescroll.endErr();
+          })
         }
     },
 }
@@ -163,7 +171,9 @@ export default {
     border-radius: 50%;
     @include wh(.15rem, .15rem);
 }
-
+.mescroll{
+  height: 7rem;
+}
 .home {
     padding-bottom: .5rem;
 }
@@ -188,18 +198,7 @@ export default {
 
 #hot_goods {
     background-color: $fc; // margin-top: .15rem;
-    padding: .2rem 0;
-    .load_more {
-        @include wh(35%, .28rem);
-        @include sc(.14rem, $red);
-        background-color: $fc;
-        margin: 0rem auto;
-        text-align: center;
-        line-height: .28rem;
-        border-radius: 15px;
-        border: 1px solid $red;
-        display: block;
-    }
+    padding: .2rem 0 0;
     .goods_title {
         text-align: center;
         margin: 0 auto;
@@ -211,7 +210,7 @@ export default {
         @include bis('../../images/home-bg-rmsp-normol.png');
     }
     .goodslistul {
-        padding: .25rem .15rem .1rem;
+        padding: .25rem .15rem 0rem;
         img {
             margin-right: .12rem;
             width: 1.4rem;
@@ -229,6 +228,9 @@ export default {
             position: relative;
             border-bottom: 1px solid #f8f8f8;
             padding-bottom: .15rem;
+        }
+        li:last-child {
+          margin-bottom: 0;
         }
         .goods_info {
             width: 55.8%;
