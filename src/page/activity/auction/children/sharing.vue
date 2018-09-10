@@ -86,7 +86,6 @@
             this.getHelpDetail(this.auctionId)
         },
         created() {
-            WechatShareUtils.configJsApi(window.location.href)
         },
         methods: {
             getHelpDetail (auctionId) {

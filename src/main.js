@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import routes from './router/router'
 import store from './store/'
 import wx from 'weixin-js-sdk'
+import {
+    WechatShareUtils
+} from './service/WechatShareUtils'
 import './config/rem'
 import 'babel-polyfill'
 import FastClick from 'fastclick'
@@ -37,6 +40,11 @@ const router = new VueRouter({
     }
 })
 router.beforeEach((to, from, next) => {
+    WechatShareUtils.configJsApi(window.location.href)
+    wx.error(function() {
+        // window.location.href = window.location.href
+        alert('error')
+    })
     if (to.meta.title === undefined) {
         document.title = '链上臻品'
     } else {

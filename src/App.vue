@@ -5,14 +5,14 @@
     </transition>
     <div id="err" v-show="showErr" v-bind:style="styleObject">{{errMsg}}</div>
     <div class="mask-common errMask" v-show="showLongErr">
-      <div class="alert-wrap" v-show="showLongErr">
-        <div class="text">
-          {{errMsg}}
+        <div class="alert-wrap" v-show="showLongErr">
+            <div class="text">
+                {{errMsg}}
+            </div>
+            <div class="i-know" @click="showLongErr = false">
+                知道啦
+            </div>
         </div>
-        <div class="i-know" @click="showLongErr = false">
-          知道啦
-        </div>
-      </div>
     </div>
     <svg-icon></svg-icon>
 </div>
@@ -22,7 +22,9 @@
 import Vue from 'vue'
 import * as custom from './plugins/custom'
 import svgIcon from './components/common/svg';
-import { ModalHelper } from './service/Utils'
+import {
+    ModalHelper
+} from './service/Utils'
 import {
     login_oa,
     cartProductCount
@@ -30,6 +32,9 @@ import {
 import {
     Utils
 } from './service/Utils'
+import {
+    WechatShareUtils
+} from './service/WechatShareUtils'
 export default {
     data() {
         return {
@@ -43,12 +48,15 @@ export default {
     },
     watch: {
         // '$route': 'login_oa'
-        showLongErr: function(val) {
+        showLongErr: function (val) {
             val ? ModalHelper.afterOpen() : ModalHelper.beforeClose()
         }
     },
     components: {
         svgIcon,
+    },
+    created() {
+        
     },
     mounted() {
         var vue = this
@@ -71,7 +79,7 @@ export default {
                 }
             })
         },
-        showErrMsg (msg, isLong, setErrStyle) {
+        showErrMsg(msg, isLong, setErrStyle) {
             clearTimeout(this.timer)
             this.showErr = false
             var that = this
@@ -87,7 +95,7 @@ export default {
                     that.errMsg = ''
                 }, 2000)
             }
-            }
+        }
     }
 }
 Object.keys(custom).forEach(key => {
@@ -123,22 +131,25 @@ body {
 }
 
 /* 错误提示 */
+
 .mask-common {
-  position: fixed;
-  top: 0;
-  z-index: 999999;
-  bottom: -5px;
-  left: 0;
-  right: 0;
-  /* max-width: 7.2rem; */
-  margin: 0 auto;
-  background-color: rgba(0,0,0,0.9);
-  -webkit-overflow-scrolling: touch;
-  overflow-y: hidden !important;
+    position: fixed;
+    top: 0;
+    z-index: 999999;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    /* max-width: 7.2rem; */
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.9);
+    -webkit-overflow-scrolling: touch;
+    overflow-y: hidden !important;
 }
+
 .mask-common.errMask {
     // background-color: rgba(0,0,0, .8);
 }
+
 .errMask .alert-wrap {
     background: $fc;
     width: 2.8rem;
@@ -148,12 +159,14 @@ body {
     margin-top: 2rem;
     text-align: center;
 }
+
 .errMask .alert-wrap .text {
     height: .35rem;
     line-height: 1.67;
     font-size: 0.18rem;
     color: $g3;
 }
+
 .errMask .alert-wrap .i-know {
     background: #fc5340;
     font-size: 0.15rem;
@@ -163,6 +176,7 @@ body {
     margin-top: .18rem;
     border-radius: .05rem;
 }
+
 #err {
     position: fixed;
     top: 2.8rem;

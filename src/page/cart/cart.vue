@@ -35,7 +35,7 @@
                         <p><span class="RMB">￥</span>{{payment | number}}</p>
                     </li>
                     <li>
-                        <p>运费</p>
+                        <p>运费（满199包邮）</p>
                         <p><span class="RMB">￥</span>{{fare}}</p>
                     </li>
                 </ul>
@@ -111,7 +111,7 @@ export default {
   },
   async beforeMount() {},
   mounted() {
-    productHotList(1, 4).then(res => {
+    productHotList().then(res => {
         this.hotgoodslist = res.data.productList
         this.hasMore = res.data.totalPages > this.page
     })
