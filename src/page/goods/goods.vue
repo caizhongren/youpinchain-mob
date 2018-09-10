@@ -162,7 +162,7 @@ export default {
                     null;
                 wx.ready(function () {
                     var shareLink = window.location.href
-                    WechatShareUtils.onMenuShareAppMessage('区块苏淮猪 ' + that.goods.name + that.goods.netContent + '*1' + that.goods.packing, that.goods.describe, shareLink, that.goods.thumbnailPic)
+                    WechatShareUtils.onMenuShareAppMessage('区块苏淮猪 ' + that.goods.name + that.goods.netContent + '*1' + that.goods.packing, that.goods.describe + ' 仲秋钜惠，全场6.8折!', shareLink, that.goods.thumbnailPic)
                 })
             });
 

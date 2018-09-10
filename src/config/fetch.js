@@ -65,7 +65,9 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 			}
 
 			requestObj.open(type, url, true);
-			requestObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			requestObj.setRequestHeader("Content-type", "application/json");
+			requestObj.setRequestHeader("Accept", "application/json");
+			requestObj.setRequestHeader("X-youpinchain-Token", localStorage.getItem('X-youpinchain-Token'));
 			requestObj.send(sendData);
 
 			requestObj.onreadystatechange = () => {
