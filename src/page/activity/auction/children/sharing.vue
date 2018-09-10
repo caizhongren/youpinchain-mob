@@ -1,7 +1,7 @@
 <template>
     <div class="sharing">
         <div class="header">
-            <img src="https://heizhu360.datbc.com/pic/storage/storage/fetch?key=yy9opvdv0hxgqwgxi6v7" alt="" width="100%">
+            <img src="https://heizhu360.datbc.com/pic/storage/storage/fetch?key=6qmpq4g6eyuk1lxhngw7" alt="" width="100%">
         </div>
         <div class="content">
             <ul class="statistics">
