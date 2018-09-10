@@ -17,7 +17,7 @@
         },
         created() {
             this.help(this.$route.params.auctionId, this.$route.params.vipId)
-            document.title = '百元话费速来抢'
+            document.title = '苏淮猪腿肉速来抢'
         },
         methods: {
             help (auctionId,vipId) {
@@ -37,7 +37,7 @@
 <style scoped lang="scss">
     @import '../../../../style/mixin';
     .sharingLanding {
-        @include bis('../../../../images/auction/sharing-landing-bg.png');
+        @include bis('https://heizhu360.datbc.com/pic/storage/storage/fetch?key=wjq1mvxvnidhm6sdid0s');
         background-size: 100%;
         background-position-y: -0.6rem;
         padding-bottom: .49rem;
