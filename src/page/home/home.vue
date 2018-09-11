@@ -77,6 +77,9 @@ export default {
         })
         var that = this
         that.mescroll = new MeScroll(that.$refs.mescroll, { 
+            down: {
+                use: false
+            },
             up: {
               callback: that.upCallback,
               page: {
