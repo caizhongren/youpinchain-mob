@@ -1,5 +1,6 @@
 <template>
-    <div class="sharingLanding" v-client-height>
+    <div class="sharingLanding">
+        <img src="https://heizhu360.datbc.com/pic/storage/storage/fetch?key=wjq1mvxvnidhm6sdid0s" width="100%">
         <p class="text">关注公众号“链上臻品”，点击底部菜单【限时竞拍】即可参与竞拍活动</p>
         <div class="btn" @click="partIn">我也要参与</div>
     </div>
@@ -37,20 +38,23 @@
 <style scoped lang="scss">
     @import '../../../../style/mixin';
     .sharingLanding {
-        @include bis('https://heizhu360.datbc.com/pic/storage/storage/fetch?key=wjq1mvxvnidhm6sdid0s');
-        background-size: 100%;
-        background-position-y: -0.6rem;
         padding-bottom: .49rem;
+        img {
+            display: block;
+        }
         .text {
-            @include sc(.13rem,$fc);
+            @include sc(.11rem,$g3);
+            opacity: 0.8;
             line-height: 1.54;
             letter-spacing: 0.4px;
             text-align: justify;
             width: 80%;
             margin: 0 auto;
             position: absolute;
+            font-weight: bold;
             left: 10%;
-            bottom: 21%;
+            bottom: 8.3%;
+            transform: scale(.94) translateX(-.08rem);
         }
         .btn {
             @include sc(.15rem,$fc);
