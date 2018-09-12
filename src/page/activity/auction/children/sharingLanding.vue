@@ -20,7 +20,7 @@
         },
         created() {
             this.help(this.$route.params.auctionId, this.$route.params.vipId)
-            document.title = '苏淮猪腿肉速来抢'
+            document.title = '竞拍大奖速来抢'
         },
         methods: {
             help (auctionId,vipId) {
