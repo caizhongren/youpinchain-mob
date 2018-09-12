@@ -1,20 +1,22 @@
 <template>
     <div class="sharingLanding">
-        <img src="https://heizhu360.datbc.com/pic/storage/storage/fetch?key=wjq1mvxvnidhm6sdid0s" width="100%">
+        <img :src="goodsPic.shareBig" width="100%">
         <p class="text">关注公众号“链上臻品”，点击底部菜单【限时竞拍】即可参与竞拍活动</p>
         <div class="btn" @click="partIn">我也要参与</div>
     </div>
 </template>
 <script>
-    import { help } from '../../../../service/getData'
+    import { help, goodsPic } from '../../../../service/getData'
     export default {
         data () {
             return {
+                goodsPic: {}
             }
         },  
         watch: {
         },
         mounted() {
+            this.getGoodsPic(this.$route.params.auctionId)
         },
         created() {
             this.help(this.$route.params.auctionId, this.$route.params.vipId)
@@ -29,6 +31,12 @@
             },
             partIn () {
                 window.location.href = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU3ODY4MTc3Mw==#wechat_redirect'
+            },
+            getGoodsPic (auctionId) {
+                var that = this
+                goodsPic(auctionId).then(function (res) {
+                    that.goodsPic = res.data
+                })
             }
         },
         components: {

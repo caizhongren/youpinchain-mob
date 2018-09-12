@@ -380,3 +380,8 @@ export const congigJsApi = (url) => fetch('/oa/jsapiSignature', {
  	wxNum: wxNum,
  	phoneNum: phoneNum
  } , 'PUT');
+
+/**
+ * 竞拍图片获取
+ */
+export const goodsPic = (auctionId) => fetch('/auction/home/goodsPic/'+auctionId, {});

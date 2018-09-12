@@ -240,7 +240,7 @@ export default [{
                     component: SharingLanding
                 },
                 {
-                    path: 'rewardExchange/:bidId',
+                    path: 'rewardExchange/:auctionId/:bidId',
                     component: RewardExchange,
                     meta: {title: '奖励兑换'}
                 },
