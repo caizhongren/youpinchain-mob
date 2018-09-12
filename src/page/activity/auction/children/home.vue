@@ -17,7 +17,7 @@
       <!--<div class="banner_box" :to="{path:'/home'}">-->
         <!--<img :src="auctionInfo.goodsPic" alt="" class="show">-->
       <!--</div>-->
-      <router-link tag="div" class="banner_box" :to="{path:'/home'}">
+      <router-link tag="div" class="banner_box" :to="{path:'/home?f=jingpai&t=qr'}">
         <img :src="auctionInfo.goodsPic.homeAndtakePrize" alt="" class="show">
       </router-link>
       <div class="title">
