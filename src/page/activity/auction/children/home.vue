@@ -17,8 +17,8 @@
       <!--<div class="banner_box" :to="{path:'/home'}">-->
         <!--<img :src="auctionInfo.goodsPic" alt="" class="show">-->
       <!--</div>-->
-      <router-link tag="div" class="banner_box" :to="{path:'/home'}">
-        <img :src="auctionInfo.goodsPic" alt="" class="show">
+      <router-link tag="div" class="banner_box" :to="{path:'/home?f=jingpai&t=qr'}">
+        <img :src="auctionInfo.goodsPic.homeAndtakePrize" alt="" class="show">
       </router-link>
       <div class="title">
         <p>{{auctionInfo.goods}}</p>
@@ -77,15 +77,7 @@
       </div>
       <div class="bid_rule">
         <div class="rule_title">活动规则</div>
-        <p><span>1.</span>关注链上臻品的用户可参与竞拍。</p>
-        <p><span>2.</span>竞拍活动时间为每周二、周五19:00-21:00，每场活动拍卖的产品将综合参考用户意见选出。</p>
-        <p><span>3.</span>限时2小时拍卖，20金条起拍，出价前5名获胜。出价规则：第五名当前出价+20金条≤每次出价≤第一名当前出价+40金条，如出现多个用户出价相同，最先出价者获胜。</p>
-        <p><span>4.</span>每位用户有10次出价竞拍机会，竞拍开始前一天至竞拍结束前，用户可通过邀请好友助力增加竞拍次数。竞拍中，一旦出价，将不可主动撤销。</p>
-        <p><span>5.</span>出价数额不能超过自己持有金条总数。</p>
-        <p><span>6.</span>竞拍中，每30分钟可参与一次抽奖活动，随机抽取1—100金条，每场抽奖活动持续5分钟。</p>
-        <p><span>7.</span>竞拍成功后，竞拍获胜者需在公众号"限时竞拍"菜单栏选择“我的竞拍”查看参与过的竞拍活动及竞拍结果，并进入“领取奖励”页面如实填写领奖所需信息。如30日内未提交则视为自动放弃。竞拍获胜者参与出价的金条不予退还。</p>
-        <p><span>8.</span>前五名获胜者分别获得5斤、3斤、2斤、1斤、1斤苏淮猪腿肉。收货地仅覆盖江浙沪和北京，其他地区用户替换为等值话费。（以商城实际售价计）</p>
-        <p><span>9.</span>最终解释权归链上臻品所有。</p>
+        <p v-for="(item,index) in rule" :key="index"><span>{{index+1}}.</span>{{item.dictdataValue}}</p>
       </div>
     </div>
     <!-- 底部悬浮状态条 -->
@@ -194,6 +186,7 @@
         timer3: null,
         offerNumber: null,
         offerRange: [],
+        rule: null,
         pagination: {
           activeColor: '#e4372e',
           color: '#fff'
@@ -240,6 +233,7 @@
           that.countDown = res.data.countDown
           that.luckDrawTime = res.data.luckDrawTime
           that.offerRange = that.calculateRange(res.data.rankingList,res.data.startingPrice)
+          that.rule = JSON.parse(res.data.rule)
           clearInterval(that.timer)
           clearInterval(that.timer2)
           clearInterval(that.timer3)
@@ -288,12 +282,14 @@
       // 返回出价范围数组
       calculateRange (Arry,startingPrice) {
         var range = []
+        var increaseMinPrice = this.auctionInfo.increaseMinPrice;
+        var increaseMaxPrice = this.auctionInfo.increaseMaxPrice;
         if (!Arry.length) {
-          range.push(startingPrice + 20, startingPrice + 40)
+          range.push(startingPrice + increaseMinPrice, startingPrice + increaseMaxPrice)
         } else if (Arry.length === 1) {
-          range.push(Arry[0].bidPrice + 20, Arry[0].bidPrice + 40)
+          range.push(Arry[0].bidPrice + increaseMinPrice, Arry[0].bidPrice + increaseMaxPrice)
         } else {
-          range.push(Arry[Arry.length - 1].bidPrice + 20, Arry[0].bidPrice + 40)
+          range.push(Arry[Arry.length - 1].bidPrice + increaseMinPrice, Arry[0].bidPrice + increaseMaxPrice)
         }
         return range
       },

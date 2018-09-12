@@ -87,10 +87,11 @@
                 this.getMyBidRecords(this.page,this.pageSize)
             },
             takeReward (bid) {
+                var that = this
                 if (bid.bidState !== 2) {
                     return
                 } else {
-                    this.$router.push('/auction/rewardExchange/' + bid.id)
+                    this.$router.push('/auction/rewardExchange/'+ that.auctionId + '/' + bid.id)
                 }
             }
         },

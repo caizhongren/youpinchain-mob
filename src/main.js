@@ -41,7 +41,7 @@ const router = new VueRouter({
 })
 router.beforeEach((to, from, next) => {
     WechatShareUtils.configJsApi(window.location.href)
-    wx.error(function() {
+    wx.error(function () {
         window.location.href = window.location.href
     })
     if (to.meta.title === undefined) {
@@ -51,10 +51,12 @@ router.beforeEach((to, from, next) => {
     }
     // localStorage.setItem("X-youpinchain-Token", "D06EAEA76CC5B0C96769A0E8FB2CA2FD");
     if (localStorage.getItem('X-youpinchain-Token') == undefined) {
-        let token = to.query.T;
+        let token = to.query.T
         if (token) {
-            localStorage.setItem("X-youpinchain-Token", token);
-            next(to.path);
+            localStorage.setItem("X-youpinchain-Token", token)
+            let query = Object.assign({}, to.query)
+            delete query.T
+            next({path: to.path, query: query})
         } else {
             let url = encodeURIComponent(domainUrl + to.path);
             let redirect_uri = encodeURIComponent(redirect);

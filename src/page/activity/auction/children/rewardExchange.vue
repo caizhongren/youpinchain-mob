@@ -1,7 +1,7 @@
 <template>
     <div class="reward_exchange">
         <div class="header">
-            <img src="https://heizhu360.datbc.com/pic/storage/storage/fetch?key=yy9opvdv0hxgqwgxi6v7" alt="" width="100%">
+            <img :src="goodsPic.homeAndtakePrize" alt="" width="100%">
         </div>
         <div class="content">
             <div class="form_box">
@@ -25,7 +25,7 @@
     </div>
 </template>
 <script>
-    import { exchange } from '../../../../service/getData'
+    import { exchange, goodsPic } from '../../../../service/getData'
     export default {
         data () {
             return {
@@ -34,13 +34,15 @@
                 user: {
                     phoneNum: '',
                     wxNum: ''
-                }
+                },
+                goodsPic: {}
             }
         },  
         watch: {
         },
         props: ['showErrMsg'],
         mounted() {
+            this.getGoodsPic(this.$route.params.auctionId)
         },
         created() {
         },
@@ -60,6 +62,12 @@
                     } else {
                         that.$parent.showErrMsg(respones.errmsg)
                     }
+                })
+            },
+            getGoodsPic (auctionId) {
+                var that = this
+                goodsPic(auctionId).then(function (res) {
+                    that.goodsPic = res.data
                 })
             }
         },

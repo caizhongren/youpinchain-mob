@@ -1,36 +1,38 @@
 <template>
-<div class="home mescroll" ref="mescroll">
-    <transition name="loading">
-        <loading v-show="showLoading"></loading>
-    </transition>
-    <div v-show="!showLoading">
-        <router-link tag="div" class="header_image" :to="{path:'/introduce'}">
-            <img :src="brand.pictureUrl" alt="" width="100%" class="show">
-        </router-link>
-        <!-- <ul class="product_nav">
-        <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" v-if="tab.name !== 'brand'"
-            @click="toggleTab(tab.id,index)">{{tab.name}}</li>
-      </ul> -->
-        <section id="hot_goods">
-            <h4 class="goods_title">热卖商品</h4>
-            <ul class="goodslistul clear">
-                <li v-for="item in hotgoodslist" :key="item.id">
-                    <router-link tag="div" :to="'/goods/' + item.id">
-                        <img :src="item.thumbnailPic" alt="" class="left" :class="{'noImage': !item.thumbnailPic}">
-                        <div class="left goods_info">
-                            <p class="name">{{item.name + ' ' + item.netContent}}*1{{item.packing}}</p>
-                            <p class="desr">{{item.describe}}</p>
-                            <!--<p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>-->
-                            <p class="price"><span class="RMB">￥</span>{{item.presentPrice}} <s>￥{{item.originalPrice}}</s></p>
-                        </div>
-                    </router-link>
-                    <div class="shopping_cart" @touchstart="addToCart(item.id, $event)"></div>
-                </li>
-            </ul>
-            <transition appear @after-appear='afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot" :key="index">
-                <span class="move_dot" v-if="item"></span>
-            </transition>
-        </section>
+<div class="home">
+    <div class="mescroll" ref="mescroll">
+        <transition name="loading">
+            <loading v-show="showLoading"></loading>
+        </transition>
+        <div v-show="!showLoading">
+            <router-link tag="div" class="header_image" :to="{path:'/introduce'}">
+                <img :src="brand.pictureUrl" alt="" width="100%" class="show">
+            </router-link>
+            <!-- <ul class="product_nav">
+            <li v-for="(tab, index) in product_nav" :key="index" :class="{'active': index === activeTab}" v-if="tab.name !== 'brand'"
+                @click="toggleTab(tab.id,index)">{{tab.name}}</li>
+          </ul> -->
+            <section id="hot_goods">
+                <h4 class="goods_title">热卖商品</h4>
+                <ul class="goodslistul clear">
+                    <li v-for="item in hotgoodslist" :key="item.id">
+                        <router-link tag="div" :to="'/goods/' + item.id">
+                            <img :src="item.thumbnailPic" alt="" class="left" :class="{'noImage': !item.thumbnailPic}">
+                            <div class="left goods_info">
+                                <p class="name">{{item.name + ' ' + item.netContent}}*1{{item.packing}}</p>
+                                <p class="desr">{{item.describe}}</p>
+                                <!--<p class="coupon" :class="[item.useCoupon === 0 ? 'unuseCoupon' : 'useCoupon']">{{item.useCoupon === 0 ? '优惠券不可使用' : '优惠券可使用'}}</p>-->
+                                <p class="price"><span class="RMB">￥</span>{{item.presentPrice}} <s>￥{{item.originalPrice}}</s></p>
+                            </div>
+                        </router-link>
+                        <div class="shopping_cart" @touchstart="addToCart(item.id, $event)"></div>
+                    </li>
+                </ul>
+                <transition appear @after-appear='afterEnter' @before-appear="beforeEnter" v-for="(item,index) in showMoveDot" :key="index">
+                    <span class="move_dot" v-if="item"></span>
+                </transition>
+            </section>
+        </div>
     </div>
     <foot-guide></foot-guide>
 </div>
@@ -78,17 +80,17 @@ export default {
         var that = this
         that.mescroll = new MeScroll(that.$refs.mescroll, { 
             down: {
-                use: false
+                use: true,
             },
             up: {
               callback: that.upCallback,
               page: {
                 num: 0, 
                 size: 4,
-              },
-            noMoreSize: 5
-          }
+              }
+            }
         });
+        that.$refs.mescroll.style.maxHeight = document.body.offsetHeight - parseInt(document.getElementsByTagName('html')[0].style.fontSize) * 0.49 + 'px';
         wx.ready(function () {
             var shareLink = window.location.href
             WechatShareUtils.onMenuShareAppMessage('区块苏淮猪，不含抗生素，农业大学的优质猪肉，限量预售！', '仲秋钜惠，全场6.8折！', shareLink, 'https://mmbiz.qpic.cn/mmbiz_png/puDuBHDXJkwPdHoIeZJneedu9tqjA7cVVbZpCOfEtor98FNCibhzZBqE0fbY9IVMLepDaxnVM3q3RvZ8apibiaFicA/0?wx_fmt=png')
@@ -173,9 +175,6 @@ export default {
     display: block;
     border-radius: 50%;
     @include wh(.15rem, .15rem);
-}
-.mescroll{
-  height: 7rem;
 }
 .home {
     padding-bottom: .5rem;
